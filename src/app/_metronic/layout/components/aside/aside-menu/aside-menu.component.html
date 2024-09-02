@@ -1,0 +1,83 @@
+
+
+<ng-container *ngFor="let module of modules;let i = index">
+
+    <!-- <div class="menu-item py-3" routerLinkActive="{{ module.url!=''?'':'here show' }}" *ngIf="module.status==true">
+      <a href="javascript:void(0)" (click)="goToPage((module.url!='' && module.url!=null?'/'+module.url:''))"  class="menu-link menu-center  {{ i==0?'active':'' }}"  routerLinkActive="{{ module.url!=''?'':'show' }}" placement="end" tooltipClass="dark-theme" ngbTooltip="{{ module.name }}">
+        <span class="menu-icon">
+          <span [inlineSVG]="module.icon" class="svg-icon svg-icon-2"></span>
+        </span>
+      </a>
+    </div> -->
+
+  <div class="menu-item menu-lg-down-accordion me-lg-1"
+  data-kt-menu-trigger="hover"
+  data-kt-menu-placement="right-start"
+  routerLinkActive="{{ module.url!==''?'here show':'' }}"
+  *ngIf="module.status==true"
+  >
+  <!-- <div class="menu-item me-lg-1"> -->
+    
+    <a *ngIf="module.url===''" class="menu-link menu-center menu-1" href="javascript:void(0)" (click)="goToPage((module.url!=='' && module.url!=null?'/'+module.url:''))" placement="top" tooltipClass="dark-theme" ngbTooltip="{{ module.name }}">
+      <span class="menu-icon">
+        <span [inlineSVG]="module.icon" class="svg-icon svg-icon-2"></span>
+      </span>
+    </a>
+
+    <a *ngIf="module.url!==''" class="menu-link menu-center menu-2" routerLink="{{module.url!=='' && module.url!=null?'/'+module.url:''}}" routerLinkActive="show" placement="top" tooltipClass="dark-theme" ngbTooltip="{{ module.name }}">
+    <span class="menu-icon">
+      <span [inlineSVG]="module.icon" class="svg-icon svg-icon-2"></span>
+    </span>
+  </a>
+
+   <!--    <span class="menu-link py-3">
+        <span class="menu-title"> 
+         
+          <a href="javascript:void(0)" (click)="goToPage((module.url!='' && module.url!=null?'/'+module.url:''))"  class="menu-link py-3 {{ module.url!=''?'':'has-arrow' }} {{ i==0?'active':'' }}" >{{ module.name }}</a>
+        </span>
+        <span class="{{ module.url!=''?'menu-arrow d-lg-none':'' }}"></span>
+      </span> -->
+      <ng-container *ngIf="module.components.length>0">
+      <div
+        class="
+          menu-sub
+          menu-sub-lg-down-accordion
+          menu-sub-lg-dropdown
+          menu-rounded-0
+          w-lg-225px
+        "
+        data-kt-menu-dismiss="true"
+      >
+        <ng-container *ngFor="let component of module.components;let j = index;">
+          <div class="menu-item me-lg-1" *ngIf="component.status==true">
+            <a href="javascript:void(0)" routerLink="{{component.url!=='' && component.url!=null?'/'+component.url:''}}"  routerLinkActive="{{ component.url!=='' && component.url!=null?'active':'' }}" class="menu-link py-3 {{ component.url!=='' && component.url!=null?'':'has-arrow' }}" > <span class="menu-title">{{ component.name }}</span></a>
+          </div>
+
+          <ng-container *ngIf="component.attributes.length>0">
+          <div
+            class="
+              menu-sub
+              menu-sub-lg-down-accordion
+              menu-sub-lg-dropdown
+              menu-rounded-0
+              w-lg-225px
+            "
+            data-kt-menu-dismiss="true"
+          >
+            <ng-container *ngFor="let attribute of component.attributes;let k = index;">
+              <div class="menu-item me-lg-1" *ngIf="attribute.status==true">
+                <a href="javascript:void(0)" routerLink="{{attribute.url!=='' && attribute.url!=null && attribute.url!==' '?'/'+attribute.url:''}}"  routerLinkActive="{{ attribute.url!=='' && attribute.url!=null && attribute.url!==' '?'active':'' }}"  class="menu-link py-3 {{ attribute.url!==''?'':'has-arrow' }} {{ attribute.url!=='' && attribute.url!=null && attribute.url!==' '?'active':'' }}" > <span class="menu-title">{{ attribute.name }}</span></a>
+              </div>
+            </ng-container>
+
+          </div>
+          </ng-container>
+
+        </ng-container>
+
+      </div>
+      </ng-container>
+
+  </div>
+  </ng-container>
+

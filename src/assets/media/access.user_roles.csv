@@ -1,0 +1,3 @@
+S.no,password,loginname,email,first_name,last_name,is_active,name,code,process,Designation Name ,Designation Code
+1,admin,uesr3,user3@gmail.com,test13,user,True,Super Admin,TestUser,1,"t4,tyt","t4,ew"
+2,admin,user2,user2@gmail.com,test12,user,True,Super Admin,TestUser3,1,"t4,edr","t4,wwe"

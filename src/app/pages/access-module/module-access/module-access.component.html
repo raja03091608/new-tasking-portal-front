@@ -1,0 +1,115 @@
+<section class="body-card access-card">
+	<div class="container-fluid">
+	   <div class="row">
+		  <div class="col-md-4">
+			 <h2 class="heading1">Access Privileges</h2>
+		  </div>
+		  <div class="col-md-8">
+			 <div class="form-style-md form-row d-flex justify-content-end button-title row">
+				<div class="col-md-3">
+					<div class="matt-group matselect">
+					  <mat-form-field appearance="fill" >
+						<mat-select value="default" [(ngModel)]="process" placeholder="Select Unit" (ngModelChange)="processChange($event)">
+						  <mat-option>None</mat-option>
+						  <mat-option *ngFor="let process of processes" [value]="process.id">{{process.name}}</mat-option>
+						</mat-select>
+					  </mat-form-field>
+				   </div>
+				</div>
+				<div class="col-md-3">
+					<div class="matt-group matselect">
+					  <mat-form-field appearance="fill">
+						<mat-select value="default" [(ngModel)]="user_role" placeholder="Select role" (ngModelChange)="roleChange($event)">
+						  <mat-option>None</mat-option>
+						  <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+						</mat-select>
+					  </mat-form-field>
+				   </div>
+				</div>
+				<div class="col-md-2">
+				   <a href="javascript:void(0);" (click)="savePermission();" class="btn btn-primary btn-md w-100">Save</a>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="roles-cover mb-3 mt-3">
+		  <!-- Start -->
+		  <div class="roles-row" *ngFor="let module of modules">
+			 <!-- Start -->
+			 <div class="roles-heading">
+				<div class="row">
+				   <div class="col-md-4">
+					  <div class="roles-title">
+						 <p>{{ module.name }}</p>
+					  </div>
+				   </div>
+				   <div class="col-md-6">
+					  <div class="roles-check">
+						 <ul>
+							<li *ngFor="let action of module.action">
+							   <mat-checkbox class="example-margin module-permission" [(ngModel)]="action.status" value="{{ action.id }}"  (ngModelChange)="parentCheck(module,action.id,$event)">{{ action.name }}</mat-checkbox>
+							</li>
+						 </ul>
+					  </div>
+				   </div>
+				   <div class="col-md-2 text-right">
+					  <mat-slide-toggle [(ngModel)]="module.status" (ngModelChange)="parentToggle(module,$event)"></mat-slide-toggle>
+				   </div>
+				</div>
+			 </div>
+			 <!-- End -->
+			 <div class="roles-body" *ngFor="let component of module.components">
+				<!-- Start -->
+				<div class="roles-category subcatg1" >
+				   <div class="row">
+					  <div class="col-md-4">
+						 <div class="roles-title">
+							<p><span class="material-icons" style="font-size:11px"></span> {{ component.name }}</p>
+						 </div>
+					  </div>
+					  <div class="col-md-6">
+						 <div class="roles-check">
+							<ul>
+							   <li *ngFor="let action of component.action">
+									 <mat-checkbox class="example-margin component-permission" value="{{ action.id }}" [(ngModel)]="action.status" (ngModelChange)="childCheck(module,module.components,action.id)" >{{ action.name }}</mat-checkbox>
+							   </li>
+							</ul>
+						 </div>
+					  </div>
+					  <div class="col-md-2 text-right">
+						 <mat-slide-toggle [(ngModel)]="component.status" (ngModelChange)="childToggle(module,component,$event)"></mat-slide-toggle>
+					  </div>
+				   </div>
+				</div>
+				<!-- End -->
+				<!-- Start -->
+				<div class="roles-category subcatg2" *ngFor="let attribute of component.attributes">
+				   <div class="row">
+					  <div class="col-md-4">
+						 <div class="roles-title">
+							<p><span class="material-icons" style="font-size:11px"></span> {{ attribute.name }}</p>
+						 </div>
+					  </div>
+					  <div class="col-md-6">
+						 <div class="roles-check">
+							<ul>
+							   <li *ngFor="let action of attribute.action">
+									 <mat-checkbox class="example-margin attribute-permission" value="{{ action.id }}" [(ngModel)]="action.status" (ngModelChange)="childCheck2(module,component,component.attributes,action.id,module.components)">{{ action.name }}</mat-checkbox>
+								  </li>
+							</ul>
+						 </div>
+					  </div>
+					  <div class="col-md-2 text-right">
+						 <mat-slide-toggle [(ngModel)]="attribute.status" (ngModelChange)="child2Toggle(module,component,attribute,$event)"></mat-slide-toggle>
+					  </div>
+				   </div>
+				</div>
+				<!-- End -->
+
+			 </div>
+		  </div>
+		  <!-- End -->
+
+	   </div>
+	</div>
+ </section>

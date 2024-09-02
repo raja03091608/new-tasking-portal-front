@@ -1,0 +1,1081 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+
+<div class="row g-5 g-xl-8 justify-content-center">
+	<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' || token_detail.process_id==3">
+    <div class="col-md-3 card-container-c">
+      <!--begin::Statistics Widget 5-->
+      <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="svg-icon svg-icon-gray-100 svg-icon-4x ms-n1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none">
+                  <path opacity="0.3"
+                    d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+                    fill="currentColor"></path>
+                  <path
+                    d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+                    fill="currentColor"></path>
+                  <path
+                    d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+                    fill="currentColor"></path>
+                </svg>
+              </span>
+            </div>
+            <div class="col-md-8">
+              <h4 class="text-white" style="text-align: right;">Start a New Tasking</h4>
+            </div>
+          </div>
+        </div>
+      </a> -->
+	  <a routerLink="/tasking-portal/new-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+		<div class="logo-content ">
+		<div class="border-rotation"></div>
+		<img src="../../../../assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
+
+		</div>
+		<div class="card-content">
+		<h4 class="card-title">Start a New Tasking</h4>
+		</div>
+		<div class="footer-content" style="position: relative; top: 33px;" >
+			<button class="btn-view">View</button>
+		  </div>
+	  </a>
+	</div>
+	</ng-container>
+
+    <!-- <div class="col-md-3 gridbg3">
+      <a routerLink="/tasking-portal/archive-task" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 150px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"/>
+                  <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"/>
+                  <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"/>
+                  <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"/>
+                  <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"/>
+                </svg>
+              </span>
+            </div>
+            <div class="col-md-8">
+              <h4 class="text-white" style="text-align: right;">Archive Task</h4>
+              <p class="fw-bold text-white count-value-text">{{archive_count?archive_count:0}}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div> -->
+	<div class="col-md-3 card-container-c">
+		<a routerLink="/tasking-portal/archive-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+		  <div class="logo-content ">
+			<div class="border-rotation"></div>
+			<img src="../../../../assets/archieve task.png" alt="Logo" class="card-logo rotation" />
+		  </div>
+		  <div class="card-content">
+			<h4 class="card-title">Archive Task</h4>
+			<p class="fw-bold text-black count-value-text">{{archive_count?archive_count:0}}</p>
+		  </div>
+		  <div class="footer-content">
+			<button class="btn-view">View</button>
+		  </div>
+		</a>
+	  </div>
+			<!--end::Body-->
+		<!-- </a> -->
+		<!--end::Statistics Widget 5-->
+
+    <!-- <div class="col-md-3 gridbg3">
+      <a routerLink="/tasking-portal/task-list" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-3" style="height: 150px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
+                  <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
+                  </svg>
+              </span>
+            </div>
+            <div class="col-md-8">
+              <h4 class="text-white" style="text-align: right;">Task Waiting For Approve</h4>
+              <p class="fw-bold text-white count-value-text">{{count2?count2:0}}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-3 gridbg4">
+      <a routerLink="/tasking-portal/view-tasking-status" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-4" style="height: 150px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path opacity="0.3" d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z" fill="currentColor"/>
+                  <path d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z" fill="currentColor"/>
+                </svg>
+              </span>
+            </div>
+            <div class="col-md-8">
+              <h4 class="text-white" style="text-align: right;">Total Approved Tasks </h4>
+              <p class="fw-bold text-white count-value-text">{{count?count:0}}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div> -->
+
+	<div class="col-md-3 card-container-c">
+		<a routerLink="/tasking-portal/task-list" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+			<div class="logo-content ">
+				<div class="border-rotation"></div>
+					<img src="../../../../assets/task waiting for approve.png" alt="Logo" class="card-logo rotation" />
+			</div>
+			<div class="card-content">
+			<h4 class="card-title">Task Waiting For Approval</h4>
+			<p class="fw-bold text-black count-value-text">{{count2?count2:0}}</p>
+			</div>
+			<div class="footer-content">
+			<button class="btn-view">View</button>
+			</div>
+		</a>
+	</div>
+	<div class="col-md-3 card-container-c">
+		<a routerLink="/tasking-portal/view-tasking-status" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+		<div class="logo-content ">
+			<div class="border-rotation"></div>
+				<img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
+		</div>
+		<div class="card-content">
+			<h4 class="card-title">Total Approved Task</h4>
+			<p class="fw-bold text-black count-value-text">{{count?count:0}}</p>
+		</div>
+		<div class="footer-content">
+			<button class="btn-view">View</button>
+		</div>
+	</a>
+	</div>
+
+</div>
+
+<!-- end::Row -->
+
+<div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
+
+	<div class="col-xl-12 mb-xl-12 mt-0">
+		<div class="card card-flush h-xl-100 progress-chart mapbg">
+			<div class="card-header">
+				<h3 class="card-title align-items-start flex-column pt-5">
+					<span class="fw-bold mb-3">Year wise Task Completion</span>
+				</h3>
+			</div>
+	  <div id="chart4">
+		<apx-chart
+		[series]="chartOptions11.series"
+		[chart]="chartOptions11.chart"
+		[xaxis]="chartOptions11.xaxis">
+	  </apx-chart>
+	  </div>
+	</div>
+	</div>
+
+	<div class="col-md-6 mt-0">
+		<div class="card card-flush h-xl-100 progress-chart mapbg">
+			<div class="card-header">
+				<h3 class="card-title align-items-start flex-column pt-5">
+					<span class="fw-bold mb-3">Task Status Distribution</span>
+				</h3>
+			</div>
+			<div id="chart5">
+				<apx-chart
+				[series]="chartOptions12.series"
+				[chart]="chartOptions12.chart"
+				[labels]="chartOptions12.labels"
+				[responsive]="chartOptions12.responsive"
+				[legend]="chartOptions12.legend"
+				[dataLabels]="chartOptions12.dataLabels"
+				[title]="chartOptions12.title">
+				</apx-chart>
+			</div>
+	</div>
+	</div>
+
+	<div class="col-md-6 mt-0">
+		<div class="card card-flush h-xl-100 progress-chart mapbg">
+			<div class="card-header">
+				<h3 class="card-title align-items-start flex-column pt-5">
+					<span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
+				</h3>
+			</div>
+				<div id="chart6">
+					<apx-chart
+				[series]="chartOptions13.series"
+				[chart]="chartOptions13.chart"
+				[xaxis]="chartOptions13.xaxis"
+				[yaxis]="chartOptions13.yaxis"
+				[plotOptions]="chartOptions13.plotOptions"
+				[fill]="chartOptions13.fill"
+				[title]="chartOptions13.title">
+				</apx-chart>
+				</div>
+		</div>
+	</div>
+	<div class="col-xl-12 mb-xl-12 mt-5">
+		<div class="card card-flush h-xl-100 progress-chart mapbg">
+			<div class="card-header">
+				<h3 class="card-title align-items-start flex-column pt-5">
+					<span class="fw-bold mb-3">Pending Task Summary By Groups</span>
+				</h3>
+			</div>
+				<div id="chart7">
+					<apx-chart
+				[series]="chartOptions14.series"
+				[chart]="chartOptions14.chart"
+				[xaxis]="chartOptions14.xaxis"
+				[yaxis]="chartOptions14.yaxis"
+				[plotOptions]="chartOptions14.plotOptions"
+				[fill]="chartOptions14.fill"
+				[title]="chartOptions14.title">
+				</apx-chart>
+				</div>
+		</div>
+	</div>
+
+	<!-- <div class="row">
+		<div class="col-md-6">
+		  <div class="matt-group matselect1" >
+			<mat-label>Task List <b class="star">*</b></mat-label>
+			<mat-form-field appearance="fill">
+			<mat-select #select  placeholder="Select Tasking" [(ngModel)]="taskName" (ngModelChange)="onTaskChange($event)">
+			  <mat-option *ngFor="let task of task_list" [value]="task"  >{{task.task_name}} ({{task.task_number_dee}})</mat-option>
+			</mat-select>
+			</mat-form-field>
+		  </div>
+		  </div>
+	  </div> -->
+
+  <!-- <div class="col-xl-12 mb-xl-12">
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+        <div class="card-header">
+            <h3 class="card-title align-items-start flex-column pt-5">
+                <span class="fw-bold mb-3">DETAILS OF TASKS</span>
+            </h3>
+        </div>
+
+        <div class="card-body responsive" layout-xs="columns">
+            <ngb-accordion class="accordion2" [closeOthers]="true" activeIds="static-b3">
+              <ngb-panel id="static-b3" title="Details of Tasks">
+                <ng-template ngbPanelContent>
+                  <div class="card-body mt-n10">
+                    <div id="chartChartDetailModule" style="width: 100%; height: 450px"></div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+
+        </div>
+    </div>
+</div> -->
+
+  <!-- <div class="col-xl-12 mb-xl-12 mt-0">
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+        <div class="card-header">
+            <h3 class="card-title align-items-start flex-column pt-5">
+                <span class="fw-bold mb-3">Percentage Completion of Tasks</span>
+            </h3>
+        </div>
+        <div class="card-body responsive" layout-xs="columns">
+            <ngb-accordion class="accordion2" [closeOthers]="true" activeIds="static-b3">
+              <ngb-panel id="static-b3" title="Percentage Completion of Tasks">
+                <ng-template ngbPanelContent>
+                  <div class="card-body mt-n10">
+                    <div id="chartTaskCompletionModule" style="width: 100%; height: 450px"></div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+
+        </div>
+    </div>
+</div> -->
+
+
+  <!-- <div class="col-xl-12 mb-xl-12 mt-0">
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+        <div class="card-header">
+            <h3 class="card-title align-items-start flex-column pt-5">
+                <span class="fw-bold mb-3">Milestone Tasks</span>
+            </h3>
+        </div>
+        <div class="card-body responsive" layout-xs="columns">
+            <div id="chart1" >
+              <apx-chart
+                [series]="chartOptions1.series"
+                [chart]="chartOptions1.chart"
+                [fill]="chartOptions1.fill"
+                [stroke]="chartOptions1.stroke"
+                [legend]="chartOptions1.legend"
+                [plotOptions]="chartOptions1.plotOptions"
+                [grid]="chartOptions1.grid"
+                [xaxis]="chartOptions1.xaxis"
+                [markers]="chartOptions1.markers"
+              ></apx-chart>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+</div>
+
+
+<div class="row g-5 map-card g-xl-8">
+	<div class="col-md-12">
+		<div class="card p-0" style="margin-bottom: 60px;">
+<div class="card-header">
+    <h3 class="card-title align-items-start flex-column pt-10">
+      <span class="fw-bold mb-3"> Monitor task progress </span>
+    </h3>
+     </div>
+  <div class="card-body py-3">
+    <div class="container table-options">
+      <div class="row">
+      <div class="col-md-6">
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[10,20,30,50,100]"
+        aria-label="Select page">
+        </mat-paginator>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="fill">
+        <mat-label>Search your text here</mat-label>
+        <input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input>
+        </mat-form-field>
+      </div>
+      </div>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+
+      <ng-container matColumnDef="task_number_dee">
+        <th mat-header-cell *matHeaderCellDef width="15%"><b> Task Number</b></th>
+        <td mat-cell *matCellDef="let data"> {{data.task_number_dee}} </td>
+      </ng-container>
+      <ng-container matColumnDef="task_name">
+        <th mat-header-cell *matHeaderCellDef width="30%"><b>Task Name </b></th>
+        <td mat-cell *matCellDef="let data"> {{data.task_name}} </td>
+      </ng-container>
+      <ng-container matColumnDef="due_date">
+        <th mat-header-cell *matHeaderCellDef><b>Due Date </b></th>
+        <td mat-cell *matCellDef="let data">
+          {{data.time_frame_for_completion_month?data.time_frame_for_completion_month+" Month's ":''}} {{data.time_frame_for_completion_days?data.time_frame_for_completion_days+" Day's":''}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="assignee">
+        <th mat-header-cell *matHeaderCellDef><b>Assignee </b></th>
+        <td mat-cell *matCellDef="let data"> {{data&&data.assigned_tasking_group?data.assigned_tasking_group[0].tasking_group.name:'-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="time_frame_for_completion">
+        <th mat-header-cell *matHeaderCellDef><b>Time for Completion </b></th>
+        <td mat-cell *matCellDef="let data"> {{data.time_frame_for_completion}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
+        <td mat-cell *matCellDef="let data"> <a href="javascript:void(0)"
+          class="status-field {{data.status=='1'?'text-success':'text-danger'}}">{{data.status=='1'?'Active':'Inactive'}}</a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+            No Records Found!
+        </th >
+        </ng-container>
+      <ng-container matColumnDef="Action">
+        <th class="text-center" mat-header-cell *matHeaderCellDef><ng-container><b>Action</b></ng-container></th>
+        <td class="text-center action-icon-1" mat-cell *matCellDef="let data" >
+        <a (click)="openview(data.id)"  class="btn btn-icon bi bi-eye-fill btn-bg-light btn-active-color-primary btn-sm" placement="end" tooltipClass="dark-theme" ngbTooltip="View Status">
+              </a>
+              <a (click)="openEdit(data)"class="btn btn-icon bi bi-eye btn-bg-light btn-active-color-primary btn-sm" placement="end" tooltipClass="dark-theme" ngbTooltip="Tasking approval details">
+              </a>
+			  <ng-container *ngIf="api.userid.process_id==3">
+              <a
+              (click)="openPopup(data.id)"
+                class="btn btn-icon bi bi-flag-fill btn-bg-light btn-active-color-primary btn-sm"
+				placement="end" tooltipClass="dark-theme" ngbTooltip="Add MileStone">
+              </a>
+			</ng-container>
+              <a (click)="openlistitem(data.id)"
+                class="btn btn-icon bi bi-journal btn-bg-light btn-active-color-primary btn-sm"
+				placement="end" tooltipClass="dark-theme" ngbTooltip="View MileStone"
+              >
+              </a>
+        </td>
+    </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with records</b></td>
+       </tr>
+      </table>
+  </div>
+</div>
+	</div>
+
+</div>
+
+
+<ng-template #template let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Delete Task</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+	</div>
+	<div class="modal-body">
+
+		<p><strong>Do you want to Delete the Task? </strong></p>
+
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" >Yes</button>
+
+		<button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+	</div>
+
+</ng-template>
+
+
+	 <div class="modal fade master-modal-style" id="crud-milestone" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+		 <div class="modal-dialog modal-xl">
+
+		   <div class="modal-content">
+			  <div class="modal-header">
+				 <h5 class="modal-title" id="exampleModalLabel">Processing Monitoring</h5>{{dataTask[0]?.task_name}}
+
+         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="false">&times;</span>
+          </button>
+
+			  </div>
+		  <div class="modal-body form-style-md form-style-font linux">
+		  <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+		  </div>
+
+
+		  <div class="modal-body p-0" style="padding-top:25px; padding-bottom:0%" >
+
+			<div class="row g-6 g-xl-9 ">
+				<div class="col-md-3" style="border-right: 1px solid #e4e6ef;">
+				<form  [formGroup]="MileStoneForm" (ngSubmit)="OnMileStoneSubmit()" >
+					<div class="row mb-5">
+
+              <div class="matt-group matselect">
+							<label class="required fs-5 fw-bold mb-2">View Status</label>
+								<mat-form-field appearance="fill"  class="form-control"  >
+									<mat-select #select formControlName="tasking_status">
+									<ng-container >
+									<mat-option *ngFor="let occ of viewstatus " [value]="occ.id">{{occ.title}} ({{occ.start_date}} to {{occ.end_date}})</mat-option>
+									</ng-container>
+									</mat-select>
+
+								</mat-form-field>
+
+
+						</div>
+						<div class="col-md-12 fv-row">
+							<label class="required fs-5 fw-bold mb-2">Milestone</label>
+							<input type="text" class="form-control form-control-solid" formControlName="milestone" >
+
+
+						</div>
+
+
+					</div>
+
+
+           <div class="col-md-6 fv-row">
+                <label class=" fs-5 fw-bold mb-2">Start Date</label>
+                <mat-form-field appearance="fill">
+                    <input matInput [matDatepicker]="picker_date" class="form-control form-control-solid" formControlName="task_start_date" onclick="$('#start_date').trigger('click'); return false;"  placeholder="MM/DD/YYYY" [(ngModel)]="task_start_date">
+                    <mat-datepicker-toggle matSuffix [for]="picker_date" id="start_date"></mat-datepicker-toggle>
+                    <mat-datepicker #picker_date></mat-datepicker>
+                </mat-form-field>
+
+
+            </div>
+            <br>
+
+            <div class="col-md-6 fv-row">
+                <label class=" fs-5 fw-bold mb-2">End Date</label>
+                <mat-form-field appearance="fill">
+                <input matInput [matDatepicker]="picker_date2" class="form-control form-control-solid" formControlName="task_end_date" onclick="$('#end_date').trigger('click'); return false;"  placeholder="MM/DD/YYYY" [(ngModel)]="task_end_date">
+                <mat-datepicker-toggle matSuffix [for]="picker_date2" id="end_date"></mat-datepicker-toggle>
+                <mat-datepicker #picker_date2></mat-datepicker>
+            </mat-form-field>
+
+            </div>
+
+					<div class="row mb-5">
+						<div class="col-md-12 fv-row">
+							<label class="required fs-5 fw-bold mb-2"> Percentage Completion</label>
+							<input type="text" class="form-control form-control-solid" formControlName="percentage_completion" >
+
+
+						</div>
+					</div>
+
+					<div class="row mb-5">
+						<div class="col-md-12 fv-row">
+							<label class="required fs-5 fw-bold mb-2">Budget Utilized</label>
+							<input type="text" class="form-control form-control-solid" formControlName="budget_utilized" >
+						</div>
+
+
+					</div>
+					<div class="row mb-5">
+						<div class="col-md-12 fv-row">
+							<label class="required fs-5 fw-bold mb-2">Man Power</label>
+							<input type="text" class="form-control form-control-solid" formControlName="manpower" >
+
+
+						</div>
+
+					</div>
+					<div class="row button-group-lg button-auto mt-4">
+						<div class="col-md-4 col-4">
+              <button type="submit" id="kt_sign_in_submit" *ngIf="!isReadonly" class="btn btn-primary"
+              style="float:right;">
+              Save
+           </button>
+						  </div>
+						  <div class="col-md-4 col-4">
+						  <button type="button" class="btn btn-outline-primary" #closebutton data-dismiss="modal" (click)="cancelmodal()" id="" >Cancel</button>
+						 </div>
+
+					  </div>
+
+				</form>
+			</div>
+
+			<div class="col-md-9">
+
+				<div class="table-responsive"  >
+					<table mat-table [dataSource]="dataSourcelist" class="table table-striped table-row-bordered gy-5 gs-7 border rounded" >
+            <ng-container matColumnDef="tasking_status">
+              <th mat-header-cell *matHeaderCellDef><b>View Status</b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.tasking_status && milestone.tasking_status.title?milestone.tasking_status.title:''}} </td>
+           </ng-container>
+            <ng-container matColumnDef="milestone">
+               <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
+               <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
+            </ng-container>
+            <ng-container matColumnDef="percentage_completion">
+               <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
+               <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="budget_utilized">
+               <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
+               <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
+            </ng-container>
+            <ng-container matColumnDef="manpower">
+              <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
+           </ng-container>
+           <ng-container matColumnDef="task_start_date">
+            <th mat-header-cell *matHeaderCellDef><b> Start Date </b></th>
+            <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
+         </ng-container>
+         <ng-container matColumnDef="task_end_date">
+          <th mat-header-cell *matHeaderCellDef><b> End Date </b></th>
+          <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
+
+          </ng-container>
+
+          <ng-container matColumnDef="edit" >
+            <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container><b>Edit</b></ng-container></th>
+            <td class="text-center" mat-cell *matCellDef="let milestone">
+               <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-milestone" class="edit-icon text-primary" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit (click)="editOption(milestone)" ><span class="bi bi-pencil" ></span></a></td>
+         </ng-container>
+         <ng-container matColumnDef="delete">
+          <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container ><b>Delete</b></ng-container></th>
+          <td class="text-center" mat-cell *matCellDef="let milestone"><a href="javascript:void(0)" class="edit-icon text-danger" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete (click)="onDelete(milestone.id)"><span class="bi bi-trash"></span></a></td>
+       </ng-container>
+
+             <tr mat-header-row *matHeaderRowDef="displayedColumnslist"></tr>
+             <tr mat-row *matRowDef="let row; columns: displayedColumnslist;"></tr>
+         </table>
+				</div>
+			</div>
+			</div>
+		</div>
+
+
+
+   </div>        </div>
+  </div>
+ </div>
+
+
+
+
+
+
+<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
+           <button type="button" (click)="cancelmodal()" class="btn-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+            </button>
+        </div>
+    <div class="modal-body form-style-md form-style-font linux">
+    <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+    </div>
+    <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
+       <div class="row"> &nbsp;
+       <div formGroupName="sdForm">
+       <div class="alert alert-dismissible alert-bg">
+
+         <div class="mb-5 ">
+           <div class="row">
+             <div class="col-md-6">
+              <div class="matt-group">
+                <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
+
+                 <input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" />
+                 <br>
+									<input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments"/>
+               </div>
+             </div>
+             <div class="col-md-6">
+							<div class="matt-group">
+								<mat-label style="font-size:large;"><b>Task Name</b></mat-label>
+								<input type="text" class="form-control" formControlName="task_name"/>
+							</div>
+						</div>
+
+           </div>
+
+       </div>
+
+       <div class="mb-5">
+         <mat-label style="font-size:large;">Task Description (Only 200 words)<b class="star">*</b></mat-label>
+			 <angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
+
+
+       </div>
+           <div class="mb-5">
+
+					  <div class="matt-group">
+            <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+						<a href="{{ImageUrl}}" *ngIf="ImageUrl!=''" class="edit-icon text-primary"
+					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+					  <a href="{{ImageUrl1}}" *ngIf="ImageUrl1!=''" class="edit-icon text-primary"
+				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+					  <a href="{{ImageUrl2}}" *ngIf="ImageUrl2!=''" class="edit-icon text-primary"
+				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+					  <a href="{{ImageUrl3}}" *ngIf="ImageUrl3!=''" class="edit-icon text-primary"
+				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+					  <a href="{{ImageUrl4}}" *ngIf="ImageUrl4!=''" class="edit-icon text-primary"
+				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+					</div>
+				</div>
+
+       </div>
+
+
+     </div>
+
+     <div formGroupName="apsoForm" >
+		  <div class="alert alert-dismissible alert-bg">
+            <div class="sub-heading" style="text-align:center;">
+              <mat-label class="subheading3"><b style="font-size:large;">APSO11</b></mat-label>
+            </div>
+          <div class="mb-5 ">
+          <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
+
+          <textarea rows="4"  class="form-control" formControlName="comments_of_apso" value="Test comments"></textarea>
+
+          </div>
+
+        </div>
+
+        </div>
+
+     <div formGroupName="weseeForm">
+       <div style="text-align:center;">
+        <mat-label class="subheading3"><b style="font-size:large;">DG WESEE  (Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
+       </div>
+       <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
+        <form [formGroup]="this.allocateForm">
+        <div class="col-md-6">
+        <div class="matt-group matselect">
+          <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+           <mat-form-field appearance="fill">
+          <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="token_details.process_id==1 || token_details.process_id==3">
+
+            <mat-option [value]="">Select Tasking Groups</mat-option>
+            <mat-option *ngFor="let taskingGroup of taskingGroups"
+            [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+
+
+        </div>
+        </div>
+      </form>
+        </ng-container>
+
+       &nbsp;
+       <div class="alert alert-dismissible alert-bg">
+
+       <div class="mb-5 ">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-label style="font-size:large;">Cost Implication (Approx)<b class="star">*</b></mat-label>
+
+
+            <div class="task-text-group">
+              <p>Rs&nbsp;&nbsp;</p>
+              <input type="text" class="form-control" formControlName="cost_implication" value="50000"/>
+
+            </div>
+
+          </div>
+          <div class="col-md-4 ">
+            <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
+            <div class="task-text-group">
+              <p>Month's</p>
+              <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="10000" max_length="10"/>
+
+
+
+            </div>
+
+            </div>
+            <div class="col-md-4 ">
+              <mat-label style="font-size:large;"><b>&nbsp;</b></mat-label>
+              <div class="task-text-group">
+                <p>Day's</p>
+              <input type="text" class="form-control" formControlName="time_frame_for_completion_days" value="10000" max_length="10"/>
+              &nbsp;&nbsp;
+              </div>
+         </div>
+
+
+
+        </div>
+
+
+
+
+       </div>
+
+       <div class="mb-5 ">
+       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+         <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments"></textarea>
+
+
+				  <div class="mb-5" >
+
+            <div class="matt-group">
+              <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+						<a href="{{ImageUrl5}}" *ngIf="ImageUrl5!=''" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+
+
+
+						<a href="{{ImageUrl6}}" *ngIf="ImageUrl6!=''" class="edit-icon text-primary"
+				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+					</div>
+				</div>
+
+
+     </div>
+
+     </div>
+   </div>
+   <div formGroupName="deeForm">
+     <div class="alert alert-dismissible alert-bg">
+
+      <div class="sub-heading" style="text-align:center;">
+        <mat-label class="subheading3"><b style="font-size:large;">DEE  (Directorate of Electrical Engineering)</b></mat-label>
+    </div>
+
+     <div class="mb-5 ">
+       <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
+        <div class="task-text-group">
+          <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01"/>
+        </div>
+
+     </div>
+       <div class="mb-5 ">
+       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+       <textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments"></textarea>
+
+
+        <div class="mb-5" >
+          <div class="matt-group">
+            <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+            <a href="{{ImageUrl7}}" *ngIf="ImageUrl7!=''" class="edit-icon text-primary"
+        ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+
+            <a href="{{ImageUrl8}}" *ngIf="ImageUrl8!=''" class="edit-icon text-primary"
+        ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+          </div>
+        </div>
+
+
+       </div>
+
+
+       </div>
+
+   </div>
+   <div formGroupName="acomForm">
+       <div class="alert alert-dismissible alert-bg">
+
+        <div class="sub-heading" style="text-align:center;">
+          <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S)  (Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label>
+        </div>
+
+       <div class="mb-5 ">
+       <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
+
+       <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments"></textarea>
+
+       </div>
+
+     </div>
+
+     </div>
+     <div formGroupName="comForm">
+		 <div class="alert alert-dismissible alert-bg mb-0">
+
+        <div class="sub-heading" style="text-align:center;">
+          <mat-label class="subheading3"><b style="font-size:large;">COM  (Chief of Materiel)</b></mat-label>
+        </div>
+
+       <div class="mb-5 ">
+       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+       <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments"></textarea>
+
+       </div>
+
+
+     </div>
+
+    </div>
+  </div>
+     <div class="row button-group-lg button-auto mt-4">
+              <div class="col-md-6 col-6">
+              </div>
+              <div class="card-footer text-end">
+                 <button type="button" class="btn btn-primary" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
+              </div>
+           </div>
+		   </form>
+		</div>
+  </div>
+ </div>
+</div>
+
+<div class="modal fade master-modal-style" id="view-milestone" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">List of Milestone</h5>
+        <button type="button" (click)="closeview()" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="false">&times;</span>
+          </button>
+          </div>
+          <div class="col-md-12">
+            <div class="table-responsive">
+                  <table mat-table [dataSource]="dataSourcelist" class="table table-striped table-row-bordered gy-5 gs-7 border rounded" >
+                    <ng-container matColumnDef="milestone">
+                      <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
+                      <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="percentage_completion">
+                      <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
+                      <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="budget_utilized">
+                      <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
+                      <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="manpower">
+                      <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
+                      <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="task_start_date">
+                    <th mat-header-cell *matHeaderCellDef><b> Task Start Date </b></th>
+                    <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="task_end_date">
+                  <th mat-header-cell *matHeaderCellDef><b> Task End Date </b></th>
+                  <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
+
+                  </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsview"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsview;"></tr>
+
+                </table>
+            </div>
+          </div>
+       </div>
+   </div>
+
+
+</div>
+
+<!-- <div class="card">
+	<p-table #dataTable  [paginator]="true" [scrollable]="true" styleClass="p-datatable-gridlines p-datatable-striped" [resizableColumns]="true"
+		dataKey="id"
+	columnResizeMode="expand"
+	[tableStyle]="{'min-width': '50rem'}" [rows]="10" >
+		Dynamic Column Headers
+		<ng-template pTemplate="header" let-columns>
+			<tr>
+				<th  class="text-center" style="width: 5%;">
+					<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+				</th>
+				<th *ngFor="let col of columns" pResizableColumn [ngClass]="{'text-center': col.header === 'Status'}">
+					{{ col.header }}
+					<p-columnFilter *ngIf="col?.filter" type="text" [field]="col.field" display="menu">
+						<ng-template pTemplate="filter">
+							<input type="text" #filterInput pInputText
+								>
+							<button pButton type="button" class="custom-clear-button mt-3 text-center"
+								>Clear</button>
+						</ng-template>
+					</p-columnFilter>
+				</th>
+
+				<th style="width: 10%;" >Action</th>
+			</tr>
+		</ng-template>
+		Dynamic Column Data
+		<ng-template ngIf="gridData" pTemplate="body" let-rowData>
+			<tr >
+				<td class="text-center"   >
+					<p-tableCheckbox [value]="rowData" ></p-tableCheckbox>
+				</td>
+
+					<td * style="text-align: center;">
+						<button  ><i class="material-icons" >file_download</i></button>
+					</td>
+					<td >Origin
+
+					</td>
+					<td class="text-center" >
+					<button mat-flat-button color="primary" >Actions</button>
+
+				</td>
+			</tr>
+		</ng-template>
+	</p-table>
+	</div> -->
+
+	<div class="col-xl-12 mb-xl-12 mt-0">
+		<div class="card card-flush h-xl-100 progress-chart mapbg">
+			<div class="card-header">
+				<h3 class="card-title align-items-start flex-column pt-5">
+					<span class="fw-bold mb-3">Group wise Task Completion</span>
+				</h3>
+			</div>
+	<div id="chart8">
+		<apx-chart
+		  [series]="chartOptions21.series"
+		  [chart]="chartOptions21.chart"
+		  [xaxis]="chartOptions21.xaxis"
+		  [yaxis]="chartOptions21.yaxis"
+		  [title]="chartOptions21.title"
+		  [plotOptions]="chartOptions21.plotOptions"
+		  [fill]="chartOptions21.fill"
+		  [dataLabels]="chartOptions21.dataLabels"
+		  [legend]="chartOptions21.legend"
+		></apx-chart>
+	  </div>
+	  </div>
+	  </div>
+
+
+
+
+ <p-table [value]="projects" responsiveLayout="scroll">
+	<ng-template pTemplate="header">
+	  <tr>
+		<th>Project Name</th>
+		<th>Project Code</th>
+		<th>Status</th>
+		<th>Action</th>
+	  </tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-project>
+	  <tr>
+		<td>{{ project.name }}</td>
+		<td>{{ project.code }}</td>
+		<td>{{ project.status }}</td>
+		<td>
+		  <button pButton type="button" label="Actions"></button>
+		</td>
+	  </tr>
+	</ng-template>
+  </p-table>
+
+
+  <div class="card">
+	<p-table #dataTable  [value]="projects" [paginator]="true" [scrollable]="true" styleClass="p-datatable-gridlines p-datatable-striped" [resizableColumns]="true"
+		dataKey="id"
+	columnResizeMode="expand"
+	[tableStyle]="{'min-width': '50rem'}" [rows]="10" >
+		<!-- Dynamic Column Headers -->
+		<ng-template pTemplate="header" let-columns>
+			<tr>
+				<th class="text-center" style="width: 5%;">
+					<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+				</th>
+				<th *ngFor="let col of columns" pResizableColumn [ngClass]="{'text-center': col.header === 'Status'}">
+					{{ col.header }}
+					<p-columnFilter *ngIf="col?.filter" type="text" [field]="col.field" display="menu">
+						<ng-template pTemplate="filter">
+							<input type="text" #filterInput pInputText
+								>
+							<button pButton type="button" class="custom-clear-button mt-3 text-center"
+								>Clear</button>
+						</ng-template>
+					</p-columnFilter>
+				</th>
+				<th style="width: 10%;" >Action</th>
+			</tr>
+		</ng-template>
+		<!-- Dynamic Column Data -->
+
+	</p-table>
+	</div>
+
+
+  <button
+    pButton
+    pRipple
+    label="Submit"
+    class="p-button-success">
+</button>

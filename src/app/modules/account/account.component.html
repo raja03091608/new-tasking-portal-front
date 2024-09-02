@@ -1,0 +1,67 @@
+<div class="card mb-5 mb-xl-10">
+
+  <div class="card-body pt-9 pb-0">
+    <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+      <div class="me-7 mb-4">
+        <div
+          class="
+            symbol symbol-100px symbol-lg-160px symbol-fixed
+            position-relative
+          "
+        >
+		<div class="col-md-6">
+			<h3 class="card-title">Change Password</h3>
+		  </div>
+		<div class="modal-body form-style-md form-style-font linux">
+			<p>Please enter your old password, for security’s sake, and then enter your new password twice so we can verify you typed it in correctly.</p>
+			<!-- <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}} -->
+			</div>
+		<form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
+
+			<div class="form-group-label ">
+			  <mat-label>Old password<b class="star">*</b></mat-label>
+
+				<input type="password" class="form-control form-control-lg" formControlName="old_password">
+				<mat-error *ngIf="changePasswordForm.controls['old_password'].hasError('required') && showError">Enter old password</mat-error>
+
+			</div>
+			<div class="form-group-label">
+
+			  <mat-label>New password <b class="star">*</b></mat-label>
+
+				<input type="password" class="form-control form-control-lg" formControlName="new_password">
+				<mat-error *ngIf="changePasswordForm.controls['new_password'].hasError('required') && showError">Enter new password</mat-error>
+				<mat-error *ngIf="changePasswordForm.controls['new_password'].hasError('pattern') && showError">Please enter a minimum of eight characters (atleast one uppercase, lowercase and one number)</mat-error>
+
+			</div>
+
+			<div class="form-group-label">
+			  <mat-label>New password confirmation <b class="star">*</b></mat-label>
+
+				<input type="password" class="form-control form-control-lg" formControlName="new_password2">
+				<mat-error *ngIf="changePasswordForm.controls['new_password2'].hasError('required') && showError">Enter confirm password</mat-error>
+				<mat-error *ngIf="changePasswordForm.controls['new_password2'].hasError('mustMatch') && showError">Password and confirm not match</mat-error>
+
+			</div>
+			<!-- <div class="mt-2">
+				<button mat-raised-button color="primary" class="w-100" routerLink="/authenticate/security-pin">Send</button>
+			</div> -->
+
+			<div class="row button-group-lg button-auto mt-4">
+                <div class="col-md-6 col-6">
+                   <button type="submit" class="btn btn-primary w-100"  >Save</button>
+                </div>
+                <div class="col-md-6 col-6">
+
+                   <button type="button" input type="reset" value="Reset" class="btn btn-outline-primary w-100" >Cancel</button>
+                </div>
+				</div>
+			</form>
+
+		</div>
+		</div>
+     </div>
+  </div>
+</div>
+
+

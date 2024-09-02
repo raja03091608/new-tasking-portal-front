@@ -1,0 +1,87 @@
+
+
+<div style="height: 550px; overflow-y:scroll;">
+
+    <div class="modal-header">
+        <h4 class="modal-title">View Status Of Task</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body " style="padding-top:10px; padding-bottom:0%" >
+    
+        <div class="row g-6 g-xl-9 ">
+            <div class="col-xl-6 mb-xl-10">
+                <div class="card card-bordered  p-3" style="height: 450px !important">
+
+                <p>Starting Date:- 15-09-2022</p>
+                <div id="chartdiv" style="width: 100%; height: 450px"></div>
+                <p>Expected Completion Date:- 30-01-2023</p>
+                </div>
+            </div>
+            <div class="col-xl-6 mb-xl-10">
+                <!-- add comments section like epsr-->
+                <div class="card card-bordered" style="height: 425px;overflow-y: scroll;">
+                    
+                    <div class="card-body">
+                    <div class="d-flex justify-content-start mb-10">
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column align-items-start">F
+                            <!--begin::User-->
+                            <div class="d-flex align-items-center mb-2">
+                                
+                                <!--begin::Details-->
+                                <div class="ms-3">
+                                    <a class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">1. Wesee</a>
+                                    <span class="text-muted fs-7 mb-1">(08-12-2022)</span>
+                                </div>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::User-->
+                            <!--begin::Text-->
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" >Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+                            <!--end::Text-->
+                        </div>
+                        <!--end::Wrapper-->
+                        
+                    </div>
+                    
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="d-flex flex-column align-items-start">
+                            <!--begin::User-->
+                            <div class="d-flex align-items-center mb-2">
+                                
+                                <!--begin::Details-->
+                                <div class="ms-3">
+                                    <a class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">2. DEE</a>
+                                    <span class="text-muted fs-7 mb-1">(08-12-2022)</span>
+                                </div>
+                                <!--end::Details-->
+                            </div>
+                            <!--end::User-->
+                            <!--begin::Text-->
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" >Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+                            <!--end::Text-->
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer pt-4 p-2" >
+                    <!--begin::Input-->
+                    <textarea class="form-control mb-3" rows="1"  placeholder="Type a Comment"></textarea>
+                    <!--end::Input-->
+                    <!--begin:Toolbar-->
+                    <div class="d-flex" style="float:right;">
+                        <!--begin::Actions-->
+                        
+                        <!--end::Actions-->
+                        <!--begin::Send-->
+                        <button class="btn btn-primary"  type="button">Add Comment</button>
+                        <!--end::Send-->
+                    </div>
+                    <!--end::Toolbar-->
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+  

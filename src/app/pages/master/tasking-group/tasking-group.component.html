@@ -1,0 +1,387 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+<section class="body-card">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-md-12">
+             <div class="card">
+                <div class="card-header card-header2">
+                   <div class="row">
+                      <div class="col-md-6">
+                         <h3 style="color: white;">Tasking Groups</h3>
+                      </div>
+                      <div class="col-md-6">
+                         <div class="text-end">
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-primary btn-round-sm"  *ngIf="permission.add==true" >Create</a>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="container table-options">
+                   <div class="row">
+                      <div class="col-md-6">
+                         <mat-paginator [length]="100" [pageSize]="10"  [pageSizeOptions]="[10,20,30,50,100]" aria-label="Select page" >
+                         </mat-paginator>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field appearance="fill">
+							<mat-label>Search your text here</mat-label>
+							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
+						</mat-form-field>
+                      </div>
+                   </div>
+                </div>
+                <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+                   <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef width="20%"><b> Name </b></th>
+                      <td mat-cell *matCellDef="let country"> {{country.name}} </td>
+                   </ng-container>
+                   <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef width="15%"><b> Code </b></th>
+                      <td mat-cell *matCellDef="let country"> {{country.code}} </td>
+                   </ng-container>
+                   <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef width="45%"><b> Description </b></th>
+                      <td mat-cell *matCellDef="let country"> {{country.description}} </td>
+                   </ng-container>
+                   <ng-container matColumnDef="image">
+                    <th mat-header-cell *matHeaderCellDef width="25%"><b> Image </b></th>
+                    <td mat-cell *matCellDef="let country">
+						<img src="{{ImgUrl}}{{country.image}}"  style="height: 100px; width:100px">
+					</td>
+                 </ng-container>
+                   <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
+                      <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)" class="status-field {{country.status=='1'?'text-success':'text-danger'}}" >{{country.status=='1'?'Active':'Inactive'}}</a>  </td>
+                   </ng-container>
+                   <ng-container matColumnDef="view" >
+                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
+                      <td class="text-center" mat-cell *matCellDef="let country">
+                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(country)" placement="end" tooltipClass="dark-theme" ngbTooltip=View  ><span class="bi bi-eye"></span></a></td>
+                   </ng-container>
+                   <ng-container matColumnDef="edit" >
+                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.edit==true" ><b>Edit</b></ng-container></th>
+                      <td class="text-center" mat-cell *matCellDef="let country">
+                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(country)" *ngIf="permission.edit==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit  ><span class="bi bi-pencil"></span></a></td>
+                   </ng-container>
+                   <ng-container matColumnDef="delete">
+                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.delete==true"><b>Delete</b></ng-container></th>
+                      <td class="text-center" mat-cell *matCellDef="let country"><a href="javascript:void(0)" class="edit-icon text-danger" (click)="onDelete(country.id)" *ngIf="permission.delete==true" ngbTooltip=Delete  placement="end" tooltipClass="dark-theme" ><span class="bi bi-trash"></span></a></td>
+                   </ng-container>
+				   <ng-container matColumnDef="rank">
+					<th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.add==true"><b>Add Rank</b></ng-container></th>
+					<td class="text-center" mat-cell *matCellDef="let country"> <a
+						(click)="openPopup(country.id)"
+
+						  placement="end" tooltipClass="dark-theme" ngbTooltip=AddRank
+						><span class="bi bi-bookmark-plus-fill"></span></a></td>
+				 </ng-container>
+
+                   <ng-container matColumnDef="noData">
+                      <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+                          No Records Found!
+                      </th >
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                      <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
+                   </tr>
+                </table>
+             </div>
+          </div>
+       </div>
+    </div>
+  </section>
+
+  <!-- modal -->
+  <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking Group</h5>
+             <button type="button" class="btn-close" (click)="cancelmodal()" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="false">&times;</span>
+               </button>
+          </div>
+          <div class="modal-body form-style-md form-style-font linux">
+             <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+             </div>
+             <form [formGroup]="this.editForm" (ngSubmit)="onSubmit()">
+             <div class="form-row">
+                <div class="col-md-12" hidden>
+                   <div class="matt-group">
+                      <mat-label>Country Id</mat-label>
+                      <mat-form-field appearance="fill">
+                         <input matInput placeholder="" formControlName="id"  >
+                      </mat-form-field>
+                   </div>
+                </div>
+                <div class="col-md-12">
+                   <div class="matt-group">
+                      <mat-label>Name <b class="star">*</b></mat-label>
+                      <input type="text" class="form-control form-control-lg" formControlName="name" autocomplete="off">
+                         <mat-error *ngIf="Error('name','required') && showcomments ">Enter name</mat-error>
+                         <mat-error *ngIf="Error('name','pattern') && showcomments ">Alphabets characters only</mat-error>
+
+                   </div>
+                </div>
+                <div class="col-md-12">
+                   <div class="matt-group">
+                      <mat-label>Descriptions</mat-label>
+                      <!-- <input type="text" class="form-control form-control-lg" formControlName="description" autocomplete="off"> -->
+					  <textarea rows="8"  class="form-control form-control-lg" formControlName="description" value="Test comments"></textarea>
+
+
+                         <mat-error *ngIf="Error('description','required') && showcomments ">Enter description</mat-error>
+
+                   </div>
+                </div>
+                <div class="col-md-12">
+                   <div class="matt-group">
+                      <mat-label>Code <b class="star">*</b></mat-label>
+                      <input type="text" class="form-control form-control-lg" formControlName="code" autocomplete="off">
+                         <mat-error *ngIf="Error('code','required') && showcomments ">Enter code</mat-error>
+                         <mat-error *ngIf="Error('code','pattern') && showcomments ">Alpha-numeric characters only</mat-error>
+
+                   </div>
+                </div>
+                <div class="col-md-12" hidden>
+                   <div class="matt-group">
+                      <mat-form-field appearance="fill">
+                         <input matInput placeholder="" formControlName="created_by"  >
+                      </mat-form-field>
+                   </div>
+                </div>
+                <div class="col-md-12" hidden>
+                   <div class="matt-group">
+                      <mat-form-field appearance="fill">
+                         <input matInput placeholder="" formControlName="created_ip"  >
+                      </mat-form-field>
+                   </div>
+                </div>
+                <div class="col-md-12">
+                   <div class="matt-group">
+                      <mat-label>Sequence<b class="star">*</b> </mat-label>
+                      <input type="text" class="form-control form-control-lg" formControlName="sequence" autocomplete="off">
+                         <mat-error *ngIf="Error('sequence','pattern')">Accept numeric values only</mat-error>
+
+                   </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="matt-group">
+                    <mat-label>Image<b class="star">*</b></mat-label>
+					<img [src]="ImageUrl"  style="height: 100px; width:100px">
+               <!-- <img src="{{ImgUrl}}{{country.image}}"  style="height: 100px; width:100px"> -->
+                  </div>
+                  <input type="file"  (change)="onImageHandler($event)" accept="image/png, image/jpg, image/jpeg">
+              </div>
+
+              <img [src]="image" *ngIf="image" style="height: 300px; width:500px">
+                <div class="col-md-12">
+                   <div class="form-group form-check mt-4 mb-4">
+                      <input type="checkbox" class="form-check-input " id="exampleCheck1" formControlName="status" >
+                      <label class="form-check-label" for="exampleCheck1" >Active</label>
+                   </div>
+                </div>
+             </div>
+			 <div class="row button-group-lg button-auto mt-4">
+                <div class="col-md-6 col-6">
+                   <button type="submit" class="btn btn-primary w-100" *ngIf="!isReadonly" >Save</button>
+                </div>
+                <div class="col-md-6 col-6">
+                   <button type="button" class="btn btn-outline-primary w-100" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
+                </div>
+             </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+
+  <div class="modal fade master-modal-style" id="crud-milestone" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+
+	<!-- <div class="modal fade" id="crud-milestone" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false"> -->
+
+   <div class="modal-dialog modal-xl">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Add Rank</h5>
+				<button type="button" (click)="close()" class="btn-close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="false">&times;</span>
+					</button>
+
+				   <!-- <button type="button" aria-label="Close"  (click)="cancelmodal()">
+					 <button  >Close Dialog -->
+					<!-- <span aria-hidden="true">&times;</span> -->
+					<!-- </button> -->
+
+						</div>
+					<div class="modal-body form-style-md form-style-font linux">
+					<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+					</div>
+
+
+					<div class="modal-body p-0" style="padding-top:25px; padding-bottom:0%" >
+
+					  <div class="row g-6 g-xl-9 ">
+						  <div class="col-md-3" style="border-right: 1px solid #e4e6ef;">
+						  <form  [formGroup]="MileStoneForm" (ngSubmit)="OnMileStoneSubmit()" >
+							<div class="matt-group">
+								<label class="required fs-5 fw-bold mb-2">Choose Tasking Group Type:</label>
+								<mat-form-field appearance="fill">
+								  <mat-select formControlName="tasking_group_type" [(ngModel)]="tasking_group_type">
+									<ng-container *ngFor="let occ of lookup">
+									  <mat-option *ngIf="occ.type.code=='TGT'" [value]="occ.name">{{occ.name}}</mat-option>
+									</ng-container>
+								  </mat-select>
+
+								</mat-form-field>
+							  </div>
+
+							  <div class="row mb-5">
+								  <!--begin::Col-->
+								  <div class="col-md-12 fv-row">
+									  <!--begin::Label-->
+									  <label class="required fs-5 fw-bold mb-2">Name</label>
+									  <input type="text" class="form-control form-control-solid" formControlName="name" >
+								  </div>
+								  <!--end::Col-->
+							  </div>
+					  		<br>
+
+							  <div class="row mb-5">
+								  <div class="col-md-12 fv-row">
+									  <!--begin::Label-->
+									  <label class="required fs-5 fw-bold mb-2"> Rank</label>
+									  <input type="text" class="form-control form-control-solid" formControlName="rank" >
+
+
+								  </div>
+								  <!--begin::Col-->
+
+							  </div>
+
+							  <div class="row mb-5">
+								  <!--begin::Col-->
+								  <div class="col-md-12 fv-row">
+									  <!--begin::Label-->
+									  <label class="fs-5 fw-bold mb-2">Image</label>
+									  <img *ngIf="rank_ImageUrl!=''" [src]="rank_ImageUrl" style="height: 100px; width:100px">
+									  <input type="file" formControlName="rank_image" (change)="onImageHandler1($event)" accept="image/png, image/jpg, image/jpeg" >
+
+								  </div>
+
+
+								  <!--end::Col-->
+
+							  </div>
+							  <div class="row mb-5">
+								  <!--begin::Col-->
+								  <div class="col-md-12 fv-row">
+									  <!--begin::Label-->
+									  <label class="fs-5 fw-bold mb-2">Description</label>
+									  <textarea rows="8"  class="form-control form-control-lg" formControlName="description" value="Test comments"></textarea>
+
+
+
+								  </div>
+
+								  <!--end::Col-->
+
+							  </div>
+							  <div class="row button-group-lg button-auto mt-4">
+								  <div class="col-md-4 col-4">
+						<button type="submit" id="kt_sign_in_submit" *ngIf="!isReadonly" class="btn btn-primary"
+						style="float:right;">
+						Save
+					 </button>
+									<!-- <button type="submit" class="btn btn-primary" *ngIf="!isReadonly">{{crudName}}</button> -->
+									</div>
+									<div class="col-md-4 col-4">
+									<button type="button" class="btn btn-outline-primary" #closebutton data-dismiss="modal" (click)="close()" id="" >Cancel</button>
+								   </div>
+
+								</div>
+
+
+							  <!--end::Submit-->
+						  </form>
+					  </div>
+
+					  <div class="col-md-9">
+
+						  <div class="table-responsive"  >
+
+							  <!--begin::Table-->
+							  <table mat-table [dataSource]="dataSourcelist" class="table table-striped table-row-bordered gy-5 gs-7 border rounded" >
+					  <ng-container matColumnDef="name">
+						 <th mat-header-cell *matHeaderCellDef><b> Name</b></th>
+						 <td mat-cell *matCellDef="let milestone"> {{milestone.name}} </td>
+					  </ng-container>
+					  <ng-container matColumnDef="rank">
+						 <th mat-header-cell *matHeaderCellDef><b> Rank </b></th>
+						 <td mat-cell *matCellDef="let milestone"> {{milestone.rank}} </td>
+					  </ng-container>
+					  <ng-container matColumnDef="image">
+						 <th mat-header-cell *matHeaderCellDef><b> Image </b></th>
+						 <td mat-cell *matCellDef="let milestone"> <img src="{{ImgUrl}}{{milestone.image}}"  style="height: 100px; width:100px"> </td>
+					  </ng-container>
+					  <ng-container matColumnDef="tasking_group_type">
+						<th mat-header-cell *matHeaderCellDef width="45%"><b> Tasking Group Type </b></th>
+						<td mat-cell *matCellDef="let milestone"> {{milestone.tasking_group_type}} </td>
+					 </ng-container>
+                      <ng-container matColumnDef="description">
+						<th mat-header-cell *matHeaderCellDef width="45%"><b> Description </b></th>
+						<td mat-cell *matCellDef="let milestone"> {{milestone.description}} </td>
+					 </ng-container>
+
+					<ng-container matColumnDef="edit" >
+					  <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container><b>Edit</b></ng-container></th>
+					  <td class="text-center" mat-cell *matCellDef="let milestone">
+						 <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-milestone" class="edit-icon text-primary" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit (click)="editOption1(milestone)" ><span class="bi bi-pencil" ></span></a></td>
+				   </ng-container>
+				   <ng-container matColumnDef="delete">
+					<th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container ><b>Delete</b></ng-container></th>
+					<td class="text-center" mat-cell *matCellDef="let milestone"><a href="javascript:void(0)" class="edit-icon text-danger" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete (click)="onDelete1(milestone.id)"><span class="bi bi-trash"></span></a></td>
+				 </ng-container>
+
+					   <!-- <ng-container matColumnDef="noData">
+						 <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumnslist.length" class="norecord">
+				 </ng-container>
+
+					  <ng-container matColumnDef="noData">
+						 <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+
+							 No Records Found!
+						 </th >
+						</ng-container>  -->
+					   <tr mat-header-row *matHeaderRowDef="displayedColumnslist"></tr>
+					   <tr mat-row *matRowDef="let row; columns: displayedColumnslist;"></tr>
+					   <!-- <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSourcelist && dataSourcelist.data.length > 0"></tr> -->
+					   <!-- <tr class="mat-row" *matNoDataRow>
+						 <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
+					  </tr>  -->
+				   </table>
+							  <!--end::Table-->
+						  </div>
+					  </div>
+					  </div>
+				  </div>
+
+
+
+			   <!-- <div class="card-footer text-end">
+				 <div class="col-md-12">
+				 <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
+
+				</div>
+			   </div> -->
+
+			 </div>        </div>
+			</div>
+		   </div>
+
+
+

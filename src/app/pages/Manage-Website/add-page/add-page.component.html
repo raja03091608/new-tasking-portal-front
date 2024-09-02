@@ -1,0 +1,115 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Page</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form [formGroup]="addPageForm" action="m-0" class="form mb-15" method="post" id="kt_careers_form">
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2">Page Title </label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" placeholder="Title"
+                                formControlName="page_title" />
+                            <div *ngIf="submitted && f['page_title'].errors" class="text-danger">
+                                <div *ngIf="f['page_title'].errors['required']">Page title is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-10">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Page Slug</label>
+                            <span>(No space allowed in page slug)</span>
+                            <input type="text" class="form-control form-control-solid" formControlName="page_slug"
+                                onkeypress="return event.charCode != 32">
+                            <div *ngIf="submitted && f['page_slug'].errors" class="text-danger">
+                                <div *ngIf="f['page_slug'].errors['required']">Please provide page slug</div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Featured Image</label>
+                            <input type="file" class="form-control form-control-solid"
+                                formControlName="page_featured_image" (change)="onSelectFile($event)"
+                                accept="image/png, image/gif, image/jpeg">
+                            <div *ngIf="submitted && f['page_featured_image'].errors" class="text-danger">
+                                <div *ngIf="f['page_featured_image'].errors['required']">Please Select image file</div>
+                            </div>
+                            <div *ngIf="showImage" class="m-2">
+                                <img src="{{pageDetailsImage}}" alt="" height="200px" width="200px">
+                            </div>
+
+                            <!--end::Label-->
+                        </div>
+
+                        <!--begin::Input-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-5 fw-bold mb-2">Page Status</label>
+                            <span>(Please enter status of page 1 or 0)</span>
+                            <input type="number" class="form-control form-control-solid" formControlName="page_status"
+                                min=0 max=1 oninput="validity.valid||(value='');">
+                            <div *ngIf="submitted && f['page_status'].errors" class="text-danger">
+                                <div *ngIf="f['page_status'].errors['required']">Please provide status</div>
+                            </div>
+                        </div>
+                        <!--end::Input-->
+
+                        <!--end::Col-->
+
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Page Content</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <!-- add editor here -->
+                            <angular-editor formControlName="page_content" [config]="editorConfig" ></angular-editor>
+                            <!-- <ckeditor formControlName="page_content"></ckeditor> -->
+                            <div *ngIf="submitted && f['page_content'].errors" class="text-danger">
+                                <div *ngIf="f['page_content'].errors['required']">Content is missing</div>
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+
+                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary "
+                    (click)="submitPageData(addPageForm.value)" style="float:right;">Submit
+                  
+                        <!-- <ng-container *ngIf="isLoading$">
+                            <span class="indicator-progress" [style.display]="'block'">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="!isLoading$">
+                            Submit
+                        </ng-container> -->
+
+
+                    </button>
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>

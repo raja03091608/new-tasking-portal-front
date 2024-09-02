@@ -1,0 +1,193 @@
+
+
+<div style="height: 550px; overflow-y:scroll;">
+
+    <div class="modal-header">
+        <h4 class="modal-title">Task</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body " style="padding-top:25px; padding-bottom:0%" >
+
+        <div class="row g-6 g-xl-9 ">
+			<form [formGroup]="this.taskForm">
+				<div class="row">
+				  <!--begin::Input group-->
+				  <!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
+				  &nbsp;
+				  <div formGroupName="sdForm">
+				  <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'"> -->
+				  <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
+
+					  <div class="mb-5 ">
+					  <div class="matt-group">
+						  <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
+
+							<!-- <span matPrefix>IHQ MOD(N)/&nbsp;</span> -->
+							 <!-- <input matInput placeholder="" formControlName="sponsoring_directorate" maxlength="100"
+							 > -->
+							 <!-- <span>IHQ MOD(N)/{{api.userid.first_name}}{{api.userid.last_name}}</span> -->
+							 <input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" />
+							 <!-- <mat-error *ngIf="sdError('sponsoring_directorate','required') && showError">Enter sponsoring_directorate</mat-error> -->
+							 <!-- <mat-error *ngIf="taskForm.get('sdForm.sponsoring_directorate')?.errors?.required && showError">Enter sponsoring_directorate</mat-error> -->
+
+					   </div>
+				  </div>
+
+				  <div class="mb-5">
+					  <mat-label style="font-size:large;">Task Description<b class="star">*</b></mat-label>
+
+
+					  <ckeditor formControlName="task_description" class="form-control"></ckeditor>
+					  <!-- <mat-error *ngIf="sdError('task_description','required') && showError">Enter Task Description</mat-error> -->
+
+
+				  </div>
+				  <!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
+				  <!-- <div class="mb-5">
+
+					  <div class="matt-group">
+						<mat-label style="font-size:large;">File<b class="star">*</b></mat-label>-->
+
+						<!-- <input #fileInput Name="file" id="file"type="file"  class="form-control" (change)="onImageHandler($event)" > -->
+
+						<!-- <mat-error *ngIf="sdError('file','required') && showError">Select File</mat-error> -->
+						<!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
+						<!-- <a href="{{ImageUrl}}" class="edit-icon text-primary"
+					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span>File Uploaded</span></a>
+					  </div>
+				  </div> -->
+				  </div>
+
+
+			  <!-- </ng-container> -->
+			  </div>
+			&nbsp;
+			<div formGroupName="weseeForm" >
+			<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE'"> -->
+				  <mat-label style="text-align:center;"><b style="font-size:large;">WESEE</b></mat-label>
+				  &nbsp;
+				  <div class="alert alert-dismissible bg-light-info border border-info p-5 mb-10">
+
+				  <div class="mb-5 ">
+
+
+						  <mat-label style="font-size:large;">Cost Implication<b class="star">*</b></mat-label>
+
+
+							 <!-- <mat-error *ngIf="weseeError('cost_implication','required')">Enter cost_implication</mat-error> -->
+
+						  <input type="text" class="form-control" formControlName="cost_implication" value="50000"/>
+						  <!-- <mat-error *ngIf="weseeError('cost_implication','required') && showError">Enter cost_implication</mat-error> -->
+				</div>
+				<div class="mb-5 ">
+				  <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
+						<input type="text" class="form-control" formControlName="time_frame_for_completion" value="200 hrs"/>
+						<!-- <mat-error *ngIf="weseeError('time_frame_for_completion','required') && showError">Enter time_frame_for_completion</mat-error> -->
+				</div>
+				<div class="mb-5 ">
+				  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+					  <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments"></textarea>
+					  <!-- <mat-error *ngIf="weseeError('comments_of_wesee','required') && showError">Enter comments_of_wesee</mat-error> -->
+			  </div>
+
+			  </div>
+
+		  </div>
+		  <div formGroupName="deeForm">
+			  <!-- </ng-container> -->
+			  <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'"> -->
+			  <mat-label  style="text-align:center;"><b style="font-size:large;">DEE</b></mat-label>
+			  <div class="alert alert-dismissible bg-light-success border border-success p-5 mb-10">
+
+			  <div class="mb-5 ">
+				  <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
+
+					<input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01"/>
+					<!-- <mat-error *ngIf="deeError('task_number_dee','required') && showError">Enter task_number_dee</mat-error> -->
+			</div>
+				<div class="mb-5 ">
+				  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+				  <textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments"></textarea>
+						<!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
+						<!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
+				</div>
+
+
+				</div>
+
+		  </div>
+		  <div formGroupName="acomForm">
+		  <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
+				<mat-label  style="text-align:center;"><b style="font-size:large;">ACOM (IT & S)</b></mat-label>
+				<div class="alert alert-dismissible bg-light-white border border-dark p-5 mb-10">
+
+				<!-- <div class="mb-5 ">
+				  <mat-label>Comments of Dwe<b class="star">*</b></mat-label>
+				  <textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
+				  <mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
+						<!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
+				<!-- </div> -->
+
+
+				<div class="mb-5 ">
+				  <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
+
+				  <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments"></textarea>
+
+						<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+						<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+				</div>
+
+			  </div>
+
+			  </div>
+			  <div formGroupName="comForm">
+		  <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'"> -->
+				<!-- <div class="mb-5 ">
+					<label for="floatingInput" class="form-label">Approval Of COM</label>
+
+						<input type="text" class="form-control" formControlName="approval" value="Approved"/>
+				</div> -->
+				<mat-label style="text-align:center"><b style="font-size:large;">COM</b></mat-label>
+				<div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
+
+
+
+				<div class="mb-5 ">
+				  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+				  <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments"></textarea>
+
+						<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+						<!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+				</div>
+
+
+			  </div>
+
+
+
+
+
+			  <!-- <div class="card-footer text-end">
+				<div class="col-md-12">
+				<button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
+
+				 </div>
+			  </div> -->
+			  </div>
+			  </div>
+		  </form>
+
+
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" >
+            Save</button>
+
+
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+        </div>

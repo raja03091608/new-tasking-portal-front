@@ -1,0 +1,83 @@
+
+<!--begin::Row-->
+<div class="d-flex mb-6" style="justify-content: end;">
+    <div class="d-flex">
+        <a class="btn btn-primary cursor-pointer" routerLink="/website/add-page"> Add Page </a>
+    </div>
+    </div>
+    <div class="row g-6 g-xl-9 " >
+        <div class="col-md-6 col-xl-4" *ngFor="let page of allPages | paginate: { itemsPerPage: 15, currentPage: p }">
+            <!--begin::Card-->
+            <a class="card border-hover-primary">
+                <!--begin::Card header-->
+                <div class="card-header border-0">
+                    <!--begin::Card Title-->
+                    <div class="card-title m-0">
+                        <!--begin::Avatar-->
+                        <div class="symbol symbol-50px w-50px bg-light">
+                            <img src="{{page.page_featured_image}}" alt="image" class="p-2" />
+                        </div>
+                        <!--end::Avatar-->
+                    </div>
+                    <!--end::Car Title-->
+                    <!--begin::Card toolbar-->
+                    <div class="card-toolbar">
+                        <span class="badge badge-light fw-bolder me-auto px-4 py-3" *ngIf="page.page_status === 1">Active</span>
+                        <span class="badge badge-light fw-bolder me-auto px-4 py-3" *ngIf="page.page_status === 0 || null">InActive</span>
+
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--end:: Card header-->
+                <!--begin:: Card body-->
+                <div class="card-body p-5">
+                    <!--begin::Name-->
+                    <div class="fs-3 fw-bolder text-dark card-heading">{{page.page_title}}</div>
+                    <!--end::Name-->
+                    <!--begin::Description-->
+                    <p class="text-gray-400 fw-bold fs-5 mt-1 mb-7 content content-title">
+                        <span class="truncate" [innerHTML]='page.page_content | sanitizeHtml' ></span>
+                    </p>
+                    <!--end::Description-->
+                    <!--begin::Info-->
+
+                    <!--end::Info-->
+                    <!--begin::Progress-->
+                    <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip" title="This project 30% completed">
+                        <div class="bg-info rounded h-4px" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <!--end::Progress-->
+                    <!--begin::Users-->
+                    <a (click)="openpage(page.id)" class="btn btn-info btn-sm me-3" >Edit Page</a>
+                    <a class="btn btn-danger btn-sm me-3" (click)="openDialog(page)" >Delete Page</a>
+                    <!--end::Users-->
+                </div>
+                <!--end:: Card body-->
+            </a>
+            <!--end::Card-->
+        </div>
+
+    </div>
+
+    <div *ngIf="allPages.length !== 0" class="d-flex flex-stack flex-wrap mt-5" style="float:right;">
+        <pagination-controls (pageChange)="p = $event" ></pagination-controls>
+
+    </div>
+    <ng-template #template let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Delete Page</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+
+            <p><strong>Do you want to Delete the Page? </strong></p>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="deletePage()">Yes</button>
+
+            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+        </div>
+
+    </ng-template>

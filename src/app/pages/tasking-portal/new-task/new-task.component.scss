@@ -1,0 +1,55 @@
+
+  td {
+	width: 150px;
+	text-align: center;
+
+	padding: 5px;
+  }
+  th {
+	width: 150px;
+	text-align: center;
+
+	padding: 5px;
+  }
+
+  .fileupload{
+    position: relative;
+	bottom: 10px;
+  }
+  .task-text-group {
+	display: flex; align-items: center;
+	margin: 0 10px;
+	p {
+		font-size: 13px; margin: 0;
+	}
+	.form-control {
+		width: 200px; border-bottom: 1px solid #ddd !important; border: none; height: 35px; font-size: 16px; color: #000; margin: 0; background: none !important; border-radius: 0;
+	}
+	b{margin-top: 10px;display: inline-block;}
+}
+.mat-box{
+	mat-form-field{
+		background: #fff;
+	}
+}
+
+#fileupload{
+	height: 45px;
+	width: 9%;
+	
+}
+#addmore{
+	padding:5px;
+}
+#addmore2{
+	padding:5px;
+}
+
+#addmore4{
+	padding:5px;
+}
+.warn{
+  position: relative;
+  left: 5px;
+}
+

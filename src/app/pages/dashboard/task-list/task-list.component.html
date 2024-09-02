@@ -1,0 +1,587 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+<!-- <div class="d-flex mb-6" >
+    <div class="d-flex" >
+        <h3>My Tasks</h3>
+    </div>
+  </div> -->
+<div class="row g-5 g-xl-8">
+
+	<div class="col">
+		<!--begin::Statistics Widget 5-->
+		<a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3" style="height: 150px;">
+			<!--begin::Body-->
+			<div class="card-body">
+				<!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm008.svg-->
+				<div class="row">
+					<div class="col-md-4">
+						<span class="svg-icon svg-icon-gray-100 svg-icon-4x ms-n1">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								fill="none">
+								<path opacity="0.3"
+									d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
+									fill="currentColor"></path>
+								<path
+									d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
+									fill="currentColor"></path>
+								<path
+									d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
+									fill="currentColor"></path>
+							</svg>
+						</span>
+					</div>
+					<div class="col-md-8">
+						<!--end::Svg Icon-->
+            <h3 class="fw-bold text-white" style="text-align: right;">Start a New Tasking</h3>
+					</div>
+				</div>
+			</div>
+			<!--end::Body-->
+		</a>
+		<!--end::Statistics Widget 5-->
+	</div>
+
+	<div class="col" *ngIf="username === 'Admin' || username ==='DG Wesee'">
+		<!--begin::Statistics Widget 5-->
+		<a routerLink="/tasking-portal/allocate-tasking" class="card bg-info hoverable card-xl-stretch mb-5 mb-xl-8 p-3" style="height: 150px;">
+			<!--begin::Body-->
+			<div class="card-body">
+				<!--begin::Svg Icon | path: icons/duotune/graphs/gra007.svg-->
+				<div class="row">
+					<div class="col-md-4">
+						<span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								fill="none">
+								<path opacity="0.3"
+									d="M10.9607 12.9128H18.8607C19.4607 12.9128 19.9607 13.4128 19.8607 14.0128C19.2607 19.0128 14.4607 22.7128 9.26068 21.7128C5.66068 21.0128 2.86071 18.2128 2.16071 14.6128C1.16071 9.31284 4.96069 4.61281 9.86069 4.01281C10.4607 3.91281 10.9607 4.41281 10.9607 5.01281V12.9128Z"
+									fill="currentColor"></path>
+								<path
+									d="M12.9607 10.9128V3.01281C12.9607 2.41281 13.4607 1.91281 14.0607 2.01281C16.0607 2.21281 17.8607 3.11284 19.2607 4.61284C20.6607 6.01284 21.5607 7.91285 21.8607 9.81285C21.9607 10.4129 21.4607 10.9128 20.8607 10.9128H12.9607Z"
+									fill="currentColor"></path>
+							</svg>
+						</span>
+					</div>
+					<div class="col-md-8">
+            <h3 class="fw-bold text-white" style="text-align: right;">Allocate Tasking</h3>
+					</div>
+				</div>
+				<!--end::Svg Icon-->
+
+			</div>
+			<!--end::Body-->
+		</a>
+		<!--end::Statistics Widget 5-->
+	</div>
+	<div class="col">
+		<!--begin::Statistics Widget 5-->
+		<a routerLink="/tasking-portal/view-tasking-status" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3" style="height: 150px;">
+			<!--begin::Body-->
+			<div class="card-body">
+				<!--begin::Svg Icon | path: icons/duotune/graphs/gra007.svg-->
+				<div class="row">
+					<div class="col-md-4">
+						<span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								fill="none">
+								<path opacity="0.3"
+									d="M10.9607 12.9128H18.8607C19.4607 12.9128 19.9607 13.4128 19.8607 14.0128C19.2607 19.0128 14.4607 22.7128 9.26068 21.7128C5.66068 21.0128 2.86071 18.2128 2.16071 14.6128C1.16071 9.31284 4.96069 4.61281 9.86069 4.01281C10.4607 3.91281 10.9607 4.41281 10.9607 5.01281V12.9128Z"
+									fill="currentColor"></path>
+								<path
+									d="M12.9607 10.9128V3.01281C12.9607 2.41281 13.4607 1.91281 14.0607 2.01281C16.0607 2.21281 17.8607 3.11284 19.2607 4.61284C20.6607 6.01284 21.5607 7.91285 21.8607 9.81285C21.9607 10.4129 21.4607 10.9128 20.8607 10.9128H12.9607Z"
+									fill="currentColor"></path>
+							</svg>
+						</span>
+					</div>
+					<div class="col-md-8">
+            <h3 class="fw-bold text-white" style="text-align: right;">View Status Of Tasking</h3>
+					</div>
+				</div>
+				<!--end::Svg Icon-->
+
+			</div>
+			<!--end::Body-->
+		</a>
+		<!--end::Statistics Widget 5-->
+	</div>
+</div>
+<!-- end::Row -->
+
+<!-- begin::Row -->
+<div class="row g-5 g-xl-8">
+	  <div class="col-xl-12 mb-xl-10" >
+      <div class="card card-flush h-xl-100">
+          <!--begin::Heading-->
+          <div class="card-header">
+              <!--begin::Title-->
+              <h3 class="card-title align-items-start flex-column pt-5">
+                  <span class="fw-bold mb-3">Tasks In Progress</span>
+
+              </h3>
+              <!--end::Title-->
+
+          </div>
+          <!--end::Heading-->
+          <!--begin::Body-->
+          <div class="card-body mt-n10">
+              <!-- <div id="chartdiv" style="width: 100%; height: 450px"></div> -->
+              <div id="chart">
+                <apx-chart
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [fill]="chartOptions.fill"
+                  [grid]="chartOptions.grid"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [plotOptions]="chartOptions.plotOptions"
+                  [xaxis]="chartOptions.xaxis"
+                  [yaxis]="chartOptions.yaxis"
+                  [tooltip]="chartOptions.tooltip"
+                ></apx-chart>
+              </div>
+
+          </div>
+          <!--end::Body-->
+      </div>
+  </div>
+
+  <!--end::Col-->
+  <!--begin::Col-->
+  <div class="col-xl-12 mb-xl-10 " >
+      <!--begin::Lists Widget 19-->
+      <div class="card card-flush h-xl-100">
+          <!--begin::Heading-->
+          <div class="card-header">
+              <!--begin::Title-->
+              <h3 class="card-title align-items-start flex-column pt-5">
+                  <span class="fw-bold mb-3">Tasks Waiting For Approval</span>
+
+              </h3>
+              <!--end::Title-->
+
+          </div>
+          <!--end::Heading-->
+          <!--begin::Body-->
+          <div class="card-body mt-n10">
+              <div id="chartdiv" style="width: 100%; height: 450px"></div>
+
+          </div>
+          <!--end::Body-->
+      </div>
+      <!--end::Lists Widget 19-->
+  </div>
+</div>
+<!-- end::Row -->
+
+<!-- begin::Row -->
+<div class="row g-5 g-xl-8">
+	<div class="col-md-12">
+		<div class="card p-0" style="margin-bottom: 60px;">
+
+        <!-- begin::Header -->
+<div class="card-header border-0 pt-5">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Pending Tasks of {{username}}</span>
+      <!-- <span class="text-muted mt-1 fw-bold fs-7">Over 500 new products</span> -->
+    </h3>
+     </div>
+  <!-- end::Header -->
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+	<table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+		<ng-container matColumnDef="task_number_dee">
+		  <th mat-header-cell *matHeaderCellDef><b> Task Name</b></th>
+		  <td mat-cell *matCellDef="let country"> {{country.task_number_dee}} </td>
+		</ng-container>
+		<ng-container matColumnDef="task_description">
+		  <th mat-header-cell *matHeaderCellDef><b>Task Description </b></th>
+		  <td mat-cell *matCellDef="let country"> <div [innerHTML]="country.task_description"></div> </td>
+		  <!-- <span  [innerHTML]="{{country.task_description}}"</span> -->
+		</ng-container>
+		<!--<ng-container matColumnDef="file">
+			  <th mat-header-cell *matHeaderCellDef><b>File</b></th>
+			  <td mat-cell *matCellDef="let country"> {{country.file}} </td>
+			  </ng-container> -->
+
+		<ng-container matColumnDef="due_date">
+		  <th mat-header-cell *matHeaderCellDef><b>Due Date </b></th>
+		  <td mat-cell *matCellDef="let country"> {{country.time_frame_for_completion}} </td>
+		</ng-container>
+		<ng-container matColumnDef="assignee">
+		  <th mat-header-cell *matHeaderCellDef><b>Assignee </b></th>
+		  <td mat-cell *matCellDef="let country"> {{country.assigned_tasking_group[0].tasking_group.name}} </td>
+		</ng-container>
+
+		<ng-container matColumnDef="time_frame_for_completion">
+		  <th mat-header-cell *matHeaderCellDef><b>Time for Completion </b></th>
+		  <td mat-cell *matCellDef="let country"> {{country.time_frame_for_completion}} </td>
+		</ng-container>
+		<ng-container matColumnDef="status">
+		  <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
+		  <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)"
+			  class="status-field {{country.status=='1'?'text-success':'text-danger'}}">{{country.status=='1'?'Active':'Inactive'}}</a>
+		  </td>
+		</ng-container>
+		<ng-container matColumnDef="Action">
+		  <th class="text-center" mat-header-cell *matHeaderCellDef><ng-container><b>Action</b></ng-container></th>
+		  <td class="text-center" mat-cell *matCellDef="let country">
+			<a
+            routerLink="/dashboard/view-task"
+              class="
+                btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                me-1
+              "
+            >
+             <i class="fas fa-eye"></i>
+            </a>
+            <a
+            (click)="openEdit(country)"
+              class="
+                btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                me-1
+              "
+            >
+              <span
+                [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                class="svg-icon svg-icon-3"
+              ></span>
+            </a>
+            <a
+            (click)="openDelete()"
+              class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+            >
+              <span
+                [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                class="svg-icon svg-icon-3"
+              ></span>
+            </a>
+		  </td>
+		</ng-container>
+		<!--  <ng-container matColumnDef="view" >
+				<th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container  ><b>View</b></ng-container></th>
+				<td class="text-center" mat-cell *matCellDef="let country">
+				   <a href="#" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(country)"><span class=" material-icons-outlined">remove_red_eye</span></a></td>
+			 </ng-container>
+			 <ng-container matColumnDef="edit" >
+				<th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container  ><b>Edit</b></ng-container></th>
+				<td class="text-center" mat-cell *matCellDef="let country">
+				   <a href="#" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(country)" *ngIf="permission.edit==true" ><span class="material-icons-outlined">edit</span></a></td>
+			 </ng-container>
+			 <ng-container matColumnDef="delete">
+				<th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container ><b>Delete</b></ng-container></th>
+				<td class="text-center" mat-cell *matCellDef="let country"><a href="javascript:void(0)" class="edit-icon text-danger" (click)="onDelete(country.id)" *ngIf="permission.delete==true" ><span class="material-icons-outlined">delete</span></a></td>
+			 </ng-container>-->
+		<ng-container matColumnDef="noData">
+		  <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+			No Records Found!
+		  </th>
+		</ng-container>
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		<tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
+		<tr class="mat-row" *matNoDataRow>
+		  <td *ngIf='filterValue' class="norecord" colspan="4"><b>No data matching with records</b></td>
+		</tr>
+	  </table>
+
+	<!-- end::Table container -->
+  </div>
+  <!-- begin::Body -->
+</div>
+	</div>
+
+</div>
+
+<ng-template #template let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Delete Task</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+
+		<p><strong>Do you want to Delete the Task? </strong></p>
+
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" >Yes</button>
+
+		<button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+	</div>
+
+</ng-template>
+
+<ng-template #template1 let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Task Details</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+
+        <div class="row g-6 g-xl-9 ">
+              <div class="row">
+                <!--begin::Input group-->
+                <div class="col-md-6 mb-5 mt-5">
+                    <label for="floatingInput" class="form-label fw-bold">Start Date :
+                    <span>15 Dec 2022</span></label>
+                </div>
+                <div class="col-md-6 mb-5 mt-5">
+                  <label for="floatingInput" class="form-label fw-bold">End Date :
+                    <span>31 March 2023</span></label>
+              </div>
+                <div class="mb-5">
+                    <label for="floatingInput" class="form-label fw-bold">Budget Allocated :
+                        <span>15,0000</span>
+                    </label>
+
+                </div>
+
+                <div class="mb-5">
+                    <label for="floatingInput" class="form-label fw-bold">Budget Utilized :
+                        <span>5,0000</span>
+                    </label>
+
+                </div>
+                <div class="mb-5">
+                    <label for="floatingInput" class="form-label fw-bold">Manpower :
+                        <span>50</span>
+                    </label>
+
+                </div>
+                <div class="mb-5">
+                    <label for="floatingInput" class="form-label fw-bold">Completion % upto Today's Date:
+                        <span>40 %</span>
+                    </label>
+
+                </div>
+
+
+            </div>
+
+
+
+      </div>
+
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-success" >Yes</button> -->
+
+		<button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancel</button>
+	</div>
+
+</ng-template>
+
+
+<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
+          </div>
+		  <div class="modal-body form-style-md form-style-font linux">
+			<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+			</div>
+			<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
+			   <div class="row">
+				 <!--begin::Input group-->
+				 <!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
+				 &nbsp;
+				 <div formGroupName="sdForm">
+				 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'"> -->
+				 <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
+
+					 <div class="mb-5 ">
+					 <div class="matt-group">
+						 <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
+
+						   <!-- <span matPrefix>IHQ MOD(N)/&nbsp;</span> -->
+							<!-- <input matInput placeholder="" formControlName="sponsoring_directorate" maxlength="100"
+							> -->
+							<!-- <span>IHQ MOD(N)/{{api.userid.first_name}}{{api.userid.last_name}}</span> -->
+							<input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" />
+							<!-- <mat-error *ngIf="sdError('sponsoring_directorate','required') && showError">Enter sponsoring_directorate</mat-error> -->
+							<!-- <mat-error *ngIf="taskForm.get('sdForm.sponsoring_directorate')?.errors?.required && showError">Enter sponsoring_directorate</mat-error> -->
+
+					  </div>
+				 </div>
+
+				 <div class="mb-5">
+					 <mat-label style="font-size:large;">Task Description<b class="star">*</b></mat-label>
+
+
+					 <ckeditor formControlName="task_description" class="form-control"></ckeditor>
+					 <!-- <mat-error *ngIf="sdError('task_description','required') && showError">Enter Task Description</mat-error> -->
+
+
+				 </div>
+				 <!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
+				 <div class="mb-5">
+
+					 <div class="matt-group">
+					   <mat-label style="font-size:large;">File<b class="star">*</b></mat-label>
+					   <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">
+					   <input #fileInput Name="file" id="file"type="file"  class="form-control" (change)="onImageHandler($event)" >
+					   </ng-container>
+					   <!-- <mat-error *ngIf="sdError('file','required') && showError">Select File</mat-error> -->
+					   <!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
+					   <a href="{{ImageUrl}}" class="edit-icon text-primary"
+				   ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span>File Uploaded</span></a>
+					 </div>
+				 </div>
+				 </div>
+
+
+			 <!-- </ng-container> -->
+			 </div>
+		   &nbsp;
+		   <div formGroupName="weseeForm" >
+		   <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE'"> -->
+				 <mat-label style="text-align:center;"><b style="font-size:large;">WESEE</b></mat-label>
+				 &nbsp;
+				 <div class="alert alert-dismissible bg-light-info border border-info p-5 mb-10">
+
+				 <div class="mb-5 ">
+
+
+						 <mat-label style="font-size:large;">Cost Implication<b class="star">*</b></mat-label>
+
+
+							<!-- <mat-error *ngIf="weseeError('cost_implication','required')">Enter cost_implication</mat-error> -->
+
+						 <input type="text" class="form-control" formControlName="cost_implication" value="50000"/>
+						 <!-- <mat-error *ngIf="weseeError('cost_implication','required') && showError">Enter cost_implication</mat-error> -->
+			   </div>
+			   <div class="mb-5 ">
+				 <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
+					   <input type="text" class="form-control" formControlName="time_frame_for_completion" value="200 hrs"/>
+					   <!-- <mat-error *ngIf="weseeError('time_frame_for_completion','required') && showError">Enter time_frame_for_completion</mat-error> -->
+			   </div>
+			   <div class="mb-5 ">
+				 <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+					 <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments"></textarea>
+					 <!-- <mat-error *ngIf="weseeError('comments_of_wesee','required') && showError">Enter comments_of_wesee</mat-error> -->
+			 </div>
+
+			 </div>
+			 <!-- <div class="card-footer text-end">
+				 <div class="col-md-12">
+			 <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='WESEE'" (click)="Recommened()">Recommend</button>
+			   &nbsp;
+				 <button type="button" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='WESEE'" (click)="notRecommended()">Not Recommended</button>
+				 </div>
+			 </div> -->
+		 </div>
+		 <div formGroupName="deeForm">
+			 <!-- </ng-container> -->
+			 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'"> -->
+			 <mat-label  style="text-align:center;"><b style="font-size:large;">DEE</b></mat-label>
+			 <div class="alert alert-dismissible bg-light-success border border-success p-5 mb-10">
+
+			 <div class="mb-5 ">
+				 <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
+
+				   <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01"/>
+				   <!-- <mat-error *ngIf="deeError('task_number_dee','required') && showError">Enter task_number_dee</mat-error> -->
+		   </div>
+			   <div class="mb-5 ">
+				 <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+				 <textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments"></textarea>
+					   <!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
+					   <!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
+			   </div>
+
+
+			   </div>
+			   <!-- <div class="card-footer text-end">
+				 <div class="col-md-12">
+			 <button type="button" class="btn btn-success"  *ngIf="api.userid.role_center[0].user_role.code=='DEE'" (click)="deeRecommened()">Recommend</button>
+			   &nbsp;
+				 <button type="button" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='DEE'" (click)="deenotRecommended()" >Not Recommended</button>
+				 </div>
+			 </div> -->
+		 </div>
+		 <div formGroupName="acomForm">
+		 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
+			   <mat-label  style="text-align:center;"><b style="font-size:large;">ACOM (IT & S)</b></mat-label>
+			   <div class="alert alert-dismissible bg-light-white border border-dark p-5 mb-10">
+
+			   <!-- <div class="mb-5 ">
+				 <mat-label>Comments of Dwe<b class="star">*</b></mat-label>
+				 <textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
+				 <mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
+					   <!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
+			   <!-- </div> -->
+
+
+			   <div class="mb-5 ">
+				 <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
+
+				 <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments"></textarea>
+
+					   <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+					   <!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+			   </div>
+
+			 </div>
+			 <!-- <div class="card-footer text-end">
+				 <div class="col-md-12">
+			 <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='ACOM'" (click)="acomRecommened()">Recommend</button>
+			 &nbsp;
+				 <button type="button" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='ACOM'" (click)="acomRecommened()" >Not Recommended</button>
+				 </div>
+			 </div> -->
+			 </div>
+			 <div formGroupName="comForm">
+		 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'"> -->
+			   <!-- <div class="mb-5 ">
+				   <label for="floatingInput" class="form-label">Approval Of COM</label>
+
+					   <input type="text" class="form-control" formControlName="approval" value="Approved"/>
+			   </div> -->
+			   <mat-label style="text-align:center"><b style="font-size:large;">COM</b></mat-label>
+			   <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
+
+
+
+			   <div class="mb-5 ">
+				 <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+				 <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments"></textarea>
+
+					   <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+					   <!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+			   </div>
+
+
+			 </div>
+			 <!-- <div class="card-footer text-end">
+				 <div class="col-md-12">
+			 <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approved</button>
+			   &nbsp;
+				 tton t <buype="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommended</button>
+				 </div>
+			 </div> -->
+
+			</div>
+		</div>
+			 <div class="row button-group-lg button-auto mt-4">
+                <div class="col-md-6 col-6">
+                   <!-- <button type="submit" class="btn btn-primary w-100" *ngIf="!isReadonly" >Save</button> -->
+                </div>
+                <div class="col-md-6 col-6">
+                   <button type="button" class="btn btn-outline-primary w-100" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
+                </div>
+             </div>
+
+			 <!-- <div class="card-footer text-end">
+			   <div class="col-md-12">
+			   <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
+
+				</div>
+			 </div> -->
+
+		 </form>          </div>
+	  </div>
+   </div>
+</div>
+
+

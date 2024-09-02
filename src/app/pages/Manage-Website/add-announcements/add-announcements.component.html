@@ -1,0 +1,93 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Announcements and Updates</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form [formGroup]="addPageForm" action="m-0" class="form mb-15" method="post" id="kt_careers_form">
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2">Announcements Title</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" placeholder="Title"
+                                formControlName="title" />
+                            <div *ngIf="submitted && f['title'].errors" class="text-danger">
+                                <div *ngIf="f['title'].errors['required']">title is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+						<!--begin::Col-->
+					   <div class="col-md-6 fv-row">
+							<div class="matt-group matselect">
+							   <mat-label>Announcement Date</mat-label>
+							<!--end::Label-->
+							<!-- <input
+							class="form-control"
+							placeholder="dd-mm-yyyy"
+							formControlName="start_date"
+							ngbDatepicker
+							#d="ngbDatepicker"
+							(click)="d.toggle()" -->
+							<mat-form-field appearance="fill">
+								<input matInput [matDatepicker]="picker_date" class="form-control form-control-solid" formControlName="date" onclick="$('#date').trigger('click'); return false;"  placeholder="MM/DD/YYYY" [(ngModel)]="date">
+								<mat-datepicker-toggle matSuffix [for]="picker_date" id="date"></mat-datepicker-toggle>
+								<mat-datepicker #picker_date></mat-datepicker>
+							</mat-form-field>
+							</div>
+						</div>
+						</div>
+
+
+
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Announcement Description</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <!-- add editor here -->
+                            <angular-editor formControlName="description" [config]="editorConfig" ></angular-editor>
+                            <!-- <ckeditor formControlName="description"></ckeditor> -->
+                            <div *ngIf="submitted && f['description'].errors" class="text-danger">
+                                <div *ngIf="f['description'].errors['required']">Content is missing</div>
+                            </div>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+
+                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary "
+                    (click)="submitPageData(addPageForm.value)" style="float:right;">Submit
+
+                        <!-- <ng-container *ngIf="isLoading$">
+                            <span class="indicator-progress" [style.display]="'block'">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="!isLoading$">
+                            Submit
+                        </ng-container> -->
+
+
+                    </button>
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>
+

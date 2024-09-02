@@ -1,0 +1,34 @@
+.heading1 {font-size: 18px; font-weight: 500; margin: 10px 0 0;}
+
+.roles-check ul{padding: 0; margin: 0;}
+.roles-check ul li{list-style: none; display: inline-block; font-size: 13px; margin-left: 15px; font-weight: 400;}
+.roles-check ul li label{margin: 0 !important; color: #555;}
+.roles-cover{border: 1px solid #ddd; border-radius: 4px;}
+.roles-cover p, .roles-cover label{margin-bottom: 0;}
+.roles-heading{background: #f5f5f5; padding: 10px; font-weight: 600;}
+.roles-heading p{color: #0B014A ;}
+.roles-body{background: #fff; padding: 0;}
+.roles-title p{font-size: 16px; font-weight: 500;}
+.roles-title p .iconify{color: #0B014A ; font-size: 12px;}
+.roles-cover .roles-category{border-top: 1px solid #ddd; padding: 10px;}
+.roles-cover .subcatg1 .roles-title{padding-left: 10px;}
+.roles-cover .subcatg2 .roles-title{padding-left: 26px;}
+.roles-cover .subcatg3 .roles-title{padding-left: 36px;}
+
+.roles-category.subcatg1{
+    .roles-title {
+        margin-top: 10px !important;
+        p{font-size: 14px; font-weight: 400;}
+    }
+}
+
+.roles-heading {
+    .roles-title{margin-top: 5px;}
+}
+
+.access-card{
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: rgb(38, 33, 148) -5px 5px, rgb(172, 176, 182) -10px 10px !important;
+}

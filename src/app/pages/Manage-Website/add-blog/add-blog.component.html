@@ -1,0 +1,103 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Blog</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form [formGroup]="addBlogForm" action="m-0" class="form mb-15" method="post" id="kt_careers_form">
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2">Blog Title </label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" placeholder="Title"
+                                formControlName="title" />
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2">Blog Slug </label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" placeholder="Title"
+                                formControlName="slug" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-10">
+                        <div class="col-md-12 fv-row">
+
+                            <label class="required fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Blog Summery</label>
+                            <input type="text" class="form-control form-control-solid" formControlName="summery">
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Featured Image</label>
+                            <input type="file" class="form-control form-control-solid" formControlName="image" (change)="onSelectFile($event)" accept="image/png, image/gif, image/jpeg">
+                            <!--end::Label-->
+                        </div>
+                        <!--begin::Input-->
+                        <div class="col-md-6 fv-row">
+                            <label class="required fs-5 fw-bold mb-2">Publish Date</label>
+                            <input type="date" class="form-control form-control-solid" formControlName="pubdate">
+                        </div>
+                        <!--end::Input-->
+                        <div class="row mb-10">
+                            <div class="col-md-12 fv-row">
+    
+                                <label class="required fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Category</label>
+                               <select class="form-select flex-grow-1" formControlName="category">
+                                    <option *ngFor="let cat of categories" [value]="cat.id">
+                                        {{cat.category_name}}
+                                    </option>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                       
+
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Blog Content</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <!-- add editor here -->
+                            <ckeditor formControlName="content"></ckeditor>
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" id="kt_careers_submit_button" style="float:right;" (click)="submitBlogData(addBlogForm.value)">
+                        <!--begin::Indicator-->
+                        <span class="indicator-label">Save Page</span>
+                        <span class="indicator-progress">Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        <!--end::Indicator-->
+                    </button>
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>
+

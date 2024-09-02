@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Falcon Punch';
+    src: url('FalconPunch.eot');
+    src: url('FalconPunch.eot?#iefix') format('embedded-opentype'),
+        url('FalconPunch.woff2') format('woff2'),
+        url('FalconPunch.woff') format('woff'),
+        url('FalconPunch.ttf') format('truetype'),
+        url('FalconPunch.svg#FalconPunch') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

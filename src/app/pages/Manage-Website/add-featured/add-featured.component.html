@@ -1,0 +1,69 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Category</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form action="m-0" class="form mb-15" method="post" id="kt_careers_form">
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Name </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="title" />
+
+                    </div>
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Slug </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="title" />
+
+                    </div>
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Type </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="title" />
+
+                    </div>
+                    <!-- <div class="row mb-10">
+                        <label class="required fs-5 fw-bold mb-2"> Short Description</label>
+                        <!--end::Label-->
+                        <!--begin::Input--
+                        <input type="text" class="form-control form-control-solid" placeholder="url"
+                            formControlName="website" />
+
+                    </div> -->
+                    <div class="row mb-10">
+                        <label class="required fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Enable Category?</label>
+                        <div class="pr-5 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                            
+                          </div>
+                    </div>
+                    
+
+                    <button type="submit" class="btn btn-primary" id="kt_careers_submit_button" style="float:right;">
+                        <!--begin::Indicator-->
+                        <span class="indicator-label">Submit</span>
+                        <span class="indicator-progress">Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                        <!--end::Indicator-->
+                    </button>
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Category</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form [formGroup]="categoryForm">
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Name </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="name" />
+                        <div *ngIf="submitted && f['name'].errors" class="text-danger">
+                            <div *ngIf="f['name'].errors['required']">Category name is required</div>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Slug </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="slug" />
+                        <div *ngIf="submitted && f['slug'].errors" class="text-danger">
+                            <div *ngIf="f['slug'].errors['required']">Category Slug is required</div>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Category Type </label>
+                        <select class="form-select flex-grow-1" formControlName="cate_type">
+                            <option *ngFor="let cat of categories" [value]="cat.id">
+                                {{cat.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['cate_type'].errors" class="text-danger">
+                            <div *ngIf="f['cate_type'].errors['required']">Please select category type </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-10">
+                        <label class="required fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Status</label>
+                        <div class=" form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                checked formControlName="status">
+
+                        </div>
+                    </div>
+
+
+
+                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary "
+                    (click)="submitCategoryData(categoryForm.value)" style="float:right;">
+                        <ng-container *ngIf="isLoading$">
+                            <span class="indicator-progress" [style.display]="'block'">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="!isLoading$">
+                            Submit
+                        </ng-container>
+
+
+                    </button>
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>

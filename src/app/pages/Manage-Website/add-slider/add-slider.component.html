@@ -1,0 +1,186 @@
+<div class="card">
+    <!--begin::Body-->
+    <div class="card-header">
+        <h2 class="card-title fw-bolder">Add Slider</h2>
+    </div>
+    <div class="card-body p-lg-17">
+        <div class="d-flex flex-column flex-lg-row ">
+            <!--begin::Content-->
+            <div class="flex-lg-row-fluid me-0 me-lg-20">
+                <!--begin::Form-->
+                <form [formGroup]="add_slider" action="m-0" class="form mb-15" method="post" id="kt_careers_form">
+                    <div class="row mb-5">
+                        <label class="required fs-5 fw-bold mb-2">Slide Title </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" placeholder="Title"
+                            formControlName="title" />
+                            
+                        <div *ngIf="add_slider.get('image').touched && showError" class="text-danger" >
+                                Slider image is required
+                        </div>   
+                        <!-- <div *ngIf="f['title'].errors['pattern']" class="text-danger">Alphabets characters only</div> -->
+
+                        <div *ngIf="submitted && f['title'].errors" class="text-danger">
+                            <div *ngIf="f['title'].errors['required']">Slider title is required</div>
+                            <!-- <div *ngIf="f['title'].errors['pattern']">Alphabets characters only</div> -->
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-bold mb-2">Slider Image</label>
+                            <input type="file" class="form-control form-control-solid" formControlName="image"
+                                (change)="selectOnFile($event)" accept="image/png, image/gif, image/jpeg">
+                            <div *ngIf="add_slider.get('image').touched && showError" class="text-danger" >
+                                    Slider image is required
+                            </div>   
+                            <!--end::Label-->
+                            <div *ngIf="submitted && f['image'].errors" class="text-danger">
+                                <div *ngIf="f['image'].errors['required']">Slider image is required</div>
+                            </div>
+                            <div *ngIf="showImage" class="m-2">
+                                <img src="{{SilderDetails}}" alt="" height="200px" width="200px">
+                            </div>
+
+                        </div>
+                        <!--end::Col-->
+
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <label class="required fs-5 fw-bold mb-2">Slider Type</label>
+                            <!--end::Label-->
+                            
+                            <select  class="form-select flex-grow-1" formControlName="slider_type">
+                                <option *ngFor="let slide of slide; " [value]="slide.id">{{slide.name}} </option>
+                                <!-- <option value="1">Home</option>
+                                <option value="2">Task Group</option>
+                                <option value="3">Image Gallery</option> -->
+                            </select>
+                            <div *ngIf="add_slider.get('slider_type').touched && showError" class="text-danger" >
+                                Please select slider type 
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="submitted && f['slider_type'].errors" class="text-danger">
+                            <div *ngIf="f['slider_type'].errors['required']">Please select slider type </div>
+                        </div>
+                        <!--end::Col-->
+
+                    </div>
+                    <!--begin::Input group-->
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <!--begin::Label-->
+                            <label class="fs-5 fw-bold mb-2">Slider Description</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <!-- add editor here -->
+                            
+                            <angular-editor formControlName="description" [config]="editorConfig" ></angular-editor>
+                            
+                            <!-- <ckeditor formControlName="description"></ckeditor> -->
+                            <!--<div *ngIf="submitted && f['description'].errors" class="text-danger">
+                                <div *ngIf="f['description'].errors['required']">Slider Description is required</div>
+                            </div>-->
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="row mb-5">
+                        <div class="col-md-12 fv-row mb-10">
+                            <label class="fs-5 fw-bold mb-2" for="flexSwitchCheckChecked">Select Custom Link or
+                                Page Link</label>
+                            <div class="pr-5 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    id="flexSwitchCheckChecked" (change)="checkValue($event)">
+
+                            </div>
+                        </div>
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row" *ngIf="!custom">
+                            <label class="fs-5 fw-bold mb-2">Custom Link</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" formControlName="slider_link">
+                            <!--<div *ngIf="submitted && f['slider_link'].errors" class="text-danger">
+                                <div *ngIf="f['slider_link'].errors['required']">Slider link is required</div>
+                            </div>-->
+                        </div>
+                        <!--end::Col-->
+                        <div class="col-md-12 fv-row" *ngIf="custom">
+                            <label class="fs-5 fw-bold mb-2">Page Link</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+
+                            <select class="form-select " data-placeholder="Category" data-hide-search="true">
+                                <option value="1" data-select2-id="select2-data-9-g0zo">
+                                    Page1</option>
+                                <option value="2">Page2</option>
+                                <option value="3">Page3</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="row mb-5">
+                        <!--begin::Col-->
+                        <div class="col-md-12 fv-row">
+                            <label class="fs-5 fw-bold mb-2">Redirect Url</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" formControlName="redirect">
+                            <!--<div *ngIf="submitted && f['redirect'].errors" class="text-danger">
+                                <div *ngIf="f['redirect'].errors['required']">Redirect Url is required</div>
+                            </div>-->
+                        </div>
+                        <!--end::Col-->
+
+                    </div>
+
+
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+
+                    <!--end::Separator-->
+                    <!--begin::Submit-->
+
+                    <button type="submit" id="kt_sign_in_submit" class="btn btn-primary" (click)="submitSliderData(add_slider.value)"
+                        style="float:right;">Submit
+                        <!-- <ng-container *ngIf="isLoading$===true">
+                            <span class="indicator-progress" [style.display]="'block'">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </ng-container>
+                        <ng-container *ngIf="isLoading$===false ">
+                            Submit
+                        </ng-container> -->
+
+
+                    </button>
+                    <!-- <button type="button" style="float:right;" class="btn btn-outline-primary" #closebutton data-dismiss="modal" (click)="cancelmodal()">Cancel</button> -->
+
+                    <!--end::Submit-->
+                </form>
+                <!--end::Form-->
+
+            </div>
+            <!--end::Content-->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+
+<!--begin::Row-->
+<div class="d-flex mb-6" style="justify-content: end;">
+<div class="d-flex">
+    <a class="btn btn-primary cursor-pointer" routerLink="/website/add-category"> Add Category </a>
+</div>
+</div>
+<div class="row g-6 g-xl-9 " >
+    <div class="col-md-6 col-xl-4" *ngFor="let item of categories | paginate: { itemsPerPage: 15, currentPage: p }">
+        <!--begin::Card-->
+        <a class="card border-hover-primary">
+            <div class="card-body p-9">
+                <!--begin::Name-->
+                <div class="fs-3 fw-bolder text-dark">{{item.name}}</div>
+                <!--end::Name-->
+                <!--begin::Description-->
+                <p class="text-gray-400 fw-bold fs-5 mt-1 mb-7" *ngIf="item.cate_type === 1">Course</p>
+                <p class="text-gray-400 fw-bold fs-5 mt-1 mb-7" *ngIf="item.cate_type === 2">Job</p>
+                <p class="text-gray-400 fw-bold fs-5 mt-1 mb-7" *ngIf="item.cate_type === 3">Blog</p>
+
+                <!--end::Description-->
+               
+                <!--begin::Users-->
+                <a routerLink="/website/edit-category/{{item.id}}" class="btn btn-info btn-sm me-3" >Edit Category</a>
+                <a class="btn btn-danger btn-sm me-3" (click)="openDialog(item)" >Delete Category</a>
+                <!--end::Users-->
+            </div>
+            <!--end:: Card body-->
+        </a>
+        <!--end::Card-->
+    </div>
+  
+</div>
+<div *ngIf="categories.length !== 0" class="d-flex flex-stack flex-wrap mt-5" style="float:right;">
+    <pagination-controls (pageChange)="p = $event" ></pagination-controls>
+
+</div>
+<ng-template #template let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Delete Category</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+
+		<p><strong>Do you want to Delete the Category? </strong></p>
+
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" (click)="deleteCategory()">Yes</button>
+
+		<button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+	</div>
+
+</ng-template>

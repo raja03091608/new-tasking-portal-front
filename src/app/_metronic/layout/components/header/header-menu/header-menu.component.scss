@@ -1,0 +1,13 @@
+:host {
+  height: inherit;
+  width: inherit;
+
+  .menu-state-bg {
+    .menu-dropdown.show {
+        .menu-link {
+        background-color: #8a68d0 !important; background: #8a68d0 !important;
+        }
+    }
+}
+  
+}

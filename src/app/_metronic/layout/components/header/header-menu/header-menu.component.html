@@ -1,0 +1,272 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+
+
+<div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-black-600 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold fs-6 my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
+
+  <!-- <div class="menu-item me-lg-1">
+    <a class="menu-link py-3" routerLinkActive="active" routerLink="/dashboard"><span class="menu-title" translate="MENU.DASHBOARD"></span></a>
+  </div> -->
+
+<!-- <aside class="sidemenu ">
+    <ng-container >
+      <ul metis-menu class="metisul" #sidemenu>
+        <ng-container *ngFor="let module of modules;let i = index">
+          <li class="event-menu {{ i==0?'active':'' }}" *ngIf="module.status==true"  >
+                <a href="javascript:void(0)" (click)="goToPage((module.url!='' && module.url!=null?'/'+module.url:''))"  class="{{ module.url!=''?'':'has-arrow' }} {{ i==0?'active':'' }}" >{{ module.name }}</a>
+                <ng-container *ngIf="module.components.length>0">
+                  <ul>
+                    <ng-container *ngFor="let component of module.components;let j = index;">
+                      <li class="" *ngIf="component.status==true">
+                          <a href="javascript:void(0)" (click)="goToPage((component.url!='' && component.url!=null?'/'+component.url:''))"  class="{{ component.url!='' && component.url!=null?'':'has-arrow' }}" >{{ component.name }}</a>
+                          <ng-container *ngIf="component.attributes.length>0">
+                            <ul>
+                              <ng-container *ngFor="let attribute of component.attributes;let k = index;">
+                                <li class="" *ngIf="attribute.status==true">
+                                    <a href="javascript:void(0)" (click)="goToPage((attribute.url!='' && attribute.url!=null && attribute.url!=' '?'/'+attribute.url:''))"  class="{{ attribute.url!=''?'':'has-arrow' }}" >{{ attribute.name }}</a>
+                                </li>
+                              </ng-container>
+                            </ul>
+                          </ng-container>
+                      </li>
+                    </ng-container>
+
+                  </ul>
+                </ng-container>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </aside> -->
+<ng-container *ngFor="let module of modules;let i = index">
+  <div
+  class="menu-item menu-lg-down-accordion me-lg-1"
+  data-kt-menu-trigger="hover"
+  data-kt-menu-placement="bottom-start"
+  *ngIf="module.status==true"
+  >
+  <!-- <div class="menu-item me-lg-1"> -->
+
+      <span class="menu-link py-3">
+        <span class="menu-title" *ngIf="module.url==''">
+          {{ module.name }}
+        </span>
+        <span class="menu-title" *ngIf="module.url!=''">
+          <a href="javascript:void(0)" routerLink="{{module.url!='' && module.url!=null?''+module.url:''}}"  class="menu-link py-3 {{ module.url!=''?'':'has-arrow' }}" routerLinkActive="active">{{ module.name }}</a>
+        </span>
+        <span class="{{ module.url!=''?'menu-arrow d-lg-none':'' }}"></span>
+      </span>
+      <ng-container *ngIf="module.components.length>0">
+      <div
+        class="
+          menu-sub
+          menu-sub-lg-down-accordion
+          menu-sub-lg-dropdown
+          menu-rounded-0
+          py-lg-4
+          w-lg-225px
+          dropdown
+        "
+        data-kt-menu-dismiss="true" data-bs-toggle="dropdown"
+      >
+        <ng-container *ngFor="let component of module.components;let j = index;">
+          <div class="menu-item me-lg-1" *ngIf="component.status==true">
+            <a href="javascript:void(0)" routerLink="{{component.url!='' && component.url!=null?'/'+component.url:''}}"  routerLinkActive="{{ component.url!='' && component.url!=null?'active':'' }}" class="menu-link py-3 {{ component.url!='' && component.url!=null?'':'has-arrow' }}" > <span class="menu-title">{{ component.name }}</span></a>
+          </div>
+
+          <ng-container *ngIf="component.attributes.length>0">
+          <div
+            class="
+              menu-sub
+              menu-sub-lg-down-accordion
+              menu-sub-lg-dropdown
+              menu-rounded-0
+              py-lg-4
+              w-lg-225px
+              dropdown
+              
+            "
+            data-kt-menu-dismiss="true" data-bs-toggle="dropdown"
+          >
+            <ng-container *ngFor="let attribute of component.attributes;let k = index;">
+              <div class="menu-item me-lg-1" *ngIf="attribute.status==true">
+                <a href="javascript:void(0)" routerLink="{{attribute.url!='' && attribute.url!=null && attribute.url!=' '?'/'+attribute.url:''}}"  routerLinkActive="{{ attribute.url!='' && attribute.url!=null && attribute.url!=' '?'active':'' }}" class="menu-link py-3 {{ attribute.url!=''?'':'has-arrow' }}  {{ attribute.url!=='' && attribute.url!=null && attribute.url!==' '?'active':'' }}"> <span class="menu-title">{{ attribute.name }}</span></a>
+              </div>
+            </ng-container>
+
+          </div>
+          </ng-container>
+
+        </ng-container>
+
+      </div>
+      </ng-container>
+
+  </div>
+  </ng-container>
+
+  <!-- <div
+  class="menu-item menu-lg-down-accordion me-lg-1"
+  data-kt-menu-trigger="click"
+  data-kt-menu-placement="bottom-start"
+  >
+  <span class="menu-link py-3">
+    <span class="menu-title">Dashboard</span>
+    <span class="menu-arrow d-lg-none"></span>
+  </span>
+
+      <div
+        class="
+          menu-sub
+          menu-sub-lg-down-accordion
+          menu-sub-lg-dropdown
+          menu-rounded-0
+          py-lg-4
+          w-lg-225px
+        "
+        data-kt-menu-dismiss="true"
+      >
+        <div class="menu-item me-lg-1">
+          <a
+            class="menu-link py-3"
+            routerLinkActive="active"
+            routerLink="/dashboard/dashboard1"
+          >
+          <span class="menu-title">Sponsoring Directorate Dashboard</span></a
+          >
+        </div>
+
+        <div class="menu-item me-lg-1">
+          <a
+            class="menu-link py-3"
+            routerLinkActive="active"
+            routerLink="/dashboard/dashboard2"
+          >
+          <span class="menu-title">Admin</span></a>
+        </div>
+
+        <div class="menu-item me-lg-1">
+          <a
+            class="menu-link py-3"
+            routerLinkActive="active"
+            routerLink="/dashboard/dashboard4"
+          >
+          <span class="menu-title">ACOM(IT & S) and COM</span></a
+          >
+        </div>
+
+        <div class="menu-item me-lg-1">
+          <a
+            class="menu-link py-3"
+            routerLinkActive="active"
+            routerLink="/dashboard/dashboard3"
+          >
+          <span class="menu-title">DG Wesee</span></a
+          >
+        </div>
+
+      </div>
+    </div>
+   <div
+class="menu-item menu-lg-down-accordion me-lg-1"
+data-kt-menu-trigger="click"
+data-kt-menu-placement="bottom-start"
+>
+<span class="menu-link py-3">
+  <span class="menu-title">Tasking</span>
+  <span class="menu-arrow d-lg-none"></span>
+</span>
+
+    <div
+      class="
+        menu-sub
+        menu-sub-lg-down-accordion
+        menu-sub-lg-dropdown
+        menu-rounded-0
+        py-lg-4
+        w-lg-225px
+      "
+      data-kt-menu-dismiss="true"
+    >
+      <div class="menu-item me-lg-1">
+        <a
+          class="menu-link py-3"
+          routerLinkActive="active"
+            routerLink="/tasking-portal/new-task"
+        >
+        <span class="menu-title">Start a New Tasking</span></a
+        >
+      </div>
+
+      <div class="menu-item me-lg-1">
+        <a
+          class="menu-link py-3"
+          routerLinkActive="active"
+          routerLink="/tasking-portal/allocate-tasking"
+        >
+        <span class="menu-title">Allocate Tasking </span></a>
+      </div>
+
+      <div class="menu-item me-lg-1">
+        <a
+          class="menu-link py-3"
+          routerLinkActive="active"
+            routerLink="/tasking-portal/view-tasking-status"
+        >
+        <span class="menu-title">View Status Of Tasking</span></a
+        >
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="menu-item me-lg-1">
+    <a class="menu-link py-3" routerLinkActive="active" routerLink="/project"><span class="menu-title" >Projects</span></a>
+  </div>
+
+   <div class="menu-item me-lg-1">
+    <a class="menu-link py-3" routerLinkActive="active" routerLink="/user"><span class="menu-title" >Users</span></a>
+  </div>
+
+  <div class="menu-item menu-lg-down-accordion me-lg-1" data-kt-menu-trigger="click"
+    data-kt-menu-placement="bottom-start">
+    <span class="menu-link py-3">
+      <span class="menu-title">Website Settings</span>
+      <span class="menu-arrow d-lg-none"></span>
+    </span>
+
+    <div class="
+      menu-sub
+      menu-sub-lg-down-accordion
+      menu-sub-lg-dropdown
+      menu-rounded-0
+      py-lg-4
+      w-lg-225px
+    " data-kt-menu-dismiss="true">
+      <div class="menu-item me-lg-1">
+        <a class="menu-link py-3" routerLinkActive="active" routerLink="/website/edit-home/1">
+          <span class="menu-title">Homepage Settings</span></a>
+      </div>
+
+
+      <div class="menu-item me-lg-1">
+        <a class="menu-link py-3" routerLinkActive="active" routerLink="/website/slider">
+          <span class="menu-title">Slider Settings</span></a>
+      </div>
+
+      <div class="menu-item me-lg-1">
+        <a class="menu-link py-3" routerLinkActive="active" routerLink="/website/category">
+          <span class="menu-title">Category</span></a>
+      </div>
+
+      <div class="menu-item me-lg-1">
+        <a class="menu-link py-3" routerLinkActive="active" routerLink="/website/pages">
+          <span class="menu-title">Pages</span></a>
+      </div>
+
+
+    </div>
+  </div> -->
+
+</div>
+

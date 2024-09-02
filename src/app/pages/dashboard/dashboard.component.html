@@ -1,0 +1,463 @@
+<!-- eslint-disable @angular-eslint/template/eqeqeq -->
+<!-- <div class="d-flex mb-6" style="justify-content: end">
+	<div class="d-flex">
+		<a
+			class="btn fw-bold bg-body btn-color-gray-700 btn-active-color-primary me-3"
+			routerLink="/dashboard/task-list"
+			>My Tasks</a
+		>
+		<a class="btn btn-primary cursor-pointer"> Add Task </a>
+	</div>
+</div> -->
+<!--begin::Row-->
+<div class="mb-xl-5">
+<button class="btn btn-primary"  type="button" routerLink="/dashboard/dashboard1" >Back To Dashboard</button>
+<h1 class="taskname" *ngIf="taskname!='' && tasknumber!=''">Task Name - {{taskname}} ({{tasknumber}})</h1>
+</div>
+<div></div>
+<div class="row g-5 g-xl-10 mb-xl-10">
+	<!--begin::Col-->
+
+	<!--end::Col-->
+	<!--begin::Col-->
+	<div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3">
+
+		<div
+		class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-center border-0"
+		style="background-color: #080655;">
+		<!--begin::Header-->
+		<div class="card-header pt-5 flex-center">
+			<!--begin::Title-->
+			<div class="card-title d-flex flex-column">
+			<!--begin::Amount-->
+			<span class=" fw-bold text-white lh-1 ls-n2 ">Resources Utilised</span>
+			</div>
+		</div>
+		<div class="card-body">
+			<p class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2 ">&nbsp;&nbsp;{{counter}}</p>
+		</div>
+		<br/>
+
+
+	  </div>
+
+	</div>
+	<div  class="col-md-6 col-lg-6 col-xl-6 col-xxl-3">
+		<div class="card card-flush">
+			<!--begin::Header-->
+			<div class="card-header pt-5">
+				<!--begin::Title-->
+				<h3 class="card-title text-gray-800">Task Summary</h3>
+				<!--end::Title-->
+				<!--begin::Toolbar-->
+				<div class="card-toolbar d-none">
+					<!--begin::Daterangepicker(defined in src/js/layout/app.js)-->
+					<div
+						data-kt-daterangepicker="true"
+						data-kt-daterangepicker-opens="left"
+						class="btn btn-sm btn-light d-flex align-items-center px-4"
+						data-kt-initialized="1"
+					>
+						<!--begin::Display range-->
+						<div class="text-gray-600 fw-bold">
+							8 Sep 2022 - 7 Oct 2022
+						</div>
+						<!--end::Display range-->
+						<!--begin::Svg Icon | path: icons/duotune/general/gen014.svg-->
+						<span class="svg-icon svg-icon-1 ms-2 me-0">
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									opacity="0.3"
+									d="M21 22H3C2.4 22 2 21.6 2 21V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5V21C22 21.6 21.6 22 21 22Z"
+									fill="currentColor"
+								></path>
+								<path
+									d="M6 6C5.4 6 5 5.6 5 5V3C5 2.4 5.4 2 6 2C6.6 2 7 2.4 7 3V5C7 5.6 6.6 6 6 6ZM11 5V3C11 2.4 10.6 2 10 2C9.4 2 9 2.4 9 3V5C9 5.6 9.4 6 10 6C10.6 6 11 5.6 11 5ZM15 5V3C15 2.4 14.6 2 14 2C13.4 2 13 2.4 13 3V5C13 5.6 13.4 6 14 6C14.6 6 15 5.6 15 5ZM19 5V3C19 2.4 18.6 2 18 2C17.4 2 17 2.4 17 3V5C17 5.6 17.4 6 18 6C18.6 6 19 5.6 19 5Z"
+									fill="currentColor"
+								></path>
+								<path
+									d="M8.8 13.1C9.2 13.1 9.5 13 9.7 12.8C9.9 12.6 10.1 12.3 10.1 11.9C10.1 11.6 10 11.3 9.8 11.1C9.6 10.9 9.3 10.8 9 10.8C8.8 10.8 8.59999 10.8 8.39999 10.9C8.19999 11 8.1 11.1 8 11.2C7.9 11.3 7.8 11.4 7.7 11.6C7.6 11.8 7.5 11.9 7.5 12.1C7.5 12.2 7.4 12.2 7.3 12.3C7.2 12.4 7.09999 12.4 6.89999 12.4C6.69999 12.4 6.6 12.3 6.5 12.2C6.4 12.1 6.3 11.9 6.3 11.7C6.3 11.5 6.4 11.3 6.5 11.1C6.6 10.9 6.8 10.7 7 10.5C7.2 10.3 7.49999 10.1 7.89999 10C8.29999 9.90003 8.60001 9.80003 9.10001 9.80003C9.50001 9.80003 9.80001 9.90003 10.1 10C10.4 10.1 10.7 10.3 10.9 10.4C11.1 10.5 11.3 10.8 11.4 11.1C11.5 11.4 11.6 11.6 11.6 11.9C11.6 12.3 11.5 12.6 11.3 12.9C11.1 13.2 10.9 13.5 10.6 13.7C10.9 13.9 11.2 14.1 11.4 14.3C11.6 14.5 11.8 14.7 11.9 15C12 15.3 12.1 15.5 12.1 15.8C12.1 16.2 12 16.5 11.9 16.8C11.8 17.1 11.5 17.4 11.3 17.7C11.1 18 10.7 18.2 10.3 18.3C9.9 18.4 9.5 18.5 9 18.5C8.5 18.5 8.1 18.4 7.7 18.2C7.3 18 7 17.8 6.8 17.6C6.6 17.4 6.4 17.1 6.3 16.8C6.2 16.5 6.10001 16.3 6.10001 16.1C6.10001 15.9 6.2 15.7 6.3 15.6C6.4 15.5 6.6 15.4 6.8 15.4C6.9 15.4 7.00001 15.4 7.10001 15.5C7.20001 15.6 7.3 15.6 7.3 15.7C7.5 16.2 7.7 16.6 8 16.9C8.3 17.2 8.6 17.3 9 17.3C9.2 17.3 9.5 17.2 9.7 17.1C9.9 17 10.1 16.8 10.3 16.6C10.5 16.4 10.5 16.1 10.5 15.8C10.5 15.3 10.4 15 10.1 14.7C9.80001 14.4 9.50001 14.3 9.10001 14.3C9.00001 14.3 8.9 14.3 8.7 14.3C8.5 14.3 8.39999 14.3 8.39999 14.3C8.19999 14.3 7.99999 14.2 7.89999 14.1C7.79999 14 7.7 13.8 7.7 13.7C7.7 13.5 7.79999 13.4 7.89999 13.2C7.99999 13 8.2 13 8.5 13H8.8V13.1ZM15.3 17.5V12.2C14.3 13 13.6 13.3 13.3 13.3C13.1 13.3 13 13.2 12.9 13.1C12.8 13 12.7 12.8 12.7 12.6C12.7 12.4 12.8 12.3 12.9 12.2C13 12.1 13.2 12 13.6 11.8C14.1 11.6 14.5 11.3 14.7 11.1C14.9 10.9 15.2 10.6 15.5 10.3C15.8 10 15.9 9.80003 15.9 9.70003C15.9 9.60003 16.1 9.60004 16.3 9.60004C16.5 9.60004 16.7 9.70003 16.8 9.80003C16.9 9.90003 17 10.2 17 10.5V17.2C17 18 16.7 18.4 16.2 18.4C16 18.4 15.8 18.3 15.6 18.2C15.4 18.1 15.3 17.8 15.3 17.5Z"
+									fill="currentColor"
+								></path>
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</div>
+					<!--end::Daterangepicker-->
+				</div>
+				<!--end::Toolbar-->
+			</div>
+			<!--end::Header-->
+			<!--begin::Body-->
+			<div class="card-body pt-5">
+				<!--begin::Item-->
+				<ng-container *ngFor="let view of viewstatus; let i=index;">
+				<div class="separator separator-dashed my-3"></div>
+				<div class="d-flex flex-stack">
+					<!--begin::Section-->
+
+						<div class="text-gray-700 fw-semibold fs-6 me-2">
+							{{view.status_summary}}
+						</div>
+
+				</div>
+			</ng-container>
+		</div>
+	</div>
+		<!--end::LIst widget 25-->
+</div>
+
+<!--end::Row-->
+<!-- <div class="modal-dialog modal-xl"> -->
+	<div class="modal-content bg-none">
+		<!-- <div style="height: 550px; "> -->
+			<div class="modal-body " style="padding-top:10px; padding-bottom:0%" >
+				<div class="row g-6 g-xl-9">
+					<!--begin::Col-->
+					<div class="col-xl-6">
+						<!--begin::Engage widget 1-->
+						<div class="card h-md-100">
+							<!--begin::Body-->
+							<div id="chart" style="width: 100%; height: 365px">
+								<apx-chart
+									[series]="chartOptions.series"
+									[chart]="chartOptions.chart"
+									[dataLabels]="chartOptions.dataLabels"
+									[stroke]="chartOptions.stroke"
+									[colors]="chartOptions.colors"
+									[title]="chartOptions.title"
+									[grid]="chartOptions.grid"
+									[tooltip]="chartOptions.tooltip"
+									[plotOptions]="chartOptions.plotOptions"
+									[yaxis]="chartOptions.yaxis"
+									[xaxis]="chartOptions.xaxis"
+								></apx-chart>
+							</div>
+							<!-- <div class="card-body d-flex flex-column flex-center">
+								<div id="chartdiv1" style="width: 100%; height: 500px"></div>
+							</div> -->
+							<!--end::Body-->
+						</div>
+						<!--end::Engage widget 1-->
+					</div>
+
+					<div class="col-xl-6">
+						<div class="card" style="height: 475px;overflow-y: scroll;">
+							<div class="card-body">
+								<table class="table table-bordered table-style4" *ngIf="commentslist?commentslist.length!=0:'' ;else nocomments">
+									<tr>
+
+										<th >Name</th> <th width="50%">Comments</th> <th width="30%">Date</th><th>Action</th><th *ngIf="api.userid.role_id===1">Delete</th>
+								</tr>
+								<ng-container *ngFor="let comment of commentslist">
+									<tr>
+									  <td>{{comment.created_by.first_name}}</td><td>{{comment.comments}}</td><td>{{comment.created_on| date:'dd-MM-yyyy'}}</td>
+									  <td ><a href="javascript:void(0)"  *ngIf="comment.created_by.id===login_id || api.userid.role_id===1;else noaction"><span class="bi bi-pencil" (click)="commentModal(comment)"></span></a>
+									  <ng-template #noaction>
+										  <div>-</div>
+									  </ng-template>
+									  </td><td *ngIf="api.userid.role_id===1"><a href="javascript:void(0)" (click)="commentDelete(comment)"><span class="bi bi-trash" ></span></a></td>
+									</tr>
+								  </ng-container>
+
+								</table>
+								<ng-template #nocomments>
+									<div class="card-body nocomment">No Comments</div>
+								</ng-template>
+
+							</div>
+							<div class="pb-5">
+								<form [formGroup]="this.commentForm">
+									<div class="card-footer pt-4" >
+										<!--begin::Input-->
+										<!-- <textarea class="form-control mb-3" rows="1"  ></textarea> -->
+										<textarea class="form-control" rows="1" formControlName="comments" placeholder="Type a Comment"></textarea>
+										<mat-error *ngIf="Error('comments','required') && showcomments">Enter comments</mat-error>
+										<!--end::Input-->
+										<!--begin:Toolbar-->
+										<br>
+										<div class="d-flex" style="float:right;">
+											<!--begin::Actions-->
+
+											<!--end::Actions-->
+											<!--begin::Send-->
+											<button class="btn btn-primary"  type="button" (click)="saveviewstatus()" >Add Comment</button>
+											<!--end::Send-->
+										</div>
+										<!--end::Toolbar-->
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!--end::Col-->
+					<!--begin::Col-->
+					<!-- <div class="col-xl-12"> -->
+						<!--begin::Timeline Widget 4-->
+
+						<!--end::Timeline Widget 1-->
+					<!-- </div> -->
+					<!--end::Col-->
+				</div>
+			</div>
+		<!-- </div>	 -->
+	</div>
+<!-- </div>	 -->
+
+<div class="row g-5 g-xl-8">
+<div class="col-xl-12 mb-xl-12 mt-1">
+	<div class="card card-flush h-xl-100 progress-chart">
+		<!--begin::Heading-->
+		<div class="card-header">
+			<!--begin::Title-->
+			<h3 class="card-title align-items-start flex-column pt-5">
+				<span class="fw-bold mb-3">Tasks In Progress</span>
+
+			</h3>
+			<!--end::Title-->
+
+		</div>
+		<!--end::Heading-->
+		<!--begin::Body-->
+		<div class="card-body mt-n10 responsive" layout-xs="columns">
+
+			<!-- <div id="chartdiv" style="width: 100%; height: 450px"></div> -->
+			<div id="chart1">
+			  <apx-chart
+				[series]="chartOptions1.series"
+				[chart]="chartOptions1.chart"
+				[fill]="chartOptions1.fill"
+				[legend]="chartOptions1.legend"
+				[plotOptions]="chartOptions1.plotOptions"
+				[xaxis]="chartOptions1.xaxis"
+				[markers]="chartOptions1.markers"
+
+
+			  ></apx-chart>
+			</div>
+
+		</div>
+		<!--end::Body-->
+	</div>
+</div>
+<div class="col-xl-12 mb-xl-12 mt-0" >
+	<div class="card card-flush h-xl-100 progress-chart">
+		<!--begin::Heading-->
+		<div class="card-header">
+			<!--begin::Title-->
+			<h3 class="card-title align-items-start flex-column pt-5">
+				<span class="fw-bold mb-3">Task Approval History</span>
+
+			</h3>
+			<!--end::Title-->
+
+		</div>
+
+		<!--end::Heading-->
+		<!--begin::Body-->
+		<div class="card-body responsive" layout-xs="columns">
+			<div class="form-row">
+				<div class="col-md-12">
+					<h3 class="mb-1" >INITIATOR</h3>
+					<table class="table table-bordered table-style4">
+						<tr>
+							<th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+					  </tr>
+
+					  <tr   *ngFor="let list1 of countryList1;">
+
+						<ng-container *ngIf="list1.SD_initiater==1||list1.SD_initiater==2 " >
+						<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm'}}</td><td>{{(list1&& list1.SD_initiater==1)?'Recommeneded':'Not Recommeneded'}}</td><td>{{list1 && list1.comments?list1.comments:'-'}} <span *ngIf="list1.comments=='Others'">({{list1 && list1.SD_comments?list1.SD_comments:''}})</span></td><td>
+							<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+							<span *ngIf="list1 && list1.created_by ==''">-</span>
+						</td>
+					    </ng-container>
+
+						</tr>
+
+
+					</table>
+
+						&nbsp;
+
+					<h3 class="mb-1" >APSO</h3>
+					<table class="table table-bordered table-style4">
+						<tr>
+							<th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+					  </tr>
+
+					  <tr   *ngFor="let list1 of countryList1;">
+
+						<ng-container *ngIf="list1.APSO_recommender==1||list1.APSO_recommender==2 " >
+						<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm'}}</td><td>{{(list1&& list1.APSO_recommender==1)?'Recommeneded':'Not Recommeneded'}}</td><td>{{list1&& list1.comments}}</td><td>
+							<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+							<span *ngIf="list1 && list1.created_by ==''">-</span>
+						</td>
+					    </ng-container>
+
+						</tr>
+
+
+					</table>
+
+						&nbsp;
+
+						<h3 class="mb-1">WESEE</h3>
+						<table class="table table-bordered table-style4">
+							<tr>
+								<th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+						  </tr>
+
+						  <tr *ngFor="let list1 of countryList1; let i= index;">
+							<ng-container *ngIf="list1.WESEE_recommender==4">
+							<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{(list1&& list1.WESEE_recommender==4)?'Approved':'Not Approved'}}</td><td>{{list1&& list1.comments}}</td><td>
+							   <span *ngIf="list1 && list1.tasking_group.tasking_group__name != ''">{{list1&& list1.tasking_group && list1.tasking_group.tasking_group__name?list1.tasking_group.tasking_group__name:'-'}}</span>
+							   <span *ngIf="list1 && list1.tasking_group ==''">-</span>
+
+						   </td>
+						</ng-container>
+
+							</tr>
+
+							</table>
+
+							&nbsp;
+
+				 <h3 class="mb-1">DG WESEE</h3>
+				 <table class="table table-bordered table-style4">
+					 <tr>
+						 <th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+				   </tr>
+
+				   <tr *ngFor="let list1 of countryList1; let i= index;">
+					 <ng-container *ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2" >
+					 <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{(list1&& list1.WESEE_recommender==1)?'Recommened':(list1&& list1.DEE_recommender==1)?'DEE Recommeneded':(list1&& list1.ACOM_recommender==1)?'ACOM Recommened':'Not Recommeneded'}}</td><td>{{list1&& list1.comments}}</td><td>
+						<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+						<span *ngIf="list1 && list1.created_by ==''">-</span>
+					</td>
+				 </ng-container>
+
+					 </tr>
+
+					 </table>
+
+					 &nbsp;
+
+					 <h3 class="mb-1">DEE</h3>
+					 <table class="table table-bordered table-style4">
+						<tr>
+						 <th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+				   </tr>
+				   <tr *ngFor="let list1 of countryList1; let i= index;">
+					 <ng-container *ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2" >
+					 <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{(list1&& list1.DEE_recommender==1)?'DEE Recommeneded':'Not Recommeneded'}}</td><td>{{list1&& list1.comments}}</td><td>
+						<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+						<span *ngIf="list1 && list1.created_by ==''">-</span>
+					</td>
+				 </ng-container>
+
+					 </tr>
+
+					 </table>
+
+					 &nbsp;
+
+
+						 <h3 class="mb-1">ACOM(IT&S)</h3>
+						 <table class="table table-bordered table-style4">
+						 <tr >
+							 <th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+					   </tr>
+					   <tr *ngFor="let list1 of countryList1; let i= index;">
+						 <ng-container *ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2" >
+						 <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{(list1&& list1.ACOM_recommender==1)?'ACOm Recommeneded':'Not Recommeneded'}}</td><td>{{list1&& list1.comments}}</td><td>
+							<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+							<span *ngIf="list1 && list1.created_by ==''">-</span>
+						</td>
+					 </ng-container>
+
+						 </tr>
+
+						 </table>
+						 <h3 class="mb-1">COM</h3>
+
+						 <table class="table table-bordered table-style4">
+							 <tr>
+								 <th width="30%">Date</th><th width="20%">Status</th><th width="50%">Comments</th><th width="50%">Created_by</th>
+
+						   </tr>
+
+						   <tr *ngFor="let list1 of countryList1; let i= index;">
+							 <ng-container *ngIf="list1.COM_approver==3 || list1.COM_approver==1" >
+							 <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{(list1 && list1.COM_approver==3 || list1.COM_approver==1)?'Approved':'Not Approved'}}</td><td>{{list1 && list1.comments}}</td><td>
+								<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by && list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
+								<span *ngIf="list1 && list1.created_by ==''">-</span>
+							</td>
+						 </ng-container>
+
+							 </tr>
+
+							 </table>
+
+				</div>
+		  </div>
+
+
+			<!-- <div id="chartdiv" style="width: 100%; height: 450px"></div> -->
+
+		</div>
+		<!--end::Body-->
+	</div>
+</div>
+</div>
+
+<!--Edit comment Modal-->
+<div class="modal fade bd-example-modal-lg" id="comment-modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="height: 300px;width: 500px; ">
+			<div >
+				<div class="modal-body form-style-md form-style-font linux cardd ">
+					<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+					</div>
+					<form [formGroup]="this.commentForm" >
+						<div class="row">
+							<div class="col-md-12">
+								<div class="matt-group">
+								   <mat-label>Comments<b class="star">*</b></mat-label>
+
+								   <textarea class="form-control" rows="1" formControlName="comments" placeholder="Type a Comment"></textarea>
+									  <mat-error *ngIf="Errorcomment('comments','required') && showcomments">Enter Comments</mat-error>
+
+								</div>
+							 </div>
+						</div>
+						<div class="row button-group-lg button-auto mt-4">
+							<div class="col-md-6 col-6">
+							   <button type="submit" class="btn btn-success w-100" (click)="saveviewstatus()" >Save</button>
+							</div>
+							<div class="col-md-6 col-6">
+							   <button type="button" class="btn btn-outline-primary w-100" #closebutton data-dismiss="modal"(click)="commentclose()">Cancel</button>
+							</div>
+						 </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+ </div>
+
+
+
+
