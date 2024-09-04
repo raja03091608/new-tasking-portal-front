@@ -5,7 +5,10 @@
     font-family: 'MontserratBold';
     src: url('assets/fonts/Montserrat-SemiBold.ttf');
   }
-
+  body{
+    font-family: 'Roboto'!important;
+  }
+  
   @import "./assets/sass/style.scss";
   @import "@angular/material/prebuilt-themes/indigo-pink.css";
   // Replace above style with this css file to enable RTL styles
@@ -17,9 +20,11 @@
 
   @import 'primeng/resources/themes/lara-light-blue/theme.css';
   @import 'primeng/resources/primeng.min.css';
+  @import "primeicons/primeicons.css";
+ 
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: 'MontserratBold' !important;
+  font-family: 'Roboto' !important;
   font-weight: 600;
 }
 .dark-theme .tooltip-inner {

@@ -145,12 +145,29 @@ export type ChartOptions1 = {
 
 @Component({
   selector: 'app-dashboard1',
-  templateUrl: './dashboard1.component.html',
+  templateUrl:'./dashboard1.component.html',
   styleUrls: ['./dashboard1.component.scss'],
   providers:[DatePipe],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class Dashboard1Component implements OnInit,OnDestroy {
+
+  apioverdata1=[] as any;
+  apigroupdata1=[]as any;
+  apidistributiondata1=[] as any;
+  apiyearlytaskdata1=[]as any;
+  value: string = '';
+  visible: boolean = false;
+  visible1:boolean=false;
+  visible2:boolean=false;
+  visible3:boolean=false;
+  visible4:boolean=false;
+  yearlytaskdata=[] as any;
+  overdata=[] as any;
+  Pendingdata=[] as any;
+  groupdata=[] as any;  
+  distributiondata=[] as any;
+
 	projects: any[] = [
 		{ name: 'Navy3005', code: '30/5/2024', status: 'INITIATION STARTED' },
 		{ name: 'PT-0107', code: '1/7/2024', status: 'INITIATION STARTED' }
@@ -312,6 +329,13 @@ public chartOptions14: Partial<ChartOptions14>;
 public chartOptions21: Partial<ChartOptions21>;
 token_details:any;
 allocateForm:FormGroup;
+  distribution: any;
+  overdata1: any;
+  groupdata1: any;
+  distributiondata1: any;
+
+ 
+  
   constructor(private ref: ChangeDetectorRef,private modalService: NgbModal,  private logger: ConsoleService,private route: ActivatedRoute,public api: ApiService,private notification: NotificationService, private dialog: MatDialog, private elementref: ElementRef,public datepipe:DatePipe,private router: Router,private platformLocation: PlatformLocation)
 
   {
@@ -1085,156 +1109,311 @@ status = this.taskForm.value.status;
   completed=[];
   nameData=[];
   time_data:any;
+  // getStatusTasking() {
+  //   if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
+  //     .subscribe((res) => {
+
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //       this.statusTasking = res.data;
+
+  //       this.dataSourceDel.paginator = this.pagination;
+  //       // this.logger.log('countryfg',this.statusTasking)
+
+  //       for(let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
+  //             {
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+
+  //             }
+
+  //           }
+  //           this.name.push([this.statusTasking[i].task_number_dee])
+
+  //         }
+
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].task_end_date!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
+  //                 info: 'info',
+  //                 site: 'name',
+  //                 fillColor: "#008FFB",id:this.statusTasking[i].id})
+  //               }
+
+  //             }
+
+
+
+  //           }
+
+  //       }
+	// 	this.ref.detectChanges();
+  //     });
+  //   }
+  //   else if(this.token_detail.role_id==3 && this.token_detail.process_id==2 && this.token_detail.department_id!=''){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
+  //     .subscribe((res) => {
+
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //       this.statusTasking = res.data;
+  //       this.dataSourceDel.paginator = this.pagination;
+
+  //       for(let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
+  //             {
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+
+  //             }
+
+  //           }
+  //           // console.log('this.statusTasking[i]',this.statusTasking[i]);
+  //           this.name.push([this.statusTasking[i].task_number_dee])
+
+  //         }
+
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='' && this.statusTasking[i].task_number_dee!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
+  //                 info: 'info',
+  //                 site: 'name',
+  //                 fillColor: "#008FFB",id:this.statusTasking[i].id})
+  //               }
+
+  //             }
+
+
+  //           }
+
+  //       }
+	// 	this.ref.detectChanges();
+  //     });
+
+  //   }
+  //   else{
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'process_id':this.token_detail.process_id,'tasking_id':''})
+  //     .subscribe((res) => {
+
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //       this.statusTasking = res.data;
+
+  //       this.dataSourceDel.paginator = this.pagination;
+
+  //       for(let i=0;i<this.statusTasking.length;i++){
+
+  //         if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='')
+
+  //             {
+
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+  //               // this.name.push([this.statusTasking[i].task_number_dee])
+
+  //             }
+
+  //           }
+  //           //console.log('this.statusTasking[i]',this.statusTasking[i]);
+  //           this.name.push([this.statusTasking[i].task_number_dee])
+
+  //         }
+
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee})
+
+
+  //               }
+
+  //             }
+
+
+  //           }
+
+  //       }
+
+	// 	this.ref.detectChanges();
+  //     });
+  //   }
+
+
+  // }
+
+
   getStatusTasking() {
-    if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
-      .subscribe((res) => {
+    console.log("getStatusTasking called");
+    
+    if(this.token_detail.process_id == 3 && this.token_detail.tasking_id != '') {
+        console.log("Condition 1: process_id == 3 and tasking_id is not empty");
 
-        this.dataSourceDel = new MatTableDataSource(res.data);
+        this.api
+        .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id})
+        .subscribe((res) => {
+            console.log("API response:", res);
 
-        this.statusTasking = res.data;
+            this.dataSourceDel = new MatTableDataSource(res.data);
+            this.statusTasking = res.data;
+            this.dataSourceDel.paginator = this.pagination;
 
-        this.dataSourceDel.paginator = this.pagination;
-        // this.logger.log('countryfg',this.statusTasking)
+            console.log("statusTasking:", this.statusTasking);
 
-        for(let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
-              {
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].project_progress != '') {
+                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
 
-              }
-
-            }
-            this.name.push([this.statusTasking[i].task_number_dee])
-
-          }
-
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].task_end_date!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
-                  info: 'info',
-                  site: 'name',
-                  fillColor: "#008FFB",id:this.statusTasking[i].id})
+                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+                        }
+                    }
+                    this.name.push([this.statusTasking[i].task_number_dee]);
+                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
                 }
-
-              }
-
-
-
             }
 
-        }
-		this.ref.detectChanges();
-      });
-    }
-    else if(this.token_detail.role_id==3 && this.token_detail.process_id==2 && this.token_detail.department_id!=''){
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
-      .subscribe((res) => {
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+                            this.chart_data.push({
+                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+                                x: this.statusTasking[i].task_number_dee,
+                                product: 'name',
+                                info: 'info',
+                                site: 'name',
+                                fillColor: "#008FFB",
+                                id: this.statusTasking[i].id
+                            });
 
-        this.dataSourceDel = new MatTableDataSource(res.data);
-
-        this.statusTasking = res.data;
-        this.dataSourceDel.paginator = this.pagination;
-
-        for(let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
-              {
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
-
-              }
-
-            }
-            //console.log('this.statusTasking[i]',this.statusTasking[i]);
-            this.name.push([this.statusTasking[i].task_number_dee])
-
-          }
-
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='' && this.statusTasking[i].task_number_dee!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
-                  info: 'info',
-                  site: 'name',
-                  fillColor: "#008FFB",id:this.statusTasking[i].id})
+                            console.log("Chart data:", this.chart_data);
+                        }
+                    }
                 }
-
-              }
-
-
             }
+            this.ref.detectChanges();
+        });
 
-        }
-		this.ref.detectChanges();
-      });
+    } else if(this.token_detail.role_id == 3 && this.token_detail.process_id == 2 && this.token_detail.department_id != '') {
+        console.log("Condition 2: role_id == 3, process_id == 2, and department_id is not empty");
 
-    }
-    else{
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'process_id':this.token_detail.process_id,'tasking_id':''})
-      .subscribe((res) => {
+        this.api
+        .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id, 'created_by': this.token_detail.user_id})
+        .subscribe((res) => {
+            console.log("API response:", res);
 
-        this.dataSourceDel = new MatTableDataSource(res.data);
+            this.dataSourceDel = new MatTableDataSource(res.data);
+            this.statusTasking = res.data;
+            this.dataSourceDel.paginator = this.pagination;
 
-        this.statusTasking = res.data;
+            console.log("statusTasking:", this.statusTasking);
 
-        this.dataSourceDel.paginator = this.pagination;
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee) {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].project_progress != '') {
+                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
 
-        for(let i=0;i<this.statusTasking.length;i++){
-
-          if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='')
-
-              {
-
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
-                // this.name.push([this.statusTasking[i].task_number_dee])
-
-              }
-
-            }
-            //console.log('this.statusTasking[i]',this.statusTasking[i]);
-            this.name.push([this.statusTasking[i].task_number_dee])
-
-          }
-
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee})
-
-
+                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+                        }
+                    }
+                    this.name.push([this.statusTasking[i].task_number_dee]);
+                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
                 }
-
-              }
-
-
             }
 
-        }
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+                            this.chart_data.push({
+                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+                                x: this.statusTasking[i].task_number_dee,
+                                product: 'name',
+                                info: 'info',
+                                site: 'name',
+                                fillColor: "#008FFB",
+                                id: this.statusTasking[i].id
+                            });
 
-		this.ref.detectChanges();
-      });
+                            console.log("Chart data:", this.chart_data);
+                        }
+                    }
+                }
+            }
+            this.ref.detectChanges();
+        });
+
+    } else {
+        console.log("Condition 3: process_id present but tasking_id is empty");
+
+        this.api
+        .postAPI(environment.API_URL + "transaction/trial/status", {'process_id': this.token_detail.process_id, 'tasking_id': ''})
+        .subscribe((res) => {
+            console.log("API response:", res);
+
+            this.dataSourceDel = new MatTableDataSource(res.data);
+            this.statusTasking = res.data;
+            this.dataSourceDel.paginator = this.pagination;
+
+            console.log("statusTasking:", this.statusTasking);
+
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].project_progress != '') {
+                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+
+                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+                        }
+                    }
+                    this.name.push([this.statusTasking[i].task_number_dee]);
+                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+                }
+            }
+
+            for(let i = 0; i < this.statusTasking.length; i++) {
+                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+                            this.chart_data.push({
+                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+                                x: this.statusTasking[i].task_number_dee
+                            });
+
+                            console.log("Chart data:", this.chart_data);
+                        }
+                    }
+                }
+            }
+            this.ref.detectChanges();
+        });
     }
+}
 
-
-  }
   tasking_chart=[];
   getTaskingChart(){
 
@@ -1348,6 +1527,10 @@ getAccess() {
 
 ngOnInit(): void {
 	this.getStatus();
+   this.getyear() ;
+   this.getoverd();
+   this.getgroup();
+   this.getdistri()
 
     // this.dtOptions = {
     //   pagingType: 'full_numbers'
@@ -1367,6 +1550,24 @@ ngOnInit(): void {
     this.tasklist();
     this.getChart();
   }
+  showDialog() {
+    this.getyearData();
+    this.visible = true; }
+    showDialog1() {
+      this.getdistribution();
+      this.visible1 = true; }
+      showDialog2() {
+        this.getoverdue();
+        this.visible2 = true; }
+        showDialog3() {
+          this.getpendingdata();
+          this.visible3 = true; }
+          showDialog4() {
+           this.getgroupwise()
+            this.visible4= true; }
+  
+
+  
   // task_id:string
   onTaskChange(taskname: any){
     console.log('Selected Task Name:', taskname.id);
@@ -2756,5 +2957,358 @@ getDashboardCount(){
       });
   }
 
+  getyearData() {
+    this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+      .subscribe((res: any) => {
+        this.yearlytaskdata = res;
+        console.log('yearlytaskdata',this.yearlytaskdata)
+        
+      },
+      (error)=>{
+        console.error('Error fetching pending data:', error);
+
+      }
+    )
+  }
+  getoverdue(){
+    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+      this.overdata=res.data;
+      console.log('overdata',this.overdata);
+    },
+    (error)=>{
+      console.error('Error fetching pending data:',error);
+    }
+  )
+  
+  }
+  getpendingdata(){
+    this.api.getAPI(environment.API_URL + '/transaction/pending-by-group/').subscribe((res:any)=>{
+      this.Pendingdata=res.data;
+      console.log('Pendingdata',this.Pendingdata);
+    },
+    (error)=>{
+      console.error('Error fetching pending data:',error );
+    }
+  )
+  }
+  getgroupwise(){
+    this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+      this.groupdata=res.data;
+     
+      console.log('groupdata',this.groupdata);
+    });
+  }
+getdistribution(){
+  this.api.getAPI(environment.API_URL +'/transaction/task-distribution').subscribe((res:any)=>{
+    this. distributiondata=res.data;
+    console.log('distributiondata',this.distributiondata);
+  }
+  );
 }
 
+// getyear() {
+//   this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+//     .subscribe((res: any) => {
+//       this.apiyearlytaskdata1 = res;
+//       this.updated1(this.apidistributiondata1)
+//       console.log('apiyearlytaskdata1',this.apiyearlytaskdata1)
+// }
+    
+//     );
+//   }
+//     updated1(){
+
+//     }
+//   }
+getyear() {
+  this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+    .subscribe((res: any) => {
+      this.apiyearlytaskdata1 = res;
+      this.updateChartOptions(this.apidistributiondata1); // Update the chart options with API data
+      console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
+    });
+}
+
+updateChartOptions(data:any) {
+  const years = this.apiyearlytaskdata1.map(item => item.year.toString());
+  const taskCounts = this.apiyearlytaskdata1.map(item => item.count);
+
+  this.chartOptions11 = {
+    series: [
+      {
+        name: 'Tasks',
+        data: taskCounts
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    xaxis: {
+      categories: years
+    }
+  };
+}
+
+
+
+  getoverd(){
+    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+      this.apioverdata1=res.data;
+      this.updateChartOptions1(this.apioverdata1);
+      console.log('apioverdata1',this.apioverdata1);
+    });
+  }
+  updateChartOptions1(data: any) {
+    
+    const categories = data.map((item: any) => item.sponsoring_directorate);
+    const overdueCounts = data.map((item: any) => item.overdue_count);
+  
+    // Update chart options with the extracted data
+    this.chartOptions13 = {
+      series: [{
+        name: 'Number of Overdue Tasks',
+        data: overdueCounts
+      }],
+      chart: {
+        type: 'bar',
+        height: 450
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '35%',
+        },
+      },
+      xaxis: {
+        categories: categories // Set categories to the extracted directorates
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Overdue Tasks'
+        }
+      },
+      fill: {
+        colors: ['#FF0000'],  // Set the bar color to red
+      },
+      title: {
+        text: 'Overdue Tasks Summary by Group',
+        align: 'center'
+      }
+    };
+  }
+  
+
+// getgroup(){
+//   this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+//     this.apigroupdata1=res.data;
+//     this.updateChartOptions21(this.apigroupdata1);
+//     console.log('apigroupdata1',this.apigroupdata1);
+//   });
+// }
+
+// updateChartOptions21(data: any) {
+//   // Extract categories and series data from the API response
+//   const categories = data.map((item: any) => item.tasking_group_name);
+//   const inProgressData = data.map((item: any) => {
+//     const titleData = item.titles.find((title: any) => title.title === 'Work in Progress');
+//     return titleData ? titleData.task_count : 0;
+//   });
+//   const completedData = data.map((item: any) => {
+//     const titleData = item.titles.find((title: any) => title.title === 'Completed and closure in Progress');
+//     return titleData ? titleData.task_count : 0;
+//   });
+
+//   this.chartOptions21 = {
+//     series: [
+//       {
+//         name: 'IN PROGRESS',
+//         data: inProgressData,
+//         color: '#fcb040'  // Yellow
+//       },
+//       {
+//         name: 'Completed and closure in Progress',
+//         data: completedData,
+//         color: '#f58220'  // Orange
+//       }
+//     ],
+//     chart: {
+//       type: 'bar',
+//       height: 350,
+//       stacked: true
+//     },
+//     plotOptions: {
+//       bar: {
+//         horizontal: false,
+//       },
+//     },
+//     xaxis: {
+//       categories: categories,  // Set categories to the extracted tasking group names
+//       title: {
+//         text: 'WESEE GROUP'
+//       }
+//     },
+//     yaxis: {
+//       title: {
+//         text: 'Number of Tasks'
+//       }
+//     },
+//     legend: {
+//       position: 'top',
+//       horizontalAlign: 'right'
+//     },
+//     fill: {
+//       opacity: 1
+//     },
+//     title: {
+//       text: 'Group-wise Task Summary',
+//       align: 'center'
+//     },
+//     dataLabels: {
+//       enabled: true
+//     }
+//   };
+// }
+
+
+
+getgroup() {
+  this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe(
+    (res: any) => {
+      this.apigroupdata1 = res.data;
+      console.log('API group data:', this.apigroupdata1);
+
+      if (this.apigroupdata1 && this.apigroupdata1.length > 0) {
+        this.updateChartOptions21(this.apigroupdata1);
+      } else {
+        console.error('No data found in API response');
+      }
+    },
+    (error) => {
+      console.error('Error fetching group-wise data:', error);
+    }
+  );
+}
+
+updateChartOptions21(data: any) {
+  console.log('Updating chart with data:', data);
+
+  const categories = data.map((item: any) => item.tasking_group_name);
+  const inProgressData = data.map((item: any) => {
+    const titleData = item.titles.find((title: any) => title.title === 'Work in Progress');
+    return titleData ? titleData.task_count : 0;
+  });
+  const completedData = data.map((item: any) => {
+    const titleData = item.titles.find((title: any) => title.title === 'Completed and closure in Progress');
+    return titleData ? titleData.task_count : 0;
+  });
+
+  // console.log('Categories:', categories);
+  // console.log('In Progress Data:', inProgressData);
+  // console.log('Completed Data:', completedData);
+  // console.log('Raw Data:', data);
+console.log('Categories:', categories);
+console.log('In Progress Data:', inProgressData);
+console.log('Completed Data:', completedData);
+
+
+  this.chartOptions21 = {
+    series: [
+      {
+        name: 'IN PROGRESS',
+        data: inProgressData,
+        color: '#fcb040'  // Yellow
+      },
+      {
+        name: 'Completed and closure in Progress',
+        data: completedData,
+        color: '#f58220'  // Orange
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+      },
+    },
+    xaxis: {
+      categories: categories,
+      title: {
+        text: 'WESEE GROUP'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Number of Tasks'
+      }
+    },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'right'
+    },
+    fill: {
+      opacity: 1
+    },
+    title: {
+      text: 'Group-wise Task Summary',
+      align: 'center'
+    },
+    dataLabels: {
+      enabled: true
+    }
+  };
+}
+
+
+getdistri() {
+  this.api.getAPI(environment.API_URL + '/transaction/task-distribution').subscribe((res: any) => {
+    this.apidistributiondata1 = res.data;
+    this.updated12(this.apidistributiondata1); // Pass the data to updated12
+    console.log('apidistributiondata', this.apidistributiondata1);
+  });
+}
+
+updated12(data: any) { // Accept data parameter
+  const completedCount = data.completed.count;
+  const inProgressCount = data.in_progress.count;
+
+  // Update chart options
+  this.chartOptions12 = {
+    series: [inProgressCount, completedCount],
+    chart: {
+      type: 'pie',
+      height: 350,
+    },
+    labels: ['IN PROGRESS', 'COMPLETED'],
+    legend: {
+      position: 'right',
+      horizontalAlign: 'center'
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300
+          },
+          legend: {
+            position: 'bottom',
+            colors: ['#8AE234', '#FFA500'] ,
+          }
+        }
+      }
+    ],
+    title: {
+      text: 'Task Status Distribution',
+      align: 'center'
+    }
+  };
+}}

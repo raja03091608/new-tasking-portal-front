@@ -18,7 +18,9 @@ import { Dashboard1Component } from './dashboard1/dashboard1.component';
 import { MaterialModule } from '../../material/material.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ButtonModule } from 'primeng/button';
-
+import { DialogModule } from 'primeng/dialog';
+import{TableModule} from'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [DashboardComponent, TaskListComponent, ApprovedTaskComponent, PendingTaskComponent, TaskBlockComponent, Dashboard1Component],
@@ -34,6 +36,9 @@ import { ButtonModule } from 'primeng/button';
 	MaterialModule,
     DataTablesModule,
     AngularEditorModule,
+    DialogModule,
+    TableModule,
+    InputTextModule,
     RouterModule.forChild([
       {
         path: 'view-task',

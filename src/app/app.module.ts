@@ -25,6 +25,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { MatTableModule } from '@angular/material/table';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -39,6 +41,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     HttpClientModule,
     MatTableModule,
 	NgApexchartsModule,
+  InputTextModule,
+  DialogModule,
 
     ToastrModule.forRoot({
 			closeButton: true,
