@@ -56,6 +56,17 @@ export type ChartOptions21 = {
 	dataLabels: ApexDataLabels;
 	legend: ApexLegend;
   };
+  export type ChartOptions22 = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    title: ApexTitleSubtitle;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+  };
+  
+  
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -327,12 +338,15 @@ public chartOptions13: Partial<ChartOptions13>;
 public chartOptions14: Partial<ChartOptions14>;
 @ViewChild('chart8') chart8: ChartComponent;
 public chartOptions21: Partial<ChartOptions21>;
+@ViewChild('chart9') chart9: ChartComponent;
+public chartOptions22: Partial<ChartOptions22>;
 token_details:any;
 allocateForm:FormGroup;
   distribution: any;
   overdata1: any;
   groupdata1: any;
   distributiondata1: any;
+  extenddata: any;
 
  
   
@@ -760,6 +774,43 @@ var updateChartNew = this.chartOptions3 = {
       }
 
     };
+
+    this.chartOptions22 = {
+      series: [
+        {
+          name: "Number of Extended Deadlines",
+          data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ["CMS", "CSI", "SCS"], // Group names
+        title: {
+          text: "WESEE GROUP"
+        }
+      },
+      yaxis: {
+        title: {
+          text: "Number of Extended Deadlines"
+        }
+      },
+ title: {
+        text: "Tasks with Extended Deadlines by Group",
+        align: "center"
+      }
+    }
 
 	this.chartOptions12 = {
 		series: [50.9, 49.1],
@@ -1530,7 +1581,8 @@ ngOnInit(): void {
    this.getyear() ;
    this.getoverd();
    this.getgroup();
-   this.getdistri()
+   this.getdistri();
+   this.getextend();
 
     // this.dtOptions = {
     //   pagingType: 'full_numbers'
@@ -3308,6 +3360,75 @@ updated12(data: any) { // Accept data parameter
     ],
     title: {
       text: 'Task Status Distribution',
+      align: 'center'
+    }
+  };
+}
+// getextend() {
+//   this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
+//     this.extenddata = res.data;
+//     this.updated12(this.extenddata); // Pass the data to updated12
+//     console.log('extenddata', this.extenddata);
+//   });
+// }
+// updated22(data:any){
+
+// }
+
+
+// }
+
+getextend() {
+  this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
+    this.extenddata = res.data;
+    this.updated22(this.extenddata); // Pass the data to updated22
+    console.log('extenddata', this.extenddata);
+  });
+}
+
+updated22(data: any) {
+  const groupNames: string[] = [];
+  const extensionCounts: number[] = [];
+
+  data.forEach((item: any) => {
+    groupNames.push(item.tasking_group_name);
+    extensionCounts.push(item.extension_count);
+  });
+
+  // Update the chart options with the processed data
+  this.chartOptions = {
+    series: [
+      {
+        name: 'Number of Extended Deadlines',
+        data: extensionCounts
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%'
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      categories: groupNames,
+      title: {
+        text: 'WESEE GROUP'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Number of Extended Deadlines'
+      }
+    },
+    title: {
+      text: 'Tasks with Extended Deadlines by Group',
       align: 'center'
     }
   };

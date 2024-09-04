@@ -500,7 +500,27 @@
  </p-dialog>
  
 
+ <div class="col-xl-12 mb-xl-12 mt-0">
+  <div class="card card-flush h-xl-100 progress-chart mapbg">
+    <div class="card-header">
+      <h3 class="card-title align-items-start flex-column pt-5">
+        <span class="fw-bold mb-3">Task With Extended Deadline By Groups </span>
+      </h3>
+      <!-- <p-button (onClick)="showDialog()" label="View" class="show-button"></p-button> -->
+      
+    </div>
 
+<div id="chart9">
+  <apx-chart
+    [series]="chartOptions22.series"
+    [chart]="chartOptions22.chart"
+    [xaxis]="chartOptions22.xaxis"
+    [yaxis]="chartOptions22.yaxis"
+    [title]="chartOptions22.title"
+    [plotOptions]="chartOptions22.plotOptions"
+    [dataLabels]="chartOptions22.dataLabels"
+  ></apx-chart>
+</div>
 
 
 
