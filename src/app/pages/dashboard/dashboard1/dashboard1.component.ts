@@ -223,9 +223,13 @@ export class Dashboard1Component implements OnInit,OnDestroy {
     displayedColumnsNewTable: string[] =
      [
       'task_name', 
-      'secondary_title', 
+      'task_Number_dee',
       'sponsoring_directorate',
-       'task_Number_dee',
+      'assigned_tasking_group',
+      'secondary_title',
+
+      
+       
       'Action'
     ];
 
@@ -1007,6 +1011,7 @@ var updateChartNew = this.chartOptions3 = {
       chart: {
         type: 'bar',
         stacked: true,
+        height: '400px',
       },
       xaxis: {
         categories: [],
@@ -3197,7 +3202,7 @@ updateChartOptions(data:any) {
         }
       },
       fill: {
-        colors: ['#ffff0094'],  
+        colors: ['#2196f3'],  
       },
       title: {
         text: 'Overdue Tasks Summary by Group',
@@ -3470,9 +3475,11 @@ getNewTaskingStatus() {
         this.newTableDataSource = new MatTableDataSource(
           res.data.map((task: any) => ({
             task_name: task?.tasking?.task_name, 
-            secondary_title: task.secondary_title,
-            sponsoring_directorate: task?.tasking?.sponsoring_directorate,
             task_number_dee: task?.tasking?.task_number_dee,
+            sponsoring_directorate: task?.tasking?.sponsoring_directorate,
+            secondary_title: task.secondary_title,
+            assigned_tasking_group: task?.assigned_tasking_group?.name,
+           
            
           }))
         );
@@ -3495,6 +3502,7 @@ applyFilter1(event: Event) {
     this.getNewTaskingStatus();
   }
 }
+
 
 
   }

@@ -1399,23 +1399,31 @@
       </div>
     </div>    
 
-     <table mat-table [dataSource]="newTableDataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+     <table mat-table [dataSource]="newTableDataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded mt-5">
       <ng-container matColumnDef="task_name">
         <th mat-header-cell *matHeaderCellDef> Task Name<i class="pi pi-filter" style="font-size: 1rem"></i> </th>
         <td mat-cell *matCellDef="let element">  {{ element?.task_name }} </td>
-      </ng-container>
-      <ng-container matColumnDef="secondary_title">
-        <th mat-header-cell *matHeaderCellDef> Status<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{element?.secondary_title}} </td>
-      </ng-container>
-      <ng-container matColumnDef="sponsoring_directorate">
-        <th mat-header-cell *matHeaderCellDef>Sponsoring Directorate<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{element?.sponsoring_directorate}} </td>
       </ng-container>
       <ng-container matColumnDef="task_Number_dee">
         <th mat-header-cell *matHeaderCellDef>  Task Number<i class="pi pi-filter" style="font-size: 1rem"></i></th>
         <td mat-cell *matCellDef="let element"> {{ element?.task_number_dee }} </td>
       </ng-container>
+      <ng-container matColumnDef="sponsoring_directorate">
+        <th mat-header-cell *matHeaderCellDef>Sponsoring Directorate<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{element?.sponsoring_directorate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="assigned_tasking_group">
+        <th mat-header-cell *matHeaderCellDef> Assigned Tasking Group Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{ element?.assigned_tasking_group}} </td>
+      </ng-container>
+      
+     
+      <ng-container matColumnDef="secondary_title">
+        <th mat-header-cell *matHeaderCellDef> Status<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{element?.secondary_title}} </td>
+      </ng-container>
+     
+     
       
       <ng-container matColumnDef="Action">
         <th class="text-center" mat-header-cell *matHeaderCellDef><b>Action</b>
