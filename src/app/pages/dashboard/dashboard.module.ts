@@ -21,6 +21,20 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import{TableModule} from'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+
+import { MenuModule } from 'primeng/menu';
+
+import { MatTableModule } from '@angular/material/table';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { MatButtonModule } from '@angular/material/button';
+
+
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [DashboardComponent, TaskListComponent, ApprovedTaskComponent, PendingTaskComponent, TaskBlockComponent, Dashboard1Component],
@@ -39,6 +53,15 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,
     TableModule,
     InputTextModule,
+    MenuModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule , 
+    MatMenuModule,
+    MatButtonModule,
+    
+  
     RouterModule.forChild([
       {
         path: 'view-task',

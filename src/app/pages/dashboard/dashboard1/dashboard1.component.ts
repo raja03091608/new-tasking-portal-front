@@ -8,7 +8,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { environment } from "../../../../environments/environment";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatColumnDef, MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { ConsoleService } from "../../../service/console.service";
 import { NotificationService } from "../../../service/notification.service";
@@ -24,7 +24,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import 'datatables.net'
 //import { NgZone } from '@angular/core'
 
-import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle, } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
 import moment from 'moment';
 import DataTables from 'datatables.net';
 declare let $: any;
@@ -43,19 +43,29 @@ declare function openModal(selector): any;
 //   plotOptions: ApexPlotOptions;
 //   tooltip:ApexTooltip;
 // };
-export type ChartOptions21 = {
+// export type ChartOptions21 = {
+// 	series: ApexAxisChartSeries;
+// 	chart: ApexChart;
+// 	xaxis: ApexXAxis;
+// 	yaxis: ApexYAxis;
+// 	title: ApexTitleSubtitle;
+// 	plotOptions: ApexPlotOptions;
+// 	fill: ApexFill;
+// 	dataLabels: ApexDataLabels;
+// 	legend: ApexLegend;
+//   };
 
-//dtOptions: DataTables.Settings = {};
-	series: ApexAxisChartSeries;
-	chart: ApexChart;
-	xaxis: ApexXAxis;
-	yaxis: ApexYAxis;
-	title: ApexTitleSubtitle;
-	plotOptions: ApexPlotOptions;
-	fill: ApexFill;
-	dataLabels: ApexDataLabels;
-	legend: ApexLegend;
-  };
+export type chartOptionsGroup = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  legend: ApexLegend;
+  plotOptions: ApexPlotOptions;
+  colors: string[];
+  dataLabels: ApexDataLabels;
+  };
+
   export type ChartOptions22 = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -131,6 +141,7 @@ export type ChartOptions1 = {
 	legend: ApexLegend;
 	dataLabels: ApexDataLabels;
 	title: ApexTitleSubtitle;
+  colors: string[];
   };
 
   export type ChartOptions13 = {
@@ -162,7 +173,7 @@ export type ChartOptions1 = {
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class Dashboard1Component implements OnInit,OnDestroy {
-
+  
   apioverdata1=[] as any;
   apigroupdata1=[]as any;
   apidistributiondata1=[] as any;
@@ -178,6 +189,9 @@ export class Dashboard1Component implements OnInit,OnDestroy {
   Pendingdata=[] as any;
   groupdata=[] as any;  
   distributiondata=[] as any;
+  statusTaskingNew=  [] as any;
+  newTableDataSource = new MatTableDataSource([]);
+
 
 	projects: any[] = [
 		{ name: 'Navy3005', code: '30/5/2024', status: 'INITIATION STARTED' },
@@ -191,11 +205,29 @@ export class Dashboard1Component implements OnInit,OnDestroy {
 		// "task_description",
     "task_name",
 		// "file",
-		"due_date",
-		"assignee",
-		"Action",
+		// "due_date",
+		// "assignee",
+  //   // "sponsoring_directorate",
+  //   'title',
+  // 'secondary_title',
+  // 'start_date',
+  // 'end_date',
+  // 'project_progress',
+  // 'status_summary',
+  // 'Action'
+    
+
 
 	  ];
+
+    displayedColumnsNewTable: string[] =
+     [
+      'task_name', 
+      'secondary_title', 
+      'sponsoring_directorate',
+       'task_Number_dee',
+      'Action'
+    ];
 
     displayedColumnslist: string[] = [
       "tasking_status",
@@ -209,6 +241,7 @@ export class Dashboard1Component implements OnInit,OnDestroy {
       "delete",
 
       ];
+      
 
     displayedColumnsview: string[] = [
       "milestone",
@@ -336,8 +369,10 @@ public chartOptions13: Partial<ChartOptions13>;
 
 @ViewChild('chart7') chart7: ChartComponent;
 public chartOptions14: Partial<ChartOptions14>;
-@ViewChild('chart8') chart8: ChartComponent;
-public chartOptions21: Partial<ChartOptions21>;
+// @ViewChild('chart8') chart8: ChartComponent;
+// public chartOptions21: Partial<ChartOptions21>;
+@ViewChild('chartGroup') chartGroup: ChartComponent;
+public chartOptionsGroup: Partial<chartOptionsGroup>;
 @ViewChild('chart9') chart9: ChartComponent;
 public chartOptions22: Partial<ChartOptions22>;
 token_details:any;
@@ -347,6 +382,10 @@ allocateForm:FormGroup;
   groupdata1: any;
   distributiondata1: any;
   extenddata: any;
+  chartData: any = {
+    series: [],
+  };
+
 
  
   
@@ -914,55 +953,82 @@ var updateChartNew = this.chartOptions3 = {
 			align: 'center'
 		  }
 	  };
-	  this.chartOptions21 = {
-		series: [
-			{
-			  name: 'IN PROGRESS',
-			  data: [10, 20, 30, 5, 10],  // Replace with your data
-			  color: '#fcb040'  // Yellow
-			},
-			{
-			  name: 'YES',
-			  data: [20, 10, 20, 5, 5],  // Replace with your data
-			  color: '#f58220'  // Orange
-			}
-		  ],
-		  chart: {
-			type: 'bar',
-			height: 350,
-			stacked: true
-		  },
-		  plotOptions: {
-			bar: {
-			  horizontal: false,
-			},
-		  },
-		  xaxis: {
-			categories: ['CMS', 'CSC', 'CSI', 'ETG', 'SCS'],  // Replace with your categories
-			title: {
-			  text: 'WESEE GROUP'
-			}
-		  },
-		  yaxis: {
-			title: {
-			  text: 'Number of Tasks'
-			}
-		  },
-		  legend: {
-			position: 'top',
-			horizontalAlign: 'right'
-		  },
-		  fill: {
-			opacity: 1
-		  },
-		  title: {
-			text: 'Group-wise Task Summary',
-			align: 'center'
-		  },
-		  dataLabels: {
-			enabled: true
-		  }
-	  };
+	  // this.chartOptions21 = {
+		// series: [
+		// 	{
+		// 	  name: 'IN PROGRESS',
+		// 	  data: [10, 20, 30, 5, 10],  // Replace with your data
+		// 	  color: '#fcb040'  // Yellow
+		// 	},
+		// 	{
+		// 	  name: 'YES',
+		// 	  data: [20, 10, 20, 5, 5],  // Replace with your data
+		// 	  color: '#f58220'  // Orange
+		// 	}
+		//   ],
+		//   chart: {
+		// 	type: 'bar',
+		// 	height: 350,
+		// 	stacked: true
+		//   },
+		//   plotOptions: {
+		// 	bar: {
+		// 	  horizontal: false,
+		// 	},
+		//   },
+		//   xaxis: {
+		// 	categories: ['CMS', 'CSC', 'CSI', 'ETG', 'SCS'],  // Replace with your categories
+		// 	title: {
+		// 	  text: 'WESEE GROUP'
+		// 	}
+		//   },
+		//   yaxis: {
+		// 	title: {
+		// 	  text: 'Number of Tasks'
+		// 	}
+		//   },
+		//   legend: {
+		// 	position: 'top',
+		// 	horizontalAlign: 'right'
+		//   },
+		//   fill: {
+		// 	opacity: 1
+		//   },
+		//   title: {
+		// 	text: 'Group-wise Task Summary',
+		// 	align: 'center'
+		//   },
+		//   dataLabels: {
+		// 	enabled: true
+		//   }
+	  // };
+
+    this.chartOptionsGroup = {
+      chart: {
+        type: 'bar',
+        stacked: true,
+      },
+      xaxis: {
+        categories: [],
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Tasks',
+        },
+      },
+      legend: {
+        position: 'right',
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+        },
+      },
+      colors: ['#fbbf24', '#fb923c'], // Yellow for "IN PROGRESS", Orange for "YES"
+      dataLabels: {
+        enabled: false,
+      },
+    };
   }
 
 
@@ -1038,8 +1104,9 @@ status = this.taskForm.value.status;
     this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate,task_name:data.task_name,task_description:data.task_description}})
 
     // this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
-    this.allocateForm.patchValue({tasking_group:data.assigned_tasking_group.length>0 && data.assigned_tasking_group[0].tasking_group?data.assigned_tasking_group[0].tasking_group.id:''
-    });
+    // this.allocateForm.patchValue({tasking_group:data.assigned_tasking_group.length>0 && data.assigned_tasking_group[0].tasking_group?data.assigned_tasking_group[0].tasking_group.id:''
+    // });
+    this.allocateForm.patchValue({tasking_group:data?.assigned_tasking_group?.length>0 && data?.assigned_tasking_group[0]?.tasking_group?data?.assigned_tasking_group[0]?.tasking_group?.id:''});
 
     // this.MileStoneForm.patchValue(data);
     // this.MileStoneForm.patchValue({tasking_status:data.tasking_status.id});
@@ -1312,158 +1379,158 @@ status = this.taskForm.value.status;
   // }
 
 
-  getStatusTasking() {
-    console.log("getStatusTasking called");
+//   getStatusTasking() {
+//     console.log("getStatusTasking called");
     
-    if(this.token_detail.process_id == 3 && this.token_detail.tasking_id != '') {
-        console.log("Condition 1: process_id == 3 and tasking_id is not empty");
+//     if(this.token_detail.process_id == 3 && this.token_detail.tasking_id != '') {
+//         console.log("Condition 1: process_id == 3 and tasking_id is not empty");
 
-        this.api
-        .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id})
-        .subscribe((res) => {
-            console.log("API response:", res);
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
 
-            this.dataSourceDel = new MatTableDataSource(res.data);
-            this.statusTasking = res.data;
-            this.dataSourceDel.paginator = this.pagination;
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
 
-            console.log("statusTasking:", this.statusTasking);
+//             console.log("statusTasking:", this.statusTasking);
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].project_progress != '') {
-                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
-                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
 
-                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
-                        }
-                    }
-                    this.name.push([this.statusTasking[i].task_number_dee]);
-                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
-                }
-            }
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
-                            this.chart_data.push({
-                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
-                                x: this.statusTasking[i].task_number_dee,
-                                product: 'name',
-                                info: 'info',
-                                site: 'name',
-                                fillColor: "#008FFB",
-                                id: this.statusTasking[i].id
-                            });
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee,
+//                                 product: 'name',
+//                                 info: 'info',
+//                                 site: 'name',
+//                                 fillColor: "#008FFB",
+//                                 id: this.statusTasking[i].id
+//                             });
 
-                            console.log("Chart data:", this.chart_data);
-                        }
-                    }
-                }
-            }
-            this.ref.detectChanges();
-        });
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
 
-    } else if(this.token_detail.role_id == 3 && this.token_detail.process_id == 2 && this.token_detail.department_id != '') {
-        console.log("Condition 2: role_id == 3, process_id == 2, and department_id is not empty");
+//     } else if(this.token_detail.role_id == 3 && this.token_detail.process_id == 2 && this.token_detail.department_id != '') {
+//         console.log("Condition 2: role_id == 3, process_id == 2, and department_id is not empty");
 
-        this.api
-        .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id, 'created_by': this.token_detail.user_id})
-        .subscribe((res) => {
-            console.log("API response:", res);
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id, 'created_by': this.token_detail.user_id})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
 
-            this.dataSourceDel = new MatTableDataSource(res.data);
-            this.statusTasking = res.data;
-            this.dataSourceDel.paginator = this.pagination;
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
 
-            console.log("statusTasking:", this.statusTasking);
+//             console.log("statusTasking:", this.statusTasking);
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee) {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].project_progress != '') {
-                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
-                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee) {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
 
-                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
-                        }
-                    }
-                    this.name.push([this.statusTasking[i].task_number_dee]);
-                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
-                }
-            }
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
-                            this.chart_data.push({
-                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
-                                x: this.statusTasking[i].task_number_dee,
-                                product: 'name',
-                                info: 'info',
-                                site: 'name',
-                                fillColor: "#008FFB",
-                                id: this.statusTasking[i].id
-                            });
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee,
+//                                 product: 'name',
+//                                 info: 'info',
+//                                 site: 'name',
+//                                 fillColor: "#008FFB",
+//                                 id: this.statusTasking[i].id
+//                             });
 
-                            console.log("Chart data:", this.chart_data);
-                        }
-                    }
-                }
-            }
-            this.ref.detectChanges();
-        });
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
 
-    } else {
-        console.log("Condition 3: process_id present but tasking_id is empty");
+//     } else {
+//         console.log("Condition 3: process_id present but tasking_id is empty");
 
-        this.api
-        .postAPI(environment.API_URL + "transaction/trial/status", {'process_id': this.token_detail.process_id, 'tasking_id': ''})
-        .subscribe((res) => {
-            console.log("API response:", res);
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'process_id': this.token_detail.process_id, 'tasking_id': ''})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
 
-            this.dataSourceDel = new MatTableDataSource(res.data);
-            this.statusTasking = res.data;
-            this.dataSourceDel.paginator = this.pagination;
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
 
-            console.log("statusTasking:", this.statusTasking);
+//             console.log("statusTasking:", this.statusTasking);
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].project_progress != '') {
-                            this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
-                            this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
 
-                            console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
-                        }
-                    }
-                    this.name.push([this.statusTasking[i].task_number_dee]);
-                    console.log("Task number dee:", this.statusTasking[i].task_number_dee);
-                }
-            }
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
 
-            for(let i = 0; i < this.statusTasking.length; i++) {
-                if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
-                    for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
-                        if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
-                            this.chart_data.push({
-                                y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
-                                x: this.statusTasking[i].task_number_dee
-                            });
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee
+//                             });
 
-                            console.log("Chart data:", this.chart_data);
-                        }
-                    }
-                }
-            }
-            this.ref.detectChanges();
-        });
-    }
-}
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
+//     }
+// }
 
   tasking_chart=[];
   getTaskingChart(){
@@ -1583,14 +1650,16 @@ ngOnInit(): void {
    this.getgroup();
    this.getdistri();
    this.getextend();
-
+  //  this.getStatusTaskingNew();
+  this.getNewTaskingStatus();
+ 
     // this.dtOptions = {
     //   pagingType: 'full_numbers'
     // };
     this.token_detail=this.api.decryptData(localStorage.getItem('token-detail'));
     //console.log(' this.token_detail', this.token_detail)
     // this.tasking_ID=this.api.decryptData();
-    this.getStatusTasking();
+   
     this.getTasking();
 
     this.getMileStone;
@@ -3013,12 +3082,10 @@ getDashboardCount(){
     this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
       .subscribe((res: any) => {
         this.yearlytaskdata = res;
-        console.log('yearlytaskdata',this.yearlytaskdata)
-        
+        console.log('yearlytaskdata',this.yearlytaskdata) 
       },
       (error)=>{
         console.error('Error fetching pending data:', error);
-
       }
     )
   }
@@ -3058,20 +3125,8 @@ getdistribution(){
   );
 }
 
-// getyear() {
-//   this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
-//     .subscribe((res: any) => {
-//       this.apiyearlytaskdata1 = res;
-//       this.updated1(this.apidistributiondata1)
-//       console.log('apiyearlytaskdata1',this.apiyearlytaskdata1)
-// }
-    
-//     );
-//   }
-//     updated1(){
 
-//     }
-//   }
+// 2ndchartapi
 getyear() {
   this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
     .subscribe((res: any) => {
@@ -3080,7 +3135,6 @@ getyear() {
       console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
     });
 }
-
 updateChartOptions(data:any) {
   const years = this.apiyearlytaskdata1.map(item => item.year.toString());
   const taskCounts = this.apiyearlytaskdata1.map(item => item.count);
@@ -3103,7 +3157,7 @@ updateChartOptions(data:any) {
 }
 
 
-
+// 3rdchartapi
   getoverd(){
     this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
       this.apioverdata1=res.data;
@@ -3111,12 +3165,11 @@ updateChartOptions(data:any) {
       console.log('apioverdata1',this.apioverdata1);
     });
   }
+  
   updateChartOptions1(data: any) {
-    
     const categories = data.map((item: any) => item.sponsoring_directorate);
     const overdueCounts = data.map((item: any) => item.overdue_count);
-  
-    // Update chart options with the extracted data
+    
     this.chartOptions13 = {
       series: [{
         name: 'Number of Overdue Tasks',
@@ -3129,11 +3182,14 @@ updateChartOptions(data:any) {
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: '35%',
+          columnWidth: '50%',  // Adjust the width of the bar
         },
       },
       xaxis: {
-        categories: categories // Set categories to the extracted directorates
+        categories: categories,
+        labels: {
+          rotate: -45,  // Rotate the labels for better visibility
+        }
       },
       yaxis: {
         title: {
@@ -3141,15 +3197,16 @@ updateChartOptions(data:any) {
         }
       },
       fill: {
-        colors: ['#FF0000'],  // Set the bar color to red
+        colors: ['#ffff0094'],  
       },
       title: {
         text: 'Overdue Tasks Summary by Group',
         align: 'center'
       }
     };
-  }
-  
+}
+
+  // 4thchartapi
 
 // getgroup(){
 //   this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
@@ -3158,9 +3215,7 @@ updateChartOptions(data:any) {
 //     console.log('apigroupdata1',this.apigroupdata1);
 //   });
 // }
-
 // updateChartOptions21(data: any) {
-//   // Extract categories and series data from the API response
 //   const categories = data.map((item: any) => item.tasking_group_name);
 //   const inProgressData = data.map((item: any) => {
 //     const titleData = item.titles.find((title: any) => title.title === 'Work in Progress');
@@ -3222,99 +3277,63 @@ updateChartOptions(data:any) {
 //   };
 // }
 
-
-
-getgroup() {
+getgroup(): void {
   this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe(
     (res: any) => {
       this.apigroupdata1 = res.data;
-      console.log('API group data:', this.apigroupdata1);
-
-      if (this.apigroupdata1 && this.apigroupdata1.length > 0) {
-        this.updateChartOptions21(this.apigroupdata1);
-      } else {
-        console.error('No data found in API response');
-      }
+      this.updateChartOptionsGroup(this.apigroupdata1);
+      console.log('apigroupdata1', this.apigroupdata1);
     },
     (error) => {
-      console.error('Error fetching group-wise data:', error);
+      console.error('Error fetching group data', error);
     }
   );
 }
 
-updateChartOptions21(data: any) {
-  console.log('Updating chart with data:', data);
+updateChartOptionsGroup(res: any[]): void {
+  const categories = [];
+  const seriesData = [
+    {
+      name: 'IN PROGRESS',
+      data: [],
+    },
+    {
+      name: 'Completed',
+      data: [],
+    },
+  ];
 
-  const categories = data.map((item: any) => item.tasking_group_name);
-  const inProgressData = data.map((item: any) => {
-    const titleData = item.titles.find((title: any) => title.title === 'Work in Progress');
-    return titleData ? titleData.task_count : 0;
+  // Loop through the response data and build chart categories and series
+  res.forEach((group) => {
+    categories.push(group.tasking_group_name);
+
+    // Count tasks based on their titles (you might adjust this logic)
+    const inProgressCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('In Progress') || title.title.includes('Work')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    const completedCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Completed') || title.title.includes('Task Closed')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    seriesData[0].data.push(inProgressCount); // IN PROGRESS
+    seriesData[1].data.push(completedCount);  // YES (Completed tasks)
   });
-  const completedData = data.map((item: any) => {
-    const titleData = item.titles.find((title: any) => title.title === 'Completed and closure in Progress');
-    return titleData ? titleData.task_count : 0;
-  });
 
-  // console.log('Categories:', categories);
-  // console.log('In Progress Data:', inProgressData);
-  // console.log('Completed Data:', completedData);
-  // console.log('Raw Data:', data);
-console.log('Categories:', categories);
-console.log('In Progress Data:', inProgressData);
-console.log('Completed Data:', completedData);
-
-
-  this.chartOptions21 = {
-    series: [
-      {
-        name: 'IN PROGRESS',
-        data: inProgressData,
-        color: '#fcb040'  // Yellow
-      },
-      {
-        name: 'Completed and closure in Progress',
-        data: completedData,
-        color: '#f58220'  // Orange
-      }
-    ],
-    chart: {
-      type: 'bar',
-      height: 350,
-      stacked: true
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-      },
-    },
-    xaxis: {
-      categories: categories,
-      title: {
-        text: 'WESEE GROUP'
-      }
-    },
-    yaxis: {
-      title: {
-        text: 'Number of Tasks'
-      }
-    },
-    legend: {
-      position: 'top',
-      horizontalAlign: 'right'
-    },
-    fill: {
-      opacity: 1
-    },
-    title: {
-      text: 'Group-wise Task Summary',
-      align: 'center'
-    },
-    dataLabels: {
-      enabled: true
-    }
-  };
+  // Update chart data and options dynamically
+  this.chartData.series = seriesData;
+  this.chartOptionsGroup.xaxis.categories = categories;
 }
 
+
+
+// 5thchartapi
 
 getdistri() {
   this.api.getAPI(environment.API_URL + '/transaction/task-distribution').subscribe((res: any) => {
@@ -3324,11 +3343,10 @@ getdistri() {
   });
 }
 
-updated12(data: any) { // Accept data parameter
+
+updated12(data: any) { 
   const completedCount = data.completed.count;
   const inProgressCount = data.in_progress.count;
-
-  // Update chart options
   this.chartOptions12 = {
     series: [inProgressCount, completedCount],
     chart: {
@@ -3336,6 +3354,7 @@ updated12(data: any) { // Accept data parameter
       height: 350,
     },
     labels: ['IN PROGRESS', 'COMPLETED'],
+    colors: ["#adff2f" ,"#ff0000ad"], // Green for IN PROGRESS, Yellow for COMPLETED
     legend: {
       position: 'right',
       horizontalAlign: 'center'
@@ -3352,8 +3371,7 @@ updated12(data: any) { // Accept data parameter
             width: 300
           },
           legend: {
-            position: 'bottom',
-            colors: ['#8AE234', '#FFA500'] ,
+            position: 'bottom'
           }
         }
       }
@@ -3364,20 +3382,11 @@ updated12(data: any) { // Accept data parameter
     }
   };
 }
-// getextend() {
-//   this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
-//     this.extenddata = res.data;
-//     this.updated12(this.extenddata); // Pass the data to updated12
-//     console.log('extenddata', this.extenddata);
-//   });
-// }
-// updated22(data:any){
-
-// }
 
 
-// }
 
+
+// 6tchartAPI
 getextend() {
   this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
     this.extenddata = res.data;
@@ -3396,7 +3405,7 @@ updated22(data: any) {
   });
 
   // Update the chart options with the processed data
-  this.chartOptions = {
+  this.chartOptions22 = {
     series: [
       {
         name: 'Number of Extended Deadlines',
@@ -3432,4 +3441,61 @@ updated22(data: any) {
       align: 'center'
     }
   };
-}}
+}
+
+
+
+
+// getStatusTaskingNew() {
+//   this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+//     .subscribe((res: any) => {
+//       this.statusTaskingNew = res.data;
+//       this.tabledata(this.statusTaskingNew);
+//       console.log('statusTaskingNew', this.statusTaskingNew);
+//     });
+//   }
+
+//     tabledata(data:any){
+
+//     }
+
+
+
+getNewTaskingStatus() {
+  this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+    .subscribe((res: any) => {
+      console.log(res);
+      if (res && res.data) {
+        console.log(res.data);
+        this.newTableDataSource = new MatTableDataSource(
+          res.data.map((task: any) => ({
+            task_name: task?.tasking?.task_name, 
+            secondary_title: task.secondary_title,
+            sponsoring_directorate: task?.tasking?.sponsoring_directorate,
+            task_number_dee: task?.tasking?.task_number_dee,
+           
+          }))
+        );
+        this.newTableDataSource.paginator = this.pagination;
+      } else {
+        console.error('Data part of the response is undefined');
+      }
+    }, error => {
+      console.error('Error fetching API data', error);
+    });
+}
+
+applyFilter1(event: Event) {
+  this.filterValue = (event.target as HTMLInputElement).value;
+  if (this.filterValue) {
+    this.newTableDataSource.filter = this.filterValue.trim().toLowerCase();
+    // this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  } else {
+    // this.getTasking();
+    this.getNewTaskingStatus();
+  }
+}
+
+
+  }
+

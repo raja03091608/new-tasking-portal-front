@@ -182,6 +182,7 @@
 				[responsive]="chartOptions12.responsive"
 				[legend]="chartOptions12.legend"
 				[dataLabels]="chartOptions12.dataLabels"
+        [colors]="chartOptions12.colors"
 				[title]="chartOptions12.title">
 				</apx-chart>
 			</div>
@@ -212,7 +213,7 @@
 
 
 
-	<div class="col-xl-12 mb-xl-12 mt-0">
+	<div class="col-xl-12 mb-xl-12" style="margin-top: 30px;"  >
 		<div class="card card-flush h-xl-100 progress-chart mapbg">
 			<div class="card-header">
 				<h3 class="card-title align-items-start flex-column pt-5">
@@ -411,7 +412,7 @@
       </h3>
       <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button>
     </div>
-<div id="chart8">
+<!-- <div id="chart8">
   <apx-chart
     [series]="chartOptions21.series"
     [chart]="chartOptions21.chart"
@@ -423,7 +424,25 @@
     [dataLabels]="chartOptions21.dataLabels"
     [legend]="chartOptions21.legend"
   ></apx-chart>
+  </div> -->
+  <div id="chartGroup">
+    <apx-chart
+      *ngIf="chartData.series.length"
+      [series]="chartData.series"
+      [chart]="chartOptionsGroup.chart"
+      [xaxis]="chartOptionsGroup.xaxis"
+      [yaxis]="chartOptionsGroup.yaxis"
+      [legend]="chartOptionsGroup.legend"
+      [plotOptions]="chartOptionsGroup.plotOptions"
+      [colors]="chartOptionsGroup.colors"
+      [dataLabels]="chartOptionsGroup.dataLabels"
+    ></apx-chart>
+    <div *ngIf="!chartData.series.length" class="no-data-message">
+      Loading chart data or no data available...
+    </div>
   </div>
+
+  
   </div>
   </div>
 
@@ -521,12 +540,11 @@
     [dataLabels]="chartOptions22.dataLabels"
   ></apx-chart>
 </div>
+  </div>
+ </div>
 
 
-
-
-
- <div class="row g-5 map-card g-xl-8">
+ <!-- <div class="row g-5 map-card g-xl-8">
 	<div class="col-md-12">
 		<div class="card p-0" style="margin-bottom: 60px;">
 <div class="card-header">
@@ -567,8 +585,14 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="assignee">
-        <th mat-header-cell *matHeaderCellDef><b>Assignee </b></th>
+        <th mat-header-cell *matHeaderCellDef><b>Tasking Group</b></th>
         <td mat-cell *matCellDef="let data"> {{data&&data.assigned_tasking_group?data.assigned_tasking_group[0].tasking_group.name:'-'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="sponsoring_directorate">
+        <th mat-header-cell *matHeaderCellDef><b>Sponsoring Directorate</b></th>
+        <td mat-cell *matCellDef="let data">
+          {{ data && data.sponsoring_directorate ? data.sponsoring_directorate : '-' }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="time_frame_for_completion">
@@ -585,8 +609,8 @@
         <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
             No Records Found!
         </th >
-        </ng-container>
-      <ng-container matColumnDef="Action">
+        </ng-container> -->
+        <!-- <ng-container matColumnDef="Action">
         <th class="text-center" mat-header-cell *matHeaderCellDef><ng-container><b>Action</b></ng-container></th>
         <td class="text-center action-icon-1" mat-cell *matCellDef="let data" >
         <a (click)="openview(data.id)"  class="btn btn-icon bi bi-eye-fill btn-bg-light btn-active-color-primary btn-sm" placement="end" tooltipClass="dark-theme" ngbTooltip="View Status">
@@ -606,20 +630,24 @@
               >
               </a>
         </td>
-    </ng-container>
+    </ng-container>  -->
+    <!-- <ng-container matColumnDef="Action">
+      <th class="text-center" mat-header-cell *matHeaderCellDef><ng-container><b>Action</b></ng-container></th>
+      <td class="text-center action-icon-1" mat-cell *matCellDef="let data">
+          <button mat-button [matMenuTriggerFor]="actionsMenu" style="background-color: #2721a3;
+    color: white;">Actions</button>
+          <mat-menu #actionsMenu="matMenu">
+            <button mat-menu-item (click)="openEdit(data)">
+              <span>View Tasking</span>
+          </button>             
+          </mat-menu>
+      </td>
+    </ng-container> -->
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
-        <tr class="mat-row" *matNoDataRow>
-          <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with records</b></td>
-       </tr>
-      </table>
-  </div>
-</div>
-	</div>
 
-</div>  
+
+  
+
 
 
 <ng-template #template let-modal>
@@ -1284,3 +1312,131 @@
   </div>
 
 </p-dialog>
+
+
+
+
+
+ 
+
+
+
+<!-- <div class="card">
+  <div class="card-header">
+    <h3 class="card-title align-items-start flex-column pt-10">
+      <span class="fw-bold mb-3"> Monitor task progress </span>
+    </h3>
+  </div>
+  <div class="card-body">
+    <p-table
+      [value]="statusTaskingNew"
+      [paginator]="true"
+      [rows]="5"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rowsPerPageOptions]="[50, 10, 20]"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Task Name</th>
+          <th>Task Number</th>
+          <th>Sponsoring Directorate</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-task>
+        <tr>
+          <td>{{ task.tasking?.name }}</td>
+          <td>{{ task.tasking?.task_number_dee }}</td>
+          <td>{{ task.tasking?.sponsoring_directorate }}</td>
+          <td>{{ task.secondary_title }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div> -->
+
+
+
+
+<!-- <ng-container *ngIf="data">
+  <ng-template pTemplate="header">
+    <th class="text-center">
+      <b>Action</b>
+    </th>
+  </ng-template>
+  <ng-template pTemplate="body" let-data>
+    <td class="text-center action-icon-1">
+      <p-button label="Actions" icon="pi pi-ellipsis-v" [pMenu]="actionsMenu" styleClass="p-button-primary"></p-button>
+      <p-menu #actionsMenu>
+        <p-menuitem label="View Tasking" icon="pi pi-eye" (click)="openEdit(data)"></p-menuitem>
+      </p-menu>
+    </td>
+  </ng-template>
+</ng-container> -->
+
+<div class="row g-5 map-card g-xl-8">
+	<div class="col-md-12">
+		<div class="card p-0" style="margin-bottom: 60px;">
+      <div class="card-header">
+          <h3 class="card-title align-items-start flex-column pt-10">
+      <span class="fw-bold mb-3"> Monitor task progress </span>
+    </h3>
+     </div>
+  <div class="card-body py-3">
+    <div class="container table-options">
+      <div class="row">
+      <div class="col-md-6">
+        <mat-paginator [length]="newTableDataSource?.data?.length" [pageSize]="10"
+                 [pageSizeOptions]="[10, 20, 30, 50, 100]" aria-label="Select page">
+        </mat-paginator>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="fill">
+        <mat-label>Search your text here</mat-label>
+        <input matInput (keyup)="applyFilter1($event)" class="search-mat-table" #input>
+        </mat-form-field>
+      </div>
+      </div>
+    </div>    
+
+     <table mat-table [dataSource]="newTableDataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+      <ng-container matColumnDef="task_name">
+        <th mat-header-cell *matHeaderCellDef> Task Name<i class="pi pi-filter" style="font-size: 1rem"></i> </th>
+        <td mat-cell *matCellDef="let element">  {{ element?.task_name }} </td>
+      </ng-container>
+      <ng-container matColumnDef="secondary_title">
+        <th mat-header-cell *matHeaderCellDef> Status<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{element?.secondary_title}} </td>
+      </ng-container>
+      <ng-container matColumnDef="sponsoring_directorate">
+        <th mat-header-cell *matHeaderCellDef>Sponsoring Directorate<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{element?.sponsoring_directorate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="task_Number_dee">
+        <th mat-header-cell *matHeaderCellDef>  Task Number<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+        <td mat-cell *matCellDef="let element"> {{ element?.task_number_dee }} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="Action">
+        <th class="text-center" mat-header-cell *matHeaderCellDef><b>Action</b>
+          <td class="text-center action-icon-1" mat-cell *matCellDef="let data">
+            <button mat-button [matMenuTriggerFor]="actionsMenu" style="background-color: #2721a3;
+      color: white;">Actions</button>
+            <mat-menu #actionsMenu="matMenu">
+              <button mat-menu-item (click)="openEdit(data)">
+                <span>View Tasking</span>
+            </button>
+            </mat-menu>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsNewTable"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsNewTable;"></tr>
+    </table>
+
+  </div>
+</div>
+	</div>
+
+</div>
+
+
