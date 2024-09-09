@@ -461,13 +461,8 @@ showSD=false;
 	  this.getTaskingGroups();
 	  this.refreshPaginator();
     var randNumber = Math.random() * 1000;
-
-
    this.currentDate = new Date();
    let date =  new Date().getFullYear();
-
-
-
   const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
   const ccValue=formatDate(this.currentDate,'dd','en-US');
   (new Date(),'yyyy/MM/dd', 'en');
@@ -487,12 +482,14 @@ showSD=false;
 
     this.SDFORM=true;
   }
-   if(this.SDFORM==true)this.taskForm.get('sdForm').disable();
-	 if(this.api.userid.role_center[0].user_role.code!='APSO')this.taskForm.get('apsoForm').disable();
-	 if(this.api.userid.role_center[0].user_role.code!='WESEE')this.taskForm.get('weseeForm').disable();
-	 if(this.api.userid.role_center[0].user_role.code!='DEE')this.taskForm.get('deeForm').disable();
-	 if(this.api.userid.role_center[0].user_role.code!='ACOM')this.taskForm.get('acomForm').disable();
-	 if(this.api.userid.role_center[0].user_role.code!='APP')this.taskForm.get('comForm').disable();
+  this.taskForm.get('sdForm').disable();
+  this.taskForm.get('apsoForm').disable();
+  this.taskForm.get('weseeForm').disable();
+  this.taskForm.get('deeForm').disable();
+  this.taskForm.get('acomForm').disable();
+	this.taskForm.get('comForm').disable(); 
+  console.log(this.taskForm.get('deeForm'),"====================%%%%%%%%%%%%%%%%%%%%")
+
 
 
   //  if(this.SDFORM==false && this.current_taskingID!='')this.initiator_active='active';
@@ -504,6 +501,70 @@ showSD=false;
 	//  if(this.api.userid.role_center[0].user_role.code=='APP')this.com_active='active';
   }
 
+ modulesData = [
+  'Initiator',
+  'APSO Recommender', 
+  'Wesee Recommender',
+  'DWE Recommender',
+  'Dee Recommender', 
+  'Approver',
+  'ACom Recommender',
+  'Recommender'
+];
+
+onEditRole(rowData) {
+console.log(rowData,"-------------......rowdata")
+  // this.taskForm.get('sdForm')?.disable();
+  this.taskForm.get('apsoForm')?.disable();
+  this.taskForm.get('weseeForm')?.disable();
+  this.taskForm.get('deeForm')?.disable();
+  this.taskForm.get('acomForm')?.disable();
+  this.taskForm.get('comForm')?.disable();
+
+  console.log(this.taskForm.get('deeForm'),this.id, "====================%%%%%%%%%%%%%%%%%%%%");
+  console.log(this.taskForm,this.api.userid.user_id, "===========>>>>>>>>>>>>>");
+  
+  this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
+    const role = res.role; // Get the role from the API response
+    console.log(this.modulesData.find((item) => item === role), "=============7777777777=========>>>>>>");
+
+let data = this.modulesData.find((item) => {return item === role})
+    if (this.modulesData.includes(role)) {
+      this.listassign = role;
+      console.log(res,this.listassign, "====Role Found=======>>>>>>>>>>>>>");
+      
+      // Enable the respective form based on the role
+          this.listassign = data;
+      switch(role) {
+        case 'Initiator':
+          this.taskForm.get('sdForm')?.enable();
+          break;
+        case 'APSO Recommender':
+          this.taskForm.get('apsoForm')?.enable();
+          break;
+        case 'Wesee Recommender':
+          this.taskForm.get('weseeForm')?.enable();
+          break;
+        case 'DWE Recommender':
+          this.taskForm.get('deeForm')?.enable();
+          break;
+        case 'Dee Recommender':
+          this.taskForm.get('deeForm')?.enable();
+          break;
+        case 'ACom Recommender':
+          this.taskForm.get('acomForm')?.enable();
+          break;
+        case 'Recommender':
+          this.taskForm.get('comForm')?.enable();
+          break;
+        default:
+          console.log('No matching role to enable forms');
+      }
+    } else {
+      console.log('Role not found in modulesData');
+    }
+  });
+}
 
 
 
@@ -701,9 +762,12 @@ listacom:any;
 listapp:any;
 listwesee:any;
 listassign:any;
+rowId
 
 editOption(country) {
+  this.onEditRole(country);
   this.commentEditor.editable=true;
+  console.log(country,"==================>>>>>>>>>>>>")
   this.apiCall();
   this.taskListRoot=country;
   this.formGroup.get('taskId').setValue(this.taskListRoot.task_name);
@@ -726,6 +790,7 @@ editOption(country) {
   this.taskForm.enable();
     this.crudName = "Edit";
 	this.id=country.id;
+  this.rowId = country.id;
     this.populate(country);
 	this.populate1(country);
     this.list=country;
@@ -739,13 +804,6 @@ editOption(country) {
   else{
     this.editorConfig.editable=false;
   }
-
-
-
-
-
-
-
 
   this.currentDate = new Date();
 	const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
@@ -761,7 +819,6 @@ editOption(country) {
 
       deeForm:({
         task_number_dee:this.taskForm.get('deeForm').value.task_number_dee0+this.taskForm.get('deeForm').value.task_number_dee1+this.taskForm.get('deeForm').value.task_number_dee2
-
 
        })
 
@@ -1815,7 +1872,7 @@ this.div3=true;
 				tasking: this.id,
 				id:'',
 				process : this.formGroup.get('process').value,
-				current_id: this.formGroup.get('current_id').value,
+				current_id: localStorage.getItem('user_id'),
 				next_user_id: this.formGroup.get('next_user_id').value, //loginname
             };
 			this.api.postAPI(environment.API_URL+ `transaction/process-flows/details/`,newComment).subscribe(res =>{

@@ -219,7 +219,7 @@
     <div class="modal-dialog modal-fullscreen">
        <div class="modal-content">
           <div class="modal-header">
-             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
+             <h5 class="modal-title" id="exampleModalLabel">{{crudName}}  Tasking</h5>
 			 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="false">&times;</span>
 				</button>
@@ -453,7 +453,7 @@
 				   </div>
 				   <div class="mb-5 ">
 					   <mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
-							   <textarea rows="4"  class="form-control" formControlName="comments_of_apso" value="Test comments"></textarea>
+							   <textarea rows="4"  class="form-control" formControlName="comments_of_apso" [readonly]="listassign == 'APSO Recommender'" value="Test comments"></textarea>
 								   <mat-error *ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter Comments</mat-error>
 					   </div>
 							 <table  *ngIf="list && list.SD_initiater==1">
@@ -554,10 +554,10 @@
 									   <div class="task-text-group">
 										   <p>Rs&nbsp;&nbsp;</p>
 										   <ng-container *ngIf="listDelapso==3">
-											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="listassign=='' || listassign ==null" >
+											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="listassign == 'Wesee Recommender'" >
 										   </ng-container>
 										   <ng-container *ngIf="listDelapso!=3">
-											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="listDelapso!=1 ||  listassign=='' || listassign==null">
+											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="listDelapso!=1 ||  listassign=='' || listassign == 'Wesse Recommender' ">
 										   </ng-container>
 									   </div>
 									   <!-- <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000"/> -->
@@ -758,13 +758,13 @@
 							   <mat-error *ngIf="taskForm.get('deeForm.comments_of_dee')?.errors?.['required'] && showError">Enter comments</mat-error>
 					   </div>
 				   </ng-container>
-				   <ng-container *ngIf="list && list.WESEE_recommender!=1">
+				   <ng-container>
 					   <div class="mb-5 ">
-						 <mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-						 <textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments" [readonly]="listwesee!=1"></textarea>
+						 <mat-label style="font-size:large;"><b>Comments1111</b><b class="star">*</b></mat-label>
+						 <textarea  rows="4"  class="form-control ng-untouched ng-pristine ng-invalid" formControlName="comments_of_dee" value="Test comments" [readonly]="listwesee!=1 || listassign == 'Dee Recommender'"></textarea>
 							   <!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
 							   <!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
-							   <mat-error *ngIf="taskForm.get('deeForm.comments_of_dee')?.errors?.['required'] && showError">Enter comments</mat-error>
+							   <!-- <mat-error *ngIf="taskForm.get('deeForm.comments_of_dee')?.errors?.['required'] && showError">Enter comments</mat-error> -->
 					   </div>
 				   </ng-container>
 					   <table *ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
@@ -867,7 +867,7 @@
 					   <div class="mb-5 ">
 						 <mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
 
-						 <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments" [readonly]="listdee!=1"></textarea>
+						 <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments" [readonly]="listdee!=1 || listassign == 'ACom Recommender'"></textarea>
 						 <mat-error *ngIf="taskForm.get('acomForm.recommendation_of_acom_its')?.errors?.['required'] && showError">Enter comments</mat-error>
 							   <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
 							   <!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
