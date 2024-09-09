@@ -525,7 +525,7 @@ console.log(rowData,"-------------......rowdata")
   console.log(this.taskForm,this.api.userid.user_id, "===========>>>>>>>>>>>>>");
   
   this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
-    const role = res.role; // Get the role from the API response
+    const role = res.role;
     console.log(this.modulesData.find((item) => item === role), "=============7777777777=========>>>>>>");
 
 let data = this.modulesData.find((item) => {return item === role})
@@ -533,7 +533,6 @@ let data = this.modulesData.find((item) => {return item === role})
       this.listassign = role;
       console.log(res,this.listassign, "====Role Found=======>>>>>>>>>>>>>");
       
-      // Enable the respective form based on the role
           this.listassign = data;
       switch(role) {
         case 'Initiator':
