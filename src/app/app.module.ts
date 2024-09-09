@@ -27,6 +27,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import{TableModule} from'primeng/table';
+
 
 
 
@@ -43,6 +45,7 @@ import { InputTextModule } from 'primeng/inputtext';
 	NgApexchartsModule,
   InputTextModule,
   DialogModule,
+  
 
     ToastrModule.forRoot({
 			closeButton: true,
@@ -62,7 +65,8 @@ import { InputTextModule } from 'primeng/inputtext';
     InlineSVGModule.forRoot(),
     NgbModule,
     MaterialModule,
-    AngularEditorModule
+    AngularEditorModule,
+    TableModule
 
   ],
 

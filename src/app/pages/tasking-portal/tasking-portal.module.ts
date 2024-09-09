@@ -15,6 +15,7 @@ import { MaterialModule } from '../../material/material.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ArchiveTaskComponent } from './archive-task/archive-task.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import{TableModule} from'primeng/table';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -26,6 +27,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
   ],
   imports: [
+    TableModule,
     MatFormFieldModule,
     CommonModule,
     ReactiveFormsModule,

@@ -77,15 +77,14 @@ declare var moment:any;
 export class ViewTasksComponent implements OnInit {
 
   commentForm:FormGroup;
+  extensionForm:FormGroup;
   archiveForm:FormGroup;
   completedForm:FormGroup;
   exportform:FormGroup;
   approvalForm:FormGroup;
   taskingForm:FormGroup;
-
-
   dataSource: MatTableDataSource<any>;
-  dataSourcelist: MatTableDataSource<any>;
+  dataSourcelist = new MatTableDataSource<any>([]); // Data source for Angular Material table
   dataSourceStatus: MatTableDataSource<any>;
 
   patchValue(data: any) {
@@ -186,7 +185,12 @@ export class ViewTasksComponent implements OnInit {
         completed_comments: new FormControl("")
 
       });
-
+    this.extensionForm = new FormGroup({
+      extensionNumber:new FormControl(""),
+       authorityLetterNumber :new FormControl(""),
+      description : new FormControl(""),
+      extendedTill: new FormControl(""),
+    })
   this.exportform = new FormGroup({
     id: new FormControl(""),
     initiator: new FormControl(""),
@@ -226,6 +230,7 @@ export class ViewTasksComponent implements OnInit {
     status_summary: new FormControl(""),
     title:new FormControl(""),
     status: new FormControl(""),
+    secTitle:new FormControl(""),
 
   });
      var updateChart= this.chartOptions = {
@@ -403,6 +408,7 @@ export class ViewTasksComponent implements OnInit {
     this.getTaskingGroups();
     this.getAccess();
     this.gettitlelist();
+    
     // this.getstatus;
     // this.getViewStatus();
 
@@ -490,6 +496,15 @@ export class ViewTasksComponent implements OnInit {
 
 
   }
+onFilterChange(filterInput,item?,item2?){
+
+}
+onCustomClear(item){
+
+}
+
+
+
   data_list:any;
   add(country:any) {
     this.showError=false;
@@ -507,6 +522,35 @@ export class ViewTasksComponent implements OnInit {
     openModal('#tasking-modal');
 
   }
+
+  showSecTitle : boolean = false;
+  secondaryTitle
+
+
+  onSelectionChange(event){
+    console.log(event,"==============<<<<<<<<<<<<>>>>>>")
+    if(event){
+      if(event !== 'Task Closed'){
+        let url  = `master/lookup?type__code=${event == 'Work In Progress'? 'PRO_SEC': 'PRO_TER'}`
+        this.api
+      .getAPI(environment.API_URL + url)
+      .subscribe((res) => {
+        console.log(res,"============>>>>>>>>>>>>>")
+        this.secondaryTitle = res.data;
+        this.showSecTitle = true;
+      });
+      }else{
+        this.showSecTitle = false;
+      }
+    }
+
+  }
+  isViewExtension: boolean = false;
+extension(){
+  console.log('Extension button clicked'); // Add this to check if it's firing
+  this.isViewExtension = true
+
+}
 
 
   onSubmit() {
@@ -533,7 +577,10 @@ export class ViewTasksComponent implements OnInit {
     formData.append('created_by', this.api.userid.user_id);
     formData.append('status_summary', this.taskingForm.value.status_summary);
     formData.append('status', this.taskingForm.value.status);
-    formData.append('file', this.imgToUpload)
+    // formData.append('file', this.imgToUpload)
+    formData.append('secondary_title', this.taskingForm.value.secTitle)
+
+
     // if(this.imgToUpload !=null){
     //   formData.append('file', this.imgToUpload)
     // }
@@ -618,14 +665,14 @@ export class ViewTasksComponent implements OnInit {
 
   }
 
-  applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
-    if (this.filterValue) {
-      this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
-    } else {
-      this.getTasking();
-    }
-  }
+  // applyFilter(event: Event) {
+  //   this.filterValue = (event.target as HTMLInputElement).value;
+  //   if (this.filterValue) {
+  //     this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
+  //   } else {
+  //     this.getTasking();
+  //   }
+  // }
 
   selectedTrial:any;
   taskname:any;
