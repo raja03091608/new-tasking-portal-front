@@ -29,7 +29,7 @@
 					</mat-paginator>
 				</div>
 				<div class="col-md-6">
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 						<mat-label>Search your text here</mat-label>
 						<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
 					</mat-form-field>
@@ -55,18 +55,17 @@
 			  </ng-container>
 			  <ng-container matColumnDef="unit">
 				<th mat-header-cell *matHeaderCellDef><b> Unit </b></th>
-				<td mat-cell *matCellDef="let user"> {{user.process.name}} </td>
+				<td mat-cell *matCellDef="let user"> {{user?.department?.name}} </td>
 			  </ng-container>
 			  <ng-container matColumnDef="department">
 				<th mat-header-cell *matHeaderCellDef><b> Department </b></th>
-				<td mat-cell *matCellDef="let user"> {{user.department.name}} </td>
+				<td mat-cell *matCellDef="let user"> {{user?.department?.name}} </td>
 			  </ng-container>
 			  <ng-container matColumnDef="User_Role">
 				<th mat-header-cell *matHeaderCellDef><b> User Role </b></th>
 				<td mat-cell *matCellDef="let user">
 				  <ng-container
-					*ngFor="let data of user.roles;let i = index;">{{data.user_role.name+(i==(user.roles.length-1)?'':(i==user.roles.length-2?'
-					& ':', '))}}</ng-container>
+					*ngFor="let data of user.roles;let i = index;">{{data?.user_role?.name+(i==(user.roles.length-1)?'':(i==user.roles.length-2?'& ':', '))}}</ng-container>
 				</td>
 			  </ng-container>
 			  <ng-container matColumnDef="status">
@@ -122,7 +121,7 @@
 		</div>
 	  </div>
 	</div>
-  </section>
+</section>
 
   <!-- modal -->
   <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static"
@@ -160,6 +159,18 @@
 					<div class="col-md-6 col-6">
 						<button type="submit" class="btn btn-primary w-100" *ngIf="this.editForm.get('ad_user').value && this.editForm.get('hrcdf_designation').value " >Save</button>
 					 </div>
+				  </div>
+				  <div class="col-md-6">
+					<div class="matt-group">
+					  <mat-label>Rank Code <b class="star">*</b></mat-label>
+	
+						<input type="text" class="form-control form-control-lg" formControlName="rank_code" autocomplete="off">
+	
+						<!-- <input matInput placeholder="" formControlName="first_name" maxlength="100"> -->
+						<mat-error *ngIf="Error('first_name','required') && showcomments">Please enter First name</mat-error>
+						<mat-error *ngIf="Error('first_name','pattern') && showcomments">Alphabets characters only</mat-error>
+	
+					</div>
 				  </div>
 			  <div class="col-md-6">
 				<div class="matt-group">
@@ -222,7 +233,7 @@
 			  <div class="col-md-6">
 				<div class="matt-group matselect" *ngIf="Task">
 					<mat-label>Unit <b class="star">*</b></mat-label>
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 					  <mat-select #select formControlName="department" placeholder="Select Department">
 						<mat-option [value]="">Select User Group</mat-option>
 						<mat-option *ngFor="let user of departmentList" [value]="user.id">{{user.name}}</mat-option>
@@ -234,7 +245,7 @@
 			  <div class="col-md-6">
 				<div class="matt-group matselect">
 				  <mat-label>User Types <b class="star">*</b></mat-label>
-				  <mat-form-field appearance="fill">
+				  <mat-form-field appearance="outline">
 					<mat-select #select formControlName="process" (ngModelChange)="processChange($event)"
 					  placeholder="Select Process">
 					  <mat-option [value]="">Select Process</mat-option>
@@ -248,7 +259,7 @@
 			  <div class="col-md-6">
 				<div class="matt-group matselect">
 				  <mat-label>User role <b class="star">*</b></mat-label>
-				  <mat-form-field appearance="fill">
+				  <mat-form-field appearance="outline">
 					<mat-select #select  formControlName="user_role_id" placeholder="Select User Role">
 					  <!-- <div class="select-all">
 						<mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
@@ -265,7 +276,7 @@
 			  <!-- <div class="col-md-12">
 				<div class="matt-group matselect" *ngIf="Task">
 				  <mat-label>Tasking Group <b class="star">*</b></mat-label>
-				  <mat-form-field appearance="fill">
+				  <mat-form-field appearance="outline">
 					<mat-select #select formControlName="tasking" placeholder="Select Tasking">
 					  <mat-option [value]="">Select Tasking Group</mat-option>
 					  <mat-option *ngFor="let user of taskingList" [value]="user.id">{{user.name}}</mat-option>
@@ -277,7 +288,7 @@
 			  <!-- <div class="col-md-12">
 				<div class="matt-group matselect" *ngIf="UserGroup">
 					<mat-label>User Group <b class="star">*</b></mat-label>
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 					  <mat-select #select formControlName="department" placeholder="Select Department">
 						<mat-option [value]="">Select User Group</mat-option>
 						<mat-option *ngFor="let user of departmentList" [value]="user.id">{{user.name}}</mat-option>
@@ -370,7 +381,7 @@
 			<div class="col-md-12">
 				<div class="matt-group matselect" >
 					<mat-label>Deleted Users <b class="star">*</b></mat-label>
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 					  <mat-select #select [(ngModel)]="deleteusers" placeholder="Select Deleted User" formControlName="user">
 						<mat-option [value]="">Select Deleted User</mat-option>
 						<mat-option *ngFor="let user of deleted_users" [value]="user.id">{{user.first_name +" "+user.last_name}} ({{user.loginname}})</mat-option>
@@ -382,7 +393,7 @@
 			  <div class="col-md-12">
 				<div class="matt-group matselect" >
 					<mat-label>User Status <b class="star">*</b></mat-label>
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 					  <mat-select #select [(ngModel)]="deletedstatus" placeholder="Select Status" formControlName="status">
 						<mat-option [value]="">Select Status</mat-option>
 						<mat-option  [value]="1">Active</mat-option>

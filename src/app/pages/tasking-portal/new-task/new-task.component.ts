@@ -121,10 +121,7 @@ export class NewTaskComponent implements OnInit {
         file4: new FormControl(""),
 
 
-      },[
-        Validators.required,
-        this.atLeastOneFieldRequiredsdForm
-      ]),
+      }),
       apsoForm : new FormGroup({
       comments_of_apso:new FormControl(""),
     }),
@@ -197,9 +194,9 @@ export class NewTaskComponent implements OnInit {
 };
 
 get remainingCharacters(): number {
-  const wordLimit = 200; // Set your desired word limit
+  const wordLimit = 500; // Set your desired word limit
   const words = this.taskForm.get('sdForm.task_description').value.split(' ');
-  return wordLimit - words.length;
+  return words.length;
 }
 
 txtwordCount = 0;
@@ -275,9 +272,9 @@ formInit(){
 
   }
 
-  Error = (controlName: string, errorName: string) => {
-    return this.taskForm.controls[controlName].hasError(errorName);
-  };
+  // Error = (controlName: string, errorName: string) => {
+  //   return this.taskForm.controls[controlName].hasError(errorName);
+  // };
 //   sdError = (controlName: string, errorName: string) => {
 //     return this.sdForm.controls[controlName].hasError(errorName);
 //   };
@@ -311,7 +308,7 @@ formInit(){
   ngOnInit(): void {
     this.formInit();
     this.token_detail=this.api.decryptData(localStorage.getItem('token-detail'));
-     this.getTasking();
+    //  this.getTasking();
      this.getAccess();
      this.getInitator()
 
@@ -344,33 +341,33 @@ formInit(){
 	//  if(this.api.userid.role_center[0].user_role.code=='APP')this.com_active='active';
   }
 
-  getTasking() {
-	this.taskForm.get('sdForm').patchValue({
-		sponsoring_directorate: "",
-		task_description: "",
-    SD_comments:"",
-    task_name:"",
-		file: "",
-    file1: "",
-		file2: "",
-		file3: "",
-		file4: "",
-    details_hardware: "",
-    details_software: "",
-    details_systems_present: "",
-    ships_or_systems_affected:""
-	});
-    this.api
-      .getAPI(environment.API_URL + "transaction/tasking")
-      .subscribe((res) => {
-        this.dataSource = new MatTableDataSource(res.data);
-        this.countryList = res.data;
-        this.dataSource.paginator = this.pagination;
-		//this.country=this.countryList;
+  // getTasking() {
+	// this.taskForm.get('sdForm').patchValue({
+	// 	sponsoring_directorate: "",
+	// 	task_description: "",
+  //   SD_comments:"",
+  //   task_name:"",
+	// 	file: "",
+  //   file1: "",
+	// 	file2: "",
+	// 	file3: "",
+	// 	file4: "",
+  //   details_hardware: "",
+  //   details_software: "",
+  //   details_systems_present: "",
+  //   ships_or_systems_affected:""
+	// });
+  //   this.api
+  //     .getAPI(environment.API_URL + "transaction/tasking")
+  //     .subscribe((res) => {
+  //       this.dataSource = new MatTableDataSource(res.data);
+  //       this.countryList = res.data;
+  //       this.dataSource.paginator = this.pagination;
+	// 	//this.country=this.countryList;
 
 
-      });
-  }
+  //     });
+  // }
   getTrials() {
     this.api
       .getAPI(environment.API_URL + "transaction/trials/approval")
@@ -465,7 +462,7 @@ formInit(){
         }).subscribe((res)=>{
           if(res.status==environment.SUCCESS_CODE) {
             this.notification.warn('tasking '+language[environment.DEFAULT_LANG].deleteMsg);
-            this.getTasking();
+            // this.getTasking();
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableDelete);
           }
@@ -500,15 +497,15 @@ formInit(){
     //this.taskForm.value.created_by = this.api.userid.user_id;
    //this.taskForm.value.status = this.taskForm.value.status==true ? 1 : 2;
     const formData = new FormData();
-    formData.append('sponsoring_directorate', this.taskForm.get('sdForm').value.sponsoring_directorate);
+    formData.append('sponsoring_directorate', localStorage.getItem('sponsoring_directorate'));
 
     formData.append('SD_comments', this.taskForm.get('sdForm').value.SD_comments);
     formData.append('task_description', this.taskForm.get('sdForm').value.task_description);
     formData.append('task_name', this.taskForm.get('sdForm').value.task_name);
-    formData.append('details_hardware', this.taskForm.get('sdForm').value.details_hardware);
-    formData.append('details_software', this.taskForm.get('sdForm').value.details_software);
-    formData.append('details_systems_present', this.taskForm.get('sdForm').value.details_systems_present);
-    formData.append('ships_or_systems_affected', this.taskForm.get('sdForm').value.ships_or_systems_affected);
+    // formData.append('details_hardware', this.taskForm.get('sdForm').value.details_hardware);
+    // formData.append('details_software', this.taskForm.get('sdForm').value.details_software);
+    // formData.append('details_systems_present', this.taskForm.get('sdForm').value.details_systems_present);
+    // formData.append('ships_or_systems_affected', this.taskForm.get('sdForm').value.ships_or_systems_affected);
     formData.append('id', this.taskForm.value.id);
     formData.append('legacy_data', this.taskForm.value.legacy_data);
 	if(this.imgToUpload !=null){
@@ -527,20 +524,20 @@ formInit(){
             formData.append('file4', this.imgToUpload5)
     }
     //formData.append('file', this.imgToUpload);
-	formData.append('cost_implication', this.taskForm.get('weseeForm').value.cost_implication);
-	formData.append('time_frame_for_completion_days', this.taskForm.get('weseeForm').value.time_frame_for_completion_days);
-	formData.append('time_frame_for_completion_month', this.taskForm.get('weseeForm').value.time_frame_for_completion_month);
-  formData.append('comments_of_wesee', this.taskForm.get('weseeForm').value. comments_of_wesee);
-	formData.append('task_number_dee', this.taskForm.get('deeForm').value. task_number_dee);
-	formData.append('comments_of_dee', this.taskForm.get('deeForm').value. comments_of_dee);
-	formData.append('recommendation_of_acom_its', this.taskForm.get('acomForm').value. recommendation_of_acom_its);
+	// formData.append('cost_implication', this.taskForm.get('weseeForm').value.cost_implication);
+	// formData.append('time_frame_for_completion_days', this.taskForm.get('weseeForm').value.time_frame_for_completion_days);
+	// formData.append('time_frame_for_completion_month', this.taskForm.get('weseeForm').value.time_frame_for_completion_month);
+  // formData.append('comments_of_wesee', this.taskForm.get('weseeForm').value. comments_of_wesee);
+	// formData.append('task_number_dee', this.taskForm.get('deeForm').value. task_number_dee);
+	// formData.append('comments_of_dee', this.taskForm.get('deeForm').value. comments_of_dee);
+	// formData.append('recommendation_of_acom_its', this.taskForm.get('acomForm').value. recommendation_of_acom_its);
 	formData.append(' approval_of_com', this.taskForm.get('comForm').value.  approval_of_com);
 
     //formData.append('created_by', this.taskForm.value.created_by);
     formData.append('modified_by', this.api.userid.user_id);
     console.log('OUT');
 
-     if (this.taskForm.get('sdForm').valid) {
+     if (this.taskForm.get('sdForm')) {
       //formData.append('id', this.editForm.value.id);
       console.log('IN');
 
@@ -555,7 +552,8 @@ formInit(){
 
             // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
-            this.getTasking();
+            // this.getTasking();
+            this.router.navigate(['/tasking-portal/task-list'])
             this.closebutton.nativeElement.click();
           } else if(res.status==environment.ERROR_CODE) {
               this.notification.warn(res.message);
@@ -635,7 +633,7 @@ currentDate = new Date();
     if(this.filterValue){
       this.dataSource.filter = this.filterValue.trim().toLowerCase();
     } else {
-      this.getTasking();
+      // this.getTasking();
     }
   }
   selectedTrial:any;

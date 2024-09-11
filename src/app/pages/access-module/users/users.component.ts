@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
 		"user_name",
 		"unit",
 		"User_Role",
+		
 		"view",
 		"edit",
 		"delete",
@@ -125,6 +126,8 @@ export class UsersComponent implements OnInit {
 		tasking: new FormControl(''),
 		user_role_id: new FormControl('', [Validators.required]),
 		ad_user: new FormControl(""),
+		
+		rank_code: new FormControl(""),
 		created_by: new FormControl(""),
 		modified_by: new FormControl(""),
 		status: new FormControl(""),
@@ -477,8 +480,9 @@ export class UsersComponent implements OnInit {
 			formData.append('tasking', this.editForm.value.tasking);
 			formData.append('status', this.editForm.value.status);
 			formData.append('user_role_id', this.editForm.value.user_role_id);
-			formData.append('id', this.editForm.value.id);
+			formData.append('id', this.editForm.value.id );
 			formData.append('password', this.editForm.value.password);
+			formData.append('rankCode', this.editForm.value.rank_code);
 			formData.append('ad_user', this.editForm.value.ad_user==null?this.editForm.value.ad_user='false':this.editForm.value.ad_user);
 
 			if (this.imgToUpload1 != null) {
@@ -491,7 +495,7 @@ export class UsersComponent implements OnInit {
 			formData.append('last_name', this.editForm.value.last_name);
 			formData.append('loginname', this.editForm.value.loginname);
 			formData.append('email', this.editForm.value.email);
-
+			formData.append('rankCode', this.editForm.value.rank_code);
 			formData.append('process', this.editForm.value.process);
 			formData.append('department', this.editForm.value.department);
 			formData.append('tasking', this.editForm.value.tasking);

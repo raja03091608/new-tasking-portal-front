@@ -15,6 +15,12 @@ import { MaterialModule } from '../../material/material.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ArchiveTaskComponent } from './archive-task/archive-task.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -26,8 +32,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
   ],
   imports: [
+    TableModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
     MatFormFieldModule,
     CommonModule,
+    DialogModule,
     ReactiveFormsModule,
     NgbModule,
     CKEditorModule,
@@ -35,6 +46,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MaterialModule,
     NgApexchartsModule,
     AngularEditorModule,
+    TableModule,
     RouterModule.forChild([
       {
         path: 'new-task',

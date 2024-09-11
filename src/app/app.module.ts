@@ -27,6 +27,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+// import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
 
 

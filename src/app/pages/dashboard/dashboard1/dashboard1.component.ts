@@ -513,89 +513,89 @@ allocateForm:FormGroup;
 
       };
 
-	  var updateChart1 =	this.chartOptions1 = {
-		series:
-        this.milestone_data,
-		chart: {
+	  // var updateChart1 =	this.chartOptions1 = {
+		// series:
+    //     this.milestone_data,
+		// chart: {
 
-		  height: 450,
-		  type: "rangeBar",
-		  toolbar: {
-			show: false
-		  },
-		  zoom: {
-			enabled:false,
-		  },
+		//   height: 450,
+		//   type: "rangeBar",
+		//   toolbar: {
+		// 	show: false
+		//   },
+		//   zoom: {
+		// 	enabled:false,
+		//   },
 
-		},
+		// },
 
-    dataLabels: {
-      enabled: false,
-    },
-    animations: {
-      enabled: false,
-    },
-		plotOptions: {
-		  bar: {
-			horizontal: true,
-			barHeight: "50%",
+    // dataLabels: {
+    //   enabled: false,
+    // },
+    // animations: {
+    //   enabled: false,
+    // },
+		// plotOptions: {
+		//   bar: {
+		// 	horizontal: true,
+		// 	barHeight: "50%",
 
-		  }
-		},
-		xaxis: {
-		  type: "datetime",
-      axisBorder: {
-        show: false,
-        color: '#000',
-        height: 1,
-        width: '100%',
-        offsetX: 0,
-        offsetY: 0
-    },
-		},
+		//   }
+		// },
+		// xaxis: {
+		//   type: "datetime",
+    //   axisBorder: {
+    //     show: false,
+    //     color: '#000',
+    //     height: 1,
+    //     width: '100%',
+    //     offsetX: 0,
+    //     offsetY: 0
+    // },
+		// },
 
-		zoom: {
-			enabled: false,
-		  },
-		  zoomout: {
-			enabled: false,
-		  },
+		// zoom: {
+		// 	enabled: false,
+		//   },
+		//   zoomout: {
+		// 	enabled: false,
+		//   },
 
-		fill: {
-		  type: "gradient",
-		  gradient: {
-			shade: "light",
-			type: "vertical",
-			shadeIntensity: 0.25,
-			gradientToColors: undefined,
-			inverseColors: true,
-			opacityFrom: 1,
-			opacityTo: 1,
-			stops: [50, 0, 100, 100]
-		  }
-		},
-		legend: {
-		  position: "bottom",
-		  horizontalAlign: "center"
-		},
-    grid: {
-      xaxis: {
-        lines: {
-          show:false
-        }
-      },
+		// fill: {
+		//   type: "gradient",
+		//   gradient: {
+		// 	shade: "light",
+		// 	type: "vertical",
+		// 	shadeIntensity: 0.25,
+		// 	gradientToColors: undefined,
+		// 	inverseColors: true,
+		// 	opacityFrom: 1,
+		// 	opacityTo: 1,
+		// 	stops: [50, 0, 100, 100]
+		//   }
+		// },
+		// legend: {
+		//   position: "bottom",
+		//   horizontalAlign: "center"
+		// },
+    // grid: {
+    //   xaxis: {
+    //     lines: {
+    //       show:false
+    //     }
+    //   },
 
-      yaxis: {
-        lines: {
-          show:true
-        }
-      },
+    //   yaxis: {
+    //     lines: {
+    //       show:true
+    //     }
+    //   },
 
-      borderColor:'black',
+    //   borderColor:'black',
 
-    }
+    // }
 
-	  };
+	  // };
 
    var updateChart2= this.chartOptions2 = {
       series: [
@@ -795,7 +795,7 @@ var updateChartNew = this.chartOptions3 = {
   };
   setTimeout(() => {
     updateChart
-    updateChart1
+    // updateChart1
     updateChart2
 	updateChartNew
   }, 1500);
@@ -1667,9 +1667,9 @@ ngOnInit(): void {
    
     this.getTasking();
 
-    this.getMileStone;
+    // this.getMileStone;
     this.getDashboardCount();
-    this.getMileStoneChart();
+    // this.getMileStoneChart();
     this.getAccess();
     this.getTaskingChart();
     this.getTaskingGroups();
@@ -1832,110 +1832,7 @@ getChart(task_id=""){
 setTimeout(() => {
  console.log('this.tasking_chartname',tasking_chartname);
    let data_tasking_chart = tasking_chartname;
-   // [
-   //   {
-   //     category: "PSR",
-   //     start: new Date(2023, 0, 1).getTime(),
-   //     end: new Date(2023, 0, 14).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 0, 16).getTime(),
-   //     end: new Date(2023, 0, 27).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 1, 5).getTime(),
-   //     end: new Date(2023, 3, 18).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 3, 18).getTime(),
-   //     end: new Date(2023, 3, 30).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 1.2)
-   //     },
-   //     task: "project4 "
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 8).getTime(),
-   //     end: new Date(2023, 0, 10).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 12).getTime(),
-   //     end: new Date(2023, 0, 15).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 16).getTime(),
-   //     end: new Date(2023, 1, 5).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 1, 10).getTime(),
-   //     end: new Date(2023, 1, 18).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 1.2)
-   //     },
-   //     task: "project4"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 2).getTime(),
-   //     end: new Date(2023, 0, 8).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 8).getTime(),
-   //     end: new Date(2023, 0, 16).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 19).getTime(),
-   //     end: new Date(2023, 2, 1).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 2, 12).getTime(),
-   //     end: new Date(2023, 3, 5).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 1.2)
-   //     },
-   //     task: "project4"
-   //   },
-   // ];
-
-
-   // Create axes
-   // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-
+  
    let yRenderer = am5xy.AxisRendererY.new(root, {});
    yRenderer.grid.template.set("location", 1);
 
@@ -2146,193 +2043,6 @@ ctcmchart.appear(1000, 100);
 
 setTimeout(() => {
 
-/*this.chartOptions = {
-series:
- this.tasking_chart,
-
-tooltip: {
- enabled:true
-
-},
-
-chart: {
- height: 450,
- type: "rangeBar",
- toolbar: {
-   show: false
-   },
-   zoom: {
-   enabled:false,
-   },
-
-},
-dataLabels: {
- enabled: false,
-},
-animations: {
- enabled: false,
-},
-plotOptions: {
- bar: {
-   horizontal: true,
-   barHeight: "90%"
- }
-},
-xaxis: {
- type: "datetime",
- axisBorder: {
-   show: false,
-   color: '#000',
-   height: 1,
-   width: '100%',
-   offsetX: 0,
-   offsetY: 0
-},
-},
-// yaxis: {
-//   show:false
-// },
-zoom: {
- enabled: false,
- },
- zoomout: {
- enabled: false,
- },
-
- // fill: {
- //   type: "solid",
- //   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291']
- // },
-
-fill: {
- type: "solid",
- colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291'],
-},
-
-stroke: {
- width: 3,
- colors: ["#d5d9dd"]
-},
-
-legend: {
- position: "bottom",
- horizontalAlign: "center"
-},
-grid: {
- xaxis: {
-   lines: {
-     show:true
-   }
- },
- yaxis: {
-   lines: {
-     show:false
-   }
- },
-
- borderColor:'black',
-
-}
-
-};*/
-
-this.chartOptions1 = {
- series:
-   this.milestone_data,
- chart: {
-   height: 405,
-   type: "rangeBar",
-   toolbar: {
-   show: true,
-   colors: ["#008FFB"],
-   },
-   zoom: {
-   enabled:false,
-   },
-
- },
-
- dataLabels: {
-   enabled: false,
- },
- animations: {
-   enabled: false,
- },
- plotOptions: {
-   bar: {
-   horizontal: true,
-   barHeight: "50%",
-   }
- },
- stroke: {
-   width: 0,
-   colors: ["#d5d9dd"]
- },
-
- xaxis: {
-   type: "datetime",
-   axisBorder: {
-     show: false,
-     color: '#000',
-     height: 1,
-     width: '100%',
-     offsetX: 0,
-     offsetY: 0
- },
- },
-
- zoom: {
-   enabled: false,
-   },
-   zoomout: {
-   enabled: false,
-   },
-
- // fill: {
- //   type: "solid",
- //   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291']
- // },
-
- fill: {
-   type: "solid",
-   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291'],
- },
-
- legend: {
-   position: "bottom",
-   horizontalAlign: "center"
- },
-
- grid: {
-   // row: {
-   //   colors: ['#fff', '#fff', '#fff']
-   // },
-   // column: {
-   //   colors: ['#fff', '#fff', '#fff']
-   // },
-   xaxis: {
-     lines: {
-       show:false
-     },
-     labels: {
-       style: {
-         fontSize: '20px',
-         fontWeight: 600,
-         cssClass: 'apexcharts-xaxis-label',
-     },
-     }
-   },
-   yaxis: {
-     lines: {
-       show:true
-     },
-   },
-
-   borderColor:'#9a97da',
-
- }
-
- };
 
 this.chartOptions2 = {
    series: [
@@ -2612,23 +2322,9 @@ this.chartOptions2 = {
 	this.taskForm.get('deeForm').value.task_number_dee;
  	if(this.taskForm.get('deeForm').value.task_number_dee!=''){
 
-    // this.taskForm.patchValue({
-
-    //   deeForm:({
-    //     task_number_dee:splitFirst
-    //     })
-
-    //   });
  	  this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
 	 	}
 
-//  if(this.taskForm.get('sdForm').value.sponsoring_directorate!=''){
-
-// 	this.taskForm.get('sdForm').value.sponsoring_directorate='IHQ MOD(N)/'+this.api.userid.first_name;
-// 	  }
-    //this.taskForm.value.sponsoring_directorate='IHQ MOD(N)/'+this.taskForm.value.sponsoring_directorate;
-    //this.taskForm.value.created_by = this.api.userid.user_id;
-   //this.taskForm.value.status = this.taskForm.value.status==true ? 1 : 2;
     const formData = new FormData();
     formData.append('sponsoring_directorate', this.taskForm.get('sdForm').value.sponsoring_directorate);
     formData.append('task_description', this.taskForm.get('sdForm').value.task_description);
@@ -2684,123 +2380,7 @@ this.chartOptions2 = {
   }
 
 
-  name_data=[];
-  milestone_data=[];
-  current:any;
-  getMileStoneChart(){
-    // 'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,
-    if(this.token_detail.process_id==3){
-      this.api
-		  .postAPI(environment.API_URL + "transaction/milestonechart",{'created_by':this.token_detail.user_id})
-		  .subscribe((res) => {
-			// this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-
-      for (let i=0;i<this.mileList.length;i++){
-        if(this.mileList[i].milestone!=''){
-          this.milestone_data.push({name:this.mileList[i].tasking__task_name+" : "+this.mileList[i].tasking_status__title})
-            this.api
-            .getAPI(environment.API_URL + "transaction/milestone-status?limit_start=0&limit_end=5"+"&tasking_status__title="+this.mileList[i].tasking_status__title + '&created_by='+this.token_detail.user_id)
-            .subscribe((res) => {
-            this.dataSourcelist = new MatTableDataSource(res.data);
-
-            var milestoneList = res.data;
-            // console.log('df1',milestoneList.)
-            this.milestone_data[i].data=[];
-            for (let k=0;k<milestoneList.length;k++){
-              if(milestoneList[k].tasking_status){
-                if(milestoneList[k].task_start_date!='' && milestoneList[k].task_end_date!='' && milestoneList[k].milestone!=''){
-                  {
-                    this.milestone_data[i].data.push({y:[new Date(milestoneList[k].task_start_date).getTime(),new Date(milestoneList[k].task_end_date).getTime()],x:milestoneList[k].milestone})
-
-                  }
-                 }
-              }
-
-            }
-
-
-          });
-
-
-          }
-      }
-		  });
-		  this.ref.detectChanges();
-
-    }
-
-    else{
-      this.api
-		  .postAPI(environment.API_URL + "transaction/milestonechart",{})
-		  .subscribe((res) => {
-			// this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-			// this.logger.log('milestone',this.mileList.length-5)
-
-      for (let i=0;i<this.mileList.length;i++){
-        if(this.mileList[i].milestone!=''){
-          this.milestone_data.push({name:this.mileList[i].tasking__task_name+" : "+this.mileList[i].tasking_status__title})
-            this.api
-            .getAPI(environment.API_URL + "transaction/milestone-status?limit_start=0&limit_end=5"+"&tasking_status__title="+this.mileList[i].tasking_status__title )
-            .subscribe((res) => {
-            this.dataSourcelist = new MatTableDataSource(res.data);
-
-            var milestoneList = res.data;
-              this.milestone_data[i].data=[];
-            for (let k=0;k<milestoneList.length;k++){
-              if(milestoneList[k].tasking_status){
-                if(milestoneList[k].task_start_date!='' && milestoneList[k].task_end_date!='' && milestoneList[k].milestone!=''){
-                  {
-                      this.milestone_data[i].data.push({y:[new Date(milestoneList[k].task_start_date).getTime(),new Date(milestoneList[k].task_end_date).getTime()],x:milestoneList[k].milestone})
-
-                  }
-                 }
-              }
-
-            }
-
-
-          });
-
-
-          }
-      }
-
-		  });
-		  this.ref.detectChanges();
-    }
-
-
-	  }
-
-    counter:any;
-
-    viewstatus:any;
-  getMileStone(){
-		this.api.getAPI(environment.API_URL + "transaction/milestone-status?tasking_id="+this.taskingID)
-		  .subscribe((res) => {
-			this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-      this.counter = 0;
-      for (let i = 0; i < this.mileList.length; i++) {
-        this.counter=this.counter+parseInt(this.mileList[i].manpower);
-      }
-      localStorage.setItem('manpowercount',this.api.encryptData(this.counter));
-			this.dataSourcelist.paginator = this.pagination;
-			// this.logger.log('milestonefdf',this.counter)
-
-		  });
-      this.api
-		  .getAPI(environment.API_URL + "transaction/tasking-status?tasking_id="+this.taskingID)
-		  .subscribe((res) => {
-          this.dataSourceStatus = new MatTableDataSource(res.data);
-          this.viewstatus = res.data;
-      });
-	  }
+ 
 
     editOption(milestone) {
       this.isReadonly=false;
@@ -2827,7 +2407,7 @@ this.chartOptions2 = {
           }).subscribe((res)=>{
             if(res.status==environment.SUCCESS_CODE) {
               this.notification.warn('Milestone '+language[environment.DEFAULT_LANG].deleteMsg);
-              this.getMileStone();
+              // this.getMileStone();
             } else {
               this.notification.displayMessage(language[environment.DEFAULT_LANG].unableDelete);
             }
@@ -2865,7 +2445,7 @@ this.chartOptions2 = {
 		 if(res.status==environment.SUCCESS_CODE){
 		   // this.logger.log('Formvalue',this.editForm.value);
 		   this.notification.success(res.message);
-       this.getMileStone();
+      //  this.getMileStone();
        let reset = this.formGroupDirective.resetForm();
       if(reset!==null) {
         this.initForm();
@@ -3011,7 +2591,7 @@ getDashboardCount(){
     this.taskingID=id;
     openModal('#crud-milestone');
     setTimeout(()=> {
-      this.getMileStone();
+      // this.getMileStone();
      }, 2000);
 
 
@@ -3026,7 +2606,7 @@ getDashboardCount(){
     this.taskingID=id;
     // this.getMileStone();
     openModal('#view-milestone');
-    this.getMileStone();
+    // this.getMileStone();
     // setTimeout(()=> {
     //   this.getMileStone();
     //  }, 2000);
