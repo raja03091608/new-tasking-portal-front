@@ -29,6 +29,11 @@ import { AnnouncementsComponent } from './announcements/announcements.component'
 // import { MaterialModule } from '../../../material/material.module';
 import { AddAnnouncementsComponent } from './add-announcements/add-announcements.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
 
 
 
@@ -67,6 +72,11 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 		DataTablesModule,
 		MaterialModule,
 		AngularEditorModule,
+		
+    DialogModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
 		RouterModule.forChild([
 
 			{

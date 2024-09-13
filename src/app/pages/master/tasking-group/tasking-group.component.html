@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
-<section class="body-card">
+<!-- <section class="body-card">
     <div class="container-fluid">
        <div class="row">
           <div class="col-md-12">
@@ -92,8 +92,99 @@
           </div>
        </div>
     </div>
-  </section>
+  </section> -->
 
+  <section class="body-card">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header card-header2">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h3 style="color: white;">Tasking Groups</h3>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-end">
+                           <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- <div class="container table-options">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <mat-paginator [length]="100" [pageSize]="10"  [pageSizeOptions]="[10,20,30,50,100]" aria-label="Select page" >
+                        </mat-paginator>
+                     </div>
+                     <div class="col-md-6">
+                 <mat-form-field appearance="outline">
+                    <mat-label>Search your text here</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
+                 </mat-form-field>
+                     </div>
+                  </div>
+               </div> -->
+               <!-- <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+                  <ng-container matColumnDef="name">
+                     <th mat-header-cell *matHeaderCellDef><b> Name </b></th>
+                     <td mat-cell *matCellDef="let country"> {{country.name}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="code">
+                     <th mat-header-cell *matHeaderCellDef><b> Code </b></th>
+                     <td mat-cell *matCellDef="let country"> {{country.code}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="description">
+                     <th mat-header-cell *matHeaderCellDef><b> Description </b></th>
+                     <td mat-cell *matCellDef="let country"> {{country.description}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                     <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
+                     <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)" class="status-field {{country.status=='1'?'text-success':'text-danger'}}" >{{country.status=='1'?'Active':'Inactive'}}</a>  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="view" >
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country">
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(country)" placement="end" tooltipClass="dark-theme" ngbTooltip=View  ><span class="bi bi-eye"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="edit" >
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.edit==true" ><b>Edit</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country">
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(country)" *ngIf="permission.edit==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit  ><span class="bi bi-pencil"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="delete">
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.delete==true"><b>Delete</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country"><a href="javascript:void(0)" class="edit-icon text-danger" *ngIf="permission.delete==true" (click)="onDelete(country.id)" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete ><span class="bi bi-trash"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="noData">
+                     <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+                         No Records Found!
+                     </th >
+                   </ng-container>
+                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                   <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
+                   <tr class="mat-row" *matNoDataRow>
+                     <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
+                  </tr>
+               </table>  -->
+                <ng-container *ngIf="tasingGroupList.length != 0">
+                 <app-grid-table [gridColumns]="gridColumns" [gridData]="tasingGroupList"
+                    [ispaniNater]="true" [isAction]="true" (filterEvent)="handleFilter($event)"
+                    (paginationEvent)="handlePagination($event)" (statusEvent)="openCurrentStatus($event)"
+                    (exportEvent)="opentask($event)" (downloadEvent)="UploadReceipt($event)"
+                    (completedEvent)="completedtask($event)" [isExport]="true" [isStatus]="true"
+                    [isDownload]="true" [isCompleted]="true">
+                 </app-grid-table>
+              </ng-container> 
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+
+  
   <!-- modal -->
   <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

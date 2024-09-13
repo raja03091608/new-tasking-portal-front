@@ -11,7 +11,12 @@ import { MaterialModule } from '../../material/material.module';
 import { UsersComponent } from './users/users.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
-
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -30,6 +35,13 @@ import { ModuleAccessComponent } from './module-access/module-access.component';
 	  FormsModule,
 	  DataTablesModule,
 	  MaterialModule,
+	  PringeComponentModule, 
+	  TableModule,
+    DialogModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
+	  
 	  RouterModule.forChild([
 		{
 		  path: 'users',

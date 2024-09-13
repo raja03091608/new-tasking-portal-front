@@ -57,6 +57,7 @@ export class ConfigurationComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  configurationData=[]as any;
 
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService) {
@@ -118,6 +119,7 @@ export class ConfigurationComponent implements OnInit {
       .getAPI(environment.API_URL + "configuration/approvals")
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
+        this.configurationData=res.data;
         this.countryList = res.data;
         this.dataSource.paginator = this.pagination;
 
@@ -256,5 +258,56 @@ applyFilter(event: Event) {
   cancelmodal(){
     closeModal('#configuration');
     }
+
+    gridColumns=[
+      { field: '  rowData?.user_role?.name ', header: ' user_role', filter: true, filterMatchMode: 'contains' },
+      { field: 'last_name', header: 'Last Name', filter: true, filterMatchMode: 'contains' },
+      { field: 'department.level', header: 'Level', filter: true, filterMatchMode: 'contains' },
+      { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
+      // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+      ]
+      exportData:any;
+      filterData:any;
+      handleFilter(filterValue: any) {
+      
+      this.filterData = filterValue;
+      console.log('Filter triggered with value:', filterValue);
+      }
+      handlePagination(pageEvent: any) {
+      console.log('Pagination triggered with event:', pageEvent);
+      }
+    
+      openCurrentStatus(country){
+      // this.id=country.id;
+      //   console.log('tasking country',country)
+      //   this.taskname = country.task_name;
+      //   this.tasknumber = country.task_number_dee;
+      //   // this.selectedTrial=tasking;
+      //   openModal('#trial-status-modal');
+      // this.getComments();
+      }
+    
+      UploadReceipt(country) {
+        // this.id=country.id;
+        // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+      }
+      
+      completedtask(country) {
+        // this.id=country.id;
+        // openModal('#completedTask-modal');
+      }
+      taskid:any;
+      opentask(country:any){
+        console.log('countyryry',country);
+        // this.resetexportform();
+        // this.exportform.reset();
+        openModal('#export');
+        this.taskid = country.id;
+      
+      }
+    
+    
+    
+  
 
 }
