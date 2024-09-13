@@ -22,15 +22,26 @@ export class GridTableComponent implements OnInit {
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
+  @Input() isAction: boolean;
   @Input() isFormEditable: boolean;
   @Input() isDeletable: boolean;
+  @Input() ispaniNater: boolean;
   @Input() isView: boolean;
   @Input() isCheckBox: boolean;
+  @Input() isStatus: boolean;
+  @Input() isCompleted: boolean;
+  @Input() isExport: boolean;
+  @Input() isDownload: boolean;
   @Output() filterEvent = new EventEmitter<any>();
   @Output() paginationEvent = new EventEmitter<any>();
   @Output() editEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();
   @Output() viewEvent = new EventEmitter<any>();
+  @Output() exportEvent = new EventEmitter<any>();
+  @Output() downloadEvent = new EventEmitter<any>();
+  @Output() statusEvent = new EventEmitter<any>();
+  @Output() completedEvent = new EventEmitter<any>();
+  
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -202,10 +213,6 @@ export class GridTableComponent implements OnInit {
 
   ngOnInit(): void {
       this.filteredData = this.gridData;
-     console.log(this.isEditable,
-      this.isDeletable,
-      this.isView,
-      this.isCheckBox,"============================================================================")
       console.log(this.gridData);
       console.log(this.gridColumns);
   }
@@ -355,7 +362,6 @@ export class GridTableComponent implements OnInit {
               const filterCondition = filter.condition;
 
               if (filterValue !== undefined && filterValue !== null && filterValue.trim() !== '') {
-                  console.log(`Applying filter for field: ${field}, value: ${filterValue}`);
                   this.filteredData = this.filteredData.filter(row =>
                       this.applyFilter(row, field, filterValue, filterCondition)
                   );
@@ -363,7 +369,8 @@ export class GridTableComponent implements OnInit {
           }
       }
 
-      console.log('Filtered Data:', this.filteredData);
+   
+      this.filterEvent.emit(this.filteredData)
   }
 
   applyFilter(row: any, field: string, filterValue: any, condition: string): boolean {

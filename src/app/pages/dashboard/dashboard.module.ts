@@ -32,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { MatButtonModule } from '@angular/material/button';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 
 
 
@@ -41,6 +42,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     ButtonModule,
     CommonModule,
+    PringeComponentModule,
     InlineSVGModule,
     NgbModule,
     NgApexchartsModule,

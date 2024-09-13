@@ -25,6 +25,8 @@
 						<app-grid-table 
 							[gridColumns]="gridColum" 
 							[gridData]="countryList"  
+							[ispaniNater]="true"
+							[isAction]="true"
 							(filterEvent)="handleFilter($event)"
 							(paginationEvent)="handlePagination($event)"
 							(editEvent)="handleEdit($event)"
@@ -111,624 +113,629 @@
 			 </div>
 			 <div class="row">
 
-				<div class="col-4 pe-4 bg-light border-start border-secondary">
+				<div class="col-4 pe-4 bg-light border-start border-secondary ">
 					<h3 class="bg-primary py-2 text-light rounded text-center">Comment Sheet</h3>
+				 <div class="scrollTable" style="height: 100vh;">
 
-					<div *ngIf="minitingList" >
-						<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-							<div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments" ></div>
-							<div class="alert-footer">
-								<span class="float-end" > <b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">{{data.created_by.rankCode}}</i> </span>
-								<br>
-								<span class="float-end" ><b>Created By:</b>&nbsp; {{data.created_by.first_name}} {{data.created_by.last_name}}</span>
-								<br>
-								<span class="float-end">{{data.created_on | date:'dd-MM-yyyy hh:mm '}}</span> <br />
-
+					 <div *ngIf="minitingList" >
+						 <div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
+							 <div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments" ></div>
+							 <div class="alert-footer">
+								 <span class="float-end" > <b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">{{data.created_by.rankCode}}</i> </span>
+								 <br>
+								 <span class="float-end" ><b>Created By:</b>&nbsp; {{data.created_by.first_name}} {{data.created_by.last_name}}</span>
+								 <br>
+								 <span class="float-end">{{data.created_on | date:'dd-MM-yyyy hh:mm '}}</span> <br />
+ 
+							 </div>
+						 </div>
+					 </div>
+ 
+					 <form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()">
+						 <div class="mb-5 alert alert-dismissible alert-bg">
+							 <mat-label style="font-size:large;"><b>Comment</b></mat-label>
+							 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
+							 <!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
+							 <angular-editor formControlName="comment" style="min-height: 100px;" [config]="commentEditor" ></angular-editor>
+						 </div>
+						 <button type="submit" class="btn btn-primary me-2" >
+							 save
+						 </button>
+					 </form>
+				 </div>
+				</div>
+				<div class="col-8 ps-4 bg-secondery bg-light border-end border-secondary ">
+					<h3 class="bg-primary py-2 text-light rounded text-center">Tasking Form</h3>
+					
+					<div class="scrollTable" style="height: 100vh;">
+						<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()" >
+						   <div class="row">
+							 <!--begin::Input group-->
+							 <!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
+						<div formGroupName="sdForm">
+						<!-- <ng-container *ngIf="list && list.SD_initiater==1&& list && list.WESEE_recommender==1"> -->
+						<div class="alert alert-dismissible alert-bg">
+						<div class="mb-5">
+							<div class="row">
+							<div class="col-md-6">
+								<div class="matt-group">
+									<mat-label style="font-size:large;"><b>Sponsoring Directorate</b> <b class="star">*</b></mat-label>
+										<input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" [disabled]="list && list.sponsoring_directorate=='Others'" />
+										<br>
+										<input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments"/>
+										<mat-error *ngIf="taskForm.get('sdForm.sponsoring_directorate.name')?.errors?.['required'] && showError">Enter sponsoring_directorate</mat-error>
+	
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="matt-group">
+									<mat-label style="font-size:large;"><b>Task Name</b></mat-label>
+									<input type="text" class="form-control" formControlName="task_name" />
+								</div>
+							</div>
 							</div>
 						</div>
-					</div>
-
-					<form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()">
-						<div class="mb-5 alert alert-dismissible alert-bg">
-							<mat-label style="font-size:large;"><b>Comment</b></mat-label>
+					
+					<ng-container *ngIf="api.userid.role_center[0].user_role.code!='Initiator'">
+						<div class="mb-5">
+							<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
 							<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
 							<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
-							<angular-editor formControlName="comment" style="min-height: 100px;" [config]="commentEditor" ></angular-editor>
+							<angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
 						</div>
-						<button type="submit" class="btn btn-primary me-2" >
-							save
-						</button>
-					</form>
-				</div>
-				<div class="col-8 ps-4 bg-secondery bg-light border-end border-secondary">
-
-					<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
-					   <div class="row">
-						 <!--begin::Input group-->
-						 <!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
-					<div formGroupName="sdForm">
-					<!-- <ng-container *ngIf="list && list.SD_initiater==1&& list && list.WESEE_recommender==1"> -->
-					<h3 class="bg-primary py-2 text-light rounded text-center">Tasking Form</h3>
-					<div class="alert alert-dismissible alert-bg">
-					<div class="mb-5">
-						<div class="row">
-						<div class="col-md-6">
-							<div class="matt-group">
-								<mat-label style="font-size:large;"><b>Sponsoring Directorate</b> <b class="star">*</b></mat-label>
-									<input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" [disabled]="list && list.sponsoring_directorate=='Others'" />
-									<br>
-									<input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments"/>
-									<mat-error *ngIf="taskForm.get('sdForm.sponsoring_directorate.name')?.errors?.['required'] && showError">Enter sponsoring_directorate</mat-error>
-
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="matt-group">
-								<mat-label style="font-size:large;"><b>Task Name</b></mat-label>
-								<input type="text" class="form-control" formControlName="task_name" />
-							</div>
-						</div>
-						</div>
-					</div>
-				
-				<ng-container *ngIf="api.userid.role_center[0].user_role.code!='Initiator'">
-					<div class="mb-5">
-						<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
-						<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
-						<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
-						<angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
-					</div>
-				</ng-container>
-
-				<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && crudName=='View'">
-					<div class="mb-5">
-						<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
-
-						<angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
-
-					</div>
 					</ng-container>
-					<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && crudName=='Edit'">
-					<div class="mb-5">
-						<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
-
-						<angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
-						<div class="limit">
-							Words remaining: {{ remainingCharacters }}
+	
+					<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && crudName=='View'">
+						<div class="mb-5">
+							<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
+	
+							<angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
+	
 						</div>
-						<mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
-							Word limit exceeded! Maximum 200 words allowed.
-						</mat-error>
-						<mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter task_description</mat-error>
-					</div>
-					</ng-container>
-					<!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
-					<div class="mb-5">
-
-						<div class="matt-group">
-						<mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b><b class="star">*</b></mat-label>
-						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'   && ((imgToUpload==''||null) ||(ImageUrl==''||null))">
-						<input #fileInput formControlName="file" id="file"type="file"  class="form-control" (change)="onImageHandler($event)" accept="image/jpeg,image/jpg,application/pdf" >
 						</ng-container>
-
-						<div class="remove"><a href="{{ImageUrl}}" target=_blank *ngIf="ImageUrl!='' && file1url" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-						<span *ngIf="ImageUrl!='' && file1url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file1()" >Remove</a></span>
-					</div>
-						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' 	 && ((imgToUpload1==''||null)||(ImageUrl1==''||null)) ">
-						<input #fileInput formControlName="file1" id="file1"type="file"  class="form-control" (change)="onImageHandler1($event)" accept="image/jpeg,image/jpg,application/pdf" >
-						</ng-container>
-
-						<div class="remove"><a href="{{ImageUrl1}}"  target=_blank *ngIf="ImageUrl1!='' && file2url" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-					<span *ngIf="ImageUrl1!='' && file2url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file2()" >Remove</a></span>
-				</div>
-					<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'  && ((imgToUpload2==''||null)||(ImageUrl2==''||null)) ">
-						<input #fileInput formControlName="file2" id="file2"type="file"  class="form-control" (change)="onImageHandler2($event)" accept="image/jpeg,image/jpg,application/pdf" >
-						</ng-container>
-
-						<div class="remove"><a href="{{ImageUrl2}}" target=_blank *ngIf="ImageUrl2!='' && file3url" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-					<span *ngIf="ImageUrl2!='' && file3url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file3()" >Remove</a></span>
-				</div>
-
-					<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && ((imgToUpload3==''||null)||(ImageUrl3==''||null )) ">
-						<input #fileInput formControlName="file3" id="file3"type="file"  class="form-control" (change)="onImageHandler3($event)" accept="image/jpeg,image/jpg,application/pdf" >
-						</ng-container>
-
-						<div class="remove"> <a href="{{ImageUrl3}}" target=_blank *ngIf="ImageUrl3!='' && file4url" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-					<span *ngIf="ImageUrl3!='' && file4url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file4()" >Remove</a></span>
-					</div>
-					<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' &&  (((imgToUpload4)==''||null)||(ImageUrl4==''||null ))">
-						<input #fileInput formControlName="file4" id="file4" type="file"  class="form-control" (change)="onImageHandler4($event)" accept="image/jpeg,image/jpg,application/pdf" >
-						</ng-container>
-
-						<div class="remove">  <a href="{{ImageUrl4}}" target=_blank *ngIf="ImageUrl4!='' && file5url" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-					<span *ngIf="ImageUrl4!='' && file5url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file5()" >Remove</a></span>
+						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && crudName=='Edit'">
+						<div class="mb-5">
+							<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
+	
+							<angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
+							<div class="limit">
+								Words remaining: {{ remainingCharacters }}
+							</div>
+							<mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
+								Word limit exceeded! Maximum 200 words allowed.
+							</mat-error>
+							<mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter task_description</mat-error>
 						</div>
-				</div>
-				</div>
+						</ng-container>
+						<!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
+						<div class="mb-5">
+	
+							<div class="matt-group">
+							<mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b><b class="star">*</b></mat-label>
+							<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'   && ((imgToUpload==''||null) ||(ImageUrl==''||null))">
+							<input #fileInput formControlName="file" id="file"type="file"  class="form-control" (change)="onImageHandler($event)" accept="image/jpeg,image/jpg,application/pdf" >
+							</ng-container>
+	
+							<div class="remove"><a href="{{ImageUrl}}" target=_blank *ngIf="ImageUrl!='' && file1url" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+							<span *ngIf="ImageUrl!='' && file1url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file1()" >Remove</a></span>
+						</div>
+							<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' 	 && ((imgToUpload1==''||null)||(ImageUrl1==''||null)) ">
+							<input #fileInput formControlName="file1" id="file1"type="file"  class="form-control" (change)="onImageHandler1($event)" accept="image/jpeg,image/jpg,application/pdf" >
+							</ng-container>
+	
+							<div class="remove"><a href="{{ImageUrl1}}"  target=_blank *ngIf="ImageUrl1!='' && file2url" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+						<span *ngIf="ImageUrl1!='' && file2url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file2()" >Remove</a></span>
 					</div>
-
+						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'  && ((imgToUpload2==''||null)||(ImageUrl2==''||null)) ">
+							<input #fileInput formControlName="file2" id="file2"type="file"  class="form-control" (change)="onImageHandler2($event)" accept="image/jpeg,image/jpg,application/pdf" >
+							</ng-container>
+	
+							<div class="remove"><a href="{{ImageUrl2}}" target=_blank *ngIf="ImageUrl2!='' && file3url" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+						<span *ngIf="ImageUrl2!='' && file3url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file3()" >Remove</a></span>
+					</div>
+	
+						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' && ((imgToUpload3==''||null)||(ImageUrl3==''||null )) ">
+							<input #fileInput formControlName="file3" id="file3"type="file"  class="form-control" (change)="onImageHandler3($event)" accept="image/jpeg,image/jpg,application/pdf" >
+							</ng-container>
+	
+							<div class="remove"> <a href="{{ImageUrl3}}" target=_blank *ngIf="ImageUrl3!='' && file4url" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+						<span *ngIf="ImageUrl3!='' && file4url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file4()" >Remove</a></span>
+						</div>
+						<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' &&  (((imgToUpload4)==''||null)||(ImageUrl4==''||null ))">
+							<input #fileInput formControlName="file4" id="file4" type="file"  class="form-control" (change)="onImageHandler4($event)" accept="image/jpeg,image/jpg,application/pdf" >
+							</ng-container>
+	
+							<div class="remove">  <a href="{{ImageUrl4}}" target=_blank *ngIf="ImageUrl4!='' && file5url" class="edit-icon text-primary"
+						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+						<span *ngIf="ImageUrl4!='' && file5url && api.userid.role_center[0].user_role.code=='Initiator'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file5()" >Remove</a></span>
+							</div>
+					</div>
+					</div>
+						</div>
+	
 					<div class="card-footer text-end">
-					<div class="col-md-6 mb-4">
-						<!-- Conditionally render the 'Initiate' button for the first condition -->
-						<ng-container *ngIf="(list && list.SD_initiater!='1') && (api.userid.role_center[0].user_role.code=='Initiator')">
-							<button type="submit" class="btn btn-primary me-2">Initiate</button>
-						</ng-container>
-
-						<!-- Conditionally render the 'Initiate' button for the second condition -->
-						<ng-container *ngIf="(token_detail.process_id==3) && (token_detail.tasking_id=='')">
-							<button type="submit" class="btn btn-primary me-2">Initiate</button>
-						</ng-container>
-					</div>
-				</div>
-
-				<!-- </ng-container> -->
-					</div>
-
-					<div formGroupName="apsoForm" *ngIf="is_sponsoring_directorate">
-
-						<div class="alert alert-dismissible border alert-bg">
-								<div class="sub-heading"  style="text-align:center;">
-									<mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
-								</div>
-								<div class="mb-5 ">
-										<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
-										<textarea rows="4"  class="form-control" formControlName="comments_of_apso" [readonly]="disableApso()" value="Test comments"></textarea>
-										<mat-error *ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter Comments</mat-error>
-								</div>
-								<table  *ngIf="list && list.SD_initiater==1">
-
-								<tr>
-								<th width="20%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
-							</tr>
-
-								<tr >
-
-									<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}</td><td><div [innerHTML]="list && list.task_description"></div></td><td>{{list && list.created_by.first_name}}</td>
-								</tr>
-								<!-- </ng-template> -->
-								</table>
-								<div class="card-footer mt-3 ">
-								
-									<button type="button" class="btn btn-success" *ngIf="!disableApso()" (click)="apsoRecommened()">Recommend</button>
-									&nbsp;
-									<button type="button" class="btn btn-danger" *ngIf="!disableApso()" (click)="apsonotRecommended()" >Not Recommended</button>
-								</div>
+						<div class="col-md-6 mb-4">
+							<!-- Conditionally render the 'Initiate' button for the first condition -->
+							<ng-container *ngIf="(list && list.SD_initiater!='1') && (api.userid.role_center[0].user_role.code=='Initiator')">
+								<button type="submit" class="btn btn-primary me-2">Initiate</button>
+							</ng-container>
+	
+							<!-- Conditionally render the 'Initiate' button for the second condition -->
+							<ng-container *ngIf="(token_detail.process_id==3) && (token_detail.tasking_id=='')">
+								<button type="submit" class="btn btn-primary me-2">Initiate</button>
+							</ng-container>
 						</div>
 					</div>
-
-						  
-
-				   <div formGroupName="weseeForm" >
-
-
-					<ng-container *ngIf="(api.userid.role_center[0].user_role.code=='WESEE' || token_detail.process_id==1 || token_detail.process_id==3)">
-						 <form [formGroup]="this.allocateForm" (ngSubmit)="onallocateSubmit()">
-						 <div class="col-md-12">
-						   <div class="alert alert-dismissible alert-bg">
-							   <div class="sub-heading" style="text-align:center;">
-								   <mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
-								</div>
-								<div class="matt-group matselect1">
-									<mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
-									<mat-form-field appearance="fill">
-									<ng-container *ngIf="listDelapso==3">
-									<mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 && crudName=='View' && disableWesee()">
-									<mat-option [value]="">Select Tasking Groups</mat-option>
-									<mat-option *ngFor="let taskingGroup of taskingGroups"
-										[value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
-									</mat-select>
-
-									</ng-container>
-									<ng-container *ngIf="listDelapso!=3">
-										<mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && disableWesee()">
-
+	
+					<!-- </ng-container> -->
+						</div>
+	
+						<div formGroupName="apsoForm" *ngIf="is_sponsoring_directorate">
+	
+							<div class="alert alert-dismissible border alert-bg">
+									<div class="sub-heading"  style="text-align:center;">
+										<mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
+									</div>
+									<div class="mb-5 ">
+											<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
+											<textarea rows="4"  class="form-control" formControlName="comments_of_apso" [readonly]="disableApso()" value="Test comments"></textarea>
+											<mat-error *ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter Comments</mat-error>
+									</div>
+									<table  *ngIf="list && list.SD_initiater==1">
+	
+									<tr>
+									<th width="20%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
+								</tr>
+	
+									<tr >
+	
+										<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}</td><td><div [innerHTML]="list && list.task_description"></div></td><td>{{list && list.created_by.first_name}}</td>
+									</tr>
+									<!-- </ng-template> -->
+									</table>
+									<div class="card-footer mt-3 ">
+									
+										<button type="button" class="btn btn-success" *ngIf="!disableApso()" (click)="apsoRecommened()">Recommend</button>
+										&nbsp;
+										<button type="button" class="btn btn-danger" *ngIf="!disableApso()" (click)="apsonotRecommended()" >Not Recommended</button>
+									</div>
+							</div>
+						</div>
+	
+							  
+	
+					   <div formGroupName="weseeForm" >
+	
+	
+						<ng-container *ngIf="(api.userid.role_center[0].user_role.code=='WESEE' || token_detail.process_id==1 || token_detail.process_id==3)">
+							 <form [formGroup]="this.allocateForm" (ngSubmit)="onallocateSubmit()">
+							 <div class="col-md-12">
+							   <div class="alert alert-dismissible alert-bg">
+								   <div class="sub-heading" style="text-align:center;">
+									   <mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
+									</div>
+									<div class="matt-group matselect1">
+										<mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+										<mat-form-field appearance="outline">
+										<ng-container *ngIf="listDelapso==3">
+										<mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 && crudName=='View' && disableWesee()">
 										<mat-option [value]="">Select Tasking Groups</mat-option>
 										<mat-option *ngFor="let taskingGroup of taskingGroups"
 											[value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
 										</mat-select>
-									</ng-container>
-									</mat-form-field>
-
-									<!-- <button type="submit" class="btn btn-primary" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && !disableWesee()">Submit</button> -->
-									<div class="col-md-4" *ngIf="!disableWesee()">
-										<button type="submit" class="btn btn-primary" [disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">Submit</button>
-									</div>		
-								</div>
-						    </div>
-						
-
-					  
-					   </div>
-					   </form>
-					   </ng-container>
-
-						 &nbsp;
-						 <div class="alert alert-dismissible alert-bg">
-
-						 <div class="mb-5 ">
-						   <div class="row">
-							   <div class="col-md-4">
-								<div class="sub-heading" style="text-align:center;">
-									<mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
+	
+										</ng-container>
+										<ng-container *ngIf="listDelapso!=3">
+											<mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && disableWesee()">
+	
+											<mat-option [value]="">Select Tasking Groups</mat-option>
+											<mat-option *ngFor="let taskingGroup of taskingGroups"
+												[value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+											</mat-select>
+										</ng-container>
+										</mat-form-field>
+	
+										<!-- <button type="submit" class="btn btn-primary" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && !disableWesee()">Submit</button> -->
+										<div class="col-md-4" *ngIf="!disableWesee()">
+											<button type="submit" class="btn btn-primary" [disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">Submit</button>
+										</div>		
 									</div>
-								   <div class="matt-group">
-									   <mat-label style="font-size:large;"><b>Cost Implication (Approx)</b></mat-label>
-									   <div class="task-text-group">
-										   <p>Rs&nbsp;&nbsp;</p>
-										   <ng-container *ngIf="listDelapso==3">
-											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="disableWesee2()" >
-										   </ng-container>
-										   <ng-container *ngIf="listDelapso!=3">
-											   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="disableWesee2() ">
-										   </ng-container>
-									   </div>
-									   <!-- <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000"/> -->
-									   <mat-error *ngIf="taskForm.get('weseeForm.cost_implication')?.errors?.['required'] && showError">Enter Cost Implication</mat-error>
-								   </div>
-							   </div>
-							   <div class="col-md-4">
-								   <div class="matt-group">
-									   <mat-label style="font-size:large;"><b>Time Frame For Completion</b><b class="star">*</b></mat-label>
-									   <ng-container *ngIf="listDelapso==3">
-									   <div class="task-text-group">
-										   <p>Months&nbsp;&nbsp;</p>
-										   <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="10000" max_length="10" [readonly]="disableWesee2()"/>
-
-										   <p>Days&nbsp;&nbsp;</p>
-
-										   <input type="text" class="form-control" formControlName="time_frame_for_completion_days" value="10000" max_length="10" [readonly]="disableWesee2()"/>
-										   &nbsp;&nbsp;
+								</div>
+							
+	
+						  
+						   </div>
+						   </form>
+						   </ng-container>
+	
+							 &nbsp;
+							 <div class="alert alert-dismissible alert-bg">
+	
+							 <div class="mb-5 ">
+							   <div class="row">
+								   <div class="col-md-4">
+									<div class="sub-heading" style="text-align:center;">
+										<mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
+										</div>
+									   <div class="matt-group">
+										   <mat-label style="font-size:large;"><b>Cost Implication (Approx)</b></mat-label>
+										   <div class="task-text-group">
+											   <p>Rs&nbsp;&nbsp;</p>
+											   <ng-container *ngIf="listDelapso==3">
+												   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="disableWesee2()" >
+											   </ng-container>
+											   <ng-container *ngIf="listDelapso!=3">
+												   <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000" [readonly]="disableWesee2() ">
+											   </ng-container>
 										   </div>
-									   </ng-container>
-									   <ng-container *ngIf="listDelapso!=3">
+										   <!-- <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000"/> -->
+										   <mat-error *ngIf="taskForm.get('weseeForm.cost_implication')?.errors?.['required'] && showError">Enter Cost Implication</mat-error>
+									   </div>
+								   </div>
+								   <div class="col-md-4">
+									   <div class="matt-group">
+										   <mat-label style="font-size:large;"><b>Time Frame For Completion</b><b class="star">*</b></mat-label>
+										   <ng-container *ngIf="listDelapso==3">
 										   <div class="task-text-group">
 											   <p>Months&nbsp;&nbsp;</p>
 											   <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="10000" max_length="10" [readonly]="disableWesee2()"/>
+	
+											   <p>Days&nbsp;&nbsp;</p>
+	
+											   <input type="text" class="form-control" formControlName="time_frame_for_completion_days" value="10000" max_length="10" [readonly]="disableWesee2()"/>
+											   &nbsp;&nbsp;
 											   </div>
-									   </ng-container>
+										   </ng-container>
+										   <ng-container *ngIf="listDelapso!=3">
+											   <div class="task-text-group">
+												   <p>Months&nbsp;&nbsp;</p>
+												   <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="10000" max_length="10" [readonly]="disableWesee2()"/>
+												   </div>
+										   </ng-container>
+									   </div>
 								   </div>
+	
 							   </div>
-
 						   </div>
-					   </div>
-
-					   <div class="mb-5 ">
-						 <mat-label style="font-size:large;"><b>Comment</b><b class="star">*</b></mat-label>
-						 <ng-container *ngIf="listDelapso==3">
-							 <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments" [readonly]="disableWesee2()"></textarea>
-							 <mat-error *ngIf="taskForm.get('weseeForm.comments_of_wesee')?.errors?.['required'] && showError">Enter Comments</mat-error>
-					   </ng-container>
-					   <ng-container *ngIf="listDelapso!=3">
-						   <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments" [readonly]="disableWesee2() "></textarea>
-						   <mat-error *ngIf="taskForm.get('weseeForm.comments_of_wesee')?.errors?.['required'] && showError">Enter Comments</mat-error>
-					 </ng-container>
-					 </div>
-					 <div *ngIf="(list && list.comments_of_wesee=='' && !disableWesee2())" >
-					   <ng-container *ngIf="!disableWesee2()" >
-					 <div class="row" id="addmore" *ngIf="div1">
-
-					   <div class="col-md-6">
-						   <input #fileInput formControlName="file5" id="file5"type="file"  class="form-control" (change)="onImageHandler5($event)" accept="image/jpeg,image/jpg,application/pdf" >
-
-					   </div>
-					   <div class="col-md-6" >
-						   <button type="button" id="fileupload"  (click)="div1Function()" mat-fab color="primary"><mat-icon >+</mat-icon></button>
-
-					 </div>
-
-					 </div>
-
-					 <div class="row" id="addmore" *ngIf="div2">
-
+	
+						   <div class="mb-5 ">
+							 <mat-label style="font-size:large;"><b>Comment</b><b class="star">*</b></mat-label>
+							 <ng-container *ngIf="listDelapso==3">
+								 <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments" [readonly]="disableWesee2()"></textarea>
+								 <mat-error *ngIf="taskForm.get('weseeForm.comments_of_wesee')?.errors?.['required'] && showError">Enter Comments</mat-error>
+						   </ng-container>
+						   <ng-container *ngIf="listDelapso!=3">
+							   <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments" [readonly]="disableWesee2() "></textarea>
+							   <mat-error *ngIf="taskForm.get('weseeForm.comments_of_wesee')?.errors?.['required'] && showError">Enter Comments</mat-error>
+						 </ng-container>
+						 </div>
+						 <div *ngIf="(list && list.comments_of_wesee=='' && !disableWesee2())" >
+						   <ng-container *ngIf="!disableWesee2()" >
+						 <div class="row" id="addmore" *ngIf="div1">
+	
 						   <div class="col-md-6">
-							   <input #fileInput formControlName="file6" id="file6"type="file"  class="form-control" (change)="onImageHandler6($event)"  accept="image/jpeg,image/jpg,application/pdf" >
-
+							   <input #fileInput formControlName="file5" id="file5"type="file"  class="form-control" (change)="onImageHandler5($event)" accept="image/jpeg,image/jpg,application/pdf" >
+	
 						   </div>
 						   <div class="col-md-6" >
-							   <button type="button" id="fileupload" (click)="div2Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
-							   <button type="button" id="fileupload" (click)="div3Function()" mat-fab color="warn"><mat-icon>-</mat-icon></button>
-
-						   </div>
-
+							   <button type="button" id="fileupload"  (click)="div1Function()" mat-fab color="primary"><mat-icon >+</mat-icon></button>
+	
 						 </div>
-					   </ng-container>
-					   </div><br>
-					   <div>
-						   <ng-container *ngIf="(list && list.comments_of_wesee!='' && !disableWesee2())" >
-							 <div class="mb-5" >
-
-							   <div class="matt-group">
-								   <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE' && ((imgToUpload5==''||null)||(ImageUrl5==''||null))">
-									   <input #fileInput formControlName="file5" id="file5"type="file"  class="form-control" (change)="onImageHandler5($event)" accept="image/jpeg,image/jpg,application/pdf" >
-									   </ng-container>
-								   <diV class="remove">
-									   <a href="{{ImageUrl5}}" target=_blank *ngIf="ImageUrl5!='' && file6url" class="edit-icon text-primary"
-								   ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-								   <span *ngIf="ImageUrl5!='' && file6url && api.userid.role_center[0].user_role.code=='WESEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file6()" >Remove</a></span>
-								   </diV>
-								   <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE' && ((imgToUpload6==''||null)||(ImageUrl6==''||null))">
-									   <input #fileInput  formControlName="file6" id="file6"type="file"  class="form-control" (change)="onImageHandler6($event)" accept="image/jpeg,image/jpg,application/pdf" >
-									   </ng-container>
-								   <diV class="remove">
-									   <a href="{{ImageUrl6}}" target=_blank *ngIf="ImageUrl6!='' && file7url" class="edit-icon text-primary"
+	
+						 </div>
+	
+						 <div class="row" id="addmore" *ngIf="div2">
+	
+							   <div class="col-md-6">
+								   <input #fileInput formControlName="file6" id="file6"type="file"  class="form-control" (change)="onImageHandler6($event)"  accept="image/jpeg,image/jpg,application/pdf" >
+	
+							   </div>
+							   <div class="col-md-6" >
+								   <button type="button" id="fileupload" (click)="div2Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
+								   <button type="button" id="fileupload" (click)="div3Function()" mat-fab color="warn"><mat-icon>-</mat-icon></button>
+	
+							   </div>
+	
+							 </div>
+						   </ng-container>
+						   </div><br>
+						   <div>
+							   <ng-container *ngIf="(list && list.comments_of_wesee!='' && !disableWesee2())" >
+								 <div class="mb-5" >
+	
+								   <div class="matt-group">
+									   <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE' && ((imgToUpload5==''||null)||(ImageUrl5==''||null))">
+										   <input #fileInput formControlName="file5" id="file5"type="file"  class="form-control" (change)="onImageHandler5($event)" accept="image/jpeg,image/jpg,application/pdf" >
+										   </ng-container>
+									   <diV class="remove">
+										   <a href="{{ImageUrl5}}" target=_blank *ngIf="ImageUrl5!='' && file6url" class="edit-icon text-primary"
 									   ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-									   <span *ngIf="ImageUrl6!='' && file7url && api.userid.role_center[0].user_role.code=='WESEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file7()" >Remove</a></span>
-								   </diV>
-						   </div>
-						   </div>
-						   </ng-container>
-						 </div>
-					 <div class="card-footer ">
-					   <div class="col-md-12" *ngIf="!disableWesee2()">
-						<button type="button" class="btn btn-success" *ngIf="this.api.userid.process_id=='3'" (click)="OnTaskingSubmit()" >Submit</button>
-						</div>
-				   </div>
-
-
-
-					 <table  *ngIf="list && list.APSO_recommender==1||list && list.APSO_recommender==2">
-
-						 <tr>
-						 <th width="20%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th><th width="20%">Tasking group Comments</th>
-						 </tr>
-
-						 <tr *ngFor="let list1 of countryList1; let i= index;">
-						   <ng-container *ngIf="(list1.APSO_recommender==1||list1.APSO_recommender==2)">
-							   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1&& list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td><td>-</td>
-						   </ng-container>
-						   <ng-container *ngIf="list1.WESEE_recommender==4">
-							   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not Recommended'}}</td><td>-</td><td>{{list1 && list1.created_by.first_name}}</td><td>{{list1&& list1.comments}}</td>
-						   </ng-container>
-						 </tr>
-
-
-						 <!-- </ng-template> -->
-					   </table>
-					  
-
-						<div class="card-footer  mt-2" *ngIf="!disableWesee2() && this.api.userid.process_id !==3">
-							<button type="button" class="btn btn-success"  (click)="Recommened()">Recommend</button> ;&nbsp;;&nbsp;;&nbsp;
-							<button type="button" class="btn btn-danger"  (click)="notRecommended()">Not Recommend</button>
-						
-						</div>
-
-				
-				</div>
-			   		</div>
-					<div formGroupName="deeForm">
-						<div class="alert alert-dismissible alert-bg">
-						<div class="sub-heading" style="text-align:center;">
-							<mat-label  class="subheading3"><b style="font-size:large;">DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label>
+									   <span *ngIf="ImageUrl5!='' && file6url && api.userid.role_center[0].user_role.code=='WESEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file6()" >Remove</a></span>
+									   </diV>
+									   <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE' && ((imgToUpload6==''||null)||(ImageUrl6==''||null))">
+										   <input #fileInput  formControlName="file6" id="file6"type="file"  class="form-control" (change)="onImageHandler6($event)" accept="image/jpeg,image/jpg,application/pdf" >
+										   </ng-container>
+									   <diV class="remove">
+										   <a href="{{ImageUrl6}}" target=_blank *ngIf="ImageUrl6!='' && file7url" class="edit-icon text-primary"
+										   ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+										   <span *ngIf="ImageUrl6!='' && file7url && api.userid.role_center[0].user_role.code=='WESEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file7()" >Remove</a></span>
+									   </diV>
+							   </div>
+							   </div>
+							   </ng-container>
+							 </div>
+						 <div class="card-footer ">
+						   <div class="col-md-12" *ngIf="!disableWesee2()">
+							<button type="button" class="btn btn-success" *ngIf="this.api.userid.process_id=='3'" (click)="OnTaskingSubmit()" >Submit</button>
 							</div>
-						<div class="mb-5 ">
-							<mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
-							<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" max_length="10"/> -->
-							<ng-container *ngIf="crudName=='View' || listdee==1 || listdee==2 ">
-							<div class="task-text-group">
-								<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" [readonly]="listwesee!=1"/> -->
-							</div>
-							</ng-container>
-							<ng-container >
-							<div class="task-text-group">
-								<p>WESEE</p>
-								<input type="text" [readonly] ="disableDee()" style="text-transform:uppercase" maxlength="10" minlength="4" class="form-control" formControlName="task_number_dee0" value="WESEE/001/2022/01" />&nbsp;/&nbsp;
-								<input type="number" [readonly] ="disableDee()" maxlength="5" class="form-control" formControlName="task_number_dee1" value="WESEE/001/2022/01"/>&nbsp;/&nbsp;
-								<input type="number" [readonly] ="disableDee()" maxlength="5" class="form-control" formControlName="task_number_dee2" value="WESEE/001/2022/01"/>
-								<!-- <p>{{currentDate1 | date:'dd'}}</p> -->
-							</div>
-						</ng-container>
-					</div>
-					<ng-container >
-						<div class="mb-5 ">
-							<mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-							<textarea rows="4"  class="form-control" formControlName="comments_of_dee" [readonly]="disableDee()" value="Test comments"></textarea>
-								<!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
-								<!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
-								<!-- <mat-error *ngIf="taskForm.get('deeForm.comments_of_dee')?.errors?.['required'] && showError">Enter comments</mat-error> -->
-						</div>
-					</ng-container>
-					<!-- <ng-container>
-						<div class="mb-5 ">
-							<mat-label style="font-size:large;"><b>Comments1111</b><b class="star">*</b></mat-label>
-							<textarea  rows="4"  class="form-control ng-untouched ng-pristine ng-invalid" formControlName="comments_of_dee" value="Test comments" [readonly]="listwesee!=1 || listassign == 'Dee Recommender'"></textarea>
-						<input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/>
-						</div>
-					</ng-container>  -->
-						<table *ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
-							<tr>
-							<th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
-						</tr>
-						<tr *ngFor="let list1 of countryList1; let i= index;">
-						<ng-container *ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
-							<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1&& list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
-						</ng-container>
-							</tr>
-						</table>
-					<ng-container *ngIf=" (list && list.WESEE_recommender==1) && (api.userid.role_center[0].user_role.code=='DEE') && (list && list.comments_of_dee=='' || list && list.comments_of_dee==null)" >
-						<div class="row" id="addmore" *ngIf="div3">
-							<mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b><b class="star">*</b></mat-label>
-							<div class="col-md-6">
-								<input #fileInput formControlName="file7" id="file7"type="file"  class="form-control" (change)="onImageHandler7($event)" accept="image/jpeg,image/jpg,application/pdf" >
-
-							</div>
-							<div class="col-md-6">
-								<button type="button" id="fileupload"  (click)="div4Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
-
-							</div>
-
-						</div>
-
-						<div class="row" id="addmore" *ngIf="div4">
-
-							<div class="col-md-6">
-								<input #fileInput formControlName="file8" id="file8"type="file"  class="form-control" (change)="onImageHandler8($event)"  accept="image/jpeg,image/jpg,application/pdf" >
-
-							</div>
-							<div class="col-md-6">
-								<button type="button" id="fileupload" (click)="div5Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
-								<button type="button" id="fileupload" (click)="div6Function()" mat-fab color="warn"><mat-icon>-</mat-icon></button>
-
-							</div>
-
-						</div>
-					</ng-container>
-					<ng-container *ngIf="!disableDee()  && (list && list.task_number_dee)">
-							<div class="mb-5" >
-								<div class="matt-group" *ngIf="(list && list.file7)">
-									<ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE' && ((imgToUpload7==''||null)||(ImageUrl7==''||null))">
-										<input #fileInput formControlName="file7" id="file7" type="file"  class="form-control" (change)="onImageHandler7($event)" accept="image/jpeg,image/jpg,application/pdf" >
-										</ng-container>
-									<div class="remove"><a href="{{ImageUrl7}}" *ngIf="ImageUrl7!='' && file8url" class="edit-icon text-primary"
-										><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-										<span *ngIf="ImageUrl7!='' && file8url && api.userid.role_center[0].user_role.code=='DEE' "><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file8()" >Remove</a></span>
-									</div>
-
-
-									<ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'&& ((imgToUpload8==''||null)||(ImageUrl8==''||null))">
-										<input #fileInput formControlName="file8" id="file8" type="file"  class="form-control" (change)="onImageHandler8($event)" accept="image/jpeg,image/jpg,application/pdf" >
-									</ng-container>
-									<diV class="remove" *ngIf="(list && list.file8)" >
-										<a href="{{ImageUrl8}}" *ngIf="ImageUrl8!='' && file9url" class="edit-icon text-primary"
-										><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
-										<span *ngIf="ImageUrl8!='' && file9url && api.userid.role_center[0].user_role.code=='DEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file9()" >Remove</a></span>
-									</diV>
-								</div>
-							</div>
-					</ng-container>
-
-
-
-
-
-						<div class="card-footer  mb-2" *ngIf="!disableDee()">
-							<div class="col-md-12">
-							<ng-container *ngIf="list &&list.WESEE_recommender==1">
-								<ng-container *ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2";>
-									<button type="button" class="btn btn-success"   (click)="deeRecommened()">Recommend</button>
-									&nbsp;
-									<button type="button" class="btn btn-danger"  (click)="deenotRecommended()" >Not Recommend</button>
-								</ng-container>
-							</ng-container>
-
-							</div>
-						</div>
-					</div>
-					</div>
-					<div formGroupName="acomForm">
-					<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
-
-						<div class="alert alert-dismissible alert-bg">
-
-							<div class="sub-heading" style="text-align:center;">
-								<mat-label  class="subheading3"><b style="font-size:large;">ACOM (IT & S) &nbsp;(Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label>
-							</div>
-
-						<!-- <div class="mb-5 ">
-							<mat-label>Comments of Dwe<b class="star">*</b></mat-label>
-							<textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
-							<mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
-								<!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
-						<!-- </div> -->
-
-
-						<div class="mb-5 ">
-							<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
-
-							<textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments" [readonly]="disableAcom()"></textarea>
-							<mat-error *ngIf="taskForm.get('acomForm.recommendation_of_acom_its')?.errors?.['required'] && showError">Enter comments</mat-error>
-								<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-								<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
-						</div>
-						<table *ngIf="list && list.DEE_recommender==1 && list && list.DEE_recommender==2 ">
-							<tr>
-							<th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
-						</tr>
-						<tr *ngFor="let list1 of countryList1; let i= index;">
-						<ng-container *ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
-							<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1 && list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
-						</ng-container>
-							</tr>
-						</table>
-
-						<div class="card-footer  mb-4">
-							<div class="col-md-12">
-							
-							<ng-container *ngIf="!disableAcom() && (api.userid.role_center[0].user_role.code=='ACOM')";>
-							<button type="button" class="btn btn-success"  (click)="acomRecommened()">Recommend</button>
-							&nbsp;
-							<button type="button" class="btn btn-danger"  (click)="acomnotRecommended()" >Not Recommend</button>
-							</ng-container>
-						
-							</div>
-						</div>
-					</div>
-					</div>
-
-			   	<div formGroupName="comForm">
-				 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'"> -->
-					   <!-- <div class="mb-5 ">
-						   <label for="floatingInput" class="form-label">Approval Of COM</label>
-
-							   <input type="text" class="form-control" formControlName="approval" value="Approved"/>
-					   </div> -->
-
-					   <div class="alert alert-dismissible alert-bg">
-
-						   <div class="sub-heading" style="text-align:center;">
-							   <mat-label class="subheading3"><b style="font-size:large;">COM &nbsp;(Chief of Materiel)</b></mat-label>
-						   </div>
-
-					   <div class="mb-1">
-						 <mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-						 <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments" [readonly]="disableCom()"></textarea>
-						 <mat-error *ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter comments</mat-error>
-							   <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-							   <!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
 					   </div>
-					   <table *ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
-						 <tr>
-						   <th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
+	
+	
+	
+						 <table  *ngIf="list && list.APSO_recommender==1||list && list.APSO_recommender==2">
+	
+							 <tr>
+							 <th width="20%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th><th width="20%">Tasking group Comments</th>
+							 </tr>
+	
+							 <tr *ngFor="let list1 of countryList1; let i= index;">
+							   <ng-container *ngIf="(list1.APSO_recommender==1||list1.APSO_recommender==2)">
+								   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1&& list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td><td>-</td>
+							   </ng-container>
+							   <ng-container *ngIf="list1.WESEE_recommender==4">
+								   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not Recommended'}}</td><td>-</td><td>{{list1 && list1.created_by.first_name}}</td><td>{{list1&& list1.comments}}</td>
+							   </ng-container>
+							 </tr>
+	
+	
+							 <!-- </ng-template> -->
+						   </table>
+						  
+	
+							<div class="card-footer  mt-2" *ngIf="!disableWesee2() && this.api.userid.process_id !==3">
+								<button type="button" class="btn btn-success"  (click)="Recommened()">Recommend</button> ;&nbsp;;&nbsp;;&nbsp;
+								<button type="button" class="btn btn-danger"  (click)="notRecommended()">Not Recommend</button>
+							
+							</div>
+	
+					
+					</div>
+						   </div>
+						<div formGroupName="deeForm">
+							<div class="alert alert-dismissible alert-bg">
+							<div class="sub-heading" style="text-align:center;">
+								<mat-label  class="subheading3"><b style="font-size:large;">DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label>
+								</div>
+							<div class="mb-5 ">
+								<mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
+								<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" max_length="10"/> -->
+								<ng-container *ngIf="crudName=='View' || listdee==1 || listdee==2 ">
+								<div class="task-text-group">
+									<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" [readonly]="listwesee!=1"/> -->
+								</div>
+								</ng-container>
+								<ng-container >
+								<div class="task-text-group">
+									<p>WESEE</p>
+									<input type="text" [readonly] ="disableDee()" style="text-transform:uppercase" maxlength="10" minlength="4" class="form-control" formControlName="task_number_dee0" value="WESEE/001/2022/01" />&nbsp;/&nbsp;
+									<input type="number" [readonly] ="disableDee()" maxlength="5" class="form-control" formControlName="task_number_dee1" value="WESEE/001/2022/01"/>&nbsp;/&nbsp;
+									<input type="number" [readonly] ="disableDee()" maxlength="5" class="form-control" formControlName="task_number_dee2" value="WESEE/001/2022/01"/>
+									<!-- <p>{{currentDate1 | date:'dd'}}</p> -->
+								</div>
+							</ng-container>
+						</div>
+						<ng-container >
+							<div class="mb-5 ">
+								<mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
+								<textarea rows="4"  class="form-control" formControlName="comments_of_dee" [readonly]="disableDee()" value="Test comments"></textarea>
+									<!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
+									<!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
+									<!-- <mat-error *ngIf="taskForm.get('deeForm.comments_of_dee')?.errors?.['required'] && showError">Enter comments</mat-error> -->
+							</div>
+						</ng-container>
+						<!-- <ng-container>
+							<div class="mb-5 ">
+								<mat-label style="font-size:large;"><b>Comments1111</b><b class="star">*</b></mat-label>
+								<textarea  rows="4"  class="form-control ng-untouched ng-pristine ng-invalid" formControlName="comments_of_dee" value="Test comments" [readonly]="listwesee!=1 || listassign == 'Dee Recommender'"></textarea>
+							<input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/>
+							</div>
+						</ng-container>  -->
+							<table *ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
+								<tr>
+								<th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
 							</tr>
 							<tr *ngFor="let list1 of countryList1; let i= index;">
-							<ng-container *ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
-						   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1 && list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
-						   </ng-container>
-						 </tr>
-					   </table>
-
-
-						<div class="card-footer  mt-4">
-							<div class="col-md-12">
-							<ng-container *ngIf="!disableCom()">
-							<!-- <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button> -->
-							<button type="button" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comnotRecommended()">Not Approve</button>
-							&nbsp;
-								<button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button>
-							&nbsp;
-
-							<!-- tton t <buype="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommended</button> -->
+							<ng-container *ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
+								<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1&& list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
 							</ng-container>
+								</tr>
+							</table>
+						<ng-container *ngIf=" (list && list.WESEE_recommender==1) && (api.userid.role_center[0].user_role.code=='DEE') && (list && list.comments_of_dee=='' || list && list.comments_of_dee==null)" >
+							<div class="row" id="addmore" *ngIf="div3">
+								<mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b><b class="star">*</b></mat-label>
+								<div class="col-md-6">
+									<input #fileInput formControlName="file7" id="file7"type="file"  class="form-control" (change)="onImageHandler7($event)" accept="image/jpeg,image/jpg,application/pdf" >
+	
+								</div>
+								<div class="col-md-6">
+									<button type="button" id="fileupload"  (click)="div4Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
+	
+								</div>
+	
+							</div>
+	
+							<div class="row" id="addmore" *ngIf="div4">
+	
+								<div class="col-md-6">
+									<input #fileInput formControlName="file8" id="file8"type="file"  class="form-control" (change)="onImageHandler8($event)"  accept="image/jpeg,image/jpg,application/pdf" >
+	
+								</div>
+								<div class="col-md-6">
+									<button type="button" id="fileupload" (click)="div5Function()" mat-fab color="primary"><mat-icon>+</mat-icon></button>
+									<button type="button" id="fileupload" (click)="div6Function()" mat-fab color="warn"><mat-icon>-</mat-icon></button>
+	
+								</div>
+	
+							</div>
+						</ng-container>
+						<ng-container *ngIf="!disableDee()  && (list && list.task_number_dee)">
+								<div class="mb-5" >
+									<div class="matt-group" *ngIf="(list && list.file7)">
+										<ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE' && ((imgToUpload7==''||null)||(ImageUrl7==''||null))">
+											<input #fileInput formControlName="file7" id="file7" type="file"  class="form-control" (change)="onImageHandler7($event)" accept="image/jpeg,image/jpg,application/pdf" >
+											</ng-container>
+										<div class="remove"><a href="{{ImageUrl7}}" *ngIf="ImageUrl7!='' && file8url" class="edit-icon text-primary"
+											><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+											<span *ngIf="ImageUrl7!='' && file8url && api.userid.role_center[0].user_role.code=='DEE' "><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file8()" >Remove</a></span>
+										</div>
+	
+	
+										<ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'&& ((imgToUpload8==''||null)||(ImageUrl8==''||null))">
+											<input #fileInput formControlName="file8" id="file8" type="file"  class="form-control" (change)="onImageHandler8($event)" accept="image/jpeg,image/jpg,application/pdf" >
+										</ng-container>
+										<diV class="remove" *ngIf="(list && list.file8)" >
+											<a href="{{ImageUrl8}}" *ngIf="ImageUrl8!='' && file9url" class="edit-icon text-primary"
+											><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+											<span *ngIf="ImageUrl8!='' && file9url && api.userid.role_center[0].user_role.code=='DEE'"><a href="javascript:void(0)" class="btn btn-danger btn-sm" (click)="remove_file9()" >Remove</a></span>
+										</diV>
+									</div>
+								</div>
+						</ng-container>
+	
+	
+	
+	
+	
+							<div class="card-footer  mb-2" *ngIf="!disableDee()">
+								<div class="col-md-12">
+								<ng-container *ngIf="list &&list.WESEE_recommender==1">
+									<ng-container *ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2";>
+										<button type="button" class="btn btn-success"   (click)="deeRecommened()">Recommend</button>
+										&nbsp;
+										<button type="button" class="btn btn-danger"  (click)="deenotRecommended()" >Not Recommend</button>
+									</ng-container>
+								</ng-container>
+	
+								</div>
 							</div>
 						</div>
-					</div>
-
-
-
-
-					 <!-- <div class="card-footer text-end">
-					   <div class="col-md-12">
-					   <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
-
 						</div>
-					 </div> -->
-				</div>
-				</div>
-			  </form>
+						<div formGroupName="acomForm">
+						<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
+	
+							<div class="alert alert-dismissible alert-bg">
+	
+								<div class="sub-heading" style="text-align:center;">
+									<mat-label  class="subheading3"><b style="font-size:large;">ACOM (IT & S) &nbsp;(Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label>
+								</div>
+	
+							<!-- <div class="mb-5 ">
+								<mat-label>Comments of Dwe<b class="star">*</b></mat-label>
+								<textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
+								<mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
+									<!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
+							<!-- </div> -->
+	
+	
+							<div class="mb-5 ">
+								<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
+	
+								<textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments" [readonly]="disableAcom()"></textarea>
+								<mat-error *ngIf="taskForm.get('acomForm.recommendation_of_acom_its')?.errors?.['required'] && showError">Enter comments</mat-error>
+									<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+									<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+							</div>
+							<table *ngIf="list && list.DEE_recommender==1 && list && list.DEE_recommender==2 ">
+								<tr>
+								<th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
+							</tr>
+							<tr *ngFor="let list1 of countryList1; let i= index;">
+							<ng-container *ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
+								<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1 && list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
+							</ng-container>
+								</tr>
+							</table>
+	
+							<div class="card-footer  mb-4">
+								<div class="col-md-12">
+								
+								<ng-container *ngIf="!disableAcom() && (api.userid.role_center[0].user_role.code=='ACOM')";>
+								<button type="button" class="btn btn-success"  (click)="acomRecommened()">Recommend</button>
+								&nbsp;
+								<button type="button" class="btn btn-danger"  (click)="acomnotRecommended()" >Not Recommend</button>
+								</ng-container>
+							
+								</div>
+							</div>
+						</div>
+						</div>
+	
+					   <div formGroupName="comForm">
+					 <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'"> -->
+						   <!-- <div class="mb-5 ">
+							   <label for="floatingInput" class="form-label">Approval Of COM</label>
+	
+								   <input type="text" class="form-control" formControlName="approval" value="Approved"/>
+						   </div> -->
+	
+						   <div class="alert alert-dismissible alert-bg">
+	
+							   <div class="sub-heading" style="text-align:center;">
+								   <mat-label class="subheading3"><b style="font-size:large;">COM &nbsp;(Chief of Materiel)</b></mat-label>
+							   </div>
+	
+						   <div class="mb-1">
+							 <mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
+							 <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments" [readonly]="disableCom()"></textarea>
+							 <mat-error *ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter comments</mat-error>
+								   <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+								   <!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
+						   </div>
+						   <table *ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
+							 <tr>
+							   <th width="30%">Date</th><th width="20%">Status</th><th width="20%">Comments</th><th width="20%">Created By</th>
+								</tr>
+								<tr *ngFor="let list1 of countryList1; let i= index;">
+								<ng-container *ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
+							   <td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td><td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not Recommended'}}</td><td>{{list1 && list1.comments}}</td><td>{{list1 && list1.created_by.first_name}}</td>
+							   </ng-container>
+							 </tr>
+						   </table>
+	
+	
+							<div class="card-footer  mt-4">
+								<div class="col-md-12">
+								<ng-container *ngIf="!disableCom()">
+								<!-- <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button> -->
+								<button type="button" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comnotRecommended()">Not Approve</button>
+								&nbsp;
+									<button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button>
+								&nbsp;
+	
+								<!-- tton t <buype="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommended</button> -->
+								</ng-container>
+								</div>
+							</div>
+						</div>
+	
+	
+	
+	
+						 <!-- <div class="card-footer text-end">
+						   <div class="col-md-12">
+						   <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
+	
+							</div>
+						 </div> -->
+					</div>
+					</div>
+						  </form>
+
+					</div>
 			</div>
 		  </div>
 		</div>

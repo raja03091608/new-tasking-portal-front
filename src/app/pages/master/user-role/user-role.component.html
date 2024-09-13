@@ -30,7 +30,7 @@
                          </mat-paginator>
                       </div>
                       <div class="col-md-6">
-						<mat-form-field appearance="fill">
+						<mat-form-field appearance="outline">
 							<mat-label>Search your text here</mat-label>
 							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
 						</mat-form-field>
@@ -124,14 +124,14 @@
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_by"  >
                       </mat-form-field>
                    </div>
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_ip"  >
                       </mat-form-field>
                    </div>
@@ -139,7 +139,7 @@
                 <div class="col-md-12">
                      <div class="matt-group matselect">
                        <mat-label>Process <b class="star">*</b></mat-label>
-                       <mat-form-field appearance="fill">
+                       <mat-form-field appearance="outline">
                         <mat-select #select formControlName="process"
                           placeholder="Select Process">
                           <mat-option>Select Process</mat-option>

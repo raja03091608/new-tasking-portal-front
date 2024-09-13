@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 
 <div class="row g-5 g-xl-8 justify-content-center">
-	<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' || token_detail.process_id==3">
+  <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' || token_detail.process_id==3">
     <div class="col-md-3 card-container-c">
       <!--begin::Statistics Widget 5-->
       <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">
@@ -30,23 +30,24 @@
           </div>
         </div>
       </a> -->
-	  <a routerLink="/tasking-portal/new-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
-		<div class="logo-content ">
-		<div class="border-rotation"></div>
-		<img src="../../../../assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
+      <a routerLink="/tasking-portal/new-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
+        style="height: 140px;">
+        <div class="logo-content ">
+          <div class="border-rotation"></div>
+          <img src="../../../../assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
 
-		</div>
-		<div class="card-content">
-		<h4 class="card-title">Start a New Tasking</h4>
-		</div>
-		<div class="footer-content" style="position: relative; top: 33px;" >
-			<button class="btn-view">View</button>
-		  </div>
-	  </a>
-	</div>
-	</ng-container>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Start a New Tasking</h4>
+        </div>
+        <div class="footer-content" style="position: relative; top: 33px;">
+          <button class="btn-view">View</button>
+        </div>
+      </a>
+    </div>
+  </ng-container>
 
-    <!-- <div class="col-md-3 gridbg3">
+  <!-- <div class="col-md-3 gridbg3">
       <a routerLink="/tasking-portal/archive-task" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 150px;">
         <div class="card-body">
           <div class="row">
@@ -69,97 +70,56 @@
         </div>
       </a>
     </div> -->
-	<div class="col-md-3 card-container-c">
-		<a routerLink="/tasking-portal/archive-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
-		  <div class="logo-content ">
-			<div class="border-rotation"></div>
-			<img src="../../../../assets/archieve task.png" alt="Logo" class="card-logo rotation" />
-		  </div>
-		  <div class="card-content">
-			<h4 class="card-title">Archive Task</h4>
-			<p class="fw-bold text-black count-value-text">{{archive_count?archive_count:0}}</p>
-		  </div>
-		  <div class="footer-content">
-			<button class="btn-view">View</button>
-		  </div>
-		</a>
-	  </div>
-			<!--end::Body-->
-		<!-- </a> -->
-		<!--end::Statistics Widget 5-->
-
-    <!-- <div class="col-md-3 gridbg3">
-      <a routerLink="/tasking-portal/task-list" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-3" style="height: 150px;">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
-                  <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
-                  </svg>
-              </span>
-            </div>
-            <div class="col-md-8">
-              <h4 class="text-white" style="text-align: right;">Task Waiting For Approve</h4>
-              <p class="fw-bold text-white count-value-text">{{count2?count2:0}}</p>
-            </div>
-          </div>
+ 
+    <div class="col-md-3 card-container-c">
+      <a routerLink="/tasking-portal/view-tasking-status"
+        class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+        <div class="logo-content ">
+          <div class="border-rotation"></div>
+          <img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Total Approved Task</h4>
+          <p class="fw-bold text-black count-value-text">{{count?count:0}}</p>
+        </div>
+        <div class="footer-content">
+          <button class="btn-view">View</button>
         </div>
       </a>
     </div>
-
-    <div class="col-md-3 gridbg4">
-      <a routerLink="/tasking-portal/view-tasking-status" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-4" style="height: 150px;">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path opacity="0.3" d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z" fill="currentColor"/>
-                  <path d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z" fill="currentColor"/>
-                </svg>
-              </span>
-            </div>
-            <div class="col-md-8">
-              <h4 class="text-white" style="text-align: right;">Total Approved Tasks </h4>
-              <p class="fw-bold text-white count-value-text">{{count?count:0}}</p>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div> -->
-
-	<div class="col-md-3 card-container-c">
-		<a routerLink="/tasking-portal/task-list" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
-			<div class="logo-content ">
-				<div class="border-rotation"></div>
-					<img src="../../../../assets/task waiting for approve.png" alt="Logo" class="card-logo rotation" />
-			</div>
-			<div class="card-content">
-			<h4 class="card-title">Task Waiting For Approval</h4>
-			<p class="fw-bold text-black count-value-text">{{count2?count2:0}}</p>
-			</div>
-			<div class="footer-content">
-			<button class="btn-view">View</button>
-			</div>
-		</a>
-	</div>
-	<div class="col-md-3 card-container-c">
-		<a routerLink="/tasking-portal/view-tasking-status" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
-		<div class="logo-content ">
-			<div class="border-rotation"></div>
-				<img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
-		</div>
-		<div class="card-content">
-			<h4 class="card-title">Total Approved Task</h4>
-			<p class="fw-bold text-black count-value-text">{{count?count:0}}</p>
-		</div>
-		<div class="footer-content">
-			<button class="btn-view">View</button>
-		</div>
-	</a>
-	</div>
+  <div class="col-md-3 card-container-c">
+    <a routerLink="/tasking-portal/task-list" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
+      style="height: 140px;">
+      <div class="logo-content ">
+        <div class="border-rotation"></div>
+        <img src="../../../../assets/task waiting for approve.png" alt="Logo" class="card-logo rotation" />
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Task Waiting For Approval</h4>
+        <p class="fw-bold text-black count-value-text">{{count2?count2:0}}</p>
+      </div>
+      <div class="footer-content">
+        <button class="btn-view">View</button>
+      </div>
+    </a>
+  </div>
+ 
+  <div class="col-md-3 card-container-c">
+    <a routerLink="/tasking-portal/archive-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
+      style="height: 140px;">
+      <div class="logo-content ">
+        <div class="border-rotation"></div>
+        <img src="../../../../assets/archieve task.png" alt="Logo" class="card-logo rotation" />
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Archive Task</h4>
+        <p class="fw-bold text-black count-value-text">{{archive_count?archive_count:0}}</p>
+      </div>
+      <div class="footer-content">
+        <button class="btn-view">View</button>
+      </div>
+    </a>
+  </div>
 
 </div>
 
@@ -167,108 +127,89 @@
 
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
   <div class="col-md-6 mt-0">
-		<div class="card card-flush h-xl-100 progress-chart mapbg">
-			<div class="card-header">
-				<h3 class="card-title align-items-start flex-column pt-5">
-					<span class="fw-bold mb-3">Task Status Distribution</span>
-				</h3>
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+      <div class="card-header">
+        <h3 class="card-title align-items-start flex-column pt-5">
+          <span class="fw-bold mb-3">Task Status Distribution</span>
+        </h3>
         <!-- <p-button (onClick)="showDialog1()" label="View" class="show-button"></p-button> -->
-			</div>
-			<div id="chart5">
-				<apx-chart
-				[series]="chartOptions12.series"
-				[chart]="chartOptions12.chart"
-				[labels]="chartOptions12.labels"
-				[responsive]="chartOptions12.responsive"
-				[legend]="chartOptions12.legend"
-				[dataLabels]="chartOptions12.dataLabels"
-        [colors]="chartOptions12.colors"
-				[title]="chartOptions12.title">
-				</apx-chart>
-			</div>
-	</div>
-	</div>
+      </div>
+      <div id="chart5">
+        <apx-chart [series]="chartOptions12.series" [chart]="chartOptions12.chart" [labels]="chartOptions12.labels"
+          [responsive]="chartOptions12.responsive" [legend]="chartOptions12.legend"
+          [dataLabels]="chartOptions12.dataLabels" [colors]="chartOptions12.colors" [title]="chartOptions12.title">
+        </apx-chart>
+      </div>
+    </div>
+  </div>
 
   <div class="col-md-6 mt-0">
-		<div class="card card-flush h-xl-100 progress-chart mapbg">
-			<div class="card-header">
-				<h3 class="card-title align-items-start flex-column pt-5">
-					<span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
-				</h3>
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+      <div class="card-header">
+        <h3 class="card-title align-items-start flex-column pt-5">
+          <span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
+        </h3>
         <!-- <p-button (onClick)="showDialog2()" label="View" class="show-button"></p-button> -->
-			</div>
-				<div id="chart6">
-					<apx-chart
-				[series]="chartOptions13.series"
-				[chart]="chartOptions13.chart"
-				[xaxis]="chartOptions13.xaxis"
-				[yaxis]="chartOptions13.yaxis"
-				[plotOptions]="chartOptions13.plotOptions"
-				[fill]="chartOptions13.fill"
-				[title]="chartOptions13.title">
-				</apx-chart>
-				</div>
-		</div>
-	</div>
+      </div>
+      <div id="chart6">
+        <apx-chart [series]="chartOptions13.series" [chart]="chartOptions13.chart" [xaxis]="chartOptions13.xaxis"
+          [yaxis]="chartOptions13.yaxis" [plotOptions]="chartOptions13.plotOptions" [fill]="chartOptions13.fill"
+          [title]="chartOptions13.title">
+        </apx-chart>
+      </div>
+    </div>
+  </div>
 
 
 
-	<div class="col-xl-12 mb-xl-12" style="margin-top: 30px;"  >
-		<div class="card card-flush h-xl-100 progress-chart mapbg">
-			<div class="card-header">
-				<h3 class="card-title align-items-start flex-column pt-5">
-					<span class="fw-bold mb-3">Year wise Task Completion</span>
-				</h3>
+  <div class="col-xl-12 mb-xl-12" style="margin-top: 30px;">
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+      <div class="card-header">
+        <h3 class="card-title align-items-start flex-column pt-5">
+          <span class="fw-bold mb-3">Year wise Task Completion</span>
+        </h3>
         <!-- <p-button (onClick)="showDialog()" label="View" class="show-button"></p-button> -->
-        
-			</div>
-	  <div id="chart4">
-		<apx-chart
-		[series]="chartOptions11.series"
-		[chart]="chartOptions11.chart"
-		[xaxis]="chartOptions11.xaxis">
-	  </apx-chart>
-	  </div>
-	</div>
-	</div>
-<p-dialog 
-  header="Header" 
-  [modal]="true"
-  [(visible)]="visible" 
-  [style]="{ width: '50rem' }" 
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-  [maximizable]="true">
-  <div class="input-container">
-    <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
+
+      </div>
+      <div id="chart4">
+        <apx-chart [series]="chartOptions11.series" [chart]="chartOptions11.chart" [xaxis]="chartOptions11.xaxis">
+        </apx-chart>
+      </div>
+    </div>
   </div>
-  <div class="card">
-    <p-table [value]="yearlytaskdata" [tableStyle]="{ 'min-width': '50rem' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Tasking Id
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Title
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Start Date
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{ task?.tasks[0]?.tasking_id  }}</td>
-          <td>{{ task?.tasks[0]?.title }}</td>
-          <td>{{ task?.tasks[0]?.start_date }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-</p-dialog>
+  <p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <div class="input-container">
+      <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
+    </div>
+    <div class="card">
+      <p-table [value]="yearlytaskdata" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Tasking Id
+              <i class="pi pi-filter" style="font-size: 1rem"></i>
+            </th>
+            <th>Title
+              <i class="pi pi-filter" style="font-size: 1rem"></i>
+            </th>
+            <th>Start Date
+              <i class="pi pi-filter" style="font-size: 1rem"></i>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-task>
+          <tr>
+            <td>{{ task?.tasks[0]?.tasking_id }}</td>
+            <td>{{ task?.tasks[0]?.title }}</td>
+            <td>{{ task?.tasks[0]?.start_date }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-dialog>
 
 
-	<!-- <div class="col-xl-12 mb-xl-12 mt-5">
+  <!-- <div class="col-xl-12 mb-xl-12 mt-5">
 		<div class="card card-flush h-xl-100 progress-chart mapbg">
 			<div class="card-header">
 				<h3 class="card-title align-items-start flex-column pt-5">
@@ -318,11 +259,11 @@
   </div>
 </p-dialog> -->
 
-	<!-- <div class="row">
+  <!-- <div class="row">
 		<div class="col-md-6">
 		  <div class="matt-group matselect1" >
 			<mat-label>Task List <b class="star">*</b></mat-label>
-			<mat-form-field appearance="fill">
+			<mat-form-field appearance="outline">
 			<mat-select #select  placeholder="Select Tasking" [(ngModel)]="taskName" (ngModelChange)="onTaskChange($event)">
 			  <mat-option *ngFor="let task of task_list" [value]="task"  >{{task.task_name}} ({{task.task_number_dee}})</mat-option>
 			</mat-select>
@@ -412,497 +353,493 @@
       </h3>
       <!-- <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button> -->
     </div>
-<!-- <div id="chart8">
-  <apx-chart
-    [series]="chartOptions21.series"
-    [chart]="chartOptions21.chart"
-    [xaxis]="chartOptions21.xaxis"
-    [yaxis]="chartOptions21.yaxis"
-    [title]="chartOptions21.title"
-    [plotOptions]="chartOptions21.plotOptions"
-    [fill]="chartOptions21.fill"
-    [dataLabels]="chartOptions21.dataLabels"
-    [legend]="chartOptions21.legend"
-  ></apx-chart>
-  </div> -->
-  <div id="chartGroup">
-    <apx-chart
-      *ngIf="chartData.series.length"
-      [series]="chartData.series"
-      [chart]="chartOptionsGroup.chart"
-      [xaxis]="chartOptionsGroup.xaxis"
-      [yaxis]="chartOptionsGroup.yaxis"
-      [legend]="chartOptionsGroup.legend"
-      [plotOptions]="chartOptionsGroup.plotOptions"
-      [colors]="chartOptionsGroup.colors"
-      [dataLabels]="chartOptionsGroup.dataLabels"
-    ></apx-chart>
-    <div *ngIf="!chartData.series.length" class="no-data-message">
-      Loading chart data or no data available...
+
+    <div id="chartGroup">
+      <apx-chart *ngIf="chartData.series.length" [series]="chartData.series" [chart]="chartOptionsGroup.chart"
+        [xaxis]="chartOptionsGroup.xaxis" [yaxis]="chartOptionsGroup.yaxis" [legend]="chartOptionsGroup.legend"
+        [plotOptions]="chartOptionsGroup.plotOptions" [colors]="chartOptionsGroup.colors"
+        [dataLabels]="chartOptionsGroup.dataLabels"></apx-chart>
+      <div *ngIf="!chartData.series.length" class="no-data-message">
+        Loading chart data or no data available...
+      </div>
     </div>
-  </div>
 
-  
-  </div>
-  </div>
 
- <p-dialog 
-   header="Group Data" 
-   [modal]="true"
-   [(visible)]="visible4" 
-   [style]="{ width: '60rem' }" 
-   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-   [maximizable]="true">
-   <div class="input-container">
+  </div>
+</div>
+
+<p-dialog header="Group Data" [modal]="true" [(visible)]="visible4" [style]="{ width: '60rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+  <div class="input-container">
     <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
   </div>
-   <div class="card">
-     <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
-       <ng-template pTemplate="header">
-         <tr>
-           <th>Tasking Group Name
+  <div class="card">
+    <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tasking Group Name
             <i class="pi pi-filter" style="font-size: 1rem"></i>
-           </th>
-           <th>Title
+          </th>
+          <th>Title
             <i class="pi pi-filter" style="font-size: 1rem"></i>
-           </th>
-           <th>Task Count
+          </th>
+          <th>Task Count
             <i class="pi pi-filter" style="font-size: 1rem"></i>
-           </th>
-         </tr>
-       </ng-template>
-       <ng-template pTemplate="body" let-group>
-         <tr *ngFor="let title of group.titles">
-           <td>{{ group.tasking_group_name }}</td>
-           <td>{{ title.title }}</td>
-           <td>{{ title.task_count }}</td>
-         </tr>
-        
-         <tr *ngFor="let title of group.titles">
-           <td colspan="3">
-             <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
-               <ng-template pTemplate="header">
-                 <tr>
-                   <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-                   <th>Task Name
-                    <i class="pi pi-filter" style="font-size: 1rem"></i>
-                   </th>
-                   <th>Start Date
-                    <i class="pi pi-filter" style="font-size: 1rem"></i>
-                   </th>
-                   <th>End Date</th>
-                   <i class="pi pi-filter" style="font-size: 1rem"></i>
-                   <th>Sponsoring Directorate
-                    <i class="pi pi-filter" style="font-size: 1rem"></i>
-                   </th>
-                   <th>Status Summary
-                    <i class="pi pi-filter" style="font-size: 1rem"></i>
-                   </th>
-                 </tr>
-               </ng-template>
-               <ng-template pTemplate="body" let-task>
-                 <tr>
-                   <td>{{ task.task_number_dee }}</td>
-                   <td>{{ task.task_name || 'N/A' }}</td>
-                   <td>{{ task.start_date }}</td>
-                   <td>{{ task.end_date }}</td>
-                   <td>{{ task.sponsoring_directorate }}</td>
-                   <td>{{ task.status_summary }}</td>
-                 </tr>
-               </ng-template>
-             </p-table>
-           </td>
-         </tr>
-       </ng-template>
-     </p-table>
-   </div>
- </p-dialog>
- 
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-group>
+        <tr *ngFor="let title of group.titles">
+          <td>{{ group.tasking_group_name }}</td>
+          <td>{{ title.title }}</td>
+          <td>{{ title.task_count }}</td>
+        </tr>
 
- <div class="col-xl-12 mb-xl-12 mt-0">
+        <tr *ngFor="let title of group.titles">
+          <td colspan="3">
+            <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
+              <ng-template pTemplate="header">
+        <tr>
+          <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Task Name
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Start Date
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>End Date</th>
+          <i class="pi pi-filter" style="font-size: 1rem"></i>
+          <th>Sponsoring Directorate
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Status Summary
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-task>
+        <tr>
+          <td>{{ task.task_number_dee }}</td>
+          <td>{{ task.task_name || 'N/A' }}</td>
+          <td>{{ task.start_date }}</td>
+          <td>{{ task.end_date }}</td>
+          <td>{{ task.sponsoring_directorate }}</td>
+          <td>{{ task.status_summary }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
+
+
+<div class="col-xl-12 mb-xl-12 mt-0">
   <div class="card card-flush h-xl-100 progress-chart mapbg">
     <div class="card-header">
       <h3 class="card-title align-items-start flex-column pt-5">
         <span class="fw-bold mb-3">Task With Extended Deadline By Groups </span>
       </h3>
       <!-- <p-button (onClick)="showDialog()" label="View" class="show-button"></p-button> -->
-      
+
     </div>
 
-<div id="chart9">
-  <apx-chart
-    [series]="chartOptions22.series"
-    [chart]="chartOptions22.chart"
-    [xaxis]="chartOptions22.xaxis"
-    [yaxis]="chartOptions22.yaxis"
-    [title]="chartOptions22.title"
-    [plotOptions]="chartOptions22.plotOptions"
-    [dataLabels]="chartOptions22.dataLabels"
-  ></apx-chart>
-</div>
+    <div id="chart9">
+      <apx-chart [series]="chartOptions22.series" [chart]="chartOptions22.chart" [xaxis]="chartOptions22.xaxis"
+        [yaxis]="chartOptions22.yaxis" [title]="chartOptions22.title" [plotOptions]="chartOptions22.plotOptions"
+        [dataLabels]="chartOptions22.dataLabels"></apx-chart>
+    </div>
   </div>
- </div>
+</div>
 
 <ng-template #template let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title">Delete Task</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Task</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-	</div>
-	<div class="modal-body">
+  </div>
+  <div class="modal-body">
 
-		<p><strong>Do you want to Delete the Task? </strong></p>
+    <p><strong>Do you want to Delete the Task? </strong></p>
 
 
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-success" >Yes</button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success">Yes</button>
 
-		<button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
-	</div>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+  </div>
 
 </ng-template>
 
 
-	
 
 
 
 
 
 
-<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static"
+  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
 
-     <div class="modal-content">
-        <div class="modal-header">
-           <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
-           <button type="button" (click)="cancelmodal()" class="btn-close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="false">&times;</span>
-            </button>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
+        <button type="button" (click)="cancelmodal()" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="false">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body form-style-md form-style-font linux">
+        <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
         </div>
-    <div class="modal-body form-style-md form-style-font linux">
-    <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
-    </div>
-    <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
-       <div class="row"> &nbsp;
-       <div formGroupName="sdForm">
-       <div class="alert alert-dismissible alert-bg">
+        <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
+          <div class="row"> &nbsp;
+            <div formGroupName="sdForm">
+              <div class="alert alert-dismissible alert-bg">
 
-         <div class="mb-5 ">
-           <div class="row">
-             <div class="col-md-6">
-              <div class="matt-group">
-                <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
+                <div class="mb-5 ">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="matt-group">
+                        <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
 
-                 <input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" />
-                 <br>
-									<input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments"/>
-               </div>
-             </div>
-             <div class="col-md-6">
-							<div class="matt-group">
-								<mat-label style="font-size:large;"><b>Task Name</b></mat-label>
-								<input type="text" class="form-control" formControlName="task_name"/>
-							</div>
-						</div>
+                        <input type="text" class="form-control" formControlName="sponsoring_directorate"
+                          maxlength="100" />
+                        <br>
+                        <input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments" />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="matt-group">
+                        <mat-label style="font-size:large;"><b>Task Name</b></mat-label>
+                        <input type="text" class="form-control" formControlName="task_name" />
+                      </div>
+                    </div>
 
-           </div>
+                  </div>
 
-       </div>
+                </div>
 
-       <div class="mb-5">
-         <mat-label style="font-size:large;">Task Description (Only 200 words)<b class="star">*</b></mat-label>
-			 <angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
+                <div class="mb-5">
+                  <mat-label style="font-size:large;">Task Description (Only 200 words)<b class="star">*</b></mat-label>
+                  <angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
 
 
-       </div>
-           <div class="mb-5">
+                </div>
+                <div class="mb-5">
 
-					  <div class="matt-group">
-            <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-						<a href="{{ImageUrl}}" *ngIf="ImageUrl!=''" class="edit-icon text-primary"
-					><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
-
-
-					  <a href="{{ImageUrl1}}" *ngIf="ImageUrl1!=''" class="edit-icon text-primary"
-				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+                  <div class="matt-group">
+                    <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                    <a href="{{ImageUrl}}" *ngIf="ImageUrl!=''" class="edit-icon text-primary"><span
+                        class="material-icons-outlined"><span class="bi bi-journal-check"
+                          style="font-size:2rem;color: #4caf50;"></span></span></a>
 
 
-					  <a href="{{ImageUrl2}}" *ngIf="ImageUrl2!=''" class="edit-icon text-primary"
-				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+                    <a href="{{ImageUrl1}}" *ngIf="ImageUrl1!=''" class="edit-icon text-primary"><span
+                        class="material-icons-outlined"><span class="bi bi-journal-check"
+                          style="font-size:2rem;color: #4caf50;"></span></span></a>
 
 
-					  <a href="{{ImageUrl3}}" *ngIf="ImageUrl3!=''" class="edit-icon text-primary"
-				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
+                    <a href="{{ImageUrl2}}" *ngIf="ImageUrl2!=''" class="edit-icon text-primary"><span
+                        class="material-icons-outlined"><span class="bi bi-journal-check"
+                          style="font-size:2rem;color: #4caf50;"></span></span></a>
 
 
-					  <a href="{{ImageUrl4}}" *ngIf="ImageUrl4!=''" class="edit-icon text-primary"
-				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="font-size:2rem;color: #4caf50;"></span></span></a>
-					</div>
-				</div>
-
-       </div>
+                    <a href="{{ImageUrl3}}" *ngIf="ImageUrl3!=''" class="edit-icon text-primary"><span
+                        class="material-icons-outlined"><span class="bi bi-journal-check"
+                          style="font-size:2rem;color: #4caf50;"></span></span></a>
 
 
-     </div>
+                    <a href="{{ImageUrl4}}" *ngIf="ImageUrl4!=''" class="edit-icon text-primary"><span
+                        class="material-icons-outlined"><span class="bi bi-journal-check"
+                          style="font-size:2rem;color: #4caf50;"></span></span></a>
+                  </div>
+                </div>
 
-     <div formGroupName="apsoForm" >
-		  <div class="alert alert-dismissible alert-bg">
-            <div class="sub-heading" style="text-align:center;">
-              <mat-label class="subheading3"><b style="font-size:large;">APSO11</b></mat-label>
-            </div>
-          <div class="mb-5 ">
-          <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
-
-          <textarea rows="4"  class="form-control" formControlName="comments_of_apso" value="Test comments"></textarea>
-
-          </div>
-
-        </div>
-
-        </div>
-
-     <div formGroupName="weseeForm">
-       <div style="text-align:center;">
-        <mat-label class="subheading3"><b style="font-size:large;">DG WESEE  (Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
-       </div>
-       <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
-        <form [formGroup]="this.allocateForm">
-        <div class="col-md-6">
-        <div class="matt-group matselect">
-          <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
-           <mat-form-field appearance="fill">
-          <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups" [disabled]="token_details.process_id==1 || token_details.process_id==3">
-
-            <mat-option [value]="">Select Tasking Groups</mat-option>
-            <mat-option *ngFor="let taskingGroup of taskingGroups"
-            [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
-            </mat-select>
-            </mat-form-field>
-
-
-        </div>
-        </div>
-      </form>
-        </ng-container>
-
-       &nbsp;
-       <div class="alert alert-dismissible alert-bg">
-
-       <div class="mb-5 ">
-        <div class="row">
-          <div class="col-md-4">
-            <mat-label style="font-size:large;">Cost Implication (Approx)<b class="star">*</b></mat-label>
-
-
-            <div class="task-text-group">
-              <p>Rs&nbsp;&nbsp;</p>
-              <input type="text" class="form-control" formControlName="cost_implication" value="50000"/>
-
-            </div>
-
-          </div>
-          <div class="col-md-4 ">
-            <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
-            <div class="task-text-group">
-              <p>Month's</p>
-              <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="10000" max_length="10"/>
-
-
-
-            </div>
-
-            </div>
-            <div class="col-md-4 ">
-              <mat-label style="font-size:large;"><b>&nbsp;</b></mat-label>
-              <div class="task-text-group">
-                <p>Day's</p>
-              <input type="text" class="form-control" formControlName="time_frame_for_completion_days" value="10000" max_length="10"/>
-              &nbsp;&nbsp;
               </div>
-         </div>
+
+
+            </div>
+
+            <div formGroupName="apsoForm">
+              <div class="alert alert-dismissible alert-bg">
+                <div class="sub-heading" style="text-align:center;">
+                  <mat-label class="subheading3"><b style="font-size:large;">APSO11</b></mat-label>
+                </div>
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+                  <textarea rows="4" class="form-control" formControlName="comments_of_apso"
+                    value="Test comments"></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div formGroupName="weseeForm">
+              <div style="text-align:center;">
+                <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
+                    Engineering Establishment)</b></mat-label>
+              </div>
+              <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
+                <form [formGroup]="this.allocateForm">
+                  <div class="col-md-6">
+                    <div class="matt-group matselect">
+                      <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+                      <mat-form-field appearance="outline">
+                        <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups"
+                          [disabled]="token_details.process_id==1 || token_details.process_id==3">
+
+                          <mat-option [value]="">Select Tasking Groups</mat-option>
+                          <mat-option *ngFor="let taskingGroup of taskingGroups"
+                            [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+
+                    </div>
+                  </div>
+                </form>
+              </ng-container>
+
+              &nbsp;
+              <div class="alert alert-dismissible alert-bg">
+
+                <div class="mb-5 ">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-label style="font-size:large;">Cost Implication (Approx)<b class="star">*</b></mat-label>
+
+
+                      <div class="task-text-group">
+                        <p>Rs&nbsp;&nbsp;</p>
+                        <input type="text" class="form-control" formControlName="cost_implication" value="50000" />
+
+                      </div>
+
+                    </div>
+                    <div class="col-md-4 ">
+                      <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
+                      <div class="task-text-group">
+                        <p>Month's</p>
+                        <input type="text" class="form-control" formControlName="time_frame_for_completion_month"
+                          value="10000" max_length="10" />
 
 
 
-        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4 ">
+                      <mat-label style="font-size:large;"><b>&nbsp;</b></mat-label>
+                      <div class="task-text-group">
+                        <p>Day's</p>
+                        <input type="text" class="form-control" formControlName="time_frame_for_completion_days"
+                          value="10000" max_length="10" />
+                        &nbsp;&nbsp;
+                      </div>
+                    </div>
+
+
+
+                  </div>
 
 
 
 
-       </div>
+                </div>
 
-       <div class="mb-5 ">
-       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
 
-         <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments"></textarea>
-
-
-				  <div class="mb-5" >
-
-            <div class="matt-group">
-              <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-						<a href="{{ImageUrl5}}" *ngIf="ImageUrl5!=''" class="edit-icon text-primary"
-						><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+                  <textarea rows="4" class="form-control" formControlName="comments_of_wesee"
+                    value="Test comments"></textarea>
 
 
+                  <div class="mb-5">
 
-						<a href="{{ImageUrl6}}" *ngIf="ImageUrl6!=''" class="edit-icon text-primary"
-				  ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
-					</div>
-				</div>
-
-
-     </div>
-
-     </div>
-   </div>
-   <div formGroupName="deeForm">
-     <div class="alert alert-dismissible alert-bg">
-
-      <div class="sub-heading" style="text-align:center;">
-        <mat-label class="subheading3"><b style="font-size:large;">DEE  (Directorate of Electrical Engineering)</b></mat-label>
-    </div>
-
-     <div class="mb-5 ">
-       <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
-        <div class="task-text-group">
-          <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01"/>
-        </div>
-
-     </div>
-       <div class="mb-5 ">
-       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-       <textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments"></textarea>
+                    <div class="matt-group">
+                      <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                      <a href="{{ImageUrl5}}" *ngIf="ImageUrl5!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                            style="font-size:5rem"></span></span></a>
 
 
-        <div class="mb-5" >
-          <div class="matt-group">
-            <mat-label style="font-size:large;">File  (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-            <a href="{{ImageUrl7}}" *ngIf="ImageUrl7!=''" class="edit-icon text-primary"
-        ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
 
-            <a href="{{ImageUrl8}}" *ngIf="ImageUrl8!=''" class="edit-icon text-primary"
-        ><span class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue" style="font-size:5rem"></span></span></a>
+                      <a href="{{ImageUrl6}}" *ngIf="ImageUrl6!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                            style="font-size:5rem"></span></span></a>
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+            <div formGroupName="deeForm">
+              <div class="alert alert-dismissible alert-bg">
+
+                <div class="sub-heading" style="text-align:center;">
+                  <mat-label class="subheading3"><b style="font-size:large;">DEE (Directorate of Electrical
+                      Engineering)</b></mat-label>
+                </div>
+
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
+                  <div class="task-text-group">
+                    <input type="text" class="form-control" formControlName="task_number_dee"
+                      value="WESEE/001/2022/01" />
+                  </div>
+
+                </div>
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                  <textarea rows="4" class="form-control" formControlName="comments_of_dee"
+                    value="Test comments"></textarea>
+
+
+                  <div class="mb-5">
+                    <div class="matt-group">
+                      <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                      <a href="{{ImageUrl7}}" *ngIf="ImageUrl7!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                            style="font-size:5rem"></span></span></a>
+
+                      <a href="{{ImageUrl8}}" *ngIf="ImageUrl8!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                            style="font-size:5rem"></span></span></a>
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+            </div>
+            <div formGroupName="acomForm">
+              <div class="alert alert-dismissible alert-bg">
+
+                <div class="sub-heading" style="text-align:center;">
+                  <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S) (Asst.Chief of
+                      Materiel(Information Technology & Sys))</b></mat-label>
+                </div>
+
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+                  <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"
+                    value="Test comments"></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+            <div formGroupName="comForm">
+              <div class="alert alert-dismissible alert-bg mb-0">
+
+                <div class="sub-heading" style="text-align:center;">
+                  <mat-label class="subheading3"><b style="font-size:large;">COM (Chief of Materiel)</b></mat-label>
+                </div>
+
+                <div class="mb-5 ">
+                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                  <textarea rows="4" class="form-control" formControlName="approval_of_com"
+                    value="Test comments"></textarea>
+
+                </div>
+
+
+              </div>
+
+            </div>
           </div>
-        </div>
-
-
-       </div>
-
-
-       </div>
-
-   </div>
-   <div formGroupName="acomForm">
-       <div class="alert alert-dismissible alert-bg">
-
-        <div class="sub-heading" style="text-align:center;">
-          <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S)  (Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label>
-        </div>
-
-       <div class="mb-5 ">
-       <mat-label style="font-size:large;" >Comments<b class="star">*</b></mat-label>
-
-       <textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments"></textarea>
-
-       </div>
-
-     </div>
-
-     </div>
-     <div formGroupName="comForm">
-		 <div class="alert alert-dismissible alert-bg mb-0">
-
-        <div class="sub-heading" style="text-align:center;">
-          <mat-label class="subheading3"><b style="font-size:large;">COM  (Chief of Materiel)</b></mat-label>
-        </div>
-
-       <div class="mb-5 ">
-       <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-       <textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments"></textarea>
-
-       </div>
-
-
-     </div>
-
+          <div class="row button-group-lg button-auto mt-4">
+            <div class="col-md-6 col-6">
+            </div>
+            <div class="card-footer text-end">
+              <button type="button" class="btn btn-primary" #closebutton data-dismiss="modal"
+                (click)="cancelmodal()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-     <div class="row button-group-lg button-auto mt-4">
-              <div class="col-md-6 col-6">
-              </div>
-              <div class="card-footer text-end">
-                 <button type="button" class="btn btn-primary" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
-              </div>
-           </div>
-		   </form>
-		</div>
-  </div>
- </div>
 </div>
 
-<div class="modal fade master-modal-style" id="view-milestone" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class="modal fade master-modal-style" id="view-milestone" data-bs-keyboard="false" data-bs-backdrop="static"
+  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">List of Milestone</h5>
         <button type="button" (click)="closeview()" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="false">&times;</span>
-          </button>
-          </div>
-          <div class="col-md-12">
-            <div class="table-responsive">
-                  <table mat-table [dataSource]="dataSourcelist" class="table table-striped table-row-bordered gy-5 gs-7 border rounded" >
-                    <ng-container matColumnDef="milestone">
-                      <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
-                      <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="percentage_completion">
-                      <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
-                      <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="budget_utilized">
-                      <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
-                      <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="manpower">
-                      <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
-                      <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
-                  </ng-container>
-                  <ng-container matColumnDef="task_start_date">
-                    <th mat-header-cell *matHeaderCellDef><b> Task Start Date </b></th>
-                    <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
-                </ng-container>
-                <ng-container matColumnDef="task_end_date">
-                  <th mat-header-cell *matHeaderCellDef><b> Task End Date </b></th>
-                  <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
+        </button>
+      </div>
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSourcelist"
+            class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+            <ng-container matColumnDef="milestone">
+              <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
+            </ng-container>
+            <ng-container matColumnDef="percentage_completion">
+              <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="budget_utilized">
+              <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
+            </ng-container>
+            <ng-container matColumnDef="manpower">
+              <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
+            </ng-container>
+            <ng-container matColumnDef="task_start_date">
+              <th mat-header-cell *matHeaderCellDef><b> Task Start Date </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
+            </ng-container>
+            <ng-container matColumnDef="task_end_date">
+              <th mat-header-cell *matHeaderCellDef><b> Task End Date </b></th>
+              <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
 
-                  </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsview"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsview;"></tr>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsview"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsview;"></tr>
 
-                </table>
-            </div>
-          </div>
-       </div>
-   </div>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 </div>
 
 
 
-  <p-dialog   header="Task Distribution"   [modal]="true"  [(visible)]="visible1"   [style]="{ width: '50rem' }"   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-  [maximizable]="true">
-  
+<p-dialog header="Task Distribution" [modal]="true" [(visible)]="visible1" [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+
   <div class="dialog-content">
-   
+
     <div class="input-container">
       <input type="text" pInputText [(ngModel)]="value" placeholder="search " />
     </div>
-    
+
     <div class="card">
       <p-table [value]="distributiondata?.completed?.tasks" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
@@ -936,8 +873,8 @@
       </p-table>
     </div>
   </div>
-  
-</p-dialog>  
+
+</p-dialog>
 
 
 
@@ -948,13 +885,14 @@
 
 <!-- overdue task -->
 
-<p-dialog   header="Overdue Tasks"   [modal]="true"  [(visible)]="visible2"   [style]="{ width: '50rem' }"   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"   [maximizable]="true">
+<p-dialog header="Overdue Tasks" [modal]="true" [(visible)]="visible2" [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
 
   <!-- Input field placed at the top -->
   <div class="input-container">
     <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
   </div>
-  
+
   <div class="card">
     <p-table [value]="overdata" [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template pTemplate="header">
@@ -982,81 +920,36 @@
 
 
 
- 
+
 
 
 
 <div class="row g-5 map-card g-xl-8">
-	<div class="col-md-12">
-		<div class="card p-0" style="margin-bottom: 60px;">
-      <div class="card-header">
-          <h3 class="card-title align-items-start flex-column pt-10">
-      <span class="fw-bold mb-3"> Monitor task progress </span>
-    </h3>
-     </div>
-  <div class="card-body py-3">
-    <div class="container table-options">
-      <div class="row">
-      <div class="col-md-6">
-        <mat-paginator [length]="newTableDataSource?.data?.length" [pageSize]="10"
-                 [pageSizeOptions]="[10, 20, 30, 50, 100]" aria-label="Select page">
-        </mat-paginator>
+  <div class="col-md-12">
+    <div class="card p-0" style="margin-bottom: 60px;">
+      <div class="card-header mb-5">
+        <h3 class="card-title align-items-start flex-column pt-10">
+          <span class="fw-bold mb-3"> Monitor task progress </span>
+        </h3>
       </div>
-      <div class="col-md-6">
-        <mat-form-field appearance="fill">
-        <mat-label>Search your text here</mat-label>
-        <input matInput (keyup)="applyFilter1($event)" class="search-mat-table" #input>
-        </mat-form-field>
-      </div>
-      </div>
-    </div>    
-
-     <table mat-table [dataSource]="newTableDataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded mt-5">
-      <ng-container matColumnDef="task_name">
-        <th mat-header-cell *matHeaderCellDef> Task Name<i class="pi pi-filter" style="font-size: 1rem"></i> </th>
-        <td mat-cell *matCellDef="let element">  {{ element?.task_name }} </td>
-      </ng-container>
-      <ng-container matColumnDef="task_Number_dee">
-        <th mat-header-cell *matHeaderCellDef>  Task Number<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{ element?.task_number_dee }} </td>
-      </ng-container>
-      <ng-container matColumnDef="sponsoring_directorate">
-        <th mat-header-cell *matHeaderCellDef>Sponsoring Directorate<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{element?.sponsoring_directorate}} </td>
-      </ng-container>
-      <ng-container matColumnDef="assigned_tasking_group">
-        <th mat-header-cell *matHeaderCellDef> Assigned Tasking Group Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{ element?.assigned_tasking_group}} </td>
-      </ng-container>
       
-     
-      <ng-container matColumnDef="secondary_title">
-        <th mat-header-cell *matHeaderCellDef> Status<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        <td mat-cell *matCellDef="let element"> {{element?.secondary_title}} </td>
-      </ng-container>
-     
-     
+        <ng-container *ngIf="approveTask.length !=0" >
       
-      <ng-container matColumnDef="Action">
-        <th class="text-center" mat-header-cell *matHeaderCellDef><b>Action</b>
-          <td class="text-center action-icon-1" mat-cell *matCellDef="let data">
-            <button mat-button [matMenuTriggerFor]="actionsMenu" style="background-color: #2721a3;
-      color: white;">Actions</button>
-            <mat-menu #actionsMenu="matMenu">
-              <button mat-menu-item (click)="openEdit(data)">
-                <span>View Tasking</span>
-            </button>
-            </mat-menu>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumnsNewTable"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumnsNewTable;"></tr>
-    </table>
-
+          <app-grid-table 
+            [gridColumns]="gridColum" 
+            [gridData]="approveTask"  
+            [ispaniNater]="true"
+            [isAction]="true"
+            (filterEvent)="handleFilter($event)"
+            (paginationEvent)="handlePagination($event)"
+            (viewEvent)="openEdit($event)"
+            [isView]="true"
+            >
+          </app-grid-table>
+        </ng-container>
+      
+    </div>
   </div>
-</div>
-	</div>
 
 </div>
-
 

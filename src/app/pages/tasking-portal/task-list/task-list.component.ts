@@ -912,7 +912,10 @@ export class TaskListComponent implements OnInit {
   onView(country) {
     // this.commentEditor.editable=false;
     this.apiCall();
-
+    this.getComments();
+    this.getTaskingg();
+    this.getMiniting();
+    this.getStatusTimeline();
     this.taskListRoot = country;
     this.formGroup.get('taskId').setValue(this.taskListRoot.task_name);
     this.initiator_active = '';
@@ -922,8 +925,6 @@ export class TaskListComponent implements OnInit {
     this.acom_active = '';
     this.com_active = '';
     this.wesee_active = '';
-
-
     this.crudName = 'View';
     this.isReadonly = true;
     this.taskForm.disable();

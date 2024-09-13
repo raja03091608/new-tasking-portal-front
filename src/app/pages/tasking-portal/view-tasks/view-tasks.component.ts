@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, Inject, LOCALE_ID, } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Inject, LOCALE_ID, signal, } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewStatusComponent } from '../view-status/view-status.component';
@@ -8,7 +8,6 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatDialog } from "@angular/material/dialog";
 import { ConsoleService } from "../../../service/console.service";
 import { ApiService } from "../../../service/api.service";
-
 import { FormControl, Validators, FormGroupDirective } from "@angular/forms";
 import { NotificationService } from "../../../service/notification.service";
 import { ConfirmationDialogComponent } from "../../../confirmation-dialog/confirmation-dialog.component";
@@ -18,18 +17,14 @@ import { DatePipe } from '@angular/common';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5percent from '@amcharts/amcharts5/percent';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-
-
 declare var $;
 declare var moment:any;
-
-
 import { of } from 'rxjs';
 import { formatDate } from "@angular/common";
 import { any } from '@amcharts/amcharts5/.internal/core/util/Array';
 import { AllocateTasksComponent } from '../allocate-tasks/allocate-tasks.component';
 import { TestBed } from '@angular/core/testing';
-
+import * as XLSX from 'xlsx';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -77,16 +72,16 @@ declare var moment:any;
 export class ViewTasksComponent implements OnInit {
 
   commentForm:FormGroup;
+  extensionForm:FormGroup;
   archiveForm:FormGroup;
   completedForm:FormGroup;
   exportform:FormGroup;
   approvalForm:FormGroup;
   taskingForm:FormGroup;
-
-
   dataSource: MatTableDataSource<any>;
-  dataSourcelist: MatTableDataSource<any>;
+  dataSourcelist = new MatTableDataSource<any>([]); // Data source for Angular Material table
   dataSourceStatus: MatTableDataSource<any>;
+  xlxsForm: FormGroup;
 
   patchValue(data: any) {
     throw new Error('Method not implemented.');
@@ -104,7 +99,7 @@ export class ViewTasksComponent implements OnInit {
     "pdf",
 	"Export"
   ];
-
+  visible=false;
   displayedColumnslist: string[] = [
     "title",
     "start_date",
@@ -173,6 +168,10 @@ export class ViewTasksComponent implements OnInit {
         comments: new FormControl("", [Validators.required]),
 
       });
+      this.xlxsForm = new FormGroup({
+        header: new FormControl([]),
+        fileName: new FormControl(''),
+      })
       this.archiveForm = new FormGroup({
         id:new FormControl(""),
         tasking:new FormControl(""),
@@ -186,7 +185,12 @@ export class ViewTasksComponent implements OnInit {
         completed_comments: new FormControl("")
 
       });
-
+    this.extensionForm = new FormGroup({
+      extensionNumber:new FormControl(""),
+       authorityLetterNumber :new FormControl(""),
+      description : new FormControl(""),
+      extendedTill: new FormControl(""),
+    })
   this.exportform = new FormGroup({
     id: new FormControl(""),
     initiator: new FormControl(""),
@@ -226,6 +230,7 @@ export class ViewTasksComponent implements OnInit {
     status_summary: new FormControl(""),
     title:new FormControl(""),
     status: new FormControl(""),
+    secTitle:new FormControl(""),
 
   });
      var updateChart= this.chartOptions = {
@@ -403,6 +408,7 @@ export class ViewTasksComponent implements OnInit {
     this.getTaskingGroups();
     this.getAccess();
     this.gettitlelist();
+    
     // this.getstatus;
     // this.getViewStatus();
 
@@ -490,6 +496,15 @@ export class ViewTasksComponent implements OnInit {
 
 
   }
+onFilterChange(filterInput,item?,item2?){
+
+}
+onCustomClear(item){
+
+}
+
+
+
   data_list:any;
   add(country:any) {
     this.showError=false;
@@ -507,6 +522,35 @@ export class ViewTasksComponent implements OnInit {
     openModal('#tasking-modal');
 
   }
+
+  showSecTitle : boolean = false;
+  secondaryTitle
+
+
+  onSelectionChange(event){
+    console.log(event,"==============<<<<<<<<<<<<>>>>>>")
+    if(event){
+      if(event !== 'Task Closed'){
+        let url  = `master/lookup?type__code=${event == 'Work In Progress'? 'PRO_SEC': 'PRO_TER'}`
+        this.api
+      .getAPI(environment.API_URL + url)
+      .subscribe((res) => {
+        console.log(res,"============>>>>>>>>>>>>>")
+        this.secondaryTitle = res.data;
+        this.showSecTitle = true;
+      });
+      }else{
+        this.showSecTitle = false;
+      }
+    }
+
+  }
+  isViewExtension: boolean = false;
+extension(){
+  console.log('Extension button clicked'); // Add this to check if it's firing
+  this.isViewExtension = true
+
+}
 
 
   onSubmit() {
@@ -533,7 +577,10 @@ export class ViewTasksComponent implements OnInit {
     formData.append('created_by', this.api.userid.user_id);
     formData.append('status_summary', this.taskingForm.value.status_summary);
     formData.append('status', this.taskingForm.value.status);
-    formData.append('file', this.imgToUpload)
+    // formData.append('file', this.imgToUpload)
+    formData.append('secondary_title', this.taskingForm.value.secTitle)
+
+
     // if(this.imgToUpload !=null){
     //   formData.append('file', this.imgToUpload)
     // }
@@ -618,14 +665,14 @@ export class ViewTasksComponent implements OnInit {
 
   }
 
-  applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
-    if (this.filterValue) {
-      this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
-    } else {
-      this.getTasking();
-    }
-  }
+  // applyFilter(event: Event) {
+  //   this.filterValue = (event.target as HTMLInputElement).value;
+  //   if (this.filterValue) {
+  //     this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
+  //   } else {
+  //     this.getTasking();
+  //   }
+  // }
 
   selectedTrial:any;
   taskname:any;
@@ -1239,7 +1286,94 @@ export class ViewTasksComponent implements OnInit {
     this.exportform.reset();
   }
 
-// function res(res: any): any {
-//   throw new Error('Function not implemented.');
-// }
+gridColumns=[
+  { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
+  { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
+  { field: 'cost_implication', header: 'Cost Implication', filter: true, filterMatchMode: 'contains' },
+  {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
+  {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+  { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
+]
+exportData:any;
+filterData:any;
+handleFilter(filterValue: any) {
+  
+  this.filterData = filterValue;
+  console.log('Filter triggered with value:', filterValue);
+}
+handlePagination(pageEvent: any) {
+  console.log('Pagination triggered with event:', pageEvent);
+}
+
+
+expDataHeader=[
+  { field: 'task_number_dee', header: 'Task Number (DEE)' },
+  { field: 'task_name', header: 'Task Name' },
+  { field: 'cost_implication', header: 'Cost Implication' },
+  { field: 'sponsoring_directorate', header: 'Sponsoring Directorate' },
+  { field: 'time_frame_for_completion_month', header: 'Time Frame (Months)' },
+  { field: 'comments_of_wesee', header: 'Wesee Comments' },
+  { field: 'comments_of_dee', header: 'DEE Comments' },
+  { field: 'comments_of_apso', header: 'APSO Comments' },
+  { field: 'approval_of_com', header: 'COM Approval' },
+  { field: 'tasking_status', header: 'Tasking Status' },
+  { field: 'legacy_data', header: 'Legacy Data' },
+  { field: 'created_by.first_name', header: 'Created By' },
+  { field: 'created_on', header: 'Created On' },
+  { field: 'modified_on', header: 'Modified On' }
+]
+
+downloadexcel() {
+  let data = document.getElementById('xlseExport');
+  if (!data) {
+    console.error('Table element not found.');
+    return;
+  }
+
+  // Create a worksheet from the table
+  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+  // Create a new workbook
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+  // Append the worksheet to the workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
+
+  // Write the workbook to a file with .xlsx extension
+  XLSX.writeFile(wb, this.fileName);
+  this.exportData=this.dataSourcelist.data
+  this.visible=false;
+  
+}
+protected readonly value = signal('');
+
+protected onInput(event: Event) {
+  this.value.set((event.target as HTMLInputElement).value);
+}
+selectedHeader=[]
+fileName:string;
+isFormHide=false
+submitHeaderForm() {
+  this.isFormHide=true
+    // Extract form values
+    this.selectedHeader = this.xlxsForm.get('header')?.value || [];
+    this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
+    this.xlxsForm.reset()
+    console.log(this.selectedHeader);
+  }
+  selectAll() {
+    const allHeaders = this.expDataHeader.map(option => option);
+    this.xlxsForm.get('header')?.setValue(allHeaders);
+  }
+
+  openPopexportExcel(){
+    this.isFormHide=false
+    this.visible=true;
+    if(this.filterData){
+      this.exportData=this.filterData;
+    }
+    else{
+      this.exportData=this.dataSourcelist.data
+    }
+  }
 }

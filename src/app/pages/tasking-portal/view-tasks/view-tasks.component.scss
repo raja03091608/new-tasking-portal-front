@@ -13,7 +13,16 @@
  display: table-row !important;
 }
 
-
+.custom-green-button {
+    background-color: #28a745; /* Replace with your desired green color */
+    color: white;
+    border-color: #28a745;
+  }
+  
+  .custom-green-button:hover {
+    background-color: #218838; /* Darker shade for hover effect */
+    border-color: #1e7e34;
+  }
 // .mat-cell,
 // .mat-header-cell {
 //  word-wrap: initial !important;

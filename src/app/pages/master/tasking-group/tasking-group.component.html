@@ -23,7 +23,7 @@
                          </mat-paginator>
                       </div>
                       <div class="col-md-6">
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="outline">
 							<mat-label>Search your text here</mat-label>
 							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
 						</mat-form-field>
@@ -112,7 +112,7 @@
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
                       <mat-label>Country Id</mat-label>
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="id"  >
                       </mat-form-field>
                    </div>
@@ -148,14 +148,14 @@
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_by"  >
                       </mat-form-field>
                    </div>
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_ip"  >
                       </mat-form-field>
                    </div>
@@ -230,7 +230,7 @@
 						  <form  [formGroup]="MileStoneForm" (ngSubmit)="OnMileStoneSubmit()" >
 							<div class="matt-group">
 								<label class="required fs-5 fw-bold mb-2">Choose Tasking Group Type:</label>
-								<mat-form-field appearance="fill">
+								<mat-form-field appearance="outline">
 								  <mat-select formControlName="tasking_group_type" [(ngModel)]="tasking_group_type">
 									<ng-container *ngFor="let occ of lookup">
 									  <mat-option *ngIf="occ.type.code=='TGT'" [value]="occ.name">{{occ.name}}</mat-option>

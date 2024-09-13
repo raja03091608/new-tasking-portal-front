@@ -2572,12 +2572,12 @@ getDashboardCount(){
 
   openEdit(country) {
     this.isReadonly=false;
-    this.taskForm.enable();
+    // this.taskForm.enable();
     this.crudName = "View";
-	this.id=country.id;
+	  this.id=country.id;
     this.populate(country);
     this.list=country;
-	this.taskForm.disable();
+	  this.taskForm.disable();
   //console.log('country',country)
 	openModal('#crud-countries');}
 
@@ -2879,41 +2879,59 @@ updateChartOptionsGroup(res: any[]): void {
   const categories = [];
   const seriesData = [
     {
-      name: 'IN PROGRESS',
+      name: 'Work In Progress',
       data: [],
     },
     {
       name: 'Completed',
       data: [],
     },
+    {
+      name: 'Task Closed',
+      data: [],
+    },
   ];
 
-  // Loop through the response data and build chart categories and series
+  
   res.forEach((group) => {
     categories.push(group.tasking_group_name);
 
-    // Count tasks based on their titles (you might adjust this logic)
-    const inProgressCount = group.titles.reduce((count, title) => {
-      if (title.title.includes('In Progress') || title.title.includes('Work')) {
+    
+    const workInProgressCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Work In Progress')) {
         return count + title.task_count;
       }
       return count;
     }, 0);
 
+    
     const completedCount = group.titles.reduce((count, title) => {
-      if (title.title.includes('Completed') || title.title.includes('Task Closed')) {
+      if (title.title.includes('Completed')) {
         return count + title.task_count;
       }
       return count;
     }, 0);
 
-    seriesData[0].data.push(inProgressCount); // IN PROGRESS
-    seriesData[1].data.push(completedCount);  // YES (Completed tasks)
+    
+    const taskClosedCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Task Closed')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    seriesData[0].data.push(workInProgressCount); 
+    seriesData[1].data.push(completedCount);     
+    seriesData[2].data.push(taskClosedCount);   
   });
 
-  // Update chart data and options dynamically
+  
   this.chartData.series = seriesData;
   this.chartOptionsGroup.xaxis.categories = categories;
+
+  this.chartOptionsGroup.colors = ['#f7a400',  '#492a73', '#3a9efd', '#f7a400', '#FFB6C1', '#E6E6FA', '#AFEEEE'];
+
+
 }
 
 
@@ -3045,25 +3063,16 @@ updated22(data: any) {
 //     }
 
 
-
+approveTask:any
 getNewTaskingStatus() {
-  this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+  this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
     .subscribe((res: any) => {
       console.log(res);
       if (res && res.data) {
-        console.log(res.data);
-        this.newTableDataSource = new MatTableDataSource(
-          res.data.map((task: any) => ({
-            task_name: task?.tasking?.task_name, 
-            task_number_dee: task?.tasking?.task_number_dee,
-            sponsoring_directorate: task?.tasking?.sponsoring_directorate,
-            secondary_title: task.secondary_title,
-            assigned_tasking_group: task?.assigned_tasking_group?.name,
            
-           
-          }))
-        );
-        this.newTableDataSource.paginator = this.pagination;
+        this.newTableDataSource =res.data 
+        this.approveTask = res.data
+        // this.newTableDataSource.paginator = this.pagination;
       } else {
         console.error('Data part of the response is undefined');
       }
@@ -3083,7 +3092,22 @@ applyFilter1(event: Event) {
   }
 }
 
+handleFilter(filterValue: any) {
 
+  console.log('Filter triggered with value:', filterValue);
+}
+handlePagination(pageEvent: any) {
+  console.log('Pagination triggered with event:', pageEvent);
+}
+
+gridColum = [
+  { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
+  { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
+  { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
+  { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
+  { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+
+]
 
   }
 

@@ -2,11 +2,11 @@
 
 
   @font-face {
-    font-family: 'MontserratBold';
+    font-family: 'Roboto Condensed';
     src: url('assets/fonts/Montserrat-SemiBold.ttf');
   }
   body{
-    font-family: 'Roboto'!important;
+    font-family: 'Roboto Condensed'!important;
   }
   
   @import "./assets/sass/style.scss";
@@ -24,7 +24,7 @@
  
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: 'Roboto' !important;
+  font-family: 'Roboto Condensed' !important;
   font-weight: 600;
 }
 .dark-theme .tooltip-inner {
@@ -1129,4 +1129,22 @@ select.form-control:focus {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+.mat-mdc-form-field {
+  display: block !important;
+}
+.p-dialog-draggable .p-dialog-header {
+  background: linear-gradient(0deg, rgba(9, 0, 63, 0.79), rgba(48, 0, 255, 0.63)), url(./assets/media/bg-ship.jpg);
+  background-position: -368px 0;
+  background-size: cover;
+  color: white !important;
+  font-size: 2.2rem;
+}
+
+.scrollTable {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow-y: scroll;
+  scrollbar-color: #2f5079 #dee2e6 !important;
 }
