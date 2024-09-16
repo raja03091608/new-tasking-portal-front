@@ -17,6 +17,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { any } from "@amcharts/amcharts5/.internal/core/util/Array";
 import { Table } from "primeng/table";
 import { sequence } from "@angular/animations";
+import { ConfirmationService, MessageService } from "primeng/api";
 
 
 
@@ -27,6 +28,7 @@ declare var moment: any;
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
+  providers: [ConfirmationService, MessageService]
 
 })
 export class TaskListComponent implements OnInit {
@@ -110,7 +112,7 @@ export class TaskListComponent implements OnInit {
   token_detail: any;
   allocateForm: FormGroup;
   res: any;
-  constructor(public api: ApiService, private notification: NotificationService, private fb: FormBuilder,
+  constructor(public api: ApiService, private notification: NotificationService, private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
@@ -517,13 +519,13 @@ export class TaskListComponent implements OnInit {
   ];
 
   disableDee(): boolean {
-    if (this.role === 'Dee Recommender' && this.taskListRoot.WESEE_recommender == 1) {
+    if (this.role === 6 && this.taskListRoot.WESEE_recommender == 1) {
       return false;
     }
     return true;
   }
   disableApso(): boolean {
-    if (this.role === 'APSO Recommender' && this.taskListRoot.SD_initiater == 1) {
+    if (this.role === 14 && this.taskListRoot.SD_initiater == 1) {
       return false;
     }
     return true;
@@ -531,7 +533,7 @@ export class TaskListComponent implements OnInit {
 
 
   disableWesee(): boolean {
-    if (this.role === 'Wesee Recommender' && this.taskListRoot.comment_status != 4) {
+    if (this.role === 4 && this.taskListRoot.comment_status != 4) {
       return false;
     }
     return true;
@@ -540,20 +542,20 @@ export class TaskListComponent implements OnInit {
     if (this.api.userid.process_id === 3) {
       return false;
     }
-    if (this.role === 'Wesee Recommender' && this.taskListRoot.comment_status == 4) {
+    if (this.role === 4 && this.taskListRoot.comment_status == 4) {
       return false;
     }
     return true;
   }
 
   disableAcom(): boolean {
-    if (this.role === 'ACom Recommender' && this.taskListRoot.DEE_recommender == 1) {
+    if (this.role === 8 && this.taskListRoot.DEE_recommender == 1) {
       return false;
     }
     return true;
   }
   disableCom(): boolean {
-    if (this.role === 'Chief of Materiel' && this.taskListRoot.ACOM_recommender == 1) {
+    if (this.role === 5 && this.taskListRoot.ACOM_recommender == 1) {
       return false;
     }
     return true;
@@ -628,7 +630,7 @@ export class TaskListComponent implements OnInit {
   ImgUrl: any;
   param: any;
   getTasking() {
-    this.countryList=[]
+    this.countryList = []
     let limit_start = 0;
     let limit_end = 10;
     if (this.pageEvent) {
@@ -1080,7 +1082,7 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
+              this.close();
             }, 3000);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = true;
@@ -1113,7 +1115,7 @@ export class TaskListComponent implements OnInit {
       this.permission.delete = deletePermission.length > 0 ? deletePermission[0] : false;;
     }
 
-    
+
 
   }
 
@@ -1199,15 +1201,15 @@ export class TaskListComponent implements OnInit {
             this.notification.displayMessage("Task Allocated Sucessfully");
             this.getTasking();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close();
+            }, 1500);
 
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = true;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = false;
-            }, 2000);
+            }, 1000);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1216,6 +1218,7 @@ export class TaskListComponent implements OnInit {
     }
   }
   apsonotRecommended() {
+   
     this.showError = true;
     if (this.taskForm) {
 
@@ -1234,14 +1237,14 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
 
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close();
+            }, 1500);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 1000);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1251,6 +1254,10 @@ export class TaskListComponent implements OnInit {
 
   }
   apsoRecommened() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     if (this.taskForm) {
       this.taskForm.value.comment_status = '1';
@@ -1261,14 +1268,14 @@ export class TaskListComponent implements OnInit {
           this.notification.success(res.message);
           this.getTasking();
           setTimeout(() => {
-            closeModal('#crud-countries');
-          }, 3000);
+            this.close();
+          }, 1200);
         } else if (res.status == environment.ERROR_CODE) {
           this.error_msg = false;
           this.ErrorMsg = res.message;
           setTimeout(() => {
             this.error_msg = true;
-          }, 2000);
+          }, 900);
         } else {
           this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
         }
@@ -1278,7 +1285,7 @@ export class TaskListComponent implements OnInit {
     //closeModal('#crud-countries');
   }
 
-  notRecommended() {
+  notRecommended() { 
     this.showError = true;
     if (this.taskForm) {
 
@@ -1286,10 +1293,7 @@ export class TaskListComponent implements OnInit {
       this.taskForm.value.status = '1';
       this.taskForm.value.id = this.id;
 
-      this.api
-        .postAPI(
-          environment.API_URL + "transaction/tasking/crud",
-          this.taskForm.value)
+      this.api.postAPI( environment.API_URL + "transaction/tasking/crud",this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             // this.logger.log('Formvalue',this.editForm.value);
@@ -1297,14 +1301,14 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close();
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1313,7 +1317,11 @@ export class TaskListComponent implements OnInit {
     }
     //closeModal('#crud-countries');
   }
-  Recommened() {
+  Recommened() { // wasee
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     if (this.taskForm) {
 
@@ -1339,10 +1347,7 @@ export class TaskListComponent implements OnInit {
       }
 
       if (this.taskForm) {
-        this.api
-          .postAPI(
-            environment.API_URL + "transaction/tasking/crud",
-            formData,
+        this.api.postAPI(environment.API_URL + "transaction/tasking/crud", formData,
             // this.taskForm.value
 
 
@@ -1354,14 +1359,14 @@ export class TaskListComponent implements OnInit {
               this.getTasking();
               // this.closebutton.nativeElement.click();
               setTimeout(() => {
-                closeModal('#crud-countries');
-              }, 3000);
+                this.close()
+              }, 1200);
             } else if (res.status == environment.ERROR_CODE) {
               this.error_msg = false;
               this.ErrorMsg = res.message;
               setTimeout(() => {
                 this.error_msg = true;
-              }, 2000);
+              }, 9000);
             } else {
               this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
             }
@@ -1369,7 +1374,7 @@ export class TaskListComponent implements OnInit {
           });
       }
     }
-    //closeModal('#crud-countries');
+    
   }
   OnTaskingSubmit() {
     this.showError = true;
@@ -1409,21 +1414,21 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close();
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    //closeModal('#crud-countries');
+    // this.close()
   }
 
   deenotRecommended() {
@@ -1457,23 +1462,27 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close()
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    //closeModal('#crud-countries');
+    // this.close()
   }
   deeRecommened() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     this.currentDate = new Date();
 
@@ -1508,9 +1517,7 @@ export class TaskListComponent implements OnInit {
       formData.append('id', this.taskForm.value.id);
       formData.append('DEE_recommender', this.taskForm.value.status);
 
-      this.api
-        .postAPI(
-          environment.API_URL + "transaction/tasking/crud",
+      this.api.postAPI(environment.API_URL + "transaction/tasking/crud",
           formData)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
@@ -1519,23 +1526,27 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close()
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    //closeModal('#crud-countries');
+    // this.close()
   }
   acomnotRecommended() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     if (this.taskForm) {
 
@@ -1567,9 +1578,13 @@ export class TaskListComponent implements OnInit {
 
         });
     }
-    //closeModal('#crud-countries');
+    
   }
   acomRecommened() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     if (this.taskForm) {
 
@@ -1588,22 +1603,23 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 3000);
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    //closeModal('#crud-countries');
+    // this.close()
   }
   comRecommened() {
+ 
     this.showError = true;
     if (this.taskForm) {
 
@@ -1622,14 +1638,14 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
-            }, 3000);
+              this.close();
+            }, 1200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 900);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1637,7 +1653,7 @@ export class TaskListComponent implements OnInit {
         });
 
     }
-    //closeModal('#crud-countries');
+    // this.close()
   }
 
   comnotRecommended() {
@@ -1658,7 +1674,7 @@ export class TaskListComponent implements OnInit {
             this.getTasking();
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
-              closeModal('#crud-countries');
+              this.close();
             }, 3000);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
@@ -1672,7 +1688,7 @@ export class TaskListComponent implements OnInit {
 
         });
     }
-    //closeModal('#crud-countries');
+    
   }
 
 
@@ -1823,6 +1839,7 @@ export class TaskListComponent implements OnInit {
 
   openBackDropCustomClass(content: TemplateRef<any>) {
     this.modalService.open(content, { size: 'lg' });
+    this.messageService.clear('c');
   }
 
   apiCall() {
@@ -1919,15 +1936,16 @@ export class TaskListComponent implements OnInit {
       next_user_id: this.formGroup.get('next_user_id').value, //loginname
     };
     this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
-     
+
       this.getStatusTimeline()
       this.modalService.dismissAll("Close")
     })
-    
+    let taskId = this.formGroup.get('taskId').value
     this.formGroup.reset();
+    this.formGroup.get('taskId').setValue(taskId)
   }
   roles: any = [];
-
+  lastStatusData:any;
   getStatusTimeline() {
     this.roles = [];
     let temp = []
@@ -1935,10 +1953,20 @@ export class TaskListComponent implements OnInit {
       temp = res
       this.roles.push(temp[0]);
       this.routeList = res
+      this.lastStatusData= res[res.length-1]?.sequence;
+      console.log(this.lastStatusData,"fgiopodyuiotguisiagfuwdiubfsoudnoisdhofdhiods")
       // temp =this.routeList.splice(0,1) // Reverse the response
     });
   }
 
+  timelineStepName(step: any): string {
+    const roleName = step?.next_user?.roles[0]?.user_role?.name;
+    return ` (${roleName})`;
+  }
+  timelineStepDirect(step: any): string {
+    const directorate = step?.next_user?.department?.name;
+    return `${directorate}`;
+  }
 
 
   getMiniting() {
@@ -1951,6 +1979,10 @@ export class TaskListComponent implements OnInit {
   minitingSheetdata = []
   saveMiniting() {
 
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     const formData = this.minitingForm.value;
 
     const newComment = {
@@ -1964,7 +1996,9 @@ export class TaskListComponent implements OnInit {
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
       console.log(res)
       this.getMiniting();
-      this.getStatusTimeline()
+      this.getStatusTimeline();
+      this.close();
+      // this.getTasking();
     })
     this.minitingForm.reset();
 
@@ -2001,7 +2035,23 @@ export class TaskListComponent implements OnInit {
     console.log('View triggered for row:', rowData);
   }
 
+
+
  
+  // onConfirm() {
+  //   this.messageService.clear('c');
+
+  // }
+
+  onReject() {
+    this.messageService.clear('c');
+  }
+
+  showConfirm() {
+
+    this.messageService.clear();
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Configure Route', detail: 'Please configure route before submitting your response' });
+  }
 }
 
 

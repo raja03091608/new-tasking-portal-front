@@ -20,6 +20,9 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
+import { TimelineModule } from 'primeng/timeline';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
 
   ],
   imports: [
+    TimelineModule,
+    ConfirmDialogModule ,
+    ToastModule,
     TableModule,
     InputTextModule, 
     PringeComponentModule, 

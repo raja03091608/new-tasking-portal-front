@@ -92,36 +92,9 @@ export class GridTableComponent implements OnInit {
       return this.resolveNestedField(item, field);
   }
 
-  addRow() {
-      // Initialize data for the new row based on the structure of existing rows
-      this.newRowData = this.createEmptyRowData();
-      this.newRowData.editable = true;
-      // if(this.isFormEditable == false){
-      this.isEditable = true;
-      this.newRowData.newRowFlag = true;
-      // }
-      // Navigate to the last page
-      const totalPages = Math.ceil(this.gridData.length / this.rowsPerPage);
-      if (totalPages > 0) {
-          this.currentPage = totalPages;
-          setTimeout(() => {
-              this.dataTable.first = (this.currentPage - 1) * this.rowsPerPage;
-          }, 0);
-      }
-      console.log(this.newRowData)
-      // Add the new row data to the grid data
-      this.gridData.push(this.newRowData);
-      // Emit an event to notify the parent component about the addition of a new row
-      // You can also emit the updated grid data if needed
-      // this.editEvent.emit(this.gridData);
-  }
 
-  deleteRow(rowData: any) {
-      const index = this.gridData.indexOf(rowData);
-      if (index !== -1) {
-          this.gridData.splice(index, 1);
-      }
-  }
+
+
 
   createEmptyRowData(): any {
       const emptyRowData: any = {};
@@ -136,14 +109,8 @@ export class GridTableComponent implements OnInit {
       this.paginationEvent.emit(event);
   }
 
-  originalRowData: any; // Variable to store original row data
 
-  onEdit(rowData: any) {
-      // Store the original row data to preserve the values
-      this.originalRowData = { ...rowData };
-      // Set the editable property to true for the clicked row
-      rowData.editable = true;
-  }
+
 
    applyChanges(originalData: any, updatedData: any): void {
       for (const key in updatedData) {
@@ -184,32 +151,6 @@ export class GridTableComponent implements OnInit {
   }
 
 
-  onSave(rowData: any) {
-      // Merge the edited values into the original row data
-      // Object.assign(this.originalRowData, rowData);
-      this.applyChanges(this.originalRowData, rowData);
-      // Emit the edited row data to the parent component
-      this.editEvent.emit(this.originalRowData);
-      console.log(this.originalRowData)
-      // Reset the editable property to false
-      rowData.editable = false;
-      this.originalRowData.editable = false;
-  }
-
-  onEditPopup(rowData: any){
-      this.editEvent.emit(rowData);
-  }
-  disableEdit(rowData: any){
-      rowData.editable = false;
-  }
-
-  onDelete(item: any) {
-      this.deleteEvent.emit(item);
-  }
-
-  onView(item: any) {
-      this.viewEvent.emit(item);
-  }
 
   ngOnInit(): void {
       this.filteredData = this.gridData;
@@ -224,45 +165,7 @@ export class GridTableComponent implements OnInit {
       return this.filters[field]?.value;
   }
 
-  // onFilter(event: any, field: string) {
-  //     console.log(event);
 
-  //     // Ensure this.filters[field] is initialized as an object
-  //     if (!this.filters[field]) {
-  //         this.filters[field] = {};
-  //     }
-
-  //     // Update the specific filter for the given field
-  //     this.filters[field].value = event;
-
-  //     // Apply filtering logic here
-  //     this.applyFilters();
-  // }
-
-  // onFilterChange(filterValue: any, field: string) {
-  //     console.log('Filter event:', filterValue);
-  //     console.log('Field:', field);
-
-  //     // Update the specific filter for the given field
-  //     this.filters[field] = { value: filterValue };
-
-  //     // Apply filtering logic here
-  //     this.applyFilters();
-  // }
-
-  // onFilterChange(filterValue: string, field: string) {
-  //     if (filterValue && filterValue.trim()) {
-  //         // Apply filtering logic here using the provided filterValue and field
-  //         // For example:
-  //         this.filteredData = this.gridData.filter(item => {
-  //             const itemValue = this.resolveNestedField(item, field);
-  //             return itemValue.toString().toLowerCase().includes(filterValue.toLowerCase());
-  //         });
-  //     } else {
-  //         // Filter is cleared, reset the data
-  //         this.filteredData = this.gridData;
-  //     }
-  // }
 
   onCustomClear(field: string) {
       // Find the column in the gridColumns array
@@ -276,63 +179,7 @@ export class GridTableComponent implements OnInit {
   }
 
 
-  // applyFilters() {
-  //     // Copy original data
-  //     this.filteredData = [...this.gridData];
-
-  //     // Apply filtering logic for each field
-  //     for (const field in this.filters) {
-  //         if (this.filters.hasOwnProperty(field)) {
-  //             const filterValue = this.filters[field]?.value;
-  //             if (filterValue !== undefined && filterValue !== null && filterValue.trim() !== '') {
-  //                 console.log(`Applying filter for field: ${field}, value: ${filterValue}`);
-  //                 this.filteredData = this.filteredData.filter(row =>
-  //                     this.applyFilter(row, field, filterValue)
-  //                 );
-  //             }
-  //         }
-  //     }
-
-  //     console.log('Filtered Data:', this.filteredData);
-  // }
-
-  // applyFilter(row: any, field: string, filterValue: any): boolean {
-  //     console.log("Row:", row);
-  //     console.log("Field:", field);
-  //     console.log("Filter Value:", filterValue);
-
-  //     const resolvedValue = this.resolveNestedField(row, field);
-  //     console.log("Resolved Value:", resolvedValue);
-
-  //     // Check if the resolved value is an object (indicating nested data)
-  //     if (typeof resolvedValue === 'object' && resolvedValue !== null) {
-  //         console.log("Resolved value is an object, processing nested properties...");
-  //         // If the resolved value is an object, recursively apply the filter to its properties
-  //         for (const key in resolvedValue) {
-  //             if (resolvedValue.hasOwnProperty(key)) {
-  //                 const nestedValue = resolvedValue[key];
-  //                 console.log("Nested Property:", key, nestedValue);
-  //                 if (this.applyFilter({ [key]: nestedValue }, key, filterValue)) {
-  //                     console.log("Match found in nested property:", key, nestedValue);
-  //                     return true; // Return true if any nested property matches the filter
-  //                 }
-  //             }
-  //         }
-  //         console.log("No match found in nested properties.");
-  //         return false; // If no nested property matches the filter, return false
-  //     } else {
-  //         console.log("Resolved value is not an object, applying filter directly...");
-  //         // If the resolved value is not an object, apply the filter directly
-  //         if (resolvedValue !== undefined && resolvedValue !== null) {
-  //             const formattedValue = resolvedValue.toString().toLowerCase();
-  //             const match = formattedValue.includes(filterValue.toLowerCase());
-  //             console.log("Filter Applied:", match);
-  //             return match;
-  //         }
-  //         console.log("Resolved value is undefined or null, returning false.");
-  //         return false;
-  //     }
-  // }
+ 
 
   onFilterChange(filterValue: string, field: string, condition: string) {
       if (filterValue && filterValue.trim()) {
