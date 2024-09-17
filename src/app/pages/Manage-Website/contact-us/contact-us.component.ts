@@ -252,11 +252,11 @@ export class ContactUsComponent implements OnInit {
   }
 
   gridColumns=[
-    { field: 'email', header: 'Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'created_on', header: 'Email', filter: true, filterMatchMode: 'contains' },
-    { field: 'status', header: 'Phone', filter: true, filterMatchMode: 'contains' },
-    { field: 'status', header: 'Message', filter: true, filterMatchMode: 'contains' },
-    { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+    { field: 'first_name', header: 'Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'email', header: 'Email', filter: true, filterMatchMode: 'contains' },
+    { field: 'phone', header: 'Phone', filter: true, filterMatchMode: 'contains' },
+    { field: 'message', header: 'Message', filter: true, filterMatchMode: 'contains' },
+     { field: 'purpose', header: 'Purpose', filter: true, filterMatchMode: 'contains' },
   ]
   exportData:any;
   filterData:any;

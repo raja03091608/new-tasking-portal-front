@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
- <section class="body-card">
+  <!-- <section class="body-card">
 	<div class="container-fluid">
 	   <div class="row">
 		  <div class="col-md-12">
@@ -42,6 +42,7 @@
 					  <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
 					  <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)" class="status-field {{country.status=='1'?'text-success':'text-danger'}}" >{{country.status=='1'?'Active':'Inactive'}}</a>  </td>
 				   </ng-container>
+				  
 				   <ng-container matColumnDef="view" >
 					  <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
 					  <td class="text-center" mat-cell *matCellDef="let country">
@@ -70,7 +71,7 @@
 		  </div>
 	   </div>
 	</div>
- </section>
+ </section>  -->
  <section class="body-card">
  <div class="container-fluid">
 	<div class="row">
@@ -79,7 +80,7 @@
 			 <div class="card-header card-header2">
 				<div class="row">
 				   <div class="col-md-6">
-					  <h3 style="color: white;">Users</h3>
+					  <h3 style="color: white;">Approval Configuration</h3>
 				   </div>
 				   <div class="col-md-6">
 					  <div class="text-end">

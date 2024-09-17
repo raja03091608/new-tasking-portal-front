@@ -18,8 +18,8 @@ import { Table } from 'primeng/table';
   styleUrl: './grid-table.component.scss'
 })
 export class GridTableComponent implements OnInit {
-    @Input() isPermanentDelete: boolean = false;
-    @Input() isRestore: boolean = false;
+    @Input() isPermanentDelete: boolean;
+    @Input() isRestore: boolean;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
@@ -155,13 +155,18 @@ export class GridTableComponent implements OnInit {
 
   
 
-
  
 
  
+
  
+  onPermanentDelete(item: any) {
+    this.permanentDeleteEvent.emit(item);
+    
+  }
   ngOnInit(): void {
-    this.isRestore = true;
+    // this.isRestore = true;
+    
     
       this.filteredData = this.gridData;
       console.log(this.gridData);

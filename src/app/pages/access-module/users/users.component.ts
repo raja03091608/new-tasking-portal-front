@@ -75,10 +75,11 @@ export class UsersComponent implements OnInit {
 		edit: true,
 		view: true,
 		delete: true
+		
 
 	};
 
-
+	
 	@ViewChild(MatPaginator) pagination: MatPaginator;
 	@ViewChild('select') select: MatSelect;
 	@ViewChild('selectSAT') selectSAT: MatSelect;
@@ -206,6 +207,8 @@ export class UsersComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
+		
+
 		/*this.getUserRoles();*/
 		this.getProcess();
 		this.getUnit()

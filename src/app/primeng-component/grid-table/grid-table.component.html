@@ -62,10 +62,9 @@
                       <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload" mat-menu-item><small class="btn btn-outline-warning btn-sm"><i class="bi bi-file-pdf"></i></small>&nbsp;<small>Download</small></button>
                       <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Completed</small></button>
                       <button (click)="restoreEvent.emit(rowData)" *ngIf="isRestore" mat-menu-item>
-                     <button (click)="permanentDeleteEvent.emit(rowData)"  mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Perment Delete</small></button>
-                    <small class="btn btn-outline-warning btn-sm"><span class="bi bi-arrow-clockwise"></span></small>&nbsp;<small>Restore</small>
+                        <small class="btn btn-outline-warning btn-sm"><span class="bi bi-arrow-clockwise"></span></small>&nbsp;<small>Restore</small>
                       </button>
-                      
+                      <button (click)="onPermanentDelete(rowData)" *ngIf="isPermanentDelete" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Perment Delete</small></button>
                     </mat-menu>
                   </td>
                   
