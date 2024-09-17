@@ -13,7 +13,7 @@
                     [ngClass]="{'text-center': col.header === 'Status'}">
                     {{ col.header }}
                     
-                <p-sortIcon *ngIf="col?.filter" class="text-light pb-1 pe-2 rounded" [field]="col.field"></p-sortIcon>
+                <!-- <p-sortIcon *ngIf="col?.filter" class="text-light pb-1 pe-2 rounded" [field]="col.field"></p-sortIcon> -->
                     <p-columnFilter class="text-light pb-1 pe-2 rounded" *ngIf="col?.filter" type="text" [field]="col.field" display="menu">
                         <ng-template pTemplate="filter">
                             <input type="text" #filterInput pInputText
@@ -54,15 +54,15 @@
                 <td *ngIf="isAction" class="text-center">
                     <button mat-button [matMenuTriggerFor]="actionsMenu" class="btn btn-primary px-2"><small>Actions</small></button>
                     <mat-menu #actionsMenu="matMenu">
-                      <button (click)="onView(rowData)" *ngIf="isView" mat-menu-item><small class="btn btn-outline-info btn-sm"><span class="bi bi-eye"></span></small>&nbsp;<small>View</small></button>
-                      <button (click)="onEditPopup(rowData)" *ngIf="isEditable" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="bi bi-pencil"></span></small>&nbsp;<small>Edit</small></button>
-                      <button (click)="onDelete(rowData)" *ngIf="isDeletable" mat-menu-item><small class="btn btn-outline-danger btn-sm"><span class="bi bi-trash"></span></small>&nbsp;<small>Delete</small></button>
+                      <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item><small class="btn btn-outline-info btn-sm"><span class="bi bi-eye"></span></small>&nbsp;<small>View</small></button>
+                      <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="bi bi-pencil"></span></small>&nbsp;<small>Edit</small></button>
+                      <button (click)="deleteEvent.emit(rowData)" *ngIf="isDeletable" mat-menu-item><small class="btn btn-outline-danger btn-sm"><span class="bi bi-trash"></span></small>&nbsp;<small>Delete</small></button>
                       <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="fas fa-info-circle"></span></small>&nbsp;<small>Status</small></button>
                       <button (click)="exportEvent.emit(rowData)" *ngIf="isExport" mat-menu-item><small class="btn btn-outline-info btn-sm"><i class="bi bi-upload"></i></small>&nbsp;<small>Export</small></button>
                       <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload" mat-menu-item><small class="btn btn-outline-warning btn-sm"><i class="bi bi-file-pdf"></i></small>&nbsp;<small>Download</small></button>
                       <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Completed</small></button>
                       <button (click)="restoreEvent.emit(rowData)" *ngIf="isRestore" mat-menu-item>
-                        <button (click)="onPermanentDelete(rowData)"  mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Perment Delete</small></button>
+                     <button (click)="permanentDeleteEvent.emit(rowData)"  mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Perment Delete</small></button>
                     <small class="btn btn-outline-warning btn-sm"><span class="bi bi-arrow-clockwise"></span></small>&nbsp;<small>Restore</small>
                       </button>
                       
