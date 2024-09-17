@@ -18,7 +18,8 @@ import { Table } from 'primeng/table';
   styleUrl: './grid-table.component.scss'
 })
 export class GridTableComponent implements OnInit {
-  
+    @Input() isPermanentDelete: boolean = false;
+    @Input() isRestore: boolean = false;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
@@ -41,7 +42,8 @@ export class GridTableComponent implements OnInit {
   @Output() downloadEvent = new EventEmitter<any>();
   @Output() statusEvent = new EventEmitter<any>();
   @Output() completedEvent = new EventEmitter<any>();
-  
+  @Output() restoreEvent = new EventEmitter<any>();
+  @Output() permanentDeleteEvent = new EventEmitter<any>();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -210,8 +212,12 @@ export class GridTableComponent implements OnInit {
   onView(item: any) {
       this.viewEvent.emit(item);
   }
-
+  onPermanentDelete(item: any) {
+    this.permanentDeleteEvent.emit(item);
+  }
   ngOnInit(): void {
+    this.isRestore = true;
+    
       this.filteredData = this.gridData;
       console.log(this.gridData);
       console.log(this.gridColumns);
@@ -455,8 +461,16 @@ export class GridTableComponent implements OnInit {
   }
     
   
+  deleteTask(item: any) {
+    this.deleteEvent.emit(item);
+  }
 
-
-
+  restoreTask(item: any) {
+    this.restoreEvent.emit(item);
+  }
+  onRestore(rowData: any): void {
+    // Handle the restore action here
+    console.log('Restoring:', rowData);
+  }
 }
 

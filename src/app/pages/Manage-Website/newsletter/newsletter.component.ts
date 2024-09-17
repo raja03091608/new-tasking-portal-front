@@ -105,7 +105,7 @@ export class NewsletterComponent implements OnInit {
       .subscribe((res) => {
         //console.log('newsletter',res)
         this.dataSource = new MatTableDataSource(res);
-        this.newsletterData=res.data;
+        this.newsletterData=res;
 
         this.countryList = res;
         this.dataSource.paginator = this.pagination;
@@ -244,10 +244,9 @@ export class NewsletterComponent implements OnInit {
 
   gridColumns=[
     { field: 'email', header: ' Email', filter: true, filterMatchMode: 'contains' },
-    { field: 'created_on', header: 'Created On', filter: true, filterMatchMode: 'contains' },
+    { field: 'created_on', header: 'Created Date', filter: true, filterMatchMode: 'contains' },
     { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
-    { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
-    // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+   
   ]
   exportData:any;
   filterData:any;

@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
- <!-- <section class="body-card">
+  <!-- <section class="body-card">
 	<div class="container-fluid">
 	  <div class="row">
 		<div class="col-md-12">
@@ -190,11 +190,19 @@
 				   </tr>
 				</table>  -->
 				 <ng-container *ngIf="userData.length != 0">
-				  <app-grid-table [gridColumns]="gridColumns" [gridData]="userData"
-					 [ispaniNater]="true" [isAction]="true" (filterEvent)="handleFilter($event)"
-					 (paginationEvent)="handlePagination($event)" (statusEvent)="openCurrentStatus($event)"
-					 (exportEvent)="opentask($event)" (downloadEvent)="UploadReceipt($event)"
-					 (completedEvent)="completedtask($event)" [isExport]="true" [isStatus]="true">
+				  <app-grid-table [gridColumns]="gridColumns" 
+				  [gridData]="userData"
+					 [ispaniNater]="true" [isAction]="true"
+					  (filterEvent)="handleFilter($event)"
+					 (paginationEvent)="handlePagination($event)"
+					 (viewEvent)="onView($event)" 
+                    [isView]="true"
+                    (deleteEvent)=" onDelete($event)" 
+                    [isDeletable]="true"
+                    (editEvent)="editOption($event)" 
+					(permanentDeleteEvent)="onPermanentDelete($event)"
+					[isPermanentDelete]="true"
+                    [isEditable]="true">
 				  </app-grid-table>
 			   </ng-container> 
 			 </div>

@@ -146,11 +146,21 @@
 				</tr>
 			 </table>  -->
 			  <ng-container *ngIf="configurationData.length != 0">
-			   <app-grid-table [gridColumns]="gridColumns" [gridData]="configurationData"
-				  [ispaniNater]="true" [isAction]="true" (filterEvent)="handleFilter($event)"
-				  (paginationEvent)="handlePagination($event)" (statusEvent)="openCurrentStatus($event)"
-				  (exportEvent)="opentask($event)" (downloadEvent)="UploadReceipt($event)"
-				  (completedEvent)="completedtask($event)" [isExport]="true" [isStatus]="true">
+			   <app-grid-table [gridColumns]="gridColumns"
+			    [gridData]="configurationData"
+				  [ispaniNater]="true"
+				   [isAction]="true" 
+				  (filterEvent)="handleFilter($event)"
+				  (paginationEvent)="handlePagination($event)" 
+				  
+				  (viewEvent)="onView($event)" 
+                    [isView]="true"
+                    (deleteEvent)=" onDelete($event)" 
+                    [isDeletable]="true"
+                    (editEvent)="editOption($event)" 
+					[isEditable]="true"
+
+				   >
 			   </app-grid-table>
 			</ng-container> 
 		  </div>

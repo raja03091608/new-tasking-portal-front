@@ -667,7 +667,7 @@ export class UsersComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.api.postAPI(environment.API_URL + "api/auth/users/crud", {
-					delval: delval
+					delval: delval.id
 				}).subscribe((res) => {
 					if (res.status == environment.SUCCESS_CODE) {
 						this.notification.warn(res.message);
@@ -706,8 +706,10 @@ export class UsersComponent implements OnInit {
 	gridColumns=[
 		{ field: 'first_name', header: ' First Name', filter: true, filterMatchMode: 'contains' },
 		{ field: 'last_name', header: 'Last Name', filter: true, filterMatchMode: 'contains' },
-		{ field: 'last_login', header: 'Last Login', filter: true, filterMatchMode: 'contains' },
-		{ field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
+		{ field: 'email', header: 'Login Email', filter: true, filterMatchMode: 'contains' },
+		{ field: 'roles[0].user_role.name', header: 'User Role', filter: true, filterMatchMode: 'contains' },
+		{ field: 'department.name', header: 'unit', filter: true, filterMatchMode: 'contains' },
+
 		// { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
 	  ]
 	  exportData:any;
