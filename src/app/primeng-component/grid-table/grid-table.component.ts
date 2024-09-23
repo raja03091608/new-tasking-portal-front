@@ -22,6 +22,8 @@ export class GridTableComponent implements OnInit {
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
+  @Input() isStatusAdd: boolean;
+  @Input() isArchiveTask: boolean;
   @Input() isAction: boolean;
   @Input() isFormEditable: boolean;
   @Input() isDeletable: boolean;
@@ -40,8 +42,9 @@ export class GridTableComponent implements OnInit {
   @Output() exportEvent = new EventEmitter<any>();
   @Output() downloadEvent = new EventEmitter<any>();
   @Output() statusEvent = new EventEmitter<any>();
+  @Output() statusEventAdd = new EventEmitter<any>();
   @Output() completedEvent = new EventEmitter<any>();
-  
+  @Output() archivetaskEvent = new EventEmitter<any>();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 

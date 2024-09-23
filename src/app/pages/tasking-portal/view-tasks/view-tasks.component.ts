@@ -82,7 +82,7 @@ export class ViewTasksComponent implements OnInit {
   dataSourcelist = new MatTableDataSource<any>([]); // Data source for Angular Material table
   dataSourceStatus: MatTableDataSource<any>;
   xlxsForm: FormGroup;
-
+  isStatusAdd:boolean = false;
   patchValue(data: any) {
     throw new Error('Method not implemented.');
   }
@@ -324,7 +324,7 @@ export class ViewTasksComponent implements OnInit {
     this.completedForm.patchValue(data);
     this.archiveForm.patchValue(data);
     // this.taskingForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
-    this.taskingForm.patchValue({title: data.title})
+    this.taskingForm.patchValue({status_summary:data.status_summary,secTitle:data.secondary_title })
     if (data ? data.file : "") {
       var img_link = data.file;
       this.img_link1 = data.file;
@@ -408,7 +408,7 @@ export class ViewTasksComponent implements OnInit {
     this.getTaskingGroups();
     this.getAccess();
     this.gettitlelist();
-    
+    this.isStatusAdd= (this.token_detail.process_id == 3 || this.token_detail.process_id == 1) ? true : false
     // this.getstatus;
     // this.getViewStatus();
 
@@ -892,7 +892,7 @@ extension(){
     this.tasknumber = data.task_number_dee
 
     setTimeout(()=> {
-      this.getviewstatuscomment(this.viewlist.id);
+      // this.getviewstatuscomment(this.viewlist.id);
 
 
       this.chartOptions = {
@@ -1027,7 +1027,7 @@ extension(){
           if(res.status==environment.SUCCESS_CODE){
             // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
-            this.getviewstatuscomment(this.viewlist.id);
+            // this.getviewstatuscomment(this.viewlist.id);
             // this.commentForm.reset();
 
             this.closebutton.nativeElement.click();
@@ -1068,12 +1068,12 @@ extension(){
           if(res.status === 1){
             this.notification.success(res.message);
 
-            this.getviewstatuscomment(this.viewlist.id);
+            // this.getviewstatuscomment(this.viewlist.id);
 
           }
           else{
             this.notification.success(res.message);
-          this.getviewstatuscomment(this.viewlist.id);
+          // this.getviewstatuscomment(this.viewlist.id);
           }
           // this.commentForm.reset();
 
@@ -1085,31 +1085,38 @@ extension(){
       });
     }
 
-  getviewstatuscomment(id:any){
+  // getviewstatuscomment(id:any){
 
-		this.api
-		  .getAPI(environment.API_URL + "transaction/comments?tasking_id="+id)
-		  .subscribe((res) => {
-			this.dataSourcelist = new MatTableDataSource(res.data);
-			this.commentslist = res.data;
-			this.logger.log('commentslist',this.commentslist)
-		  });
-	  }
+	// 	this.api
+	// 	  .getAPI(environment.API_URL + "transaction/comments?tasking_id="+id)
+	// 	  .subscribe((res) => {
+	// 		this.dataSourcelist = new MatTableDataSource(res.data);
+	// 		this.commentslist = res.data;
+			
+	// 	  });
+	//   }
 
-    Viewstatus:any;
+    addStatusdata=[];
   getViewStatus(id) {
+    this.addStatusdata=[]
     this.api
       .getAPI(environment.API_URL + "transaction/tasking-status?tasking_id="+id)
       .subscribe((res) => {
-        this.dataSourceStatus = new MatTableDataSource(res.data);
-        this.Viewstatus = res.data;
-        var Img=environment.MEDIA_URL;
-		    this.ImgUrl = Img.substring(0,Img.length-1) ;
+        // this.dataSourceStatus = new MatTableDataSource(res.data);
+        this.addStatusdata = res.data;
+       
 
       });
 
   }
 
+  addStatusHeader=[
+  { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
+  { field: 'secondary_title', header: 'Secondary Title', filter: true, filterMatchMode: 'contains' },
+  { field: 'start_date', header: 'Start Date', filter: true, filterMatchMode: 'contains' },
+  { field: 'end_date', header: 'End Date', filter: true, filterMatchMode: 'contains' },
+
+  ]
   editOption(view) {
     this.isReadonly=false;
     this.taskingForm.enable();

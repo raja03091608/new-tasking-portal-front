@@ -69,7 +69,7 @@
 							<button type="button" class="btn btn-outline-primary" #closebutton data-dismiss="modal"
 								(click)="closeimport()">Cancel</button>
 							<a href="./assets/media/tasking_legacy_data.csv" class="edit-icon text-primary"><span
-									class="material-icons-outlined"><span class="bi bi-file-earmark-text-fill"
+									class="material-icons-outlined"><span class="bi bi-file-earmark-text-outline"
 										style="color:blue"></span></span>Sample Import Data</a>
 						</div>
 					</div>
@@ -101,9 +101,9 @@
 					</button>
 					<div class="timeline-cover text-center">
 						<ul class="timeline">
-							
+
 							<li *ngFor="let step of roles" class="active">
-								<label>({{step?.current?.roles[0]?.user_role?.name  }})</label> <br>
+								<label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
 								<label>{{step?.current?.department?.name }}</label>
 							</li>
 							<li *ngFor="let step of routeList; let i = index"
@@ -132,24 +132,25 @@
 						<h3 class="bg-primary py-2 text-light rounded text-center">Comment Sheet</h3>
 						<div class="scrollTable" style="height: 100vh;">
 
-							<div *ngIf="minitingList">
+							<ng-container *ngIf="minitingList && minitingList?.length > 0">
 								<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-									<div class="p-3 mb-2" style="background-color: #ffffff;"
-										[innerHTML]="data.comments"></div>
-									<div class="alert-footer">
-										<span class="float-end"> <b>Rank:</b>&nbsp;<i
-												style="color: black; font-weight: 600;">{{data.created_by.rankCode}}</i>
-										</span>
-										<br>
-										<span class="float-end"><b>Created By:</b>&nbsp; {{data.created_by.first_name}}
-											{{data.created_by.last_name}}</span>
-										<br>
-										<span class="float-end">{{data.created_on | date:'dd-MM-yyyy hh:mm '}}</span>
-										<br />
-
-									</div>
+								  <div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments"></div>
+								  <div class="alert-footer">
+									<span class="float-end">
+									  <b>Rank:</b>&nbsp;
+									  <i style="color: black; font-weight: 600;">{{data?.created_by?.rankCode}}</i>
+									</span>
+									<br>
+									<span class="float-end">
+									  <b>Created By:</b>&nbsp; {{data?.created_by?.first_name}} {{data.created_by?.last_name}}
+									</span>
+									<br>
+									<span class="float-end">{{data?.created_on ? (data.created_on | date: 'dd-MM-yyyy hh:mm') : 'N/A'}}</span>
+									<br />
+								  </div>
 								</div>
-							</div>
+							  </ng-container>
+							  
 
 							<form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()">
 								<div class="mb-5 alert alert-dismissible alert-bg">
@@ -344,16 +345,17 @@
 													</div>
 												</div>
 											</div>
-											<button type="submit" *ngIf="taskListRoot?.level== null || taskListRoot?.level === 1 && api.userid.role_center[0].user_role.code=='Initiator'" class="btn btn-primary me-2">Initiate</button>
+											<button type="submit"
+												*ngIf="taskListRoot?.level== null || taskListRoot?.level === 1 && api.userid.role_center[0].user_role.code=='Initiator'"
+												class="btn btn-primary me-2">Initiate</button>
 
-											
+
 										</div>
 
-										
+
 
 										<!-- </ng-container> -->
 									</div>
-
 									<div formGroupName="apsoForm" *ngIf="is_sponsoring_directorate">
 
 										<div class="alert alert-dismissible border alert-bg">
@@ -371,12 +373,24 @@
 													*ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter
 													Comments</mat-error>
 											</div>
+											<!-- <div class="alert-footer" *ngIf="list && list.APSO_recommender === 1" >
+												<span class="float-end"> <b>Rank:</b>&nbsp;<i
+														style="color: black; font-weight: 600;">{{list1?.created_by.rankCode}}</i>
+												</span>
+												<br>
+												<span class="float-end"><b>Created By:</b>&nbsp; {{list1?.created_by.first_name}}
+													{{list?.created_by.last_name}}</span>
+												<br>
+												<span class="float-end">{{list1.created_on | date:'dd-MM-yyyy hh:mm '}}</span>
+												<br />
+		
+											</div> -->
 											<table *ngIf="list && list.SD_initiater==1">
 
 												<tr>
 													<th width="20%">Date</th>
 													<th width="20%">Status</th>
-													
+
 													<th width="20%">Created By</th>
 												</tr>
 
@@ -385,7 +399,7 @@
 													<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
 													<td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}
 													</td>
-													
+
 													<td>{{list && list.created_by.first_name}}</td>
 												</tr>
 												<!-- </ng-template> -->
@@ -394,12 +408,9 @@
 
 												<button type="button" class="btn btn-success" *ngIf="!disableApso()"
 													(click)="apsoRecommened()">Recommend</button>
-												</div>
+											</div>
 										</div>
 									</div>
-
-
-
 									<div formGroupName="weseeForm">
 
 
@@ -742,13 +753,13 @@
 														value="Test comments"></textarea>
 												</div>
 											</ng-container>
-							
+
 											<table
 												*ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
 												<tr>
 													<th width="30%">Date</th>
 													<th width="20%">Status</th>
-													
+
 													<th width="20%">Created By</th>
 												</tr>
 												<tr *ngFor="let list1 of countryList1; let i= index;">
@@ -757,7 +768,7 @@
 														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
 														<td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not
 															Recommended'}}</td>
-														
+
 														<td>{{list1 && list1.created_by.first_name}}</td>
 													</ng-container>
 												</tr>
@@ -905,7 +916,7 @@
 												<tr>
 													<th width="30%">Date</th>
 													<th width="20%">Status</th>
-													
+
 													<th width="20%">Created By</th>
 												</tr>
 												<tr *ngFor="let list1 of countryList1; let i= index;">
@@ -914,7 +925,7 @@
 														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
 														<td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not
 															Recommended'}}</td>
-														
+
 														<td>{{list1 && list1.created_by.first_name}}</td>
 													</ng-container>
 												</tr>
@@ -937,14 +948,8 @@
 											</div>
 										</div>
 									</div>
-
 									<div formGroupName="comForm">
-										<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'"> -->
-										<!-- <div class="mb-5 ">
-							   <label for="floatingInput" class="form-label">Approval Of COM</label>
-	
-								   <input type="text" class="form-control" formControlName="approval" value="Approved"/>
-						   </div> -->
+
 
 										<div class="alert alert-dismissible alert-bg">
 
@@ -962,15 +967,13 @@
 												<mat-error
 													*ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
-												<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-												<!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
 											</div>
 											<table
 												*ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
 												<tr>
 													<th width="30%">Date</th>
 													<th width="20%">Status</th>
-													
+
 													<th width="20%">Created By</th>
 												</tr>
 												<tr *ngFor="let list1 of countryList1; let i= index;">
@@ -979,7 +982,7 @@
 														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
 														<td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not
 															Recommended'}}</td>
-														
+
 														<td>{{list1 && list1.created_by.first_name}}</td>
 													</ng-container>
 												</tr>
@@ -1034,97 +1037,125 @@
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
+		<div  class="timeline-cover text-center">
+			<ul class="timeline">
+
+				<li *ngFor="let step of roles" class="active">
+					<label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
+					<label>{{step?.current?.department?.name }}</label>
+				</li>
+				<li *ngFor="let step of routeList; let i = index"
+					[ngClass]="{'active': i < taskListRoot.level-1}">
+					<label>{{ timelineStepName(step) }}</label> <br>
+					<label>{{ timelineStepDirect(step) }}</label>
+				</li>
+			</ul>
+		</div>
 		<form [formGroup]="formGroup" (ngSubmit)="onSubmitRoute()" class="my-form">
 			<div class="row">
-
-				<!-- Task Selection -->
-				<div class="form-group mt-4 col-6">
-					<label for="taskId">Task</label>
-					<input type="text" id="taskId" class="form-control" formControlName="taskId">
-					<div *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched" class="text-danger">
-						Name is required
-					</div>
-				</div>
-
-				<!-- Select From User Section -->
-				<h3>Select From User</h3>
-				<div class="form-group mt-4 col-6">
-					<label for="process">Select Directorate</label>
-					<select id="process" class="form-control" formControlName="process"
-						(change)="onSectionChange($event)">
-						<option  [value]="">Select From Directorate</option>
-
-						<option *ngFor="let option of directorateList" [value]="option.id">{{option.name}}</option>
-					</select>
-					<div *ngIf="formGroup.get('process').invalid && formGroup.get('process').touched"
-						class="text-danger">
-						Directorate Type is required
-					</div>
-				</div>
-
-				<div class="form-group mt-4 col-6">
-					<label for="current">User Type</label>
-					<select id="current" class="form-control" formControlName="currentUserRole"
-						(change)="onSelectChangeRole($event)">
-						<option  [value]="">Select From User Types</option>
-						
-						<option *ngFor="let option of userroleList" [value]="option.id">{{option.name}}</option>
-					</select>
-				</div>
-
-				<div class="form-group mt-4 col-6">
-					<label for="current_id">Select User</label>
-					<select id="current_user_id" class="form-control" formControlName="current_id">
-						<option  [value]="">Select From User</option>
-
-						<option *ngFor="let option of userList" [value]="option.id">{{option.loginname}}</option>
-					</select>
-					<div *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched"
-						class="text-danger">
-						User is required
-					</div>
-				</div>
-
-				<!-- Select To User Section -->
-				<h3>Select To User</h3>
-				<div class="form-group mt-4 col-6">
-					<label for="next_user">User Type</label>
-					<select id="next_user" class="form-control" (change)="onSelectChangeRoleTo($event)">
-						<option  [value]="">Select User Type</option>
-						
-						<option *ngFor="let option of userroleList" [value]="option.id">{{option.name}}</option>
-
-					</select>
-				</div>
-
-				<!-- Conditional Directorate Selection -->
-				<div *ngIf="directRecomender === '18'" class="form-group mt-4 col-6">
-					<label for="directrate">Directorate</label>
-					<select id="directrate" class="form-control" (change)="onSelectDirectrate($event)">
-						<option  [value]="">Select Directorate</option>
-						<option *ngFor="let option of directList" [value]="option.id">{{option.name}}</option>
-					</select>
-
-				</div>
-
-				<div class="form-group mt-4 col-6">
-					<label for="next_user_id_2">Select User</label>
-					<select id="next_user_id_2" class="form-control" formControlName="next_user_id">
-						<option  [value]="">Select User</option>
-
-						<option *ngFor="let option of userListTo" [value]="option.id">{{option.loginname}}</option>
-					</select>
-
-				</div>
-
+		  
+			  <!-- Task Selection -->
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>Task</mat-label>
+				  <input matInput type="text" id="taskId" formControlName="taskId">
+				  <mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
+					Name is required
+				  </mat-error>
+				</mat-form-field>
+			  </div>
+		  
+			  <!-- Select From User Section -->
+			  <h3>Select From User</h3>
+		  
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>Select Directorate</mat-label>
+				  <mat-select id="process" formControlName="process" (selectionChange)="onSectionChange($event)">
+					<mat-option [value]="null">Select From Directorate</mat-option>
+					<mat-option *ngFor="let option of directorateList" [value]="option.id">{{option.name}}</mat-option>
+				  </mat-select>
+				  <mat-error *ngIf="formGroup.get('process').invalid && formGroup.get('process').touched">
+					Directorate Type is required
+				  </mat-error>
+				</mat-form-field>
+			  </div>
+		  
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>User Type</mat-label>
+				  <mat-select id="current" formControlName="currentUserRole" (selectionChange)="onSelectChangeRole($event)">
+					<mat-option [value]="null">Select From User Types</mat-option>
+					<mat-option *ngFor="let option of userroleList" [value]="option.id">{{option.name}}</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			  </div>
+		  
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>Select User</mat-label>
+				  <mat-select id="current_user_id" formControlName="current_id">
+					<mat-option [value]="null">Select From User</mat-option>
+					<mat-option *ngFor="let option of userList" [value]="option.id">{{option.loginname}}</mat-option>
+				  </mat-select>
+				  <mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
+					User is required
+				  </mat-error>
+				</mat-form-field>
+			  </div>
+		  
+			  <!-- Select To User Section -->
+			  <h3>Select To User</h3>
+		  
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>User Type</mat-label>
+				  <mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
+					<mat-option [value]="null">Select User Type</mat-option>
+					<mat-option *ngFor="let option of userroleList" [value]="option.id">{{option.name}}</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			  </div>
+		  
+			  <!-- Conditional Directorate Selection -->
+			  <div *ngIf="directRecomender === 18" class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>Directorate</mat-label>
+				  <mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
+					<mat-option [value]="null">Select Directorate</mat-option>
+					<mat-option *ngFor="let option of directList" [value]="option.id">{{option.name}}</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			  </div>
+		  
+			  <div class="form-group mt-4 col-4">
+				<mat-form-field appearance="outline">
+				  <mat-label>Select User</mat-label>
+				  <mat-select id="next_user_id_2" formControlName="next_user_id">
+					<mat-option [value]="null">Select User</mat-option>
+					<mat-option *ngFor="let option of userListTo" [value]="option.id">{{option.loginname}}</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			  </div>
+		  
 			</div>
-
+		  
 			<!-- Submit Button -->
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Close</button>
-				<button type="submit" class="btn btn-primary">Save</button>
+			  <button mat-button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Close</button>
+			  <button mat-raised-button color="primary" type="submit">Save</button>
 			</div>
-		</form>
+		  </form>
+		  
+	
+
+			<!-- <ng-container *ngIf="routeList.length != 0">
+				<app-grid-table [gridColumns]="gridColum" [gridData]="routeList" [ispaniNater]="true"
+				  [isAction]="true" (editEvent)="handleEdit($event)" (deleteEvent)="handleDelete($event)"
+				  [isEditable]="this.permission.edit" [isDeletable]="this.permission.delete">
+				</app-grid-table>
+			  </ng-container> -->
+
 
 	</div>
 </ng-template>
@@ -1140,9 +1171,10 @@
 			</div>
 			<div class="d-flex ">
 				<div class="col-12 text-center">
-					<button type="button" (click)="openBackDropCustomClass(content)" class="btn btn-success btn-lg">Procced</button>
+					<button type="button" (click)="openBackDropCustomClass(content)"
+						class="btn btn-success btn-lg">Procced</button>
 				</div>
-				
+
 			</div>
 		</div>
 	</ng-template>
