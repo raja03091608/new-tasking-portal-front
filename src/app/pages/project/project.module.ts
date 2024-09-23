@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProjectRoutingModule } from './project-routing.module';
@@ -10,11 +10,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
     ProjectComponent
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     ProjectRoutingModule,
@@ -23,6 +30,11 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     FormsModule,
     CKEditorModule,
     AngularEditorModule,
+    TableModule,
+    DialogModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
     RouterModule.forChild([
 
 			{

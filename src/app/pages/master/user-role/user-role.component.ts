@@ -399,8 +399,8 @@ export class UserRoleComponent implements OnInit {
     { field: 'process.name', header: ' Name', filter: true, filterMatchMode: 'contains' },
     { field: 'code', header: 'code', filter: true, filterMatchMode: 'contains' },
     { field: 'process.status', header: 'Status', filter: true, filterMatchMode: 'contains' },
-    { field: 'reason', header: 'Reason', filter: true, filterMatchMode: 'contains' },
-    { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+    // { field: 'reason', header: 'Reason', filter: true, filterMatchMode: 'contains' },
+    // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
   ]
   exportData:any;
   filterData:any;

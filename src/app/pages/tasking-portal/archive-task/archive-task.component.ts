@@ -125,6 +125,7 @@ export class ArchiveTaskComponent implements OnInit {
       }
     });
    }
+   
 
    approvedDelete(id) {
     let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -160,7 +161,7 @@ export class ArchiveTaskComponent implements OnInit {
     { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
     { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
     { field: 'reason', header: 'Reason', filter: true, filterMatchMode: 'contains' },
-    { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+    { field: 'authority_permission', header: 'Authority ermission', filter: true, filterMatchMode: 'contains' },
   ]
   exportData:any;
   filterData:any;
