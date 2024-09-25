@@ -970,8 +970,7 @@
             (paginationEvent)="handlePagination($event)"
             (viewEvent)="openEdit($event)"
             [isView]="true"
-            (exportEvent)="exportToExcel1()" 
-            [isExport]="true">
+            >
           </app-grid-table>
         </ng-container>
       
@@ -1021,7 +1020,7 @@
 
 <div class="row my-5">
 	<div class="col-4 float-end">
-		<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="downloadexcel()"><i class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
+		<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="saveAsExcelFile()"><i class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
 	</div>
 </div>
 	<ng-container *ngIf=" isFormHide">

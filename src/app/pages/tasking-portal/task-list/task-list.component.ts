@@ -698,6 +698,40 @@ export class TaskListComponent implements OnInit {
       });
 
   }
+  signatureDataIni:any
+  signatureDataApso:any
+  signatureDatawesee:any
+  signatureDataDee:any
+  signatureDataAcom:any
+  signatureDatacom:any
+  signeture(countryList: any[], key: string): object | null {
+    const index = countryList.findIndex(country => country[key] === 1);
+    switch (key) {
+      case 'SD_initiater':
+        this.signatureDataIni = countryList[index];
+        return countryList[index];
+      case 'APSO_recommender':
+        this.signatureDataApso = countryList[index];
+        return countryList[index];
+      case 'WESEE_recommender':
+        this.signatureDatawesee = countryList[index];
+        return countryList[index];
+      case 'DEE_recommender':
+        this.signatureDataDee = countryList[index];
+        return countryList[index];
+      case 'ACOM_recommender':
+        this.signatureDataAcom = countryList[index];
+        return countryList[index];
+      case 'COM_approver':
+        this.signatureDatacom = countryList[index];
+        return countryList[index];
+      default:
+        return null;
+    }
+  
+    return null;
+}
+
   taskingID: any;
   //   openPopup(id) {
   // 	this.taskingID=id;

@@ -632,13 +632,11 @@ export class UsersComponent implements OnInit {
 
 	Submit() {
 		const formData = new FormData();
-
+		const file = this.fileInput.nativeElement.files[0];
+		
 		if (this.importform.valid) {
-			this.api
-				.postAPI(
-					environment.API_URL + "access/user_role/import",
-					formData
-				)
+			formData.append('file_upload', file);
+			this.api.postAPI(environment.API_URL + "access/user_role/import",formData)
 				.subscribe((res) => {
 					if (res.status == environment.SUCCESS_CODE) {
 						this.notification.success(res.message);

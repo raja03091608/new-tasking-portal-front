@@ -24,7 +24,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import 'datatables.net'
 //import { NgZone } from '@angular/core'
 import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 
 
 import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
@@ -207,12 +207,6 @@ export class Dashboard1Component implements OnInit,OnDestroy {
   statusTaskingNew=  [] as any;
   newTableDataSource = new MatTableDataSource([]);
 
-
-
-	projects: any[] = [
-		{ name: 'Navy3005', code: '30/5/2024', status: 'INITIATION STARTED' },
-		{ name: 'PT-0107', code: '1/7/2024', status: 'INITIATION STARTED' }
-	  ];
   currentYear = new Date().getFullYear();
   currentDate1 = new Date();
 xlxsForm: FormGroup;
@@ -221,22 +215,25 @@ isFormHide=false;
 exportData:any;
 filterData:any;
 fileName:string;
-expDataHeader=[
-  { field: 'task_number_dee', header: 'Task Number (DEE)' },
-  { field: 'task_name', header: 'Task Name' },
-  { field: 'cost_implication', header: 'Cost Implication' },
-  { field: 'sponsoring_directorate', header: 'Sponsoring Directorate' },
-  { field: 'time_frame_for_completion_month', header: 'Time Frame (Months)' },
-  { field: 'comments_of_wesee', header: 'Wesee Comments' },
-  { field: 'comments_of_dee', header: 'DEE Comments' },
-  { field: 'comments_of_apso', header: 'APSO Comments' },
-  { field: 'approval_of_com', header: 'COM Approval' },
-  { field: 'tasking_status', header: 'Tasking Status' },
-  { field: 'legacy_data', header: 'Legacy Data' },
-  { field: 'created_by.first_name', header: 'Created By' },
-  { field: 'created_on', header: 'Created On' },
-  { field: 'modified_on', header: 'Modified On' }
-]
+expDataHeader = [
+  { field: 'tasking.task_name', header: 'Task Name',  },
+  { field: 'tasking.task_number_dee', header: 'Task Number',  },
+  { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate',  },
+  { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name',  }, 
+  { field: 'start_date', header: 'Start Date' },
+  { field: 'end_date', header: 'End Date' },
+  { field: 'title', header: 'Title' },
+  { field: 'secondary_title', header: 'Secondary Title' },
+  { field: 'status_summary', header: 'Status Summary' },
+  { field: 'tasking.comments_of_dee', header: 'Dee Comments' },
+  { field: 'tasking.approval_of_com', header: 'COM Comments' },
+  { field: 'tasking.recommendation_of_acom_its', header: 'ACOM Comments' },
+  { field: 'tasking.time_frame_for_completion_month', header: 'Comepletion Months' },
+
+  { field: 'tasking.comments_of_wesee', header: 'Wesee Comments' },
+  { field: 'tasking.comments_of_apso', header: 'APSO Comments' },
+  { field: 'tasking.task_description', header: 'Task Description' }
+];
 
 downloadexcel() {
   let data = document.getElementById('xlseExport');
@@ -1638,95 +1635,95 @@ status = this.taskForm.value.status;
 // }
 
   tasking_chart=[];
-  getTaskingChart(){
+  // getTaskingChart(){
 
-    if(this.token_detail.process_id==3){
-      this.api
-      .postAPI(environment.API_URL + "transaction/taskingchart",{'created_by':this.token_detail.user_id})
-      .subscribe((res) => {
+  //   if(this.token_detail.process_id==3){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/taskingchart",{'created_by':this.token_detail.user_id})
+  //     .subscribe((res) => {
 
-        // this.dataSourceDel = new MatTableDataSource(res.data);
+  //       // this.dataSourceDel = new MatTableDataSource(res.data);
 
-        this.statusTasking = res.data;
+  //       this.statusTasking = res.data;
 
-        for (let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].tasking!=''){
-            this.tasking_chart.push({name:this.statusTasking[i].tasking__task_name})
-            this.api
-        .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__tasking__task_name + '&limit_start=0&limit_end=6')
-        .subscribe((res) => {
-          this.dataSourcelist = new MatTableDataSource(res.data);
+  //       for (let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].tasking!=''){
+  //           this.tasking_chart.push({name:this.statusTasking[i].tasking__task_name})
+  //           this.api
+  //       .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__tasking__task_name + '&limit_start=0&limit_end=6')
+  //       .subscribe((res) => {
+  //         this.dataSourcelist = new MatTableDataSource(res.data);
 
-            var statusTaskingList = res.data;
-            this.tasking_chart[i].data=[];
-            for (let k=0;k<statusTaskingList.length;k++){
-              if(statusTaskingList[k].title){
-                if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
-                  {
-                    this.tasking_chart[i].data.push({x:
-                    statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
+  //           var statusTaskingList = res.data;
+  //           this.tasking_chart[i].data=[];
+  //           for (let k=0;k<statusTaskingList.length;k++){
+  //             if(statusTaskingList[k].title){
+  //               if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
+  //                 {
+  //                   this.tasking_chart[i].data.push({x:
+  //                   statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
 
-                  }
+  //                 }
 
-                }
-              }
-
-
-            }
-
-        });
-
-          }
-        }
-
-      });
+  //               }
+  //             }
 
 
-    }
-    else{
-      this.api
-    .postAPI(environment.API_URL + "transaction/taskingchart",{})
-    .subscribe((res) => {
+  //           }
 
-      // this.dataSourceDel = new MatTableDataSource(res.data);
+  //       });
 
-      this.statusTasking = res.data;
-      for (let i=0;i<this.statusTasking.length;i++){
-        if(this.statusTasking[i].tasking!=''){
-          this.tasking_chart.push({name:this.statusTasking[i].tasking__task_number_dee})
-          this.api
-      .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__task_number_dee + '&limit_start=0&limit_end=6')
-      .subscribe((res) => {
-        this.dataSourcelist = new MatTableDataSource(res.data);
-          var statusTaskingList = res.data;
+  //         }
+  //       }
 
-          this.tasking_chart[i].data=[];
-          for (let k=0;k<statusTaskingList.length;k++){
-            if(statusTaskingList[k].title){
-              if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
-                {
-                  this.tasking_chart[i].data.push({x:
-                  statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
-
-                }
-
-              }
-            }
+  //     });
 
 
-          }
+  //   }
+  //   else{
+  //     this.api
+  //   .postAPI(environment.API_URL + "transaction/taskingchart",{})
+  //   .subscribe((res) => {
+
+  //     // this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //     this.statusTasking = res.data;
+  //     for (let i=0;i<this.statusTasking.length;i++){
+  //       if(this.statusTasking[i].tasking!=''){
+  //         this.tasking_chart.push({name:this.statusTasking[i].tasking__task_number_dee})
+  //         this.api
+  //     .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__task_number_dee + '&limit_start=0&limit_end=6')
+  //     .subscribe((res) => {
+  //       this.dataSourcelist = new MatTableDataSource(res.data);
+  //         var statusTaskingList = res.data;
+
+  //         this.tasking_chart[i].data=[];
+  //         for (let k=0;k<statusTaskingList.length;k++){
+  //           if(statusTaskingList[k].title){
+  //             if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
+  //               {
+  //                 this.tasking_chart[i].data.push({x:
+  //                 statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
+
+  //               }
+
+  //             }
+  //           }
 
 
-      });
+  //         }
 
-        }
-      }
 
-    });
-    //console.log('this.tasking_chartname',this.tasking_chart);
-    }
+  //     });
 
-  }
+  //       }
+  //     }
+
+  //   });
+  //   //console.log('this.tasking_chartname',this.tasking_chart);
+  //   }
+
+  // }
 
 
 token_detail:any;
@@ -1772,7 +1769,7 @@ ngOnInit(): void {
     this.getDashboardCount();
     // this.getMileStoneChart();
     this.getAccess();
-    this.getTaskingChart();
+    // this.getTaskingChart();
     this.getTaskingGroups();
     this.tasklist();
     this.getChart();
@@ -3223,15 +3220,34 @@ exportToExcel1() {
   const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.approveTask);
   const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
   const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  this.saveAsExcelFile(excelBuffer, 'task_data');
+  // this.saveAsExcelFile(excelBuffer, 'task_data');
 }
 
 
-saveAsExcelFile(buffer: any, fileName: string): void {
 
-  const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
-  saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
-}
+  saveAsExcelFile() {
+    let data = document.getElementById('xlseExport');
+    if (!data) {
+      console.error('Table element not found.');
+      return;
+    }
+
+    // Create a worksheet from the table
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    // Create a new workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
+
+    // Write the workbook to a file with .xlsx extension
+    XLSX.writeFile(wb, this.fileName);
+    this.exportData = this.approveTask
+    this.visible = false;
+
+  }
+
 submitToExcel(){
   
   this.visibleExcel=true;
@@ -3241,7 +3257,7 @@ submitToExcel(){
     this.exportData=this.filterData;
   }
   else{
-    this.exportData=this.dataSourcelist.data
+    this.exportData=this.approveTask
   }
 }
 submitHeaderForm() {
