@@ -172,7 +172,10 @@
 
       </div>
       <div id="chart4">
-        <apx-chart [series]="chartOptions11.series" [chart]="chartOptions11.chart" [xaxis]="chartOptions11.xaxis">
+        <apx-chart [series]="chartOptions11.series"
+         [chart]="chartOptions11.chart"
+          [xaxis]="chartOptions11.xaxis" 
+          [fill]="chartOptions11.fill">
         </apx-chart>
       </div>
     </div>
@@ -447,9 +450,14 @@
     </div>
 
     <div id="chart9">
-      <apx-chart [series]="chartOptions22.series" [chart]="chartOptions22.chart" [xaxis]="chartOptions22.xaxis"
-        [yaxis]="chartOptions22.yaxis" [title]="chartOptions22.title" [plotOptions]="chartOptions22.plotOptions"
-        [dataLabels]="chartOptions22.dataLabels"></apx-chart>
+      <apx-chart [series]="chartOptions22.series" 
+      [chart]="chartOptions22.chart"
+       [xaxis]="chartOptions22.xaxis"
+        [yaxis]="chartOptions22.yaxis"
+         [title]="chartOptions22.title"
+          [plotOptions]="chartOptions22.plotOptions"
+        [dataLabels]="chartOptions22.dataLabels"
+         [fill]="chartOptions22.fill"></apx-chart>
     </div>
   </div>
 </div>
@@ -927,12 +935,31 @@
 <div class="row g-5 map-card g-xl-8">
   <div class="col-md-12">
     <div class="card p-0" style="margin-bottom: 60px;">
-      <div class="card-header mb-5">
+      <div class="card-header mb-5 d-flex justify-content-between align-items-center">
+
         <h3 class="card-title align-items-start flex-column pt-10">
           <span class="fw-bold mb-3"> Monitor task progress </span>
+          
         </h3>
+        <div class="text-end">
+          <button (click)="submitToExcel()"class="btn btn-light btn-round-sm m-2">
+            <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
+            </button>
+            </div>
       </div>
-      
+    
+
+    <!-- <div class="card-header mb-5 d-flex justify-content-between align-items-center">
+      <h3 class="card-title flex-column">
+        <span class="fw-bold mb-3">Monitor task progress</span>
+      </h3>
+      <div>
+        <button (click)="submitToExcel()" class="btn btn-light btn-round-sm m-2">
+          <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
+        </button>
+      </div>
+    </div> -->
+    
         <ng-container *ngIf="approveTask.length !=0" >
       
           <app-grid-table 
@@ -944,6 +971,8 @@
             (paginationEvent)="handlePagination($event)"
             (viewEvent)="openEdit($event)"
             [isView]="true"
+            (exportEvent)="exportToExcel1()" 
+            [isExport]="true"
             >
           </app-grid-table>
         </ng-container>
@@ -952,4 +981,58 @@
   </div>
 
 </div>
+<p-dialog  header="Preview Sheet" [modal]="true" [(visible)]="visibleExcel" [style]="{ width: '90vw' }">
+  <ng-container *ngIf="!isFormHide" class="row ">
 
+		<form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
+			<div class="row my-5">
+				<div class="col-md-12">
+					<mat-form-field appearance="outline">
+						<mat-label>Select Header(s)</mat-label>
+						<mat-select formControlName="header" multiple>
+						  <mat-option  (click)="selectAll()">Select All</mat-option>
+						  <mat-option *ngFor="let option of expDataHeader" [value]="option">{{option.header}}</mat-option>
+						</mat-select>
+					  </mat-form-field>
+				</div>
+	
+				<div class="col-md-12">
+					<mat-form-field appearance="outline" hintLabel="Max 10 characters">
+						<mat-label>Enter File Name</mat-label>
+						<input matInput formControlName="fileName" maxlength="10" placeholder="File Name"
+							(input)="onInput($event)" />
+						<!-- <mat-hint align="end">{{value().length}}/10</mat-hint> -->
+            <mat-hint align="end">{{value.length}}/10</mat-hint>
+
+					</mat-form-field>
+				</div>
+	
+			</div>
+		
+			
+			<div class="row">
+
+				<button   class="btn btn-primary btn-lg btn-block" type="submit"
+					[disabled]="!xlxsForm.valid">Submit</button>
+		
+			</div>
+
+
+		</form>
+	</ng-container>
+
+<div class="row my-5">
+	<div class="col-4 float-end">
+		<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="downloadexcel()"><i class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
+	</div>
+
+</div>
+
+
+
+	<ng-container *ngIf=" isFormHide">
+		<app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData"
+			[ispaniNater]="false" [isAction]="false">
+		</app-grid-table>
+	</ng-container>
+</p-dialog>

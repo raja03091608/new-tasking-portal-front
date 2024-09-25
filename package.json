@@ -41,6 +41,7 @@
     "datatables.net": "^2.1.4",
     "datatables.net-dt": "^2.1.4",
     "date-fns": "^2.29.3",
+    "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
     "gantt-schedule-timeline-calendar": "^3.33.13",
     "jquery": "^3.6.3",

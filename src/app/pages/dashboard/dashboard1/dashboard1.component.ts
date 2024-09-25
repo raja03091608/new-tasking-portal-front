@@ -23,6 +23,9 @@ import { ConfirmationDialogComponent } from "../../../confirmation-dialog/confir
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import 'datatables.net'
 //import { NgZone } from '@angular/core'
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 
 import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
 import moment from 'moment';
@@ -56,6 +59,7 @@ declare function openModal(selector): any;
 //   };
 
 export type chartOptionsGroup = {
+  
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
@@ -74,6 +78,8 @@ export type chartOptionsGroup = {
     title: ApexTitleSubtitle;
     dataLabels: ApexDataLabels;
     plotOptions: ApexPlotOptions;
+    colors: string[];
+    fill: ApexFill;
   };
   
   
@@ -131,6 +137,8 @@ export type ChartOptions1 = {
 	dataLabels: ApexDataLabels;
 	title: ApexTitleSubtitle;
 	plotOptions: ApexPlotOptions;
+  fill: ApexFill;
+  
   };
 
   export type ChartOptions12 = {
@@ -173,7 +181,13 @@ export type ChartOptions1 = {
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class Dashboard1Component implements OnInit,OnDestroy {
-  
+   EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+   exportDialog: boolean = false;
+   dropdownOptions: any[] = [];
+   selectedOption: any;
+   inputValue: string = '';
+
   apioverdata1=[] as any;
   apigroupdata1=[]as any;
   apidistributiondata1=[] as any;
@@ -184,6 +198,7 @@ export class Dashboard1Component implements OnInit,OnDestroy {
   visible2:boolean=false;
   visible3:boolean=false;
   visible4:boolean=false;
+  visibleExcel:boolean=false;
   yearlytaskdata=[] as any;
   overdata=[] as any;
   Pendingdata=[] as any;
@@ -193,12 +208,63 @@ export class Dashboard1Component implements OnInit,OnDestroy {
   newTableDataSource = new MatTableDataSource([]);
 
 
+
 	projects: any[] = [
 		{ name: 'Navy3005', code: '30/5/2024', status: 'INITIATION STARTED' },
 		{ name: 'PT-0107', code: '1/7/2024', status: 'INITIATION STARTED' }
 	  ];
   currentYear = new Date().getFullYear();
   currentDate1 = new Date();
+xlxsForm: FormGroup;
+selectedHeader=[]
+isFormHide=false;
+exportData:any;
+filterData:any;
+fileName:string;
+expDataHeader=[
+  { field: 'task_number_dee', header: 'Task Number (DEE)' },
+  { field: 'task_name', header: 'Task Name' },
+  { field: 'cost_implication', header: 'Cost Implication' },
+  { field: 'sponsoring_directorate', header: 'Sponsoring Directorate' },
+  { field: 'time_frame_for_completion_month', header: 'Time Frame (Months)' },
+  { field: 'comments_of_wesee', header: 'Wesee Comments' },
+  { field: 'comments_of_dee', header: 'DEE Comments' },
+  { field: 'comments_of_apso', header: 'APSO Comments' },
+  { field: 'approval_of_com', header: 'COM Approval' },
+  { field: 'tasking_status', header: 'Tasking Status' },
+  { field: 'legacy_data', header: 'Legacy Data' },
+  { field: 'created_by.first_name', header: 'Created By' },
+  { field: 'created_on', header: 'Created On' },
+  { field: 'modified_on', header: 'Modified On' }
+]
+
+downloadexcel() {
+  let data = document.getElementById('xlseExport');
+  if (!data) {
+    console.error('Table element not found.');
+    return;
+  }
+
+  // Create a worksheet from the table
+  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+  // Create a new workbook
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+  // Append the worksheet to the workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
+
+  // Write the workbook to a file with .xlsx extension
+  XLSX.writeFile(wb, this.fileName);
+  this.exportData=this.dataSourcelist.data
+  this.visibleExcel=false;
+  
+}
+protected onInput(event: Event) {
+  // this.value.((event.target as HTMLInputElement).value);
+  this.value = (event.target as HTMLInputElement).value;
+
+}
 
   displayedColumns: string[] = [
 		"task_number_dee",
@@ -397,7 +463,13 @@ allocateForm:FormGroup;
 
   {
 
+    
+
     this.token_details=this.api.decryptData(localStorage.getItem('token-detail'));
+    this.xlxsForm = new FormGroup({
+      header: new FormControl([]),
+      fileName: new FormControl(''),
+    })
 
     this.allocateForm = new FormGroup({
       id: new FormControl(""),
@@ -425,6 +497,7 @@ allocateForm:FormGroup;
     this.sub = this.route.data
     .subscribe((v:any) => {
     this.username= v.some_data});
+    
 
 
     var updateChart = this.chartOptions = {
@@ -801,59 +874,86 @@ var updateChartNew = this.chartOptions3 = {
   }, 1500);
 
 
-   this.chartOptions11 = {
-	series: [
-        {
-          name: 'task',
-          data: [30,  49, 60, 70, 91, ]
-        }
-      ],
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      xaxis: {
-        categories: ['2021', '2022', '2023', '2024', '2025', ]
+  
+  this.chartOptions11 = {
+    series: [
+      {
+        name: 'task',
+        data: [30, 49, 60, 70, 91]
       }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+        colors: {
+          ranges: [
+            {
+              from: 0,
+              to: 100, // Adjust the range as per your data
+              color: '#FFA500' // Orange color
+            }
+          ]
+        }
+      }
+    },
+    xaxis: {
+      categories: ['2021', '2022', '2023', '2024', '2025']
+    }
+  };
+  
 
-    };
 
-    this.chartOptions22 = {
-      series: [
-        {
-          name: "Number of Extended Deadlines",
-          data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
-        }
-      ],
-      chart: {
-        type: "bar",
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: ["CMS", "CSI", "SCS"], // Group names
-        title: {
-          text: "WESEE GROUP"
-        }
-      },
-      yaxis: {
-        title: {
-          text: "Number of Extended Deadlines"
-        }
-      },
- title: {
-        text: "Tasks with Extended Deadlines by Group",
-        align: "center"
-      }
-    }
+this.chartOptions22 = {
+  series: [
+    {
+      name: "Number of Extended Deadlines",
+      data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
+    }
+  ],
+  chart: {
+    type: "bar",
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: "55%",
+      colors: {
+        ranges: [
+          {
+            from: 0,
+            to: 1000, // Range large enough to cover all values
+            color: '#FFA500' // Orange color
+          }
+        ]
+      }
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ["CMS", "CSI", "SCS"], // Group names
+    title: {
+      text: "WESEE GROUP"
+    }
+  },
+  yaxis: {
+    title: {
+      text: "Number of Extended Deadlines"
+    }
+  },
+  title: {
+    text: "Tasks with Extended Deadlines by Group",
+    align: "center"
+  }
+};
+
 
 	this.chartOptions12 = {
 		series: [50.9, 49.1],
@@ -1649,6 +1749,7 @@ getAccess() {
 
 
 ngOnInit(): void {
+  
 	this.getStatus();
    this.getyear() ;
    this.getoverd();
@@ -2720,7 +2821,7 @@ getyear() {
       console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
     });
 }
-updateChartOptions(data:any) {
+updateChartOptions(data: any) {
   const years = this.apiyearlytaskdata1.map(item => item.year.toString());
   const taskCounts = this.apiyearlytaskdata1.map(item => item.count);
 
@@ -2737,9 +2838,15 @@ updateChartOptions(data:any) {
     },
     xaxis: {
       categories: years
+    },
+    fill: {
+      colors: ['#442944']  // Setting the bar color to yellow
     }
   };
 }
+
+
+
 
 
 // 3rdchartapi
@@ -2782,7 +2889,7 @@ updateChartOptions(data:any) {
         }
       },
       fill: {
-        colors: ['#2196f3'],  
+        colors: ['#008000'],  
       },
       title: {
         text: 'Overdue Tasks Summary by Group',
@@ -2945,8 +3052,6 @@ getdistri() {
     console.log('apidistributiondata', this.apidistributiondata1);
   });
 }
-
-
 updated12(data: any) { 
   const completedCount = data.completed.count;
   const inProgressCount = data.in_progress.count;
@@ -2957,7 +3062,7 @@ updated12(data: any) {
       height: 350,
     },
     labels: ['IN PROGRESS', 'COMPLETED'],
-    colors: ["#adff2f" ,"#ff0000ad"], // Green for IN PROGRESS, Yellow for COMPLETED
+    colors: ["#ffff00" ,"#008000"], // Green for IN PROGRESS, Yellow for COMPLETED
     legend: {
       position: 'right',
       horizontalAlign: 'center'
@@ -3007,7 +3112,7 @@ updated22(data: any) {
     extensionCounts.push(item.extension_count);
   });
 
-  // Update the chart options with the processed data
+  
   this.chartOptions22 = {
     series: [
       {
@@ -3030,6 +3135,7 @@ updated22(data: any) {
     },
     xaxis: {
       categories: groupNames,
+      
       title: {
         text: 'WESEE GROUP'
       }
@@ -3038,32 +3144,36 @@ updated22(data: any) {
       title: {
         text: 'Number of Extended Deadlines'
       }
+      
+    },
+    fill: {
+      colors: ['#ffff00'],  
     },
     title: {
       text: 'Tasks with Extended Deadlines by Group',
       align: 'center'
     }
   };
+  
 }
 
 
 
 
-// getStatusTaskingNew() {
-//   this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
-//     .subscribe((res: any) => {
-//       this.statusTaskingNew = res.data;
-//       this.tabledata(this.statusTaskingNew);
-//       console.log('statusTaskingNew', this.statusTaskingNew);
-//     });
-//   }
 
-//     tabledata(data:any){
+getStatusTaskingNew() {
+  this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+    .subscribe((res: any) => {
+      this.statusTaskingNew = res.data;
+      this.tabledata(this.statusTaskingNew);
+      console.log('statusTaskingNew', this.statusTaskingNew);
+    });
+  }
 
-//     }
+    tabledata(data:any){
 
-
-approveTask:any
+    }
+approveTask=[] as any
 getNewTaskingStatus() {
   this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
     .subscribe((res: any) => {
@@ -3109,5 +3219,48 @@ gridColum = [
 
 ]
 
+exportToExcel1() {
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.approveTask);
+  const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  this.saveAsExcelFile(excelBuffer, 'task_data');
+}
+
+
+saveAsExcelFile(buffer: any, fileName: string): void {
+
+  const data: Blob = new Blob([buffer], { type: this.EXCEL_TYPE });
+  saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
+}
+submitToExcel(){
+  this.visibleExcel=true;
+  this.isFormHide=false
+  
+  if(this.filterData){
+    this.exportData=this.filterData;
   }
+  else{
+    this.exportData=this.dataSourcelist.data
+  }
+}
+
+
+
+
+submitHeaderForm() {
+  this.isFormHide=true
+    // Extract form values
+    this.selectedHeader = this.xlxsForm.get('header')?.value || [];
+    this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
+    this.xlxsForm.reset()
+    console.log(this.selectedHeader);
+  }
+  selectAll() {
+    const allHeaders = this.expDataHeader.map(option => option);
+    this.xlxsForm.get('header')?.setValue(allHeaders);
+  }
+
+  
+
+}
 

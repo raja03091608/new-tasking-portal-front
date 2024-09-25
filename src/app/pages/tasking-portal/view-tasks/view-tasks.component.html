@@ -23,11 +23,18 @@
 					<div class="card mt-5">
 						<ng-container *ngIf="dataSourcelist.data.length != 0">
 
-							<app-grid-table [gridColumns]="gridColumns" [gridData]="dataSourcelist.data"
-								[ispaniNater]="true" [isAction]="true" (filterEvent)="handleFilter($event)"
-								(paginationEvent)="handlePagination($event)" (statusEvent)="openCurrentStatus($event)"
-								(exportEvent)="opentask($event)" (downloadEvent)="UploadReceipt($event)"
-								(completedEvent)="completedtask($event)" [isExport]="true" [isStatus]="true"
+							<app-grid-table [gridColumns]="gridColumns"
+							 [gridData]="dataSourcelist.data"
+								[ispaniNater]="true"
+								 [isAction]="true" 
+								 (filterEvent)="handleFilter($event)"
+								(paginationEvent)="handlePagination($event)" 
+								(statusEvent)="openCurrentStatus($event)"
+								(exportEvent)="opentask($event)" 
+								(downloadEvent)="UploadReceipt($event)"
+								(completedEvent)="completedtask($event)"
+								 [isExport]="true"
+								  [isStatus]="true"
 								[isDownload]="true" [isCompleted]="true">
 							</app-grid-table>
 						</ng-container>
