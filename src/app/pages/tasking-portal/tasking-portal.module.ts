@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { RouterModule } from '@angular/router';
@@ -24,6 +24,7 @@ import { TimelineModule } from 'primeng/timeline';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { FileUploadModule } from 'primeng/fileupload';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -32,6 +33,7 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
     ViewStatusComponent,
     TaskListComponent,
     ArchiveTaskComponent,
+    
 
   ],
   imports: [
@@ -53,6 +55,7 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
     NgApexchartsModule,
     AngularEditorModule,
     TableModule,
+    FileUploadModule, 
     RouterModule.forChild([
       {
         path: 'new-task',
@@ -77,4 +80,5 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
     ])
   ]
 })
+
 export class TaskingPortalModule { }

@@ -961,7 +961,6 @@
     </div> -->
     
         <ng-container *ngIf="approveTask.length !=0" >
-      
           <app-grid-table 
             [gridColumns]="gridColum" 
             [gridData]="approveTask"  
@@ -972,8 +971,7 @@
             (viewEvent)="openEdit($event)"
             [isView]="true"
             (exportEvent)="exportToExcel1()" 
-            [isExport]="true"
-            >
+            [isExport]="true">
           </app-grid-table>
         </ng-container>
       
@@ -1025,11 +1023,7 @@
 	<div class="col-4 float-end">
 		<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="downloadexcel()"><i class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
 	</div>
-
 </div>
-
-
-
 	<ng-container *ngIf=" isFormHide">
 		<app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData"
 			[ispaniNater]="false" [isAction]="false">

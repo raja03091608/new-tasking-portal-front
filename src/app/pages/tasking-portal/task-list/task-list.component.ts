@@ -104,7 +104,7 @@ export class TaskListComponent implements OnInit {
   importname: any;
 
   //comments_of_wesee: any;
-  minitingList: any;
+  minitingList=[];
   directorateList: any;
   userroleList: any;
   userList: any;
@@ -913,6 +913,7 @@ export class TaskListComponent implements OnInit {
 
   onView(country) {
     // this.commentEditor.editable=false;
+    this.id = country.id;
     this.apiCall();
     this.getComments();
     this.getTaskingg();
@@ -920,6 +921,7 @@ export class TaskListComponent implements OnInit {
     this.getStatusTimeline();
     this.taskListRoot = country;
     this.formGroup.get('taskId').setValue(this.taskListRoot.task_name);
+    
     this.initiator_active = '';
     this.apso_active = '';
     this.dgwesee_active = '';
@@ -935,7 +937,7 @@ export class TaskListComponent implements OnInit {
     // var element = <HTMLInputElement> document.getElementById("exampleCheck1");
     console.log('tr', country)
     this.list = country;
-    this.id = country.id;
+    
     this.getComments();
     this.getMiniting();
     // this.listdee=country.DEE_recommender
@@ -1838,7 +1840,7 @@ export class TaskListComponent implements OnInit {
   }
 
   openBackDropCustomClass(content: TemplateRef<any>) {
-    this.modalService.open(content, { size: 'lg' });
+    this.modalService.open(content, { size: 'xl' });
     this.messageService.clear('c');
   }
 
@@ -1886,7 +1888,7 @@ export class TaskListComponent implements OnInit {
   }
   selectedProcess: string;
   onSectionChange(event: any) {
-    this.selectedProcess = event.target.value;
+    this.selectedProcess = event.value;
     this.api.getAPI(environment.API_URL + `access/access_user_roles?process_id=${this.selectedProcess}`).subscribe(res => {
       this.userroleList = res.data;
 
@@ -1895,7 +1897,7 @@ export class TaskListComponent implements OnInit {
   directList: any;
   onSelectChangeRole(event: any) {
 
-    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=${this.selectedProcess}&userrolemapping__user_role=${event.target.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=${this.selectedProcess}&userrolemapping__user_role=${event.value}`).subscribe(res => {
       this.userList = res.data;
 
     })
@@ -1905,9 +1907,9 @@ export class TaskListComponent implements OnInit {
   userListTo: any;
   directRecomender: any
   onSelectChangeRoleTo(event: any) {
-    const selectedUserRole = event.target.value;
-    this.directRecomender = event.target.value
-    if (selectedUserRole === "18") {
+    const selectedUserRole = event.value;
+    this.directRecomender = event.value
+    if (selectedUserRole === 18) {
       this.api.getAPI(environment.API_URL + `master/department`).subscribe(res => {
         this.directList = res.data;
         console.log(this.directList)
@@ -1920,7 +1922,7 @@ export class TaskListComponent implements OnInit {
     }
   }
   onSelectDirectrate(event: any) {
-    this.api.getAPI(environment.API_URL + `api/auth/users?department_id=${event.target.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL + `api/auth/users?department_id=${event.value}`).subscribe(res => {
       this.userListTo = res.data;
 
     })
@@ -1948,16 +1950,24 @@ export class TaskListComponent implements OnInit {
   lastStatusData:any;
   getStatusTimeline() {
     this.roles = [];
-    let temp = []
-    this.api.getAPI(environment.API_URL + `transaction/process-flows/details/?tasking_id=${this.id}`).subscribe(res => {
-      temp = res
-      this.roles.push(temp[0]);
-      this.routeList = res
-      this.lastStatusData= res[res.length-1]?.sequence;
-      console.log(this.lastStatusData,"fgiopodyuiotguisiagfuwdiubfsoudnoisdhofdhiods")
-      // temp =this.routeList.splice(0,1) // Reverse the response
+    this.routeList = [];
+    let temp = [];
+    
+    this.api.getAPI(environment.API_URL + `transaction/process-flows/details/?tasking_id=${this.id}`).subscribe({
+      next: (res) => {
+        temp = res;
+        this.roles.push(temp[0]);
+        this.routeList = res;
+        this.lastStatusData = res[res.length - 1]?.sequence;
+      },
+      error: (err) => {
+        // Handle the error response properly here
+        console.error('Error fetching data:', err);
+        // Optionally, you can display an error message or log the error
+      }
     });
   }
+  
 
   timelineStepName(step: any): string {
     const roleName = step?.next_user?.roles[0]?.user_role?.name;
@@ -1970,6 +1980,7 @@ export class TaskListComponent implements OnInit {
 
 
   getMiniting() {
+    this.minitingList=[]
     this.api.getAPI(environment.API_URL + `transaction/comments?tasking_id=${this.id}`).subscribe(res => {
       this.minitingList = res.data;
       console.log(res, "miniting sheet");

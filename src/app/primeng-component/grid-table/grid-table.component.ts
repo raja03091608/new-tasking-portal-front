@@ -1,4 +1,5 @@
 
+import { NgIf } from '@angular/common';
 import {
   Component,
   Input,
@@ -18,11 +19,15 @@ import { Table } from 'primeng/table';
   styleUrl: './grid-table.component.scss'
 })
 export class GridTableComponent implements OnInit {
+
+    @Input() isupload:boolean;
     @Input() isPermanentDelete: boolean;
     @Input() isRestore: boolean;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
+  @Input() isStatusAdd: boolean;
+  @Input() isArchiveTask: boolean;
   @Input() isAction: boolean;
   @Input() isFormEditable: boolean;
   @Input() isDeletable: boolean;
@@ -41,18 +46,21 @@ export class GridTableComponent implements OnInit {
   @Output() exportEvent = new EventEmitter<any>();
   @Output() downloadEvent = new EventEmitter<any>();
   @Output() statusEvent = new EventEmitter<any>();
+  @Output() statusEventAdd = new EventEmitter<any>();
   @Output() completedEvent = new EventEmitter<any>();
   @Output() restoreEvent = new EventEmitter<any>();
   @Output() permanentDeleteEvent = new EventEmitter<any>();
+  @Output() uploadEvent = new EventEmitter<any>();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
-
+  @Output() archivetaskEvent = new EventEmitter<any>();
   newRowData: any = {}; // Object to store data for a new row
   currentPage: number = 1;
   rowsPerPage: number = 10;
   filteredData: any[];  // New property to store filtered data
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
+  processId=localStorage.getItem('process_id')
 
 
   resolveNestedField(obj: any, path: string): any {
@@ -157,15 +165,12 @@ export class GridTableComponent implements OnInit {
 
  
 
+  
  
 
- 
-  onPermanentDelete(item: any) {
-    this.permanentDeleteEvent.emit(item);
-    
-  }
   ngOnInit(): void {
     // this.isRestore = true;
+
     
     
       this.filteredData = this.gridData;
@@ -327,6 +332,18 @@ export class GridTableComponent implements OnInit {
   onRestore(rowData: any): void {
     // Handle the restore action here
     console.log('Restoring:', rowData);
+  }
+  uploadData(rowData:any):boolean {
+    if(!rowData?.legacy_attachment && rowData?.legacy_data =='Yes' && this.processId=='1')
+        { return true} return false
+    
+
+  }
+  downloadData(rowData:any):boolean {
+    if(rowData?.legacy_attachment && rowData?.legacy_data =='Yes')
+        { return true} return false
+    
+
   }
 }
 

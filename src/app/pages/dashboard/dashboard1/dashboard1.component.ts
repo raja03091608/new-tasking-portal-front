@@ -3233,6 +3233,7 @@ saveAsExcelFile(buffer: any, fileName: string): void {
   saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
 }
 submitToExcel(){
+  
   this.visibleExcel=true;
   this.isFormHide=false
   
@@ -3243,10 +3244,6 @@ submitToExcel(){
     this.exportData=this.dataSourcelist.data
   }
 }
-
-
-
-
 submitHeaderForm() {
   this.isFormHide=true
     // Extract form values
