@@ -18,6 +18,7 @@ import { any } from "@amcharts/amcharts5/.internal/core/util/Array";
 import { Table } from "primeng/table";
 import { sequence } from "@angular/animations";
 import { ConfirmationService, MessageService } from "primeng/api";
+import { MatRadioChange } from "@angular/material/radio";
 
 
 
@@ -270,6 +271,8 @@ export class TaskListComponent implements OnInit {
       id: new FormControl(""),
       cost_implication: new FormControl(""),
       comments_of_wesee: new FormControl("", [Validators.required]),
+      comments_of_tasking_group: new FormControl("", [Validators.required]),
+
       time_frame_for_completion_days: new FormControl(""),
       time_frame_for_completion_month: new FormControl(""),
       file5: new FormControl(""),
@@ -458,7 +461,7 @@ export class TaskListComponent implements OnInit {
   randNumber = '';
   ngOnInit(): void {
     this.formInit();
-    this.getDirectorate();
+    this.getUser();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     console.log('token_api', this.token_detail)
     this.getTasking();
@@ -561,6 +564,7 @@ export class TaskListComponent implements OnInit {
     return true;
   }
   role: any;
+  releDetaile:any
   onEditRole(rowData) {
 
     this.taskForm.get('sdForm')?.disable();
@@ -572,33 +576,10 @@ export class TaskListComponent implements OnInit {
 
 
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
+      this.releDetaile=res
       this.role = res.role;
 
-      // switch(role) {
-      //     case 'Initiator':
-      //       this.taskForm.get('sdForm')?.enable();
-      //       break;
-      //     case 'APSO Recommender':
-      //       this.taskForm.get('apsoForm')?.enable();
-      //       break;
-      //     case 'Wesee Recommender':
-      //       this.taskForm.get('weseeForm')?.enable();
-      //       break;
-      //     case 'DWE Recommender':
-      //       this.taskForm.get('deeForm')?.enable();
-      //       break;
-      //     case 'Dee Recommender':
-      //       this.taskForm.get('deeForm')?.enable();
-      //       break;
-      //     case 'ACom Recommender':
-      //       this.taskForm.get('acomForm')?.enable();
-      //       break;
-      //     case 'Recommender':
-      //       this.taskForm.get('comForm')?.enable();
-      //       break;
-      //     default:
-      //       console.log('No matching role to enable forms');
-      //   }
+
     })
 
   }
@@ -685,7 +666,7 @@ export class TaskListComponent implements OnInit {
         this.countryList1 = res.data;
         console.log('comments', res);
 
-        if (res.data[0].sponsoring_directorate && res.data[0].sponsoring_directorate.skip_apso == 1) {
+        if (res.data[0]?.sponsoring_directorate && res.data[0]?.sponsoring_directorate?.skip_apso == 1) {
           this.is_sponsoring_directorate = false
         }
         else {
@@ -704,6 +685,7 @@ export class TaskListComponent implements OnInit {
   signatureDataDee:any
   signatureDataAcom:any
   signatureDatacom:any
+  signatureDataTs:any
   signeture(countryList: any[], key: string): object | null {
     const index = countryList.findIndex(country => country[key] === 1);
     switch (key) {
@@ -712,6 +694,9 @@ export class TaskListComponent implements OnInit {
         return countryList[index];
       case 'APSO_recommender':
         this.signatureDataApso = countryList[index];
+        return countryList[index];
+      case 'TS_recommender':
+        this.signatureDataTs = countryList[index];
         return countryList[index];
       case 'WESEE_recommender':
         this.signatureDatawesee = countryList[index];
@@ -867,7 +852,7 @@ export class TaskListComponent implements OnInit {
     this.populate1(country);
     this.list = country;
     this.getComments();
-    this.getTaskingg();
+    // this.getTaskingg();
     this.getMiniting();
     this.getStatusTimeline();
     if (this.token_detail.role_center[0].user_role.code == 'Initiator') {
@@ -950,7 +935,7 @@ export class TaskListComponent implements OnInit {
     this.id = country.id;
     this.apiCall();
     this.getComments();
-    this.getTaskingg();
+    // this.getTaskingg();
     this.getMiniting();
     this.getStatusTimeline();
     this.taskListRoot = country;
@@ -1019,15 +1004,15 @@ export class TaskListComponent implements OnInit {
     });
   }
   taskingg: any;
-  getTaskingg() {
-    this.api
-      .getAPI(environment.API_URL + "transaction/allocate/status")
-      .subscribe((res) => {
-        this.taskingg = res.data;
+  // getTaskingg() {
+  //   this.api
+  //     .getAPI(environment.API_URL + "transaction/allocate/status")
+  //     .subscribe((res) => {
+  //       this.taskingg = res.data;
 
-        // this.logger.log('country', this.taskingg)
-      });
-  }
+  //       // this.logger.log('country', this.taskingg)
+  //     });
+  // }
   onSubmit() {
     this.showError = true;
     this.currentDate = new Date();
@@ -1421,9 +1406,9 @@ export class TaskListComponent implements OnInit {
 
       formData.append('time_frame_for_completion_days', this.taskForm.get('weseeForm').value.time_frame_for_completion_days);
       formData.append('cost_implication', this.taskForm.get('weseeForm').value.cost_implication);
-      formData.append('comments_of_wesee', this.taskForm.get('weseeForm').value.comments_of_wesee);
+      formData.append('comments_of_tasking_group', this.taskForm.get('weseeForm').value.comments_of_tasking_group);
       formData.append('time_frame_for_completion_month', this.taskForm.get('weseeForm').value.time_frame_for_completion_month);
-
+      formData.append('TS_recommender', "1");
 
       this.taskForm.value.comment_status = '4';
       this.taskForm.value.status = '1';
@@ -1858,14 +1843,16 @@ export class TaskListComponent implements OnInit {
   }
   taskListRoot: any;
   processList: any
-  userRoleList: any
+  userRoleListFrom: any
+  userRoleListTo: any
   formInit() {
     this.formGroup = this.fb.group({
       taskId: [{ value: '', disabled: true }],
       current_id: [''],
       next_user_id: [''],
       process: [''],
-
+      userTypeFrom: [],
+      userTypeTo: [],
     });
     this.minitingForm = this.fb.group({
       comment: [''],
@@ -1879,14 +1866,13 @@ export class TaskListComponent implements OnInit {
   }
 
   apiCall() {
-    this.api.getAPI(environment.API_URL + '/access/access_user_roles').subscribe((res) => {
-      this.userRoleList = res.data
+    this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
+      // this.userRoleListFrom= res.data
+      // this.userRoleListTo= res.data
+      this.userRoleListFrom = res.data.filter(role => role.id !== 18);
+      this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
 
     })
-    // this.api.getAPI(environment.API_URL +'/access/process' ).subscribe((res) => {
-    // this.processList = res.data
-
-    // });
 
   }
 
@@ -1914,49 +1900,59 @@ export class TaskListComponent implements OnInit {
 
   }
 
-  getDirectorate() {
-    this.api.getAPI(environment.API_URL + `access/process`).subscribe(res => {
-      this.directorateList = res.data;
-      console.log(res, "directorateList ");
+  getUser() {
+    this.api.getAPI(environment.API_URL + `access/access_user_roles?process_id=2`).subscribe(res => {
+      this.userroleList = res.data;
+
     })
   }
-  selectedProcess: string;
-  onSectionChange(event: any) {
-    this.selectedProcess = event.value;
-    this.api.getAPI(environment.API_URL + `access/access_user_roles?process_id=${this.selectedProcess}`).subscribe(res => {
-      this.userroleList = res.data;
+  isMainUser:boolean;
+  onUserTypeChange(event: MatRadioChange) {
+    this.isMainUser = event.value === 'main';
+    if (!this.isMainUser) {
+      this.api.getAPI(environment.API_URL + `master/department`).subscribe(res => {
+        this.directList = res.data;
+      
+      })
+    }
+  }
+  isMainUserTo:boolean;
+  onUserTypeChangeTo(event: MatRadioChange) {
+    this.isMainUserTo = event.value === 'main';
+    if (!this.isMainUserTo) {
+      this.api.getAPI(environment.API_URL + `master/department`).subscribe(res => {
+        this.directList = res.data;
+      
+      })
+    }
+  }
+  
+  onSelectChangeRoleFrom(event: any) {
+    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=18&department_id=${event.value}`).subscribe(res => {
+      this.userList = res.data;
 
     })
   }
   directList: any;
   onSelectChangeRole(event: any) {
 
-    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=${this.selectedProcess}&userrolemapping__user_role=${event.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=${event.value}`).subscribe(res => {
       this.userList = res.data;
-
     })
-
-
   }
   userListTo: any;
-  directRecomender: any
+  
   onSelectChangeRoleTo(event: any) {
     const selectedUserRole = event.value;
-    this.directRecomender = event.value
-    if (selectedUserRole === 18) {
-      this.api.getAPI(environment.API_URL + `master/department`).subscribe(res => {
-        this.directList = res.data;
-        console.log(this.directList)
-      })
-    } else {
-      this.api.getAPI(environment.API_URL + `api/auth/users?process_id=${this.selectedProcess}&userrolemapping__user_role=${selectedUserRole}`).subscribe(res => {
+    
+      this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=${selectedUserRole}`).subscribe(res => {
         this.userListTo = res.data;
 
       })
-    }
+    
   }
   onSelectDirectrate(event: any) {
-    this.api.getAPI(environment.API_URL + `api/auth/users?department_id=${event.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=18&department_id=${event.value}`).subscribe(res => {
       this.userListTo = res.data;
 
     })
@@ -1967,7 +1963,7 @@ export class TaskListComponent implements OnInit {
     const newComment = {
       tasking: this.id,
       id: '',
-      process: this.formGroup.get('process').value,
+      process: 2,
       current_id: this.formGroup.get('current_id').value,
       next_user_id: this.formGroup.get('next_user_id').value, //loginname
     };
@@ -2083,10 +2079,7 @@ export class TaskListComponent implements OnInit {
 
 
  
-  // onConfirm() {
-  //   this.messageService.clear('c');
 
-  // }
 
   onReject() {
     this.messageService.clear('c');

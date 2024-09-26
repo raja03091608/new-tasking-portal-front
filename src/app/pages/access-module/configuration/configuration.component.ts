@@ -262,8 +262,8 @@ applyFilter(event: Event) {
     gridColumns=[
       { field: 'user_role.name', header: ' USer Role', filter: true, filterMatchMode: 'contains' },
       { field: 'department.name', header: 'User Group', filter: true, filterMatchMode: 'contains' },
-      { field: 'level', header: 'Level', filter: true, filterMatchMode: 'contains' },
-      { field: 'department.status', header: 'Status', filter: true, filterMatchMode: 'contains' },
+      // { field: 'level', header: 'Level', filter: true, filterMatchMode: 'contains' },
+      // { field: 'department.status', header: 'Status', filter: true, filterMatchMode: 'contains' },
       // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
       ]
       exportData:any;

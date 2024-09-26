@@ -321,7 +321,7 @@ formInit(){
     }
 
 
-	 if(this.SDFORM==true)this.taskForm.get('sdForm').disable();
+	//  if(this.SDFORM==true)this.taskForm.get('sdForm').disable();
 
 	 if(this.api.userid.role_center[0].user_role.code!='APSO')this.taskForm.get('apsoForm').disable();
 	 if(this.api.userid.role_center[0].user_role.code!='WESEE')this.taskForm.get('weseeForm').disable();

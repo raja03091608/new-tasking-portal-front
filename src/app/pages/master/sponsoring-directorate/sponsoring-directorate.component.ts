@@ -273,7 +273,7 @@ export class SponsoringDirectorateComponent implements OnInit {
     { field: 'name', header: ' Name', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: 'Description', filter: true, filterMatchMode: 'contains' },
     { field: 'skip_apso', header: 'Skip Apso', filter: true, filterMatchMode: 'contains' },
-    { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    // { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
     // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
   ]
   exportData:any;

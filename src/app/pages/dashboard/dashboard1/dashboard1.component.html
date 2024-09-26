@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 
 <div class="row g-5 g-xl-8 justify-content-center">
-  <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' || token_detail.process_id==3">
+  <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'|| api.userid.role_center[0].user_role.code=='Recommender' || token_detail.process_id==3">
     <div class="col-md-3 card-container-c">
       <!--begin::Statistics Widget 5-->
       <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">
@@ -47,46 +47,23 @@
     </div>
   </ng-container>
 
-  <!-- <div class="col-md-3 gridbg3">
-      <a routerLink="/tasking-portal/archive-task" class="card bg-dark hoverable card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 150px;">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <span class="svg-icon svg-icon-white svg-icon-4x ms-n1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"/>
-                  <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"/>
-                  <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"/>
-                  <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"/>
-                  <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"/>
-                </svg>
-              </span>
-            </div>
-            <div class="col-md-8">
-              <h4 class="text-white" style="text-align: right;">Archive Task</h4>
-              <p class="fw-bold text-white count-value-text">{{archive_count?archive_count:0}}</p>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div> -->
- 
-    <div class="col-md-3 card-container-c">
-      <a routerLink="/tasking-portal/view-tasking-status"
-        class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
-        <div class="logo-content ">
-          <div class="border-rotation"></div>
-          <img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
-        </div>
-        <div class="card-content">
-          <h4 class="card-title">Total Approved Task</h4>
-          <p class="fw-bold text-black count-value-text">{{count?count:0}}</p>
-        </div>
-        <div class="footer-content">
-          <button class="btn-view">View</button>
-        </div>
-      </a>
-    </div>
+
+  <div class="col-md-3 card-container-c">
+    <a routerLink="/tasking-portal/view-tasking-status"
+      class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
+      <div class="logo-content ">
+        <div class="border-rotation"></div>
+        <img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
+      </div>
+      <div class="card-content">
+        <h4 class="card-title">Total Approved Task</h4>
+        <p class="fw-bold text-black count-value-text">{{count?count:0}}</p>
+      </div>
+      <div class="footer-content">
+        <button class="btn-view">View</button>
+      </div>
+    </a>
+  </div>
   <div class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/task-list" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
       style="height: 140px;">
@@ -103,7 +80,7 @@
       </div>
     </a>
   </div>
- 
+
   <div class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/archive-task" class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
       style="height: 140px;">
@@ -128,7 +105,7 @@
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
   <div class="col-md-6 mt-0">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header">
+      <div class="card-header mb-5">
         <h3 class="card-title align-items-start flex-column pt-5">
           <span class="fw-bold mb-3">Task Status Distribution</span>
         </h3>
@@ -145,7 +122,7 @@
 
   <div class="col-md-6 mt-0">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header">
+      <div class="card-header mb-5">
         <h3 class="card-title align-items-start flex-column pt-5">
           <span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
         </h3>
@@ -172,10 +149,8 @@
 
       </div>
       <div id="chart4">
-        <apx-chart [series]="chartOptions11.series"
-         [chart]="chartOptions11.chart"
-          [xaxis]="chartOptions11.xaxis" 
-          [fill]="chartOptions11.fill">
+        <apx-chart [series]="chartOptions11.series" [chart]="chartOptions11.chart" [xaxis]="chartOptions11.xaxis"
+          >
         </apx-chart>
       </div>
     </div>
@@ -450,14 +425,9 @@
     </div>
 
     <div id="chart9">
-      <apx-chart [series]="chartOptions22.series" 
-      [chart]="chartOptions22.chart"
-       [xaxis]="chartOptions22.xaxis"
-        [yaxis]="chartOptions22.yaxis"
-         [title]="chartOptions22.title"
-          [plotOptions]="chartOptions22.plotOptions"
-        [dataLabels]="chartOptions22.dataLabels"
-         [fill]="chartOptions22.fill"></apx-chart>
+      <apx-chart [series]="chartOptions22.series" [chart]="chartOptions22.chart" [xaxis]="chartOptions22.xaxis"
+        [yaxis]="chartOptions22.yaxis" [title]="chartOptions22.title" [plotOptions]="chartOptions22.plotOptions"
+        [dataLabels]="chartOptions22.dataLabels" [fill]="chartOptions22.fill"></apx-chart>
     </div>
   </div>
 </div>
@@ -577,7 +547,7 @@
             <div formGroupName="apsoForm">
               <div class="alert alert-dismissible alert-bg">
                 <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">APSO11</b></mat-label>
+                  <mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
                 </div>
                 <div class="mb-5 ">
                   <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
@@ -592,34 +562,40 @@
             </div>
 
             <div formGroupName="weseeForm">
-              <div style="text-align:center;">
-                <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
-                    Engineering Establishment)</b></mat-label>
-              </div>
-              <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
-                <form [formGroup]="this.allocateForm">
-                  <div class="col-md-6">
-                    <div class="matt-group matselect">
-                      <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
-                      <mat-form-field appearance="outline">
-                        <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups"
-                          [disabled]="token_details.process_id==1 || token_details.process_id==3">
+              <div class="alert alert-dismissible alert-bg">
+                <div class="sub-heading" style="text-align:center;">
+                  <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
+                </div>
+                
+                <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
+                  <form [formGroup]="this.allocateForm">
+                    <div class="col-md-6">
+                      <div class="matt-group matselect">
+                        <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+                        <mat-form-field appearance="outline">
+                          <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups"
+                            [disabled]="token_details.process_id==1 || token_details.process_id==3">
 
-                          <mat-option [value]="">Select Tasking Groups</mat-option>
-                          <mat-option *ngFor="let taskingGroup of taskingGroups"
-                            [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                            <mat-option [value]="">Select Tasking Groups</mat-option>
+                            <mat-option *ngFor="let taskingGroup of taskingGroups"
+                              [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
 
 
+                      </div>
                     </div>
-                  </div>
-                </form>
-              </ng-container>
+                  </form>
+                </ng-container>
+              </div>
+
 
               &nbsp;
               <div class="alert alert-dismissible alert-bg">
-
+                <div class="sub-heading" style="text-align:center;">
+                <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
+                  Engineering Establishment)</b></mat-label>
+              </div>
                 <div class="mb-5 ">
                   <div class="row">
                     <div class="col-md-4">
@@ -665,7 +641,13 @@
                 </div>
 
                 <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                  <div class="mb-5">
+                    <mat-label style="font-size:large;">Comments From Tasking Groups<b class="star">*</b></mat-label>
+
+                    <textarea rows="4" class="form-control" formControlName="comments_of_tasking_group"
+                      value="Test comments"></textarea>
+                  </div>
+                  <mat-label style="font-size:large;">Comments From DG WESEE<b class="star">*</b></mat-label>
 
                   <textarea rows="4" class="form-control" formControlName="comments_of_wesee"
                     value="Test comments"></textarea>
@@ -939,17 +921,17 @@
 
         <h3 class="card-title align-items-start flex-column pt-10">
           <span class="fw-bold mb-3"> Monitor task progress </span>
-          
+
         </h3>
         <div class="text-end">
-          <button (click)="submitToExcel()"class="btn btn-light btn-round-sm m-2">
+          <button (click)="submitToExcel()" class="btn btn-light btn-round-sm m-2">
             <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
-            </button>
-            </div>
+          </button>
+        </div>
       </div>
-    
 
-    <!-- <div class="card-header mb-5 d-flex justify-content-between align-items-center">
+
+      <!-- <div class="card-header mb-5 d-flex justify-content-between align-items-center">
       <h3 class="card-title flex-column">
         <span class="fw-bold mb-3">Monitor task progress</span>
       </h3>
@@ -959,73 +941,66 @@
         </button>
       </div>
     </div> -->
-    
-        <ng-container *ngIf="approveTask.length !=0" >
-          <app-grid-table 
-            [gridColumns]="gridColum" 
-            [gridData]="approveTask"  
-            [ispaniNater]="true"
-            [isAction]="true"
-            (filterEvent)="handleFilter($event)"
-            (paginationEvent)="handlePagination($event)"
-            (viewEvent)="openEdit($event)"
-            [isView]="true"
-            >
-          </app-grid-table>
-        </ng-container>
-      
+
+      <ng-container *ngIf="approveTask.length !=0">
+        <app-grid-table [gridColumns]="gridColum" [gridData]="approveTask" [ispaniNater]="true" [isAction]="true"
+          (filterEvent)="handleFilter($event)" (paginationEvent)="handlePagination($event)"
+          (viewEvent)="openEdit($event)" [isView]="true">
+        </app-grid-table>
+      </ng-container>
+
     </div>
   </div>
 
 </div>
-<p-dialog  header="Preview Sheet" [modal]="true" [(visible)]="visibleExcel" [style]="{ width: '90vw' }">
+<p-dialog header="Preview Sheet" [modal]="true" [(visible)]="visibleExcel" [style]="{ width: '90vw' }">
   <ng-container *ngIf="!isFormHide" class="row ">
 
-		<form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
-			<div class="row my-5">
-				<div class="col-md-12">
-					<mat-form-field appearance="outline">
-						<mat-label>Select Header(s)</mat-label>
-						<mat-select formControlName="header" multiple>
-						  <mat-option  (click)="selectAll()">Select All</mat-option>
-						  <mat-option *ngFor="let option of expDataHeader" [value]="option">{{option.header}}</mat-option>
-						</mat-select>
-					  </mat-form-field>
-				</div>
-	
-				<div class="col-md-12">
-					<mat-form-field appearance="outline" hintLabel="Max 10 characters">
-						<mat-label>Enter File Name</mat-label>
-						<input matInput formControlName="fileName" maxlength="10" placeholder="File Name"
-							(input)="onInput($event)" />
-						<!-- <mat-hint align="end">{{value().length}}/10</mat-hint> -->
+    <form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
+      <div class="row my-5">
+        <div class="col-md-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Header(s)</mat-label>
+            <mat-select formControlName="header" multiple>
+              <mat-option (click)="selectAll()">Select All</mat-option>
+              <mat-option *ngFor="let option of expDataHeader" [value]="option">{{option.header}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-12">
+          <mat-form-field appearance="outline" hintLabel="Max 10 characters">
+            <mat-label>Enter File Name</mat-label>
+            <input matInput formControlName="fileName" maxlength="10" placeholder="File Name"
+              (input)="onInput($event)" />
+            <!-- <mat-hint align="end">{{value().length}}/10</mat-hint> -->
             <mat-hint align="end">{{value.length}}/10</mat-hint>
 
-					</mat-form-field>
-				</div>
-	
-			</div>
-		
-			
-			<div class="row">
+          </mat-form-field>
+        </div>
 
-				<button   class="btn btn-primary btn-lg btn-block" type="submit"
-					[disabled]="!xlxsForm.valid">Submit</button>
-		
-			</div>
+      </div>
 
 
-		</form>
-	</ng-container>
+      <div class="row">
 
-<div class="row my-5">
-	<div class="col-4 float-end">
-		<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="saveAsExcelFile()"><i class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
-	</div>
-</div>
-	<ng-container *ngIf=" isFormHide">
-		<app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData"
-			[ispaniNater]="false" [isAction]="false">
-		</app-grid-table>
-	</ng-container>
+        <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!xlxsForm.valid">Submit</button>
+
+      </div>
+
+
+    </form>
+  </ng-container>
+
+  <div class="row my-5">
+    <div class="col-4 float-end">
+      <a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="saveAsExcelFile()"><i
+          class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
+    </div>
+  </div>
+  <ng-container *ngIf=" isFormHide">
+    <app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData" [ispaniNater]="false"
+      [isAction]="false">
+    </app-grid-table>
+  </ng-container>
 </p-dialog>

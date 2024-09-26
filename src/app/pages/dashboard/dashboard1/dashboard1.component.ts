@@ -872,188 +872,185 @@ var updateChartNew = this.chartOptions3 = {
 
 
   
-  this.chartOptions11 = {
-    series: [
-      {
-        name: 'task',
-        data: [30, 49, 60, 70, 91]
-      }
-    ],
-    chart: {
-      type: 'bar',
-      height: 350
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "55%",
-        colors: {
-          ranges: [
-            {
-              from: 0,
-              to: 100, // Adjust the range as per your data
-              color: '#FFA500' // Orange color
-            }
-          ]
-        }
-      }
-    },
-    xaxis: {
-      categories: ['2021', '2022', '2023', '2024', '2025']
-    }
-  };
+  // this.chartOptions11 = {
+  //   series: [
+  //     {
+  //       name: 'task',
+  //       data: [30, 49, 60, 70, 91]
+  //     }
+  //   ],
+  //   chart: {
+  //     type: 'bar',
+  //     height: 350
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       horizontal: false,
+  //       columnWidth: "55%",
+  //       colors: {
+  //         ranges: [
+  //           {
+  //             from: 0,
+  //             to: 100, // Adjust the range as per your data
+  //             color: '#FFA500' // Orange color
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   xaxis: {
+  //     categories: ['2021', '2022', '2023', '2024', '2025']
+  //   }
+  // };
   
 
 
-this.chartOptions22 = {
-  series: [
-    {
-      name: "Number of Extended Deadlines",
-      data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
-    }
-  ],
-  chart: {
-    type: "bar",
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: "55%",
-      colors: {
-        ranges: [
-          {
-            from: 0,
-            to: 1000, // Range large enough to cover all values
-            color: '#FFA500' // Orange color
-          }
-        ]
-      }
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  xaxis: {
-    categories: ["CMS", "CSI", "SCS"], // Group names
-    title: {
-      text: "WESEE GROUP"
-    }
-  },
-  yaxis: {
-    title: {
-      text: "Number of Extended Deadlines"
-    }
-  },
-  title: {
-    text: "Tasks with Extended Deadlines by Group",
-    align: "center"
-  }
-};
+// this.chartOptions22 = {
+//   series: [
+//     {
+//       name: "Number of Tasks with Extended Deadlines",
+//       data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
+//     }
+//   ],
+//   chart: {
+//     type: "bar",
+//     height: 350
+//   },
+//   plotOptions: {
+//     bar: {
+//       horizontal: false,
+//       columnWidth: "10%",
+//       colors: {
+//         ranges: [
+//           {
+//             from: 0,
+//             to: 1000, // Range large enough to cover all values
+//             color: '#FFA500' // Orange color
+//           }
+//         ]
+//       }
+//     }
+//   },
+//   dataLabels: {
+//     enabled: false
+//   },
+//   xaxis: {
+//     categories: ["CMS", "CSI", "SCS"], // Group names
+//     title: {
+//       text: "WESEE GROUP"
+//     }
+//   },
+//   yaxis: {
+//     title: {
+//       text: "Tasks with Extended Deadlines by Group"
+//     }
+//   },
+ 
+// };
 
 
-	this.chartOptions12 = {
-		series: [50.9, 49.1],
-		chart: {
-		  type: 'pie',
-		  height: 350,
+	// this.chartOptions12 = {
+	// 	series: [50.9, 49.1],
+	// 	chart: {
+	// 	  type: 'pie',
+	// 	  height: 350,
 
-		},
-		labels: ['IN PROGRESS', 'YES'],
+	// 	},
+	// 	labels: ['IN PROGRESS', 'YES'],
 
-		legend: {
-		  position: 'right',
-		  horizontalAlign: 'center'
-		},
-		dataLabels: {
-		  enabled: true,
-		   formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
-		},
-		responsive: [
-		  {
-			breakpoint: 480,
+	// 	legend: {
+	// 	  position: 'right',
+	// 	  horizontalAlign: 'center'
+	// 	},
+	// 	dataLabels: {
+	// 	  enabled: true,
+	// 	   formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
+	// 	},
+	// 	responsive: [
+	// 	  {
+	// 		breakpoint: 480,
 
-			options: {
-			  chart: {
-				width: 300
-			  },
-			  legend: {
-				position: 'bottom',
-				colors: ['#8AE234', '#FFA500'] ,
-			  }
-			}
-		  }
-		],
-		title: {
-		  text: 'Task Status Distribution',
-		  align: 'center'
-		}
-	  };
-	  this.chartOptions13 = {
-		series: [{
-			name: 'Number of Overdue Tasks',
-			// data: [1, 0.1, 1]
-			data: [1]
-		  }],
-		  chart: {
-			type: 'bar',
-			height: 450
-		  },
-		  plotOptions: {
-			bar: {
-			  horizontal: false,
-			  columnWidth: '35%',
-			},
-		  },
-		  xaxis: {
-			// categories: ['WESEE GROUP', 'CSI','CMS'],  // Group names
-			categories: ['CSI']
-		  },
-		  yaxis: {
-			title: {
-			  text: 'Number of Overdue Tasks'
-			}
-		  },
-		  fill: {
-			colors: ['#FF0000'],  // Set the bar color to red
-		  },
-		  title: {
-			text: 'Overdue Tasks Summary by Group',
-			align: 'center'
-		  }
-	  };
-	  this.chartOptions14 = {
-		series: [{
-			name: 'Number of Pending Tasks',
-			data: [0.2 ,0.5, 1, 0.7,0.5]
-		  }],
-		  chart: {
-			type: 'bar',
-			height: 450
-		  },
-		  plotOptions: {
-			bar: {
-			  horizontal: false,
-			  columnWidth: '15%',
-			},
-		  },
-		  xaxis: {
-			categories: ['CSI','CMS','CSC','ETG','SCS'],  // Group names
-			// categories: ['CSI']
-		  },
-		  yaxis: {
-			title: {
-			  text: 'Number of Pending Tasks'
-			}
-		  },
-		  fill: {
-			colors: ['#ffff00'],  // Set the bar color to red
-		  },
-		  title: {
-			text: 'Pending Tasks Summary by Group',
-			align: 'center'
-		  }
-	  };
+	// 		options: {
+	// 		  chart: {
+	// 			width: 300
+	// 		  },
+	// 		  legend: {
+	// 			position: 'bottom',
+	// 			colors: ['#8AE234', '#FFA500'] ,
+	// 		  }
+	// 		}
+	// 	  }
+	// 	],
+	// 	title: {
+	// 	  text: 'Task Status Distribution',
+	// 	  align: 'center'
+	// 	}
+	//   };
+	  // this.chartOptions13 = {
+		// series: [{
+		// 	name: 'Number of Overdue Tasks',
+		// 	// data: [1, 0.1, 1]
+		// 	data: [1]
+		//   }],
+		//   chart: {
+		// 	type: 'bar',
+		// 	height: 450
+		//   },
+		//   plotOptions: {
+		// 	bar: {
+		// 	  horizontal: false,
+		// 	  columnWidth: '35%',
+		// 	},
+		//   },
+		//   xaxis: {
+		// 	// categories: ['WESEE GROUP', 'CSI','CMS'],  // Group names
+		// 	categories: ['CSI']
+		//   },
+		//   yaxis: {
+		// 	title: {
+		// 	  text: 'Number of Overdue Tasks'
+		// 	}
+		//   },
+		//   fill: {
+		// 	colors: ['#FF0000'],  // Set the bar color to red
+		//   },
+		//   title: {
+		// 	text: 'Overdue Tasks Summary by Group',
+		// 	align: 'center'
+		//   }
+	  // };
+	  // this.chartOptions14 = {
+		// series: [{
+		// 	name: 'Number of Pending Tasks',
+		// 	data: [0.2 ,0.5, 1, 0.7,0.5]
+		//   }],
+		//   chart: {
+		// 	type: 'bar',
+		// 	height: 450
+		//   },
+		//   plotOptions: {
+		// 	bar: {
+		// 	  horizontal: false,
+		// 	  columnWidth: '15%',
+		// 	},
+		//   },
+		//   xaxis: {
+		// 	categories: ['CSI','CMS','CSC','ETG','SCS'],  // Group names
+		// 	// categories: ['CSI']
+		//   },
+		//   yaxis: {
+		// 	title: {
+		// 	  text: 'Number of Pending Tasks'
+		// 	}
+		//   },
+		//   fill: {
+		// 	colors: ['#ffff00'],  // Set the bar color to red
+		//   },
+		//   title: {
+		// 	text: 'Pending Tasks Summary by Group',
+		// 	align: 'center'
+		//   }
+	  // };
 	  // this.chartOptions21 = {
 		// series: [
 		// 	{
@@ -1126,7 +1123,7 @@ this.chartOptions22 = {
           horizontal: false,
         },
       },
-      colors: ['#fbbf24', '#fb923c'], // Yellow for "IN PROGRESS", Orange for "YES"
+      colors: ['#FFB534', '#FFB534'], // Yellow for "IN PROGRESS", Orange for "YES"
       dataLabels: {
         enabled: false,
       },
@@ -1156,6 +1153,7 @@ weseeForm : new FormGroup({
       id: new FormControl(""),
       cost_implication: new FormControl(""),
      comments_of_wesee: new FormControl(""),
+     comments_of_tasking_group: new FormControl(""),
      time_frame_for_completion_days: new FormControl(""),
      time_frame_for_completion_month: new FormControl(""),
   }),
@@ -1188,9 +1186,9 @@ public MileStoneForm = new FormGroup({
 });
 status = this.taskForm.value.status;
   showSD=false;
-  populate(data) {
-    //console.log('patch',data.assigned_tasking_group[0].tasking_group.name);
-    //this.taskForm.get('sdForm').patchValue(data);
+  populate(data , tasking) {
+   
+    // this.taskForm.get('sdForm').patchValue(data.tasking);
     this.taskForm.get('weseeForm').patchValue(data);
     this.taskForm.get('deeForm').patchValue(data);
     this.taskForm.get('acomForm').patchValue(data);
@@ -1205,18 +1203,10 @@ status = this.taskForm.value.status;
 
     this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate,task_name:data.task_name,task_description:data.task_description}})
 
-    // this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
-    // this.allocateForm.patchValue({tasking_group:data.assigned_tasking_group.length>0 && data.assigned_tasking_group[0].tasking_group?data.assigned_tasking_group[0].tasking_group.id:''
-    // });
-    this.allocateForm.patchValue({tasking_group:data?.assigned_tasking_group?.length>0 && data?.assigned_tasking_group[0]?.tasking_group?data?.assigned_tasking_group[0]?.tasking_group?.id:''});
+  
+    this.allocateForm.patchValue({tasking_group:tasking?.assigned_tasking_group?.id});
 
-    // this.MileStoneForm.patchValue(data);
-    // this.MileStoneForm.patchValue({tasking_status:data.tasking_status.id});
-    // this.MileStoneForm.patchValue({
-    //   milestone:data.milestone,percentage_completion:data.percentage_completion,
-    //   task_start_date:data.task_start_date,task_end_date:data.task_end_date,manpower:data.manpower,
-    //   id:data.id,budget_utilized:data.budget_utilized,tasking:data.tasking,tasking_status:data.tasking_status.id
-    // });
+
     if (data ? data.file : "") {
       var img_link = data.file;
       //var trim_img = img_link.substring(1)
@@ -1292,27 +1282,13 @@ status = this.taskForm.value.status;
 
   }
 
-  milestonepopulate(data){
-    this.MileStoneForm.patchValue(data);
-    this.MileStoneForm.patchValue({tasking_status:data.tasking_status.id});
-	  if (data ? data.file : "") {
-		var img_link = data.file;
-		//var trim_img = img_link.substring(1)
-		this.ImageUrl = img_link;
-	  }
 
-
-  }
 
   initForm() {
     this.taskForm.patchValue({
       status: "1",
     });
-	this.MileStoneForm.patchValue({
-		status: "1",
-    // tasking_status:this.MileStoneForm.value.tasking_status
 
-	  });
 
   }
 
@@ -2484,7 +2460,7 @@ this.chartOptions2 = {
       this.isReadonly=false;
       this.MileStoneForm.enable();
       this.crudName = "Edit";
-      this.milestonepopulate(milestone);
+      // this.milestonepopulate(milestone);
 
       var element = <HTMLInputElement> document.getElementById("exampleCheck1");
 
@@ -2670,10 +2646,11 @@ getDashboardCount(){
 
   openEdit(country) {
     this.isReadonly=false;
+    console.log('edit',country)
     // this.taskForm.enable();
     this.crudName = "View";
 	  this.id=country.id;
-    this.populate(country);
+    this.populate(country.tasking, country);
     this.list=country;
 	  this.taskForm.disable();
   //console.log('country',country)
@@ -2825,7 +2802,7 @@ updateChartOptions(data: any) {
   this.chartOptions11 = {
     series: [
       {
-        name: 'Tasks',
+        name: 'Number Of Completed Tasks',
         data: taskCounts
       }
     ],
@@ -2833,13 +2810,31 @@ updateChartOptions(data: any) {
       type: 'bar',
       height: 350
     },
-    xaxis: {
-      categories: years
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        columnWidth: '10%',  // Adjust the width of the bar (for non-stacked)
+        barHeight: '10%',    // Adjust the height of the bar (for stacked bars)
+      },
     },
-    fill: {
-      colors: ['#442944']  // Setting the bar color to yellow
+    xaxis: {
+      categories: years,
+      labels: {
+        formatter: function (val) {
+          return Math.round(val);  // Ensures only integer values are shown
+        }
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return Math.round(val);  // Round off values to show only integers in the tooltip
+        }
+      }
     }
   };
+  
+  
 }
 
 
@@ -2888,10 +2883,7 @@ updateChartOptions(data: any) {
       fill: {
         colors: ['#008000'],  
       },
-      title: {
-        text: 'Overdue Tasks Summary by Group',
-        align: 'center'
-      }
+     
     };
 }
 
@@ -3059,7 +3051,7 @@ updated12(data: any) {
       height: 350,
     },
     labels: ['IN PROGRESS', 'COMPLETED'],
-    colors: ["#ffff00" ,"#008000"], // Green for IN PROGRESS, Yellow for COMPLETED
+    colors: ["#F4CE14" ,"#379777"], // Green for IN PROGRESS, Yellow for COMPLETED
     legend: {
       position: 'right',
       horizontalAlign: 'center'
@@ -3081,10 +3073,7 @@ updated12(data: any) {
         }
       }
     ],
-    title: {
-      text: 'Task Status Distribution',
-      align: 'center'
-    }
+   
   };
 }
 
@@ -3113,7 +3102,7 @@ updated22(data: any) {
   this.chartOptions22 = {
     series: [
       {
-        name: 'Number of Extended Deadlines',
+        name: 'Number of Tasks with Extended Deadlines',
         data: extensionCounts
       }
     ],
@@ -3124,7 +3113,7 @@ updated22(data: any) {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%'
+        columnWidth: '10%'
       }
     },
     dataLabels: {
@@ -3137,19 +3126,11 @@ updated22(data: any) {
         text: 'WESEE GROUP'
       }
     },
-    yaxis: {
-      title: {
-        text: 'Number of Extended Deadlines'
-      }
-      
-    },
+    
     fill: {
-      colors: ['#ffff00'],  
+      colors: ['#FFB534'],  
     },
-    title: {
-      text: 'Tasks with Extended Deadlines by Group',
-      align: 'center'
-    }
+   
   };
   
 }

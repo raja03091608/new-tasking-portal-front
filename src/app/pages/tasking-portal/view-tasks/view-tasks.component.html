@@ -249,9 +249,9 @@
 	tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header">				
 				<h2 class="modal-title" id="exampleModalLabel">Add Status</h2>
-				<button type="button" (click)="close()" class="btn-close" data-dismiss="modal" aria-label="Close">
+				<button type="button" (click)="close()" class="btn btn-warning" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="false">&times;</span>
 				</button>
 			</div>
@@ -416,6 +416,16 @@
 <div class="modal fade" id="extension-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content" style="height: auto; width: 600px;">
+			<div class="modal-header">				
+				<h2 class="modal-title" id="exampleModalLabel">Extension Status</h2>
+				<button type="button" (click)="close()" class="btn btn-warning" data-dismiss="modal" aria-label="Close">
+
+
+					
+					<span aria-hidden="false">&times;</span>
+				</button>
+				
+			</div>
 			<div class="modal-body form-style-md form-style-font linux cardd">
 				<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg == true">
 					{{ErrorMsg}}</div>

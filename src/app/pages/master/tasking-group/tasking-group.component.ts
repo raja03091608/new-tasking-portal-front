@@ -537,7 +537,7 @@ export class TaskingGroupComponent implements OnInit {
     { field: 'name', header: 'Name', filter: true, filterMatchMode: 'contains' },
     { field: 'code', header: 'Code', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: 'Description', filter: true, filterMatchMode: 'contains' },
-    { field: 'status', header: 'Staus', filter: true, filterMatchMode: 'contains' },
+    // { field: 'status', header: 'Staus', filter: true, filterMatchMode: 'contains' },
   
   ]
   exportData:any;

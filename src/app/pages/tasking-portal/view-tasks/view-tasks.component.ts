@@ -1262,7 +1262,7 @@ onFileUpload(event) {
        this.file = file;
        formData.append('legacy_attachment', file);
        formData.append('id',this.id);
-     }
+  }
 
   this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(res=>{
     if (res.status === 1) {
