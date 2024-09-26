@@ -151,12 +151,21 @@
         </h3>
         <!-- <p-button (onClick)="showDialog2()" label="View" class="show-button"></p-button> -->
       </div>
-      <div id="chart6">
-        <apx-chart [series]="chartOptions13.series" [chart]="chartOptions13.chart" [xaxis]="chartOptions13.xaxis"
-          [yaxis]="chartOptions13.yaxis" [plotOptions]="chartOptions13.plotOptions" [fill]="chartOptions13.fill"
-          [title]="chartOptions13.title">
-        </apx-chart>
+
+      <div id="chart8">
+        <apx-chart
+          [series]="chartOptions9.series"
+          [chart]="chartOptions9.chart"
+          [dataLabels]="chartOptions9.dataLabels"
+          [plotOptions]="chartOptions9.plotOptions"
+          [yaxis]="chartOptions9.yaxis"
+          [xaxis]="chartOptions9.xaxis"
+          [legend]="chartOptions9.legend"
+          [colors]="chartOptions9.colors"
+          [grid]="chartOptions9.grid"
+        ></apx-chart>
       </div>
+
     </div>
   </div>
 
@@ -1029,3 +1038,4 @@
 		</app-grid-table>
 	</ng-container>
 </p-dialog>
+
