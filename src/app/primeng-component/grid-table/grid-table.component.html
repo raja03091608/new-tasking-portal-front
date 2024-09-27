@@ -71,12 +71,13 @@
                       <!-- <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-upload"></i>&nbsp;<small>Upload</small>
                       </button> -->
+                      <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item><small class="btn btn-outline-info btn-sm"><i class="bi bi-upload"></i></small>&nbsp;<small>Upload</small></button>
 
-                      <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item>
+                      <!-- <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item>
                         <small class="btn btn-outline-primary btn-sm">
                           <i class="bi bi-card-checklist"></i>
                         </small>&nbsp;<small>Upload</small>
-                      </button>
+                      </button> -->
                       
                     </mat-menu>
                   </td>

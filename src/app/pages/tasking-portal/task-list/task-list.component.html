@@ -113,7 +113,18 @@
 							</li>
 						</ul>
 					</div>
-
+					<!-- <div class="card">
+						<p-timeline [value]="routeList" layout="horizontal">
+							<ng-template pTemplate="content" let-event>
+								<small class="p-text-secondary">{{ event?.next_user?.department?.name }}</small>
+								
+							</ng-template>
+							<ng-template pTemplate="opposite" let-event >
+								{{ event?.next_user?.roles[0]?.user_role?.name }}
+							</ng-template>
+							
+						</p-timeline>
+					</div> -->
 				</div>
 				<div class="row">
 
@@ -123,31 +134,29 @@
 
 							<ng-container *ngIf="minitingList && minitingList?.length > 0">
 								<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-									<div class="p-3 mb-2" style="background-color: #ffffff;"
-										[innerHTML]="data.comments"></div>
-									<div class="alert-footer">
-										<span class="float-end">
-											<b>Rank:</b>&nbsp;
-											<i
-												style="color: black; font-weight: 600;">{{data?.created_by?.rankCode}}</i>
-										</span>
-										<br>
-										<span class="float-end">
-											<b>Created By:</b>&nbsp; {{data?.created_by?.first_name}}
-											{{data.created_by?.last_name}}
-										</span>
-										<br>
-										<span class="float-end">{{data?.created_on ? (data.created_on | date:
-											'dd-MM-yyyy hh:mm') : 'N/A'}}</span>
-										<br />
-									</div>
+								  <div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments"></div>
+								  <div class="alert-footer">
+									<span class="float-end">
+									  <b>Rank:</b>&nbsp;
+									  <i style="color: black; font-weight: 600;">{{data?.created_by?.rankCode}}</i>
+									</span>
+									<br>
+									<span class="float-end">
+									  <b>Created By:</b>&nbsp; {{data?.created_by?.first_name}} {{data.created_by?.last_name}}
+									</span>
+									<br>
+									<span class="float-end">{{data?.created_on ? (data.created_on | date: 'dd-MM-yyyy hh:mm') : 'N/A'}}</span>
+									<br />
+								  </div>
 								</div>
-							</ng-container>
-
+							  </ng-container>
+							  
 
 							<form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()"  *ngIf="releDetaile?.detail == 'Passed'"	>
 								<div  class="mb-5 alert alert-dismissible alert-bg">
 									<mat-label style="font-size:large;"><b>Comment</b></mat-label>
+									<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
+									<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 									<angular-editor formControlName="comment" style="min-height: 100px;"
 										[config]="commentEditor"></angular-editor>
 								</div>
@@ -164,6 +173,7 @@
 							<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
 								<div class="row">
 									<div formGroupName="sdForm">
+										<!-- <ng-container *ngIf="list && list.SD_initiater==1&& list && list.WESEE_recommender==1"> -->
 										<div class="alert alert-dismissible alert-bg">
 											<div class="mb-5">
 												<div class="row">
@@ -198,6 +208,8 @@
 												<div class="mb-5">
 													<mat-label style="font-size:large;"><b>Task Description (Maximum 500
 															words)</b><b class="star">*</b></mat-label>
+													<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
+													<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 													<angular-editor formControlName="task_description"
 														[config]="editorConfig"></angular-editor>
 												</div>
@@ -234,6 +246,7 @@
 														task_description</mat-error>
 												</div>
 											</ng-container>
+											<!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
 											<div class="mb-5">
 
 												<div class="matt-group">
@@ -332,25 +345,6 @@
 													</div>
 												</div>
 											</div>
-											<div class="alert-footer" *ngIf="signeture(countryList1, 'SD_initiater')">
-
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataIni?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{ signatureDataIni?.created_by?.first_name
-													}} {{ signatureDataIni?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataIni?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
 											<button type="submit"
 												*ngIf="taskListRoot?.level== null || taskListRoot?.level === 1 && (api.userid.role_center[0].user_role.code=='Initiator' || api.userid.role_center[0].user_role.code=='Recommender')"
 												class="btn btn-primary me-2">Initiate</button>
@@ -360,6 +354,7 @@
 
 
 
+										<!-- </ng-container> -->
 									</div>
 									<div formGroupName="apsoForm" *ngIf="is_sponsoring_directorate">
 
@@ -378,29 +373,37 @@
 													*ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter
 													Comments</mat-error>
 											</div>
-											<div class="alert-footer"
-												*ngIf="signeture(countryList1, 'APSO_recommender')">
-
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataApso?.created_by?.rankCode }}
-													</i>
+											<!-- <div class="alert-footer" *ngIf="list && list.APSO_recommender === 1" >
+												<span class="float-end"> <b>Rank:</b>&nbsp;<i
+														style="color: black; font-weight: 600;">{{list1?.created_by.rankCode}}</i>
 												</span>
 												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{
-													signatureDataApso?.created_by?.first_name }} {{
-													signatureDataApso?.created_by?.last_name }}
-												</span>
+												<span class="float-end"><b>Created By:</b>&nbsp; {{list1?.created_by.first_name}}
+													{{list?.created_by.last_name}}</span>
 												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataApso?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
+												<span class="float-end">{{list1.created_on | date:'dd-MM-yyyy hh:mm '}}</span>
 												<br />
-											</div>
+		
+											</div> -->
+											<table *ngIf="list && list.SD_initiater==1">
 
+												<tr>
+													<th width="20%">Date</th>
+													<th width="20%">Status</th>
 
+													<th width="20%">Created By</th>
+												</tr>
+
+												<tr>
+
+													<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+													<td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}
+													</td>
+
+													<td>{{list && list.created_by.first_name}}</td>
+												</tr>
+												<!-- </ng-template> -->
+											</table>
 											<div class="card-footer mt-3 ">
 
 												<button type="button" class="btn btn-success" *ngIf="!disableApso()"
@@ -452,6 +455,7 @@
 																</ng-container>
 															</mat-form-field>
 
+															<!-- <button type="submit" class="btn btn-primary" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && !disableWesee()">Submit</button> -->
 															<div class="col-md-4" *ngIf="!disableWesee()">
 																<button type="submit" class="btn btn-primary"
 																	[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">Submit</button>
@@ -495,6 +499,7 @@
 																		[readonly]="disableWesee2() ">
 																</ng-container>
 															</div>
+															<!-- <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000"/> -->
 															<mat-error
 																*ngIf="taskForm.get('weseeForm.cost_implication')?.errors?.['required'] && showError">Enter
 																Cost Implication</mat-error>
@@ -680,47 +685,66 @@
 											</div>
 											
 
-											<div class="alert-footer"
-												*ngIf="signeture(countryList1, 'WESEE_recommender')">
 
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDatawesee?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{
-													signatureDatawesee?.created_by?.first_name }} {{
-													signatureDatawesee?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDatawesee?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
+
+											<table
+												*ngIf="list && list.APSO_recommender==1||list && list.APSO_recommender==2">
+
+												<tr>
+													<th width="20%">Date</th>
+													<th width="20%">Status</th>
+													<th width="20%">Comments</th>
+													<th width="20%">Created By</th>
+													<th width="20%">Tasking group Comments</th>
+												</tr>
+
+												<tr *ngFor="let list1 of countryList1; let i= index;">
+													<ng-container
+														*ngIf="(list1.APSO_recommender==1||list1.APSO_recommender==2)">
+														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
+															Recommended'}}</td>
+														<td>{{list1&& list1.comments}}</td>
+														<td>{{list1 && list1.created_by.first_name}}</td>
+														<td>-</td>
+													</ng-container>
+													<ng-container *ngIf="list1.WESEE_recommender==4">
+														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
+															Recommended'}}</td>
+														<td>-</td>
+														<td>{{list1 && list1.created_by.first_name}}</td>
+														<td>{{list1&& list1.comments}}</td>
+													</ng-container>
+												</tr>
+
+
+												<!-- </ng-template> -->
+											</table>
+
 
 											<div class="card-footer  mt-2"
 												*ngIf="!disableWesee2() && this.api.userid.process_id !==3">
 												<button type="button" class="btn btn-success"
 													(click)="Recommened()">Recommend</button> 
 											</div>
+
+
 										</div>
 									</div>
 									<div formGroupName="deeForm">
 										<div class="alert alert-dismissible alert-bg">
 											<div class="sub-heading" style="text-align:center;">
-												<mat-label class="subheading3"><b
-														style="font-size:large;">DEE&nbsp;(Directorate of Electrical
-														Engineering)</b></mat-label>
+												<mat-label class="subheading3"><b style="font-size:large;">DEE
+														&nbsp;(Directorate of Electrical Engineering)</b></mat-label>
 											</div>
 											<div class="mb-5 ">
 												<mat-label style="font-size:large;"><b>Task Number</b><b
 														class="star">*</b></mat-label>
+												<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" max_length="10"/> -->
 												<ng-container *ngIf="crudName=='View' || listdee==1 || listdee==2 ">
 													<div class="task-text-group">
+														<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" [readonly]="listwesee!=1"/> -->
 													</div>
 												</ng-container>
 												<ng-container>
@@ -737,7 +761,7 @@
 														<input type="number" [readonly]="disableDee()" maxlength="5"
 															class="form-control" formControlName="task_number_dee2"
 															value="WESEE/001/2022/01" />
-
+														<!-- <p>{{currentDate1 | date:'dd'}}</p> -->
 													</div>
 												</ng-container>
 											</div>
@@ -750,27 +774,26 @@
 														value="Test comments"></textarea>
 												</div>
 											</ng-container>
-											<div class="alert-footer"
-												*ngIf="signeture(countryList1, 'signatureDataDeeDEE_recommender')">
 
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataDee?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{ signatureDataDee?.created_by?.first_name
-													}} {{ signatureDataDee?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataDee?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
+											<table
+												*ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
+												<tr>
+													<th width="30%">Date</th>
+													<th width="20%">Status</th>
 
+													<th width="20%">Created By</th>
+												</tr>
+												<tr *ngFor="let list1 of countryList1; let i= index;">
+													<ng-container
+														*ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
+														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+														<td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not
+															Recommended'}}</td>
+
+														<td>{{list1 && list1.created_by.first_name}}</td>
+													</ng-container>
+												</tr>
+											</table>
 											<ng-container
 												*ngIf=" (list && list.WESEE_recommender==1) && (api.userid.role_center[0].user_role.code=='DEE') && (list && list.comments_of_dee=='' || list && list.comments_of_dee==null)">
 												<div class="row" id="addmore" *ngIf="div3">
@@ -854,6 +877,11 @@
 													</div>
 												</div>
 											</ng-container>
+
+
+
+
+
 											<div class="card-footer  mb-2" *ngIf="!disableDee()">
 												<div class="col-md-12">
 													<ng-container *ngIf="list &&list.WESEE_recommender==1">
@@ -862,6 +890,9 @@
 															;>
 															<button type="button" class="btn btn-success"
 																(click)="deeRecommened()">Recommend</button>
+															<!-- &nbsp;
+															<button type="button" class="btn btn-danger"
+																(click)="deenotRecommended()">Not Recommend</button> -->
 														</ng-container>
 													</ng-container>
 
@@ -870,6 +901,8 @@
 										</div>
 									</div>
 									<div formGroupName="acomForm">
+										<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
+
 										<div class="alert alert-dismissible alert-bg">
 
 											<div class="sub-heading" style="text-align:center;">
@@ -877,6 +910,15 @@
 														&nbsp;(Asst.Chief of Materiel(Information Technology &
 														Sys))</b></mat-label>
 											</div>
+
+											<!-- <div class="mb-5 ">
+								<mat-label>Comments of Dwe<b class="star">*</b></mat-label>
+								<textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
+								<mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
+											<!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
+											<!-- </div> -->
+
+
 											<div class="mb-5 ">
 												<mat-label style="font-size:large;"><b>Comments</b><b
 														class="star">*</b></mat-label>
@@ -887,29 +929,28 @@
 												<mat-error
 													*ngIf="taskForm.get('acomForm.recommendation_of_acom_its')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
+												<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
+												<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
 											</div>
-											<div class="alert-footer"
-												*ngIf="signeture(countryList1, 'ACOM_recommender')">
+											<table
+												*ngIf="list && list.DEE_recommender==1 && list && list.DEE_recommender==2 ">
+												<tr>
+													<th width="30%">Date</th>
+													<th width="20%">Status</th>
 
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataAcom?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{
-													signatureDataAcom?.created_by?.first_name }} {{
-													signatureDataAcom?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataAcom?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
+													<th width="20%">Created By</th>
+												</tr>
+												<tr *ngFor="let list1 of countryList1; let i= index;">
+													<ng-container
+														*ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
+														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+														<td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not
+															Recommended'}}</td>
 
+														<td>{{list1 && list1.created_by.first_name}}</td>
+													</ng-container>
+												</tr>
+											</table>
 
 											<div class="card-footer  mb-4">
 												<div class="col-md-12">
@@ -919,6 +960,9 @@
 														;>
 														<button type="button" class="btn btn-success"
 															(click)="acomRecommened()">Recommend</button>
+														<!-- &nbsp;
+														<button type="button" class="btn btn-danger"
+															(click)="acomnotRecommended()">Not Recommend</button> -->
 													</ng-container>
 
 												</div>
@@ -945,41 +989,55 @@
 													*ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
 											</div>
-											<div class="alert-footer" *ngIf="signeture(countryList1, 'COM_approver')">
+											<table
+												*ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
+												<tr>
+													<th width="30%">Date</th>
+													<th width="20%">Status</th>
 
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDatacom?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{ signatureDatacom?.created_by?.first_name
-													}} {{ signatureDatacom?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDatacom?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
+													<th width="20%">Created By</th>
+												</tr>
+												<tr *ngFor="let list1 of countryList1; let i= index;">
+													<ng-container
+														*ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
+														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
+														<td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not
+															Recommended'}}</td>
 
+														<td>{{list1 && list1.created_by.first_name}}</td>
+													</ng-container>
+												</tr>
+											</table>
 
 
 											<div class="card-footer  mt-4">
 												<div class="col-md-12">
 													<ng-container *ngIf="!disableCom()">
-
+														<!-- <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button> -->
+														<!-- <button type="button" class="btn btn-danger"
+															*ngIf="api.userid.role_center[0].user_role.code=='APP'"
+															(click)="comnotRecommended()">Not Approve</button>
+														&nbsp; -->
 														<button type="button" class="btn btn-success"
 															*ngIf="api.userid.role_center[0].user_role.code=='APP'"
 															(click)="comRecommened()">Approve</button>
 														&nbsp;
 
+														<!-- tton t <buype="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommended</button> -->
 													</ng-container>
 												</div>
 											</div>
 										</div>
+
+
+
+
+										<!-- <div class="card-footer text-end">
+						   <div class="col-md-12">
+						   <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
+	
+							</div>
+						 </div> -->
 									</div>
 								</div>
 							</form>
@@ -1002,14 +1060,15 @@
 		</button>
 	</div>
 	<div class="modal-body">
-		<div class="timeline-cover text-center">
+		<div  class="timeline-cover text-center">
 			<ul class="timeline">
 
 				<li *ngFor="let step of roles" class="active">
 					<label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
 					<label>{{step?.current?.department?.name }}</label>
 				</li>
-				<li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < taskListRoot.level-1}">
+				<li *ngFor="let step of routeList; let i = index"
+					[ngClass]="{'active': i < taskListRoot.level-1}">
 					<label>{{ timelineStepName(step) }}</label> <br>
 					<label>{{ timelineStepDirect(step) }}</label>
 				</li>
@@ -1120,6 +1179,16 @@
 			</div>
 		  </form>
 		  
+	
+
+			<!-- <ng-container *ngIf="routeList.length != 0">
+				<app-grid-table [gridColumns]="gridColum" [gridData]="routeList" [ispaniNater]="true"
+				  [isAction]="true" (editEvent)="handleEdit($event)" (deleteEvent)="handleDelete($event)"
+				  [isEditable]="this.permission.edit" [isDeletable]="this.permission.delete">
+				</app-grid-table>
+			  </ng-container> -->
+
+
 	</div>
 </ng-template>
 

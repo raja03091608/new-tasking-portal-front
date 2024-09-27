@@ -32,9 +32,9 @@
 								(statusEvent)="openCurrentStatus($event)"
 								(statusEventAdd)="add($event)" [isStatusAdd]="isStatusAdd"(archivetaskEvent)="archivetask($event)" [isArchiveTask]="permission.archive"
 								(exportEvent)="opentask($event)" 
-								(downloadEvent)="download($event)"
+								(downloadEvent)="UploadReceipt($event)"
 								(completedEvent)="completedtask($event)"
-								(uploadEvent)="UploadHendler($event)"
+								(uploadEvent)="isfileUpload=true"
 								[isupload]="true"
 								 [isExport]="true"
 								  [isStatus]="true"
@@ -430,60 +430,64 @@
 				<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg == true">
 					{{ErrorMsg}}</div>
 
-					<form [formGroup]="extensionForm">
-						<!-- Extension Number -->
-						<div class="row">
-							<div class="col-md-12">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>Extension Number <b class="star">*</b></mat-label>
-									<input matInput type="text" formControlName="extensionNumber" placeholder="Enter Extension Number" />
-								</mat-form-field>
+				<form [formGroup]="extensionForm">
+					<!-- Extension Number -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="matt-group">
+								<mat-label>Extension Number<b class="star">*</b></mat-label>
+								<input type="number" class="form-control" formControlName="extensionNumber"
+									placeholder="Enter Extension Number" />
 							</div>
 						</div>
-					
-						<!-- Authority Letter Number -->
-						<div class="row">
-							<div class="col-md-12 mt-3">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>Authority Letter Number <b class="star">*</b></mat-label>
-									<input matInput type="text" formControlName="authorityLetterNumber" placeholder="Enter Authority Letter Number" />
-								</mat-form-field>
+					</div>
+
+					<!-- Authority Letter Number -->
+					<div class="row">
+						<div class="col-md-12 mt-3">
+							<div class="matt-group">
+								<mat-label>Authority Letter Number<b class="star">*</b></mat-label>
+								<input type="number" class="form-control" formControlName="authorityLetterNumber"
+									placeholder="Enter Authority Letter Number" />
 							</div>
 						</div>
-					
-						<!-- Description -->
-						<div class="row">
-							<div class="col-md-12 mt-3">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>Description <b class="star">*</b></mat-label>
-									<textarea matInput rows="3" formControlName="description" placeholder="Enter Description"></textarea>
-								</mat-form-field>
+					</div>
+
+					<!-- Description -->
+					<div class="row">
+						<div class="col-md-12 mt-3">
+							<div class="matt-group">
+								<mat-label>Description<b class="star">*</b></mat-label>
+								<textarea class="form-control" rows="3" formControlName="description"
+									placeholder="Enter Description"></textarea>
 							</div>
 						</div>
-					
-						<!-- Extended Till Date Picker -->
-						<div class="row">
-							<div class="col-md-12 mt-3">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>DD/MM/YYYY <b class="star">*</b></mat-label>
-									<input matInput  [matDatepicker]="picker" formControlName="extendedTill" placeholder="Extended Till" />
-									<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-									<mat-datepicker #picker></mat-datepicker>
-								</mat-form-field>
+					</div>
+
+					<!-- Extended Till Date Picker -->
+					<div class="row">
+						<div class="col-md-12 mt-3">
+							<div class="matt-group">
+								<mat-label>Extended Till<b class="star">*</b></mat-label>
+								<input matInput [matDatepicker]="picker" formControlName="extendedTill"
+									placeholder="Choose Date" class="form-control" />
+								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+								<mat-datepicker #picker></mat-datepicker>
 							</div>
 						</div>
-					
-						<!-- Buttons -->
-						<div class="row button-group-lg button-auto mt-4">
-							<div class="col-md-6 col-6">
-								<button type="submit" class="btn btn-success w-100" (click)="saveviewstatus()">Save</button>
-							</div>
-							<div class="col-md-6 col-6">
-								<button type="button" class="btn btn-outline-primary w-100" data-bs-dismiss="modal">Cancel</button>
-							</div>
+					</div>
+
+					<!-- Buttons -->
+					<div class="row button-group-lg button-auto mt-4">
+						<div class="col-md-6 col-6">
+							<button type="submit" class="btn btn-success w-100" (click)="saveviewstatus()">Save</button>
 						</div>
-					</form>
-					
+						<div class="col-md-6 col-6">
+							<button type="button" class="btn btn-outline-primary w-100"
+								data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -926,7 +930,7 @@
 
 
 </p-dialog>
-<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '30vw' }">
+<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '90vw' }">
 <div class="card flex justify-content-center">
 <p-fileUpload class="mt-4" name="file[]" customUpload="true" (uploadHandler)="onFileUpload($event)" [multiple]="false" maxFileSize="1000000">
 </p-fileUpload>

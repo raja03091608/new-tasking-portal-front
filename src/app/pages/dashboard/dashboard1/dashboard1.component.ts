@@ -27,7 +27,7 @@ import * as XLSX from 'xlsx';
 // import { saveAs } from 'file-saver';
 
 
-import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
+import { ApexAxisChartSeries,ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
 import moment from 'moment';
 import DataTables from 'datatables.net';
 declare let $: any;
@@ -152,6 +152,16 @@ export type ChartOptions1 = {
   colors: string[];
   };
 
+  // export type ChartOptions13 = {
+  //   series: ApexAxisChartSeries;
+  //   chart: ApexChart;
+  //   xaxis: ApexXAxis;
+  //   yaxis: ApexYAxis;
+  //   title: ApexTitleSubtitle;
+  //   plotOptions: ApexPlotOptions;
+  //   fill: any;
+  // };
+  
   export type ChartOptions13 = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -159,8 +169,23 @@ export type ChartOptions1 = {
     yaxis: ApexYAxis;
     title: ApexTitleSubtitle;
     plotOptions: ApexPlotOptions;
-    fill: any;
+    fill: ApexFill; // This should already be present
+    colors: string[]; // Add this line to include colors
+    legend?: ApexLegend; // Optional, if you want to use the legend
+    dataLabels?: ApexDataLabels; // Add this line to include data labels
   };
+  export type ChartOptions9 = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    yaxis: ApexYAxis;
+    xaxis: ApexXAxis;
+    grid: ApexGrid;
+    colors: string[];
+    legend: ApexLegend;
+  };
+
 
   export type ChartOptions14 = {
     series: ApexAxisChartSeries;
@@ -433,6 +458,8 @@ public chartOptions12: Partial<ChartOptions12>;
 
 @ViewChild('chart6') chart6: ChartComponent;
 public chartOptions13: Partial<ChartOptions13>;
+@ViewChild("chart8") chart8: ChartComponent;
+  public chartOptions9: Partial<ChartOptions9>;
 
 @ViewChild('chart7') chart7: ChartComponent;
 public chartOptions14: Partial<ChartOptions14>;
@@ -970,22 +997,22 @@ var updateChartNew = this.chartOptions3 = {
 	// 	  {
 	// 		breakpoint: 480,
 
-	// 		options: {
-	// 		  chart: {
-	// 			width: 300
-	// 		  },
-	// 		  legend: {
-	// 			position: 'bottom',
-	// 			colors: ['#8AE234', '#FFA500'] ,
-	// 		  }
-	// 		}
-	// 	  }
-	// 	],
-	// 	title: {
-	// 	  text: 'Task Status Distribution',
-	// 	  align: 'center'
-	// 	}
-	//   };
+		// 	options: {
+		// 	  chart: {
+		// 		width: 300
+		// 	  },
+		// 	  legend: {
+		// 		position: 'bottom',
+		// 		colors: ['#8AE234', '#FFA500'] ,
+		// 	  }
+		// 	}
+		//   }
+		// ],
+		// title: {
+		//   text: 'Task Status Distribution',
+		//   align: 'center'
+		// }
+	  
 	  // this.chartOptions13 = {
 		// series: [{
 		// 	name: 'Number of Overdue Tasks',
@@ -1012,45 +1039,80 @@ var updateChartNew = this.chartOptions3 = {
 		// 	}
 		//   },
 		//   fill: {
-		// 	colors: ['#FF0000'],  // Set the bar color to red
+		// 	colors: ['#fbbf24'],  // Set the bar color to red
 		//   },
 		//   title: {
 		// 	text: 'Overdue Tasks Summary by Group',
 		// 	align: 'center'
 		//   }
 	  // };
-	  // this.chartOptions14 = {
-		// series: [{
-		// 	name: 'Number of Pending Tasks',
-		// 	data: [0.2 ,0.5, 1, 0.7,0.5]
-		//   }],
-		//   chart: {
-		// 	type: 'bar',
-		// 	height: 450
-		//   },
-		//   plotOptions: {
-		// 	bar: {
-		// 	  horizontal: false,
-		// 	  columnWidth: '15%',
-		// 	},
-		//   },
-		//   xaxis: {
-		// 	categories: ['CSI','CMS','CSC','ETG','SCS'],  // Group names
-		// 	// categories: ['CSI']
-		//   },
-		//   yaxis: {
-		// 	title: {
-		// 	  text: 'Number of Pending Tasks'
-		// 	}
-		//   },
-		//   fill: {
-		// 	colors: ['#ffff00'],  // Set the bar color to red
-		//   },
-		//   title: {
-		// 	text: 'Pending Tasks Summary by Group',
-		// 	align: 'center'
-		//   }
-	  // };
+
+    this.chartOptions13 = {
+      series: [
+        {
+          name: 'Overdue Tasks',
+          data: [1, 3], // You will fetch this data from your API
+        },
+        {
+          name: 'Completed Tasks',
+          data: [2, 4], // You will fetch this data from your API
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+      },
+      colors: ['#FF4560', '#008FFB'], // Red for overdue, blue for completed
+      xaxis: {
+        categories: ['SI', 'SCS'], // Groups, fetched from your API
+      },
+      title: {
+        text: 'Task Summary by Group',
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Tasks',
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+    };
+
+
+  
+	  this.chartOptions14 = {
+		series: [{
+			name: 'Number of Pending Tasks',
+			data: [0.2 ,0.5, 1, 0.7,0.5]
+		  }],
+		  chart: {
+			type: 'bar',
+			height: 450
+		  },
+		  plotOptions: {
+			bar: {
+			  horizontal: false,
+			  columnWidth: '15%',
+			},
+		  },
+		  xaxis: {
+			categories: ['CSI','CMS','CSC','ETG','SCS'],  // Group names
+			// categories: ['CSI']
+		  },
+		  yaxis: {
+			title: {
+			  text: 'Number of Pending Tasks'
+			}
+		  },
+		  fill: {
+			colors: ['#ffff00'],  // Set the bar color to red
+		  },
+		  title: {
+			text: 'Pending Tasks Summary by Group',
+			align: 'center'
+		  }
+	  };
 	  // this.chartOptions21 = {
 		// series: [
 		// 	{
@@ -1100,6 +1162,77 @@ var updateChartNew = this.chartOptions3 = {
 		// 	enabled: true
 		//   }
 	  // };
+
+    // this.chartOptions9= {
+    //   series: [
+    //     {
+    //       name: "distibuted",
+    //       data: [21, 22, 10, 28, 16, 21, 13, 30]
+    //     }
+    //   ],
+    //   chart: {
+    //     height: 350,
+    //     type: "bar",
+    //     events: {
+    //       click: function(chart, w, e) {
+    //         // console.log(chart, w, e)
+    //       }
+    //     }
+    //   },
+    //   colors: [
+    //     "#008FFB",
+    //     "#00E396",
+    //     "#FEB019",
+    //     "#FF4560",
+    //     "#775DD0",
+    //     "#546E7A",
+    //     "#26a69a",
+    //     "#D10CE8"
+    //   ],
+    //   plotOptions: {
+    //     bar: {
+    //       columnWidth: "45%",
+    //       distributed: true
+    //     }
+    //   },
+    //   dataLabels: {
+    //     enabled: false
+    //   },
+    //   legend: {
+    //     show: false
+    //   },
+    //   grid: {
+    //     show: false
+    //   },
+    //   xaxis: {
+    //     categories: [
+    //       ["John", "Doe"],
+    //       ["Joe", "Smith"],
+    //       ["Jake", "Williams"],
+    //       "Amber",
+    //       ["Peter", "Brown"],
+    //       ["Mary", "Evans"],
+    //       ["David", "Wilson"],
+    //       ["Lily", "Roberts"]
+    //     ],
+    //     labels: {
+    //       style: {
+    //         colors: [
+    //           "#008FFB",
+    //           "#00E396",
+    //           "#FEB019",
+    //           "#FF4560",
+    //           "#775DD0",
+    //           "#546E7A",
+    //           "#26a69a",
+    //           "#D10CE8"
+    //         ],
+    //         fontSize: "12px"
+    //       }
+    //     }
+    //   }
+    // };
+  
 
     this.chartOptionsGroup = {
       chart: {
@@ -2837,56 +2970,56 @@ updateChartOptions(data: any) {
   
 }
 
-
-
-
-
 // 3rdchartapi
-  getoverd(){
-    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
-      this.apioverdata1=res.data;
-      this.updateChartOptions1(this.apioverdata1);
-      console.log('apioverdata1',this.apioverdata1);
-    });
-  }
+  // getoverd(){
+  //   this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+  //     this.apioverdata1=res.data;
+  //     this.updateChartOptions1(this.apioverdata1);
+  //     console.log('apioverdata1',this.apioverdata1);
+  //   });
+  // }
   
-  updateChartOptions1(data: any) {
-    const categories = data.map((item: any) => item.sponsoring_directorate);
-    const overdueCounts = data.map((item: any) => item.overdue_count);
+//   updateChartOptions1(data: any) {
+//     const categories = data.map((item: any) => item.sponsoring_directorate);
+//     const overdueCounts = data.map((item: any) => item.overdue_count);
     
-    this.chartOptions13 = {
-      series: [{
-        name: 'Number of Overdue Tasks',
-        data: overdueCounts
-      }],
-      chart: {
-        type: 'bar',
-        height: 450
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '50%',  // Adjust the width of the bar
-        },
-      },
-      xaxis: {
-        categories: categories,
-        labels: {
-          rotate: -45,  // Rotate the labels for better visibility
-        }
-      },
-      yaxis: {
-        title: {
-          text: 'Number of Overdue Tasks'
-        }
-      },
-      fill: {
-        colors: ['#008000'],  
-      },
-     
-    };
-}
+//     this.chartOptions13 = {
+//       series: [{
+//         name: 'Number of Overdue Tasks',
+//         data: overdueCounts
+//       }],
+//       chart: {
+//         type: 'bar',
+//         height: 450
+//       },
+//       plotOptions: {
+//         bar: {
+//           horizontal: false,
+//           columnWidth: '50%',  // Adjust the width of the bar
+//         },
+//       },
+//       xaxis: {
+//         categories: categories,
+//         labels: {
+//           rotate: -45,  // Rotate the labels for better visibility
+//         }
+//       },
+//       yaxis: {
+//         title: {
+//           text: 'Number of Overdue Tasks'
+//         }
+//       },
+//       fill: {
+//         colors: ['#008000'],  
+//       },
+//       title: {
+//         text: 'Overdue Tasks Summary by Group',
+//         align: 'center'
+//       }
+//     };
+// }
 
+  
   // 4thchartapi
 
 // getgroup(){
@@ -3255,6 +3388,85 @@ submitHeaderForm() {
   }
 
   
+  getoverd() {
+    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res: any) => {
+      this.apioverdata1 = res.data; // Assuming `res.data` contains the desired array
+      this.updateChartOptions1(this.apioverdata1);
+      console.log('apioverdata1', this.apioverdata1);
+    });
+  }
 
+  updateChartOptions1(overdueData: any[]) {
+    const seriesData: number[] = [];
+    const categories: string[] = [];
+
+    
+    if (overdueData && Array.isArray(overdueData)) {
+      overdueData.forEach((item) => {
+        if (item.sponsoring_directorate && item.overdue_count != null) {
+          categories.push(item.sponsoring_directorate);
+          seriesData.push(item.overdue_count);
+        }
+      });
+    }
+
+    // Update the chart options
+    this.chartOptions9 = {
+      series: [
+        {
+          name: "Overdue Tasks",
+          data: seriesData
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "bar"
+      },
+      colors: [
+        "#008FFB",
+        "#00E396",
+        "#FEB019",
+        "#FF4560",
+        "#775DD0",
+        "#546E7A",
+        "#26a69a",
+        "#D10CE8"
+      ],
+      plotOptions: {
+        bar: {
+          columnWidth: "45%",
+          distributed: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        show: false
+      },
+      xaxis: {
+        categories: categories,
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#00E396",
+              "#FEB019",
+              "#FF4560",
+              "#775DD0",
+              "#546E7A",
+              "#26a69a",
+              "#D10CE8"
+            ],
+            fontSize: "12px"
+          }
+        }
+      }
+    };
+  }
 }
+
 
