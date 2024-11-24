@@ -1298,7 +1298,7 @@ extension(){
 gridColumns=[
   { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
   { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-  { field: 'cost_implication', header: 'Cost Implication', filter: true, filterMatchMode: 'contains' },
+  { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
   {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
   {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
   { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }

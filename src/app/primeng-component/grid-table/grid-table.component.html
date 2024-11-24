@@ -1,8 +1,15 @@
 <div class="card">
-    <p-table #dataTable [columns]="gridColumns" [value]="filteredData" [paginator]="ispaniNater" [scrollable]="true"
-        styleClass="p-datatable-gridlines p-datatable-striped" [resizableColumns]="true" dataKey="id"
-        columnResizeMode="expand" class="scrollTable" [rows]="10"
-        (onPage)="paginationEvent.emit($event)" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+    <p-table #dataTable  [columns]="gridColumns" 
+    [value]="filteredData" 
+    [paginator]="ispaniNater" 
+    [scrollable]="true"
+    [ngStyle]="{'table-layout': 'fixed', 'width': '100%'}"
+    styleClass="p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
+    resizableColumns="true" 
+    columnResizeMode="expand" 
+    [rows]="10"
+    dataKey="id"
+    (onPage)="paginationEvent.emit($event)" >
         <!-- Dynamic Column Headers -->
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -10,7 +17,8 @@
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th class="headercolor"  [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn
-                    [ngClass]="{'text-center': col.header === 'Status'}">
+                    [ngClass]="{'text-center': col.header === 'Status'}"
+                    [ngClass]="{'column-max-width-15': col.header === 'Task Name'}">
                     {{ col.header }}
                     
                 <!-- <p-sortIcon *ngIf="col?.filter" class="text-light pb-1 pe-2 rounded" [field]="col.field"></p-sortIcon> -->
@@ -35,7 +43,7 @@
                 <td class="text-center" *ngIf="isCheckBox">
                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                 </td>
-                <td *ngFor="let col of gridColumns">
+                <td *ngFor="let col of gridColumns" class="wrappable">
 
                     <ng-container *ngIf="col.header != 'Status'">
                         <span *ngIf="col.header == 'Time Frame for Completion'" >{{ resolveNestedField(rowData, col.field)  }} Month's</span>

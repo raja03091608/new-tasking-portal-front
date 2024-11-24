@@ -3314,6 +3314,7 @@ applyFilter1(event: Event) {
 }
 
 handleFilter(filterValue: any) {
+  this.filterData = filterValue;
 
   console.log('Filter triggered with value:', filterValue);
 }
