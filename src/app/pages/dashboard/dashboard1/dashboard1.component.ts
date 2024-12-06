@@ -2872,7 +2872,7 @@ getDashboardCount(){
   }
 
   getyearData() {
-    this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+    this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status/')
       .subscribe((res: any) => {
         this.yearlytaskdata = res;
         console.log('yearlytaskdata',this.yearlytaskdata) 
@@ -2883,7 +2883,7 @@ getDashboardCount(){
     )
   }
   getoverdue(){
-    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+    this.api.getAPI(environment.API_URL + 'transaction/overdue-by-group/').subscribe((res:any)=>{
       this.overdata=res.data;
       console.log('overdata',this.overdata);
     },
@@ -2894,7 +2894,7 @@ getDashboardCount(){
   
   }
   getpendingdata(){
-    this.api.getAPI(environment.API_URL + '/transaction/pending-by-group/').subscribe((res:any)=>{
+    this.api.getAPI(environment.API_URL + 'transaction/pending-by-group/').subscribe((res:any)=>{
       this.Pendingdata=res.data;
       console.log('Pendingdata',this.Pendingdata);
     },
@@ -2904,14 +2904,14 @@ getDashboardCount(){
   )
   }
   getgroupwise(){
-    this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+    this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((res:any)=>{
       this.groupdata=res.data;
      
       console.log('groupdata',this.groupdata);
     });
   }
 getdistribution(){
-  this.api.getAPI(environment.API_URL +'/transaction/task-distribution').subscribe((res:any)=>{
+  this.api.getAPI(environment.API_URL +'transaction/task-distribution').subscribe((res:any)=>{
     this. distributiondata=res.data;
     console.log('distributiondata',this.distributiondata);
   }
@@ -2921,7 +2921,7 @@ getdistribution(){
 
 // 2ndchartapi
 getyear() {
-  this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+  this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status/')
     .subscribe((res: any) => {
       this.apiyearlytaskdata1 = res;
       this.updateChartOptions(this.apidistributiondata1); // Update the chart options with API data
@@ -2972,7 +2972,7 @@ updateChartOptions(data: any) {
 
 // 3rdchartapi
   // getoverd(){
-  //   this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+  //   this.api.getAPI(environment.API_URL + 'transaction/overdue-by-group/').subscribe((res:any)=>{
   //     this.apioverdata1=res.data;
   //     this.updateChartOptions1(this.apioverdata1);
   //     console.log('apioverdata1',this.apioverdata1);
@@ -3023,7 +3023,7 @@ updateChartOptions(data: any) {
   // 4thchartapi
 
 // getgroup(){
-//   this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+//   this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((res:any)=>{
 //     this.apigroupdata1=res.data;
 //     this.updateChartOptions21(this.apigroupdata1);
 //     console.log('apigroupdata1',this.apigroupdata1);
@@ -3092,7 +3092,7 @@ updateChartOptions(data: any) {
 // }
 
 getgroup(): void {
-  this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe(
+  this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe(
     (res: any) => {
       this.apigroupdata1 = res.data;
       this.updateChartOptionsGroup(this.apigroupdata1);
@@ -3168,7 +3168,7 @@ updateChartOptionsGroup(res: any[]): void {
 // 5thchartapi
 
 getdistri() {
-  this.api.getAPI(environment.API_URL + '/transaction/task-distribution').subscribe((res: any) => {
+  this.api.getAPI(environment.API_URL + 'transaction/task-distribution').subscribe((res: any) => {
     this.apidistributiondata1 = res.data;
     this.updated12(this.apidistributiondata1); // Pass the data to updated12
     console.log('apidistributiondata', this.apidistributiondata1);
@@ -3215,7 +3215,7 @@ updated12(data: any) {
 
 // 6tchartAPI
 getextend() {
-  this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
+  this.api.getAPI(environment.API_URL + 'transaction/extended-deadlines/').subscribe((res: any) => {
     this.extenddata = res.data;
     this.updated22(this.extenddata); // Pass the data to updated22
     console.log('extenddata', this.extenddata);
@@ -3273,7 +3273,7 @@ updated22(data: any) {
 
 
 getStatusTaskingNew() {
-  this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+  this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
     .subscribe((res: any) => {
       this.statusTaskingNew = res.data;
       this.tabledata(this.statusTaskingNew);
@@ -3389,7 +3389,7 @@ submitHeaderForm() {
 
   
   getoverd() {
-    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res: any) => {
+    this.api.getAPI(environment.API_URL + 'transaction/overdue-by-group/').subscribe((res: any) => {
       this.apioverdata1 = res.data; // Assuming `res.data` contains the desired array
       this.updateChartOptions1(this.apioverdata1);
       console.log('apioverdata1', this.apioverdata1);

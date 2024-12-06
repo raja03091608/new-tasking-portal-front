@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MaterialModule } from './material/material.module';
 import { SnackbarComponent } from './service/snackbar/snackbar.component';
@@ -28,6 +28,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import{TableModule} from'primeng/table';
+import { AuthService } from './service/interceptors/auth.service';
 
 // import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
@@ -70,7 +71,12 @@ import{TableModule} from'primeng/table';
 
   ],
 
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},AuthguardGuard,Title],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},AuthguardGuard,Title,
+    {provide: HTTP_INTERCEPTORS,
+			useClass: AuthService, 
+			multi: true, 
+		  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
