@@ -8,7 +8,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from "../../../service/api.service";
 import { environment } from "../../../../environments/environment";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatColumnDef, MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { ConsoleService } from "../../../service/console.service";
 import { NotificationService } from "../../../service/notification.service";
@@ -23,8 +23,11 @@ import { ConfirmationDialogComponent } from "../../../confirmation-dialog/confir
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import 'datatables.net'
 //import { NgZone } from '@angular/core'
+import * as XLSX from 'xlsx';
+// import { saveAs } from 'file-saver';
 
-import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle, } from 'ng-apexcharts';
+
+import { ApexAxisChartSeries,ApexChart, ApexFill,ApexLegend,ApexNonAxisChartSeries,ApexResponsive, ApexDataLabels, ApexGrid, ApexYAxis, ApexXAxis, ApexPlotOptions, ChartComponent, ApexTooltip,ApexStroke,ApexTitleSubtitle } from 'ng-apexcharts';
 import moment from 'moment';
 import DataTables from 'datatables.net';
 declare let $: any;
@@ -43,19 +46,43 @@ declare function openModal(selector): any;
 //   plotOptions: ApexPlotOptions;
 //   tooltip:ApexTooltip;
 // };
-export type ChartOptions21 = {
+// export type ChartOptions21 = {
+// 	series: ApexAxisChartSeries;
+// 	chart: ApexChart;
+// 	xaxis: ApexXAxis;
+// 	yaxis: ApexYAxis;
+// 	title: ApexTitleSubtitle;
+// 	plotOptions: ApexPlotOptions;
+// 	fill: ApexFill;
+// 	dataLabels: ApexDataLabels;
+// 	legend: ApexLegend;
+//   };
 
-//dtOptions: DataTables.Settings = {};
-	series: ApexAxisChartSeries;
-	chart: ApexChart;
-	xaxis: ApexXAxis;
-	yaxis: ApexYAxis;
-	title: ApexTitleSubtitle;
-	plotOptions: ApexPlotOptions;
-	fill: ApexFill;
-	dataLabels: ApexDataLabels;
-	legend: ApexLegend;
+export type chartOptionsGroup = {
+  
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  legend: ApexLegend;
+  plotOptions: ApexPlotOptions;
+  colors: string[];
+  dataLabels: ApexDataLabels;
+  };
+
+  export type ChartOptions22 = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    title: ApexTitleSubtitle;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    colors: string[];
+    fill: ApexFill;
   };
+  
+  
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -110,6 +137,8 @@ export type ChartOptions1 = {
 	dataLabels: ApexDataLabels;
 	title: ApexTitleSubtitle;
 	plotOptions: ApexPlotOptions;
+  fill: ApexFill;
+  
   };
 
   export type ChartOptions12 = {
@@ -120,8 +149,19 @@ export type ChartOptions1 = {
 	legend: ApexLegend;
 	dataLabels: ApexDataLabels;
 	title: ApexTitleSubtitle;
+  colors: string[];
   };
 
+  // export type ChartOptions13 = {
+  //   series: ApexAxisChartSeries;
+  //   chart: ApexChart;
+  //   xaxis: ApexXAxis;
+  //   yaxis: ApexYAxis;
+  //   title: ApexTitleSubtitle;
+  //   plotOptions: ApexPlotOptions;
+  //   fill: any;
+  // };
+  
   export type ChartOptions13 = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -129,8 +169,23 @@ export type ChartOptions1 = {
     yaxis: ApexYAxis;
     title: ApexTitleSubtitle;
     plotOptions: ApexPlotOptions;
-    fill: any;
+    fill: ApexFill; // This should already be present
+    colors: string[]; // Add this line to include colors
+    legend?: ApexLegend; // Optional, if you want to use the legend
+    dataLabels?: ApexDataLabels; // Add this line to include data labels
   };
+  export type ChartOptions9 = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
+    yaxis: ApexYAxis;
+    xaxis: ApexXAxis;
+    grid: ApexGrid;
+    colors: string[];
+    legend: ApexLegend;
+  };
+
 
   export type ChartOptions14 = {
     series: ApexAxisChartSeries;
@@ -145,29 +200,127 @@ export type ChartOptions1 = {
 
 @Component({
   selector: 'app-dashboard1',
-  templateUrl: './dashboard1.component.html',
+  templateUrl:'./dashboard1.component.html',
   styleUrls: ['./dashboard1.component.scss'],
   providers:[DatePipe],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class Dashboard1Component implements OnInit,OnDestroy {
-	projects: any[] = [
-		{ name: 'Navy3005', code: '30/5/2024', status: 'INITIATION STARTED' },
-		{ name: 'PT-0107', code: '1/7/2024', status: 'INITIATION STARTED' }
-	  ];
+   EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+   exportDialog: boolean = false;
+   dropdownOptions: any[] = [];
+   selectedOption: any;
+   inputValue: string = '';
+
+  apioverdata1=[] as any;
+  apigroupdata1=[]as any;
+  apidistributiondata1=[] as any;
+  apiyearlytaskdata1=[]as any;
+  value: string = '';
+  visible: boolean = false;
+  visible1:boolean=false;
+  visible2:boolean=false;
+  visible3:boolean=false;
+  visible4:boolean=false;
+  visibleExcel:boolean=false;
+  yearlytaskdata=[] as any;
+  overdata=[] as any;
+  Pendingdata=[] as any;
+  groupdata=[] as any;  
+  distributiondata=[] as any;
+  statusTaskingNew=  [] as any;
+  newTableDataSource = new MatTableDataSource([]);
+
   currentYear = new Date().getFullYear();
   currentDate1 = new Date();
+xlxsForm: FormGroup;
+selectedHeader=[]
+isFormHide=false;
+exportData:any;
+filterData:any;
+fileName:string;
+searchValue: string = '';
+expDataHeader = [
+  { field: 'tasking.task_name', header: 'Task Name',  },
+  { field: 'tasking.task_number_dee', header: 'Task Number',  },
+  { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate',  },
+  { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name',  }, 
+  { field: 'start_date', header: 'Start Date' },
+  { field: 'end_date', header: 'End Date' },
+  { field: 'title', header: 'Title' },
+  { field: 'secondary_title', header: 'Secondary Title' },
+  { field: 'status_summary', header: 'Status Summary' },
+  { field: 'tasking.comments_of_dee', header: 'Dee Comments' },
+  { field: 'tasking.approval_of_com', header: 'COM Comments' },
+  { field: 'tasking.recommendation_of_acom_its', header: 'ACOM Comments' },
+  { field: 'tasking.time_frame_for_completion_month', header: 'Comepletion Months' },
+
+  { field: 'tasking.comments_of_wesee', header: 'Wesee Comments' },
+  { field: 'tasking.comments_of_apso', header: 'APSO Comments' },
+  { field: 'tasking.task_description', header: 'Task Description' }
+];
+
+downloadexcel() {
+  let data = document.getElementById('xlseExport');
+  if (!data) {
+    console.error('Table element not found.');
+    return;
+  }
+
+  // Create a worksheet from the table
+  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+  // Create a new workbook
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+  // Append the worksheet to the workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
+
+  // Write the workbook to a file with .xlsx extension
+  XLSX.writeFile(wb, this.fileName);
+  this.exportData=this.dataSourcelist.data
+  this.visibleExcel=false;
+  
+}
+protected onInput(event: Event) {
+  // this.value.((event.target as HTMLInputElement).value);
+  this.value = (event.target as HTMLInputElement).value;
+
+}
 
   displayedColumns: string[] = [
 		"task_number_dee",
 		// "task_description",
     "task_name",
 		// "file",
-		"due_date",
-		"assignee",
-		"Action",
+		// "due_date",
+		// "assignee",
+  //   // "sponsoring_directorate",
+  //   'title',
+  // 'secondary_title',
+  // 'start_date',
+  // 'end_date',
+  // 'project_progress',
+  // 'status_summary',
+  // 'Action'
+    
+
 
 	  ];
+
+    displayedColumnsNewTable: string[] =
+     [
+      'task_name', 
+      'task_Number_dee',
+      'sponsoring_directorate',
+      'assigned_tasking_group',
+      'secondary_title',
+
+      
+       
+      'Action'
+    ];
 
     displayedColumnslist: string[] = [
       "tasking_status",
@@ -181,6 +334,7 @@ export class Dashboard1Component implements OnInit,OnDestroy {
       "delete",
 
       ];
+      
 
     displayedColumnsview: string[] = [
       "milestone",
@@ -305,18 +459,42 @@ public chartOptions12: Partial<ChartOptions12>;
 
 @ViewChild('chart6') chart6: ChartComponent;
 public chartOptions13: Partial<ChartOptions13>;
+@ViewChild("chart8") chart8: ChartComponent;
+  public chartOptions9: Partial<ChartOptions9>;
 
 @ViewChild('chart7') chart7: ChartComponent;
 public chartOptions14: Partial<ChartOptions14>;
-@ViewChild('chart8') chart8: ChartComponent;
-public chartOptions21: Partial<ChartOptions21>;
+// @ViewChild('chart8') chart8: ChartComponent;
+// public chartOptions21: Partial<ChartOptions21>;
+@ViewChild('chartGroup') chartGroup: ChartComponent;
+public chartOptionsGroup: Partial<chartOptionsGroup>;
+@ViewChild('chart9') chart9: ChartComponent;
+public chartOptions22: Partial<ChartOptions22>;
 token_details:any;
 allocateForm:FormGroup;
+  distribution: any;
+  overdata1: any;
+  groupdata1: any;
+  distributiondata1: any;
+  extenddata: any;
+  chartData: any = {
+    series: [],
+  };
+
+
+ 
+  
   constructor(private ref: ChangeDetectorRef,private modalService: NgbModal,  private logger: ConsoleService,private route: ActivatedRoute,public api: ApiService,private notification: NotificationService, private dialog: MatDialog, private elementref: ElementRef,public datepipe:DatePipe,private router: Router,private platformLocation: PlatformLocation)
 
   {
 
+    
+
     this.token_details=this.api.decryptData(localStorage.getItem('token-detail'));
+    this.xlxsForm = new FormGroup({
+      header: new FormControl([]),
+      fileName: new FormControl(''),
+    })
 
     this.allocateForm = new FormGroup({
       id: new FormControl(""),
@@ -344,6 +522,7 @@ allocateForm:FormGroup;
     this.sub = this.route.data
     .subscribe((v:any) => {
     this.username= v.some_data});
+    
 
 
     var updateChart = this.chartOptions = {
@@ -432,89 +611,89 @@ allocateForm:FormGroup;
 
       };
 
-	  var updateChart1 =	this.chartOptions1 = {
-		series:
-        this.milestone_data,
-		chart: {
+	  // var updateChart1 =	this.chartOptions1 = {
+		// series:
+    //     this.milestone_data,
+		// chart: {
 
-		  height: 450,
-		  type: "rangeBar",
-		  toolbar: {
-			show: false
-		  },
-		  zoom: {
-			enabled:false,
-		  },
+		//   height: 450,
+		//   type: "rangeBar",
+		//   toolbar: {
+		// 	show: false
+		//   },
+		//   zoom: {
+		// 	enabled:false,
+		//   },
 
-		},
+		// },
 
-    dataLabels: {
-      enabled: false,
-    },
-    animations: {
-      enabled: false,
-    },
-		plotOptions: {
-		  bar: {
-			horizontal: true,
-			barHeight: "50%",
+    // dataLabels: {
+    //   enabled: false,
+    // },
+    // animations: {
+    //   enabled: false,
+    // },
+		// plotOptions: {
+		//   bar: {
+		// 	horizontal: true,
+		// 	barHeight: "50%",
 
-		  }
-		},
-		xaxis: {
-		  type: "datetime",
-      axisBorder: {
-        show: false,
-        color: '#000',
-        height: 1,
-        width: '100%',
-        offsetX: 0,
-        offsetY: 0
-    },
-		},
+		//   }
+		// },
+		// xaxis: {
+		//   type: "datetime",
+    //   axisBorder: {
+    //     show: false,
+    //     color: '#000',
+    //     height: 1,
+    //     width: '100%',
+    //     offsetX: 0,
+    //     offsetY: 0
+    // },
+		// },
 
-		zoom: {
-			enabled: false,
-		  },
-		  zoomout: {
-			enabled: false,
-		  },
+		// zoom: {
+		// 	enabled: false,
+		//   },
+		//   zoomout: {
+		// 	enabled: false,
+		//   },
 
-		fill: {
-		  type: "gradient",
-		  gradient: {
-			shade: "light",
-			type: "vertical",
-			shadeIntensity: 0.25,
-			gradientToColors: undefined,
-			inverseColors: true,
-			opacityFrom: 1,
-			opacityTo: 1,
-			stops: [50, 0, 100, 100]
-		  }
-		},
-		legend: {
-		  position: "bottom",
-		  horizontalAlign: "center"
-		},
-    grid: {
-      xaxis: {
-        lines: {
-          show:false
-        }
-      },
+		// fill: {
+		//   type: "gradient",
+		//   gradient: {
+		// 	shade: "light",
+		// 	type: "vertical",
+		// 	shadeIntensity: 0.25,
+		// 	gradientToColors: undefined,
+		// 	inverseColors: true,
+		// 	opacityFrom: 1,
+		// 	opacityTo: 1,
+		// 	stops: [50, 0, 100, 100]
+		//   }
+		// },
+		// legend: {
+		//   position: "bottom",
+		//   horizontalAlign: "center"
+		// },
+    // grid: {
+    //   xaxis: {
+    //     lines: {
+    //       show:false
+    //     }
+    //   },
 
-      yaxis: {
-        lines: {
-          show:true
-        }
-      },
+    //   yaxis: {
+    //     lines: {
+    //       show:true
+    //     }
+    //   },
 
-      borderColor:'black',
+    //   borderColor:'black',
 
-    }
+    // }
 
-	  };
+	  // };
 
    var updateChart2= this.chartOptions2 = {
       series: [
@@ -714,99 +893,195 @@ var updateChartNew = this.chartOptions3 = {
   };
   setTimeout(() => {
     updateChart
-    updateChart1
+    // updateChart1
     updateChart2
 	updateChartNew
   }, 1500);
 
 
-   this.chartOptions11 = {
-	series: [
+  
+  // this.chartOptions11 = {
+  //   series: [
+  //     {
+  //       name: 'task',
+  //       data: [30, 49, 60, 70, 91]
+  //     }
+  //   ],
+  //   chart: {
+  //     type: 'bar',
+  //     height: 350
+  //   },
+  //   plotOptions: {
+  //     bar: {
+  //       horizontal: false,
+  //       columnWidth: "55%",
+  //       colors: {
+  //         ranges: [
+  //           {
+  //             from: 0,
+  //             to: 100, // Adjust the range as per your data
+  //             color: '#FFA500' // Orange color
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   xaxis: {
+  //     categories: ['2021', '2022', '2023', '2024', '2025']
+  //   }
+  // };
+  
+
+
+// this.chartOptions22 = {
+//   series: [
+//     {
+//       name: "Number of Tasks with Extended Deadlines",
+//       data: [4, 5, 1] // Values corresponding to CMS, CSI, SCS
+//     }
+//   ],
+//   chart: {
+//     type: "bar",
+//     height: 350
+//   },
+//   plotOptions: {
+//     bar: {
+//       horizontal: false,
+//       columnWidth: "10%",
+//       colors: {
+//         ranges: [
+//           {
+//             from: 0,
+//             to: 1000, // Range large enough to cover all values
+//             color: '#FFA500' // Orange color
+//           }
+//         ]
+//       }
+//     }
+//   },
+//   dataLabels: {
+//     enabled: false
+//   },
+//   xaxis: {
+//     categories: ["CMS", "CSI", "SCS"], // Group names
+//     title: {
+//       text: "WESEE GROUP"
+//     }
+//   },
+//   yaxis: {
+//     title: {
+//       text: "Tasks with Extended Deadlines by Group"
+//     }
+//   },
+ 
+// };
+
+
+	// this.chartOptions12 = {
+	// 	series: [50.9, 49.1],
+	// 	chart: {
+	// 	  type: 'pie',
+	// 	  height: 350,
+
+	// 	},
+	// 	labels: ['IN PROGRESS', 'YES'],
+
+	// 	legend: {
+	// 	  position: 'right',
+	// 	  horizontalAlign: 'center'
+	// 	},
+	// 	dataLabels: {
+	// 	  enabled: true,
+	// 	   formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
+	// 	},
+	// 	responsive: [
+	// 	  {
+	// 		breakpoint: 480,
+
+		// 	options: {
+		// 	  chart: {
+		// 		width: 300
+		// 	  },
+		// 	  legend: {
+		// 		position: 'bottom',
+		// 		colors: ['#8AE234', '#FFA500'] ,
+		// 	  }
+		// 	}
+		//   }
+		// ],
+		// title: {
+		//   text: 'Task Status Distribution',
+		//   align: 'center'
+		// }
+	  
+	  // this.chartOptions13 = {
+		// series: [{
+		// 	name: 'Number of Overdue Tasks',
+		// 	// data: [1, 0.1, 1]
+		// 	data: [1]
+		//   }],
+		//   chart: {
+		// 	type: 'bar',
+		// 	height: 450
+		//   },
+		//   plotOptions: {
+		// 	bar: {
+		// 	  horizontal: false,
+		// 	  columnWidth: '35%',
+		// 	},
+		//   },
+		//   xaxis: {
+		// 	// categories: ['WESEE GROUP', 'CSI','CMS'],  // Group names
+		// 	categories: ['CSI']
+		//   },
+		//   yaxis: {
+		// 	title: {
+		// 	  text: 'Number of Overdue Tasks'
+		// 	}
+		//   },
+		//   fill: {
+		// 	colors: ['#fbbf24'],  // Set the bar color to red
+		//   },
+		//   title: {
+		// 	text: 'Overdue Tasks Summary by Group',
+		// 	align: 'center'
+		//   }
+	  // };
+
+    this.chartOptions13 = {
+      series: [
         {
-          name: 'task',
-          data: [30,  49, 60, 70, 91, ]
-        }
+          name: 'Overdue Tasks',
+          data: [1, 3], // You will fetch this data from your API
+        },
+        {
+          name: 'Completed Tasks',
+          data: [2, 4], // You will fetch this data from your API
+        },
       ],
       chart: {
         type: 'bar',
-        height: 350
+        height: 350,
       },
+      colors: ['#FF4560', '#008FFB'], // Red for overdue, blue for completed
       xaxis: {
-        categories: ['2021', '2022', '2023', '2024', '2025', ]
-      }
+        categories: ['SI', 'SCS'], // Groups, fetched from your API
+      },
+      title: {
+        text: 'Task Summary by Group',
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Tasks',
+        },
+      },
+      dataLabels: {
+        enabled: true,
+      },
+    };
 
-    };
 
-	this.chartOptions12 = {
-		series: [50.9, 49.1],
-		chart: {
-		  type: 'pie',
-		  height: 350,
-
-		},
-		labels: ['IN PROGRESS', 'YES'],
-
-		legend: {
-		  position: 'right',
-		  horizontalAlign: 'center'
-		},
-		dataLabels: {
-		  enabled: true,
-		   formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
-		},
-		responsive: [
-		  {
-			breakpoint: 480,
-
-			options: {
-			  chart: {
-				width: 300
-			  },
-			  legend: {
-				position: 'bottom',
-				colors: ['#8AE234', '#FFA500'] ,
-			  }
-			}
-		  }
-		],
-		title: {
-		  text: 'Task Status Distribution',
-		  align: 'center'
-		}
-	  };
-	  this.chartOptions13 = {
-		series: [{
-			name: 'Number of Overdue Tasks',
-			// data: [1, 0.1, 1]
-			data: [1]
-		  }],
-		  chart: {
-			type: 'bar',
-			height: 450
-		  },
-		  plotOptions: {
-			bar: {
-			  horizontal: false,
-			  columnWidth: '35%',
-			},
-		  },
-		  xaxis: {
-			// categories: ['WESEE GROUP', 'CSI','CMS'],  // Group names
-			categories: ['CSI']
-		  },
-		  yaxis: {
-			title: {
-			  text: 'Number of Overdue Tasks'
-			}
-		  },
-		  fill: {
-			colors: ['#FF0000'],  // Set the bar color to red
-		  },
-		  title: {
-			text: 'Overdue Tasks Summary by Group',
-			align: 'center'
-		  }
-	  };
+  
 	  this.chartOptions14 = {
 		series: [{
 			name: 'Number of Pending Tasks',
@@ -839,55 +1114,154 @@ var updateChartNew = this.chartOptions3 = {
 			align: 'center'
 		  }
 	  };
-	  this.chartOptions21 = {
-		series: [
-			{
-			  name: 'IN PROGRESS',
-			  data: [10, 20, 30, 5, 10],  // Replace with your data
-			  color: '#fcb040'  // Yellow
-			},
-			{
-			  name: 'YES',
-			  data: [20, 10, 20, 5, 5],  // Replace with your data
-			  color: '#f58220'  // Orange
-			}
-		  ],
-		  chart: {
-			type: 'bar',
-			height: 350,
-			stacked: true
-		  },
-		  plotOptions: {
-			bar: {
-			  horizontal: false,
-			},
-		  },
-		  xaxis: {
-			categories: ['CMS', 'CSC', 'CSI', 'ETG', 'SCS'],  // Replace with your categories
-			title: {
-			  text: 'WESEE GROUP'
-			}
-		  },
-		  yaxis: {
-			title: {
-			  text: 'Number of Tasks'
-			}
-		  },
-		  legend: {
-			position: 'top',
-			horizontalAlign: 'right'
-		  },
-		  fill: {
-			opacity: 1
-		  },
-		  title: {
-			text: 'Group-wise Task Summary',
-			align: 'center'
-		  },
-		  dataLabels: {
-			enabled: true
-		  }
-	  };
+	  // this.chartOptions21 = {
+		// series: [
+		// 	{
+		// 	  name: 'IN PROGRESS',
+		// 	  data: [10, 20, 30, 5, 10],  // Replace with your data
+		// 	  color: '#fcb040'  // Yellow
+		// 	},
+		// 	{
+		// 	  name: 'YES',
+		// 	  data: [20, 10, 20, 5, 5],  // Replace with your data
+		// 	  color: '#f58220'  // Orange
+		// 	}
+		//   ],
+		//   chart: {
+		// 	type: 'bar',
+		// 	height: 350,
+		// 	stacked: true
+		//   },
+		//   plotOptions: {
+		// 	bar: {
+		// 	  horizontal: false,
+		// 	},
+		//   },
+		//   xaxis: {
+		// 	categories: ['CMS', 'CSC', 'CSI', 'ETG', 'SCS'],  // Replace with your categories
+		// 	title: {
+		// 	  text: 'WESEE GROUP'
+		// 	}
+		//   },
+		//   yaxis: {
+		// 	title: {
+		// 	  text: 'Number of Tasks'
+		// 	}
+		//   },
+		//   legend: {
+		// 	position: 'top',
+		// 	horizontalAlign: 'right'
+		//   },
+		//   fill: {
+		// 	opacity: 1
+		//   },
+		//   title: {
+		// 	text: 'Group-wise Task Summary',
+		// 	align: 'center'
+		//   },
+		//   dataLabels: {
+		// 	enabled: true
+		//   }
+	  // };
+
+    // this.chartOptions9= {
+    //   series: [
+    //     {
+    //       name: "distibuted",
+    //       data: [21, 22, 10, 28, 16, 21, 13, 30]
+    //     }
+    //   ],
+    //   chart: {
+    //     height: 350,
+    //     type: "bar",
+    //     events: {
+    //       click: function(chart, w, e) {
+    //         // console.log(chart, w, e)
+    //       }
+    //     }
+    //   },
+    //   colors: [
+    //     "#008FFB",
+    //     "#00E396",
+    //     "#FEB019",
+    //     "#FF4560",
+    //     "#775DD0",
+    //     "#546E7A",
+    //     "#26a69a",
+    //     "#D10CE8"
+    //   ],
+    //   plotOptions: {
+    //     bar: {
+    //       columnWidth: "45%",
+    //       distributed: true
+    //     }
+    //   },
+    //   dataLabels: {
+    //     enabled: false
+    //   },
+    //   legend: {
+    //     show: false
+    //   },
+    //   grid: {
+    //     show: false
+    //   },
+    //   xaxis: {
+    //     categories: [
+    //       ["John", "Doe"],
+    //       ["Joe", "Smith"],
+    //       ["Jake", "Williams"],
+    //       "Amber",
+    //       ["Peter", "Brown"],
+    //       ["Mary", "Evans"],
+    //       ["David", "Wilson"],
+    //       ["Lily", "Roberts"]
+    //     ],
+    //     labels: {
+    //       style: {
+    //         colors: [
+    //           "#008FFB",
+    //           "#00E396",
+    //           "#FEB019",
+    //           "#FF4560",
+    //           "#775DD0",
+    //           "#546E7A",
+    //           "#26a69a",
+    //           "#D10CE8"
+    //         ],
+    //         fontSize: "12px"
+    //       }
+    //     }
+    //   }
+    // };
+  
+
+    this.chartOptionsGroup = {
+      chart: {
+        type: 'bar',
+        stacked: true,
+        height: '400px',
+      },
+      xaxis: {
+        categories: [],
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Tasks',
+        },
+      },
+      legend: {
+        position: 'right',
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+        },
+      },
+      colors: ['#FFB534', '#FFB534'], // Yellow for "IN PROGRESS", Orange for "YES"
+      dataLabels: {
+        enabled: false,
+      },
+    };
   }
 
 
@@ -913,6 +1287,7 @@ weseeForm : new FormGroup({
       id: new FormControl(""),
       cost_implication: new FormControl(""),
      comments_of_wesee: new FormControl(""),
+     comments_of_tasking_group: new FormControl(""),
      time_frame_for_completion_days: new FormControl(""),
      time_frame_for_completion_month: new FormControl(""),
   }),
@@ -945,9 +1320,9 @@ public MileStoneForm = new FormGroup({
 });
 status = this.taskForm.value.status;
   showSD=false;
-  populate(data) {
-    //console.log('patch',data.assigned_tasking_group[0].tasking_group.name);
-    //this.taskForm.get('sdForm').patchValue(data);
+  populate(data , tasking) {
+   
+    // this.taskForm.get('sdForm').patchValue(data.tasking);
     this.taskForm.get('weseeForm').patchValue(data);
     this.taskForm.get('deeForm').patchValue(data);
     this.taskForm.get('acomForm').patchValue(data);
@@ -962,17 +1337,10 @@ status = this.taskForm.value.status;
 
     this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate,task_name:data.task_name,task_description:data.task_description}})
 
-    // this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
-    this.allocateForm.patchValue({tasking_group:data.assigned_tasking_group.length>0 && data.assigned_tasking_group[0].tasking_group?data.assigned_tasking_group[0].tasking_group.id:''
-    });
+  
+    this.allocateForm.patchValue({tasking_group:tasking?.assigned_tasking_group?.id});
 
-    // this.MileStoneForm.patchValue(data);
-    // this.MileStoneForm.patchValue({tasking_status:data.tasking_status.id});
-    // this.MileStoneForm.patchValue({
-    //   milestone:data.milestone,percentage_completion:data.percentage_completion,
-    //   task_start_date:data.task_start_date,task_end_date:data.task_end_date,manpower:data.manpower,
-    //   id:data.id,budget_utilized:data.budget_utilized,tasking:data.tasking,tasking_status:data.tasking_status.id
-    // });
+
     if (data ? data.file : "") {
       var img_link = data.file;
       //var trim_img = img_link.substring(1)
@@ -1048,27 +1416,13 @@ status = this.taskForm.value.status;
 
   }
 
-  milestonepopulate(data){
-    this.MileStoneForm.patchValue(data);
-    this.MileStoneForm.patchValue({tasking_status:data.tasking_status.id});
-	  if (data ? data.file : "") {
-		var img_link = data.file;
-		//var trim_img = img_link.substring(1)
-		this.ImageUrl = img_link;
-	  }
 
-
-  }
 
   initForm() {
     this.taskForm.patchValue({
       status: "1",
     });
-	this.MileStoneForm.patchValue({
-		status: "1",
-    // tasking_status:this.MileStoneForm.value.tasking_status
 
-	  });
 
   }
 
@@ -1085,246 +1439,401 @@ status = this.taskForm.value.status;
   completed=[];
   nameData=[];
   time_data:any;
-  getStatusTasking() {
-    if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
-      .subscribe((res) => {
+  // getStatusTasking() {
+  //   if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
+  //     .subscribe((res) => {
 
-        this.dataSourceDel = new MatTableDataSource(res.data);
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
 
-        this.statusTasking = res.data;
+  //       this.statusTasking = res.data;
 
-        this.dataSourceDel.paginator = this.pagination;
-        // this.logger.log('countryfg',this.statusTasking)
+  //       this.dataSourceDel.paginator = this.pagination;
+  //       // this.logger.log('countryfg',this.statusTasking)
 
-        for(let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
-              {
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+  //       for(let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
+  //             {
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
 
-              }
+  //             }
 
-            }
-            this.name.push([this.statusTasking[i].task_number_dee])
+  //           }
+  //           this.name.push([this.statusTasking[i].task_number_dee])
 
-          }
+  //         }
 
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].task_end_date!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
-                  info: 'info',
-                  site: 'name',
-                  fillColor: "#008FFB",id:this.statusTasking[i].id})
-                }
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].task_end_date!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
+  //                 info: 'info',
+  //                 site: 'name',
+  //                 fillColor: "#008FFB",id:this.statusTasking[i].id})
+  //               }
 
-              }
-
-
-
-            }
-
-        }
-		this.ref.detectChanges();
-      });
-    }
-    else if(this.token_detail.role_id==3 && this.token_detail.process_id==2 && this.token_detail.department_id!=''){
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
-      .subscribe((res) => {
-
-        this.dataSourceDel = new MatTableDataSource(res.data);
-
-        this.statusTasking = res.data;
-        this.dataSourceDel.paginator = this.pagination;
-
-        for(let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
-              {
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
-
-              }
-
-            }
-            //console.log('this.statusTasking[i]',this.statusTasking[i]);
-            this.name.push([this.statusTasking[i].task_number_dee])
-
-          }
-
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='' && this.statusTasking[i].task_number_dee!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
-                  info: 'info',
-                  site: 'name',
-                  fillColor: "#008FFB",id:this.statusTasking[i].id})
-                }
-
-              }
+  //             }
 
 
-            }
 
-        }
-		this.ref.detectChanges();
-      });
+  //           }
 
-    }
-    else{
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'process_id':this.token_detail.process_id,'tasking_id':''})
-      .subscribe((res) => {
+  //       }
+	// 	this.ref.detectChanges();
+  //     });
+  //   }
+  //   else if(this.token_detail.role_id==3 && this.token_detail.process_id==2 && this.token_detail.department_id!=''){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
+  //     .subscribe((res) => {
 
-        this.dataSourceDel = new MatTableDataSource(res.data);
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
 
-        this.statusTasking = res.data;
+  //       this.statusTasking = res.data;
+  //       this.dataSourceDel.paginator = this.pagination;
 
-        this.dataSourceDel.paginator = this.pagination;
+  //       for(let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='' && this.statusTasking[i].task_number_dee!='')
+  //             {
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
 
-        for(let i=0;i<this.statusTasking.length;i++){
+  //             }
 
-          if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-            for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-              if(this.statusTasking[i].project_status[k].project_progress!='')
+  //           }
+  //           // console.log('this.statusTasking[i]',this.statusTasking[i]);
+  //           this.name.push([this.statusTasking[i].task_number_dee])
 
-              {
+  //         }
 
-                this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
-                this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
-                // this.name.push([this.statusTasking[i].task_number_dee])
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='' && this.statusTasking[i].task_number_dee!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee,  product: 'name',
+  //                 info: 'info',
+  //                 site: 'name',
+  //                 fillColor: "#008FFB",id:this.statusTasking[i].id})
+  //               }
 
-              }
-
-            }
-            //console.log('this.statusTasking[i]',this.statusTasking[i]);
-            this.name.push([this.statusTasking[i].task_number_dee])
-
-          }
-
-        }
-          for(let i=0;i<this.statusTasking.length;i++){
-            if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
-              for(let k=0;k<this.statusTasking[i].project_status.length;k++){
-                if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='')  {
-                  this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee})
-
-
-                }
-
-              }
+  //             }
 
 
-            }
+  //           }
 
-        }
+  //       }
+	// 	this.ref.detectChanges();
+  //     });
 
-		this.ref.detectChanges();
-      });
-    }
+  //   }
+  //   else{
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/trial/status",{'process_id':this.token_detail.process_id,'tasking_id':''})
+  //     .subscribe((res) => {
+
+  //       this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //       this.statusTasking = res.data;
+
+  //       this.dataSourceDel.paginator = this.pagination;
+
+  //       for(let i=0;i<this.statusTasking.length;i++){
+
+  //         if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //           for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //             if(this.statusTasking[i].project_status[k].project_progress!='')
+
+  //             {
+
+  //               this.pending.push([100-this.statusTasking[i].project_status[k].project_progress])
+  //               this.completed.push('-'+[this.statusTasking[i].project_status[k].project_progress])
+  //               // this.name.push([this.statusTasking[i].task_number_dee])
+
+  //             }
+
+  //           }
+  //           //console.log('this.statusTasking[i]',this.statusTasking[i]);
+  //           this.name.push([this.statusTasking[i].task_number_dee])
+
+  //         }
+
+  //       }
+  //         for(let i=0;i<this.statusTasking.length;i++){
+  //           if(this.statusTasking[i].project_status!='' && this.statusTasking[i].task_number_dee!=''){
+  //             for(let k=0;k<this.statusTasking[i].project_status.length;k++){
+  //               if(this.statusTasking[i].project_status[k].start_date!='' && this.statusTasking[i].project_status[k].end_date!='')  {
+  //                 this.chart_data.push({y:[new Date(this.statusTasking[i].project_status[k].start_date).getTime(),new Date(this.statusTasking[i].project_status[k].end_date).getTime()],x:this.statusTasking[i].task_number_dee})
 
 
-  }
+  //               }
+
+  //             }
+
+
+  //           }
+
+  //       }
+
+	// 	this.ref.detectChanges();
+  //     });
+  //   }
+
+
+  // }
+
+
+//   getStatusTasking() {
+//     console.log("getStatusTasking called");
+    
+//     if(this.token_detail.process_id == 3 && this.token_detail.tasking_id != '') {
+//         console.log("Condition 1: process_id == 3 and tasking_id is not empty");
+
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
+
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
+
+//             console.log("statusTasking:", this.statusTasking);
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee,
+//                                 product: 'name',
+//                                 info: 'info',
+//                                 site: 'name',
+//                                 fillColor: "#008FFB",
+//                                 id: this.statusTasking[i].id
+//                             });
+
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
+
+//     } else if(this.token_detail.role_id == 3 && this.token_detail.process_id == 2 && this.token_detail.department_id != '') {
+//         console.log("Condition 2: role_id == 3, process_id == 2, and department_id is not empty");
+
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'tasking_id': this.token_detail.tasking_id, 'process_id': this.token_detail.process_id, 'created_by': this.token_detail.user_id})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
+
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
+
+//             console.log("statusTasking:", this.statusTasking);
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee) {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee,
+//                                 product: 'name',
+//                                 info: 'info',
+//                                 site: 'name',
+//                                 fillColor: "#008FFB",
+//                                 id: this.statusTasking[i].id
+//                             });
+
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
+
+//     } else {
+//         console.log("Condition 3: process_id present but tasking_id is empty");
+
+//         this.api
+//         .postAPI(environment.API_URL + "transaction/trial/status", {'process_id': this.token_detail.process_id, 'tasking_id': ''})
+//         .subscribe((res) => {
+//             console.log("API response:", res);
+
+//             this.dataSourceDel = new MatTableDataSource(res.data);
+//             this.statusTasking = res.data;
+//             this.dataSourceDel.paginator = this.pagination;
+
+//             console.log("statusTasking:", this.statusTasking);
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].project_progress != '') {
+//                             this.pending.push([100 - this.statusTasking[i].project_status[k].project_progress]);
+//                             this.completed.push('-' + [this.statusTasking[i].project_status[k].project_progress]);
+
+//                             console.log("Project progress:", this.statusTasking[i].project_status[k].project_progress);
+//                         }
+//                     }
+//                     this.name.push([this.statusTasking[i].task_number_dee]);
+//                     console.log("Task number dee:", this.statusTasking[i].task_number_dee);
+//                 }
+//             }
+
+//             for(let i = 0; i < this.statusTasking.length; i++) {
+//                 if(this.statusTasking[i].project_status != '' && this.statusTasking[i].task_number_dee != '') {
+//                     for(let k = 0; k < this.statusTasking[i].project_status.length; k++) {
+//                         if(this.statusTasking[i].project_status[k].start_date != '' && this.statusTasking[i].project_status[k].end_date != '') {
+//                             this.chart_data.push({
+//                                 y: [new Date(this.statusTasking[i].project_status[k].start_date).getTime(), new Date(this.statusTasking[i].project_status[k].end_date).getTime()],
+//                                 x: this.statusTasking[i].task_number_dee
+//                             });
+
+//                             console.log("Chart data:", this.chart_data);
+//                         }
+//                     }
+//                 }
+//             }
+//             this.ref.detectChanges();
+//         });
+//     }
+// }
+
   tasking_chart=[];
-  getTaskingChart(){
+  // getTaskingChart(){
 
-    if(this.token_detail.process_id==3){
-      this.api
-      .postAPI(environment.API_URL + "transaction/taskingchart",{'created_by':this.token_detail.user_id})
-      .subscribe((res) => {
+  //   if(this.token_detail.process_id==3){
+  //     this.api
+  //     .postAPI(environment.API_URL + "transaction/taskingchart",{'created_by':this.token_detail.user_id})
+  //     .subscribe((res) => {
 
-        // this.dataSourceDel = new MatTableDataSource(res.data);
+  //       // this.dataSourceDel = new MatTableDataSource(res.data);
 
-        this.statusTasking = res.data;
+  //       this.statusTasking = res.data;
 
-        for (let i=0;i<this.statusTasking.length;i++){
-          if(this.statusTasking[i].tasking!=''){
-            this.tasking_chart.push({name:this.statusTasking[i].tasking__task_name})
-            this.api
-        .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__tasking__task_name + '&limit_start=0&limit_end=6')
-        .subscribe((res) => {
-          this.dataSourcelist = new MatTableDataSource(res.data);
+  //       for (let i=0;i<this.statusTasking.length;i++){
+  //         if(this.statusTasking[i].tasking!=''){
+  //           this.tasking_chart.push({name:this.statusTasking[i].tasking__task_name})
+  //           this.api
+  //       .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__tasking__task_name + '&limit_start=0&limit_end=6')
+  //       .subscribe((res) => {
+  //         this.dataSourcelist = new MatTableDataSource(res.data);
 
-            var statusTaskingList = res.data;
-            this.tasking_chart[i].data=[];
-            for (let k=0;k<statusTaskingList.length;k++){
-              if(statusTaskingList[k].title){
-                if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
-                  {
-                    this.tasking_chart[i].data.push({x:
-                    statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
+  //           var statusTaskingList = res.data;
+  //           this.tasking_chart[i].data=[];
+  //           for (let k=0;k<statusTaskingList.length;k++){
+  //             if(statusTaskingList[k].title){
+  //               if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
+  //                 {
+  //                   this.tasking_chart[i].data.push({x:
+  //                   statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
 
-                  }
+  //                 }
 
-                }
-              }
-
-
-            }
-
-        });
-
-          }
-        }
-
-      });
+  //               }
+  //             }
 
 
-    }
-    else{
-      this.api
-    .postAPI(environment.API_URL + "transaction/taskingchart",{})
-    .subscribe((res) => {
+  //           }
 
-      // this.dataSourceDel = new MatTableDataSource(res.data);
+  //       });
 
-      this.statusTasking = res.data;
-      for (let i=0;i<this.statusTasking.length;i++){
-        if(this.statusTasking[i].tasking!=''){
-          this.tasking_chart.push({name:this.statusTasking[i].tasking__task_number_dee})
-          this.api
-      .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__task_number_dee + '&limit_start=0&limit_end=6')
-      .subscribe((res) => {
-        this.dataSourcelist = new MatTableDataSource(res.data);
-          var statusTaskingList = res.data;
+  //         }
+  //       }
 
-          this.tasking_chart[i].data=[];
-          for (let k=0;k<statusTaskingList.length;k++){
-            if(statusTaskingList[k].title){
-              if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
-                {
-                  this.tasking_chart[i].data.push({x:
-                  statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
-
-                }
-
-              }
-            }
+  //     });
 
 
-          }
+  //   }
+  //   else{
+  //     this.api
+  //   .postAPI(environment.API_URL + "transaction/taskingchart",{})
+  //   .subscribe((res) => {
+
+  //     // this.dataSourceDel = new MatTableDataSource(res.data);
+
+  //     this.statusTasking = res.data;
+  //     for (let i=0;i<this.statusTasking.length;i++){
+  //       if(this.statusTasking[i].tasking!=''){
+  //         this.tasking_chart.push({name:this.statusTasking[i].tasking__task_number_dee})
+  //         this.api
+  //     .getAPI(environment.API_URL + "transaction/tasking-status?tasking__task_number_dee="+this.statusTasking[i].tasking__task_number_dee + '&limit_start=0&limit_end=6')
+  //     .subscribe((res) => {
+  //       this.dataSourcelist = new MatTableDataSource(res.data);
+  //         var statusTaskingList = res.data;
+
+  //         this.tasking_chart[i].data=[];
+  //         for (let k=0;k<statusTaskingList.length;k++){
+  //           if(statusTaskingList[k].title){
+  //             if(statusTaskingList[k].start_date!='' && statusTaskingList[k].end_date!='' && statusTaskingList[k].title!=''){
+  //               {
+  //                 this.tasking_chart[i].data.push({x:
+  //                 statusTaskingList[k].title,y:[new Date(statusTaskingList[k].start_date).getTime(),new Date(statusTaskingList[k].end_date).getTime()]})
+
+  //               }
+
+  //             }
+  //           }
 
 
-      });
+  //         }
 
-        }
-      }
 
-    });
-    //console.log('this.tasking_chartname',this.tasking_chart);
-    }
+  //     });
 
-  }
+  //       }
+  //     }
+
+  //   });
+  //   //console.log('this.tasking_chartname',this.tasking_chart);
+  //   }
+
+  // }
 
 
 token_detail:any;
@@ -1347,26 +1856,52 @@ getAccess() {
 
 
 ngOnInit(): void {
+  
 	this.getStatus();
-
+   this.getyear() ;
+   this.getoverd();
+   this.getgroup();
+   this.getdistri();
+   this.getextend();
+  //  this.getStatusTaskingNew();
+  this.getNewTaskingStatus();
+ 
     // this.dtOptions = {
     //   pagingType: 'full_numbers'
     // };
     this.token_detail=this.api.decryptData(localStorage.getItem('token-detail'));
     //console.log(' this.token_detail', this.token_detail)
     // this.tasking_ID=this.api.decryptData();
-    this.getStatusTasking();
+   
     this.getTasking();
 
-    this.getMileStone;
+    // this.getMileStone;
     this.getDashboardCount();
-    this.getMileStoneChart();
+    // this.getMileStoneChart();
     this.getAccess();
-    this.getTaskingChart();
+    // this.getTaskingChart();
     this.getTaskingGroups();
     this.tasklist();
     this.getChart();
   }
+  showDialog() {
+    this.getyearData();
+    this.visible = true; }
+    showDialog1() {
+      this.getdistribution();
+      this.visible1 = true; }
+      showDialog2() {
+        this.getoverdue();
+        this.visible2 = true; }
+        showDialog3() {
+          this.getpendingdata();
+          this.visible3 = true; }
+          showDialog4() {
+           this.getgroupwise()
+            this.visible4= true; }
+  
+
+  
   // task_id:string
   onTaskChange(taskname: any){
     console.log('Selected Task Name:', taskname.id);
@@ -1505,110 +2040,7 @@ getChart(task_id=""){
 setTimeout(() => {
  console.log('this.tasking_chartname',tasking_chartname);
    let data_tasking_chart = tasking_chartname;
-   // [
-   //   {
-   //     category: "PSR",
-   //     start: new Date(2023, 0, 1).getTime(),
-   //     end: new Date(2023, 0, 14).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 0, 16).getTime(),
-   //     end: new Date(2023, 0, 27).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 1, 5).getTime(),
-   //     end: new Date(2023, 3, 18).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "PSR",
-   //     start: new Date(2023, 3, 18).getTime(),
-   //     end: new Date(2023, 3, 30).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(0), 1.2)
-   //     },
-   //     task: "project4 "
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 8).getTime(),
-   //     end: new Date(2023, 0, 10).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 12).getTime(),
-   //     end: new Date(2023, 0, 15).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 0, 16).getTime(),
-   //     end: new Date(2023, 1, 5).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "GLS",
-   //     start: new Date(2023, 1, 10).getTime(),
-   //     end: new Date(2023, 1, 18).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(2), 1.2)
-   //     },
-   //     task: "project4"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 2).getTime(),
-   //     end: new Date(2023, 0, 8).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0)
-   //     },
-   //     task: "project1"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 8).getTime(),
-   //     end: new Date(2023, 0, 16).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0.4)
-   //     },
-   //     task: "project2"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 0, 19).getTime(),
-   //     end: new Date(2023, 2, 1).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 0.8)
-   //     },
-   //     task: "project3"
-   //   }, {
-   //     category: "BS",
-   //     start: new Date(2023, 2, 12).getTime(),
-   //     end: new Date(2023, 3, 5).getTime(),
-   //     columnSettings: {
-   //       fill: am5.Color.brighten(colors.getIndex(4), 1.2)
-   //     },
-   //     task: "project4"
-   //   },
-   // ];
-
-
-   // Create axes
-   // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-
+  
    let yRenderer = am5xy.AxisRendererY.new(root, {});
    yRenderer.grid.template.set("location", 1);
 
@@ -1819,193 +2251,6 @@ ctcmchart.appear(1000, 100);
 
 setTimeout(() => {
 
-/*this.chartOptions = {
-series:
- this.tasking_chart,
-
-tooltip: {
- enabled:true
-
-},
-
-chart: {
- height: 450,
- type: "rangeBar",
- toolbar: {
-   show: false
-   },
-   zoom: {
-   enabled:false,
-   },
-
-},
-dataLabels: {
- enabled: false,
-},
-animations: {
- enabled: false,
-},
-plotOptions: {
- bar: {
-   horizontal: true,
-   barHeight: "90%"
- }
-},
-xaxis: {
- type: "datetime",
- axisBorder: {
-   show: false,
-   color: '#000',
-   height: 1,
-   width: '100%',
-   offsetX: 0,
-   offsetY: 0
-},
-},
-// yaxis: {
-//   show:false
-// },
-zoom: {
- enabled: false,
- },
- zoomout: {
- enabled: false,
- },
-
- // fill: {
- //   type: "solid",
- //   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291']
- // },
-
-fill: {
- type: "solid",
- colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291'],
-},
-
-stroke: {
- width: 3,
- colors: ["#d5d9dd"]
-},
-
-legend: {
- position: "bottom",
- horizontalAlign: "center"
-},
-grid: {
- xaxis: {
-   lines: {
-     show:true
-   }
- },
- yaxis: {
-   lines: {
-     show:false
-   }
- },
-
- borderColor:'black',
-
-}
-
-};*/
-
-this.chartOptions1 = {
- series:
-   this.milestone_data,
- chart: {
-   height: 405,
-   type: "rangeBar",
-   toolbar: {
-   show: true,
-   colors: ["#008FFB"],
-   },
-   zoom: {
-   enabled:false,
-   },
-
- },
-
- dataLabels: {
-   enabled: false,
- },
- animations: {
-   enabled: false,
- },
- plotOptions: {
-   bar: {
-   horizontal: true,
-   barHeight: "50%",
-   }
- },
- stroke: {
-   width: 0,
-   colors: ["#d5d9dd"]
- },
-
- xaxis: {
-   type: "datetime",
-   axisBorder: {
-     show: false,
-     color: '#000',
-     height: 1,
-     width: '100%',
-     offsetX: 0,
-     offsetY: 0
- },
- },
-
- zoom: {
-   enabled: false,
-   },
-   zoomout: {
-   enabled: false,
-   },
-
- // fill: {
- //   type: "solid",
- //   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291']
- // },
-
- fill: {
-   type: "solid",
-   colors: ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#6c5ce7', '#c23616', '#fbc531', '#f8c291'],
- },
-
- legend: {
-   position: "bottom",
-   horizontalAlign: "center"
- },
-
- grid: {
-   // row: {
-   //   colors: ['#fff', '#fff', '#fff']
-   // },
-   // column: {
-   //   colors: ['#fff', '#fff', '#fff']
-   // },
-   xaxis: {
-     lines: {
-       show:false
-     },
-     labels: {
-       style: {
-         fontSize: '20px',
-         fontWeight: 600,
-         cssClass: 'apexcharts-xaxis-label',
-     },
-     }
-   },
-   yaxis: {
-     lines: {
-       show:true
-     },
-   },
-
-   borderColor:'#9a97da',
-
- }
-
- };
 
 this.chartOptions2 = {
    series: [
@@ -2285,23 +2530,9 @@ this.chartOptions2 = {
 	this.taskForm.get('deeForm').value.task_number_dee;
  	if(this.taskForm.get('deeForm').value.task_number_dee!=''){
 
-    // this.taskForm.patchValue({
-
-    //   deeForm:({
-    //     task_number_dee:splitFirst
-    //     })
-
-    //   });
  	  this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
 	 	}
 
-//  if(this.taskForm.get('sdForm').value.sponsoring_directorate!=''){
-
-// 	this.taskForm.get('sdForm').value.sponsoring_directorate='IHQ MOD(N)/'+this.api.userid.first_name;
-// 	  }
-    //this.taskForm.value.sponsoring_directorate='IHQ MOD(N)/'+this.taskForm.value.sponsoring_directorate;
-    //this.taskForm.value.created_by = this.api.userid.user_id;
-   //this.taskForm.value.status = this.taskForm.value.status==true ? 1 : 2;
     const formData = new FormData();
     formData.append('sponsoring_directorate', this.taskForm.get('sdForm').value.sponsoring_directorate);
     formData.append('task_description', this.taskForm.get('sdForm').value.task_description);
@@ -2357,129 +2588,13 @@ this.chartOptions2 = {
   }
 
 
-  name_data=[];
-  milestone_data=[];
-  current:any;
-  getMileStoneChart(){
-    // 'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,
-    if(this.token_detail.process_id==3){
-      this.api
-		  .postAPI(environment.API_URL + "transaction/milestonechart",{'created_by':this.token_detail.user_id})
-		  .subscribe((res) => {
-			// this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-
-      for (let i=0;i<this.mileList.length;i++){
-        if(this.mileList[i].milestone!=''){
-          this.milestone_data.push({name:this.mileList[i].tasking__task_name+" : "+this.mileList[i].tasking_status__title})
-            this.api
-            .getAPI(environment.API_URL + "transaction/milestone-status?limit_start=0&limit_end=5"+"&tasking_status__title="+this.mileList[i].tasking_status__title + '&created_by='+this.token_detail.user_id)
-            .subscribe((res) => {
-            this.dataSourcelist = new MatTableDataSource(res.data);
-
-            var milestoneList = res.data;
-            // console.log('df1',milestoneList.)
-            this.milestone_data[i].data=[];
-            for (let k=0;k<milestoneList.length;k++){
-              if(milestoneList[k].tasking_status){
-                if(milestoneList[k].task_start_date!='' && milestoneList[k].task_end_date!='' && milestoneList[k].milestone!=''){
-                  {
-                    this.milestone_data[i].data.push({y:[new Date(milestoneList[k].task_start_date).getTime(),new Date(milestoneList[k].task_end_date).getTime()],x:milestoneList[k].milestone})
-
-                  }
-                 }
-              }
-
-            }
-
-
-          });
-
-
-          }
-      }
-		  });
-		  this.ref.detectChanges();
-
-    }
-
-    else{
-      this.api
-		  .postAPI(environment.API_URL + "transaction/milestonechart",{})
-		  .subscribe((res) => {
-			// this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-			// this.logger.log('milestone',this.mileList.length-5)
-
-      for (let i=0;i<this.mileList.length;i++){
-        if(this.mileList[i].milestone!=''){
-          this.milestone_data.push({name:this.mileList[i].tasking__task_name+" : "+this.mileList[i].tasking_status__title})
-            this.api
-            .getAPI(environment.API_URL + "transaction/milestone-status?limit_start=0&limit_end=5"+"&tasking_status__title="+this.mileList[i].tasking_status__title )
-            .subscribe((res) => {
-            this.dataSourcelist = new MatTableDataSource(res.data);
-
-            var milestoneList = res.data;
-              this.milestone_data[i].data=[];
-            for (let k=0;k<milestoneList.length;k++){
-              if(milestoneList[k].tasking_status){
-                if(milestoneList[k].task_start_date!='' && milestoneList[k].task_end_date!='' && milestoneList[k].milestone!=''){
-                  {
-                      this.milestone_data[i].data.push({y:[new Date(milestoneList[k].task_start_date).getTime(),new Date(milestoneList[k].task_end_date).getTime()],x:milestoneList[k].milestone})
-
-                  }
-                 }
-              }
-
-            }
-
-
-          });
-
-
-          }
-      }
-
-		  });
-		  this.ref.detectChanges();
-    }
-
-
-	  }
-
-    counter:any;
-
-    viewstatus:any;
-  getMileStone(){
-		this.api.getAPI(environment.API_URL + "transaction/milestone-status?tasking_id="+this.taskingID)
-		  .subscribe((res) => {
-			this.dataSourcelist = new MatTableDataSource(res.data);
-
-			this.mileList = res.data;
-      this.counter = 0;
-      for (let i = 0; i < this.mileList.length; i++) {
-        this.counter=this.counter+parseInt(this.mileList[i].manpower);
-      }
-      localStorage.setItem('manpowercount',this.api.encryptData(this.counter));
-			this.dataSourcelist.paginator = this.pagination;
-			// this.logger.log('milestonefdf',this.counter)
-
-		  });
-      this.api
-		  .getAPI(environment.API_URL + "transaction/tasking-status?tasking_id="+this.taskingID)
-		  .subscribe((res) => {
-          this.dataSourceStatus = new MatTableDataSource(res.data);
-          this.viewstatus = res.data;
-      });
-	  }
+ 
 
     editOption(milestone) {
       this.isReadonly=false;
       this.MileStoneForm.enable();
       this.crudName = "Edit";
-      this.milestonepopulate(milestone);
+      // this.milestonepopulate(milestone);
 
       var element = <HTMLInputElement> document.getElementById("exampleCheck1");
 
@@ -2500,7 +2615,7 @@ this.chartOptions2 = {
           }).subscribe((res)=>{
             if(res.status==environment.SUCCESS_CODE) {
               this.notification.warn('Milestone '+language[environment.DEFAULT_LANG].deleteMsg);
-              this.getMileStone();
+              // this.getMileStone();
             } else {
               this.notification.displayMessage(language[environment.DEFAULT_LANG].unableDelete);
             }
@@ -2538,7 +2653,7 @@ this.chartOptions2 = {
 		 if(res.status==environment.SUCCESS_CODE){
 		   // this.logger.log('Formvalue',this.editForm.value);
 		   this.notification.success(res.message);
-       this.getMileStone();
+      //  this.getMileStone();
        let reset = this.formGroupDirective.resetForm();
       if(reset!==null) {
         this.initForm();
@@ -2665,12 +2780,13 @@ getDashboardCount(){
 
   openEdit(country) {
     this.isReadonly=false;
-    this.taskForm.enable();
+    console.log('edit',country)
+    // this.taskForm.enable();
     this.crudName = "View";
-	this.id=country.id;
-    this.populate(country);
+	  this.id=country.id;
+    this.populate(country.tasking, country);
     this.list=country;
-	this.taskForm.disable();
+	  this.taskForm.disable();
   //console.log('country',country)
 	openModal('#crud-countries');}
 
@@ -2684,7 +2800,7 @@ getDashboardCount(){
     this.taskingID=id;
     openModal('#crud-milestone');
     setTimeout(()=> {
-      this.getMileStone();
+      // this.getMileStone();
      }, 2000);
 
 
@@ -2699,7 +2815,7 @@ getDashboardCount(){
     this.taskingID=id;
     // this.getMileStone();
     openModal('#view-milestone');
-    this.getMileStone();
+    // this.getMileStone();
     // setTimeout(()=> {
     //   this.getMileStone();
     //  }, 2000);
@@ -2756,5 +2872,627 @@ getDashboardCount(){
       });
   }
 
+  getyearData() {
+    this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+      .subscribe((res: any) => {
+        this.yearlytaskdata = res;
+        console.log('yearlytaskdata',this.yearlytaskdata) 
+      },
+      (error)=>{
+        console.error('Error fetching pending data:', error);
+      }
+    )
+  }
+  getoverdue(){
+    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+      this.overdata=res.data;
+      this.overdata = res.data.flatMap((group: any) => 
+        group.tasks.map((task: any) => ({
+          ...task,
+          sponsoring_directorate: group.sponsoring_directorate
+        }))
+      );
+      console.log('overdata',this.overdata);
+    },
+    (error)=>{
+      console.error('Error fetching pending data:',error);
+    }
+  )
+  
+  }
+  
+  getpendingdata(){
+    this.api.getAPI(environment.API_URL + '/transaction/pending-by-group/').subscribe((res:any)=>{
+      this.Pendingdata=res.data;
+      console.log('Pendingdata',this.Pendingdata);
+    },
+    (error)=>{
+      console.error('Error fetching pending data:',error );
+    }
+  )
+  }
+  getgroupwise(){
+    this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+      this.groupdata=res.data;
+     
+      console.log('groupdata',this.groupdata);
+    });
+  }
+getdistribution(){
+  this.api.getAPI(environment.API_URL +'/transaction/task-distribution').subscribe((res:any)=>{
+    this. distributiondata=res.data;
+    console.log('distributiondata',this.distributiondata);
+  }
+  );
 }
+
+
+// 2ndchartapi
+getyear() {
+  this.api.getAPI(environment.API_URL + '/transaction/yearly-task-status/')
+    .subscribe((res: any) => {
+      this.apiyearlytaskdata1 = res;
+      this.updateChartOptions(this.apidistributiondata1); // Update the chart options with API data
+      console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
+    });
+}
+updateChartOptions(data: any) {
+  const years = this.apiyearlytaskdata1.map(item => item.year.toString());
+  const taskCounts = this.apiyearlytaskdata1.map(item => item.count);
+
+  this.chartOptions11 = {
+    series: [
+      {
+        name: 'Number Of Completed Tasks',
+        data: taskCounts
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        columnWidth: '10%',  // Adjust the width of the bar (for non-stacked)
+        barHeight: '10%',    // Adjust the height of the bar (for stacked bars)
+      },
+    },
+    xaxis: {
+      categories: years,
+      labels: {
+        formatter: function (val) {
+          return Math.round(val);  // Ensures only integer values are shown
+        }
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return Math.round(val);  // Round off values to show only integers in the tooltip
+        }
+      }
+    }
+  };
+  
+  
+}
+
+// 3rdchartapi
+  // getoverd(){
+  //   this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
+  //     this.apioverdata1=res.data;
+  //     this.updateChartOptions1(this.apioverdata1);
+  //     console.log('apioverdata1',this.apioverdata1);
+  //   });
+  // }
+  
+//   updateChartOptions1(data: any) {
+//     const categories = data.map((item: any) => item.sponsoring_directorate);
+//     const overdueCounts = data.map((item: any) => item.overdue_count);
+    
+//     this.chartOptions13 = {
+//       series: [{
+//         name: 'Number of Overdue Tasks',
+//         data: overdueCounts
+//       }],
+//       chart: {
+//         type: 'bar',
+//         height: 450
+//       },
+//       plotOptions: {
+//         bar: {
+//           horizontal: false,
+//           columnWidth: '50%',  // Adjust the width of the bar
+//         },
+//       },
+//       xaxis: {
+//         categories: categories,
+//         labels: {
+//           rotate: -45,  // Rotate the labels for better visibility
+//         }
+//       },
+//       yaxis: {
+//         title: {
+//           text: 'Number of Overdue Tasks'
+//         }
+//       },
+//       fill: {
+//         colors: ['#008000'],  
+//       },
+//       title: {
+//         text: 'Overdue Tasks Summary by Group',
+//         align: 'center'
+//       }
+//     };
+// }
+
+  
+  // 4thchartapi
+
+// getgroup(){
+//   this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe((res:any)=>{
+//     this.apigroupdata1=res.data;
+//     this.updateChartOptions21(this.apigroupdata1);
+//     console.log('apigroupdata1',this.apigroupdata1);
+//   });
+// }
+// updateChartOptions21(data: any) {
+//   const categories = data.map((item: any) => item.tasking_group_name);
+//   const inProgressData = data.map((item: any) => {
+//     const titleData = item.titles.find((title: any) => title.title === 'Work in Progress');
+//     return titleData ? titleData.task_count : 0;
+//   });
+//   const completedData = data.map((item: any) => {
+//     const titleData = item.titles.find((title: any) => title.title === 'Completed and closure in Progress');
+//     return titleData ? titleData.task_count : 0;
+//   });
+
+//   this.chartOptions21 = {
+//     series: [
+//       {
+//         name: 'IN PROGRESS',
+//         data: inProgressData,
+//         color: '#fcb040'  // Yellow
+//       },
+//       {
+//         name: 'Completed and closure in Progress',
+//         data: completedData,
+//         color: '#f58220'  // Orange
+//       }
+//     ],
+//     chart: {
+//       type: 'bar',
+//       height: 350,
+//       stacked: true
+//     },
+//     plotOptions: {
+//       bar: {
+//         horizontal: false,
+//       },
+//     },
+//     xaxis: {
+//       categories: categories,  // Set categories to the extracted tasking group names
+//       title: {
+//         text: 'WESEE GROUP'
+//       }
+//     },
+//     yaxis: {
+//       title: {
+//         text: 'Number of Tasks'
+//       }
+//     },
+//     legend: {
+//       position: 'top',
+//       horizontalAlign: 'right'
+//     },
+//     fill: {
+//       opacity: 1
+//     },
+//     title: {
+//       text: 'Group-wise Task Summary',
+//       align: 'center'
+//     },
+//     dataLabels: {
+//       enabled: true
+//     }
+//   };
+// }
+
+getgroup(): void {
+  this.api.getAPI(environment.API_URL + '/transaction/group-wise/').subscribe(
+    (res: any) => {
+      this.apigroupdata1 = res.data;
+      this.updateChartOptionsGroup(this.apigroupdata1);
+      console.log('apigroupdata1', this.apigroupdata1);
+    },
+    (error) => {
+      console.error('Error fetching group data', error);
+    }
+  );
+}
+
+updateChartOptionsGroup(res: any[]): void {
+  const categories = [];
+  const seriesData = [
+    {
+      name: 'Work In Progress',
+      data: [],
+    },
+    {
+      name: 'Completed',
+      data: [],
+    },
+    {
+      name: 'Task Closed',
+      data: [],
+    },
+  ];
+
+  
+  res.forEach((group) => {
+    categories.push(group.tasking_group_name);
+
+    
+    const workInProgressCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Work In Progress')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    
+    const completedCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Completed')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    
+    const taskClosedCount = group.titles.reduce((count, title) => {
+      if (title.title.includes('Task Closed')) {
+        return count + title.task_count;
+      }
+      return count;
+    }, 0);
+
+    seriesData[0].data.push(workInProgressCount); 
+    seriesData[1].data.push(completedCount);     
+    seriesData[2].data.push(taskClosedCount);   
+  });
+
+  
+  this.chartData.series = seriesData;
+  this.chartOptionsGroup.xaxis.categories = categories;
+
+  this.chartOptionsGroup.colors = ['#f7a400',  '#492a73', '#3a9efd', '#f7a400', '#FFB6C1', '#E6E6FA', '#AFEEEE'];
+
+
+}
+
+
+
+// 5thchartapi
+
+getdistri() {
+  this.api.getAPI(environment.API_URL + '/transaction/task-distribution').subscribe((res: any) => {
+    this.apidistributiondata1 = res.data;
+    this.updated12(this.apidistributiondata1); // Pass the data to updated12
+    console.log('apidistributiondata', this.apidistributiondata1);
+  });
+}
+updated12(data: any) { 
+  const completedCount = data.completed.count;
+  const inProgressCount = data.in_progress.count;
+  this.chartOptions12 = {
+    series: [inProgressCount, completedCount],
+    chart: {
+      type: 'pie',
+      height: 350,
+    },
+    labels: ['IN PROGRESS', 'COMPLETED'],
+    colors: ["#F4CE14" ,"#379777"], // Green for IN PROGRESS, Yellow for COMPLETED
+    legend: {
+      position: 'right',
+      horizontalAlign: 'center'
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: (val: number | string) => `${parseFloat(val as string).toFixed(1)}%`
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    ],
+   
+  };
+}
+
+
+
+
+// 6tchartAPI
+getextend() {
+  this.api.getAPI(environment.API_URL + '/transaction/extended-deadlines/').subscribe((res: any) => {
+    this.extenddata = res.data;
+    this.updated22(this.extenddata); // Pass the data to updated22
+    console.log('extenddata', this.extenddata);
+  });
+}
+
+updated22(data: any) {
+  const groupNames: string[] = [];
+  const extensionCounts: number[] = [];
+
+  data.forEach((item: any) => {
+    groupNames.push(item.tasking_group_name);
+    extensionCounts.push(item.extension_count);
+  });
+
+  
+  this.chartOptions22 = {
+    series: [
+      {
+        name: 'Number of Tasks with Extended Deadlines',
+        data: extensionCounts
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '10%'
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      categories: groupNames,
+      
+      title: {
+        text: 'WESEE GROUP'
+      }
+    },
+    
+    fill: {
+      colors: ['#FFB534'],  
+    },
+   
+  };
+  
+}
+
+
+
+
+
+getStatusTaskingNew() {
+  this.api.getAPI(environment.API_URL + '/transaction/tasking-status?flag=dashboard/')
+    .subscribe((res: any) => {
+      this.statusTaskingNew = res.data;
+      this.tabledata(this.statusTaskingNew);
+      console.log('statusTaskingNew', this.statusTaskingNew);
+    });
+  }
+
+    tabledata(data:any){
+
+    }
+approveTask=[] as any
+getNewTaskingStatus() {
+  this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
+    .subscribe((res: any) => {
+      console.log(res);
+      if (res && res.data) {
+           
+        this.newTableDataSource =res.data 
+        this.approveTask = res.data
+        // this.newTableDataSource.paginator = this.pagination;
+      } else {
+        console.error('Data part of the response is undefined');
+      }
+    }, error => {
+      console.error('Error fetching API data', error);
+    });
+}
+
+applyFilter1(event: Event) {
+  this.filterValue = (event.target as HTMLInputElement).value;
+  if (this.filterValue) {
+    this.newTableDataSource.filter = this.filterValue.trim().toLowerCase();
+    // this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  } else {
+    // this.getTasking();
+    this.getNewTaskingStatus();
+  }
+}
+
+handleFilter(filterValue: any) {
+  this.filterData = filterValue;
+
+  console.log('Filter triggered with value:', filterValue);
+}
+handlePagination(pageEvent: any) {
+  console.log('Pagination triggered with event:', pageEvent);
+}
+
+gridColum = [
+  { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
+  { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
+  { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
+  { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
+  { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+
+]
+
+exportToExcel1() {
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.approveTask);
+  const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  // this.saveAsExcelFile(excelBuffer, 'task_data');
+}
+
+
+
+  saveAsExcelFile() {
+    let data = document.getElementById('xlseExport');
+    if (!data) {
+      console.error('Table element not found.');
+      return;
+    }
+
+    // Create a worksheet from the table
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    // Create a new workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
+
+    // Write the workbook to a file with .xlsx extension
+    XLSX.writeFile(wb, this.fileName);
+    this.exportData = this.approveTask
+    this.visible = false;
+
+  }
+
+submitToExcel(){
+  
+  this.visibleExcel=true;
+  this.isFormHide=false
+  
+  if(this.filterData){
+    this.exportData=this.filterData;
+  }
+  else{
+    this.exportData=this.approveTask
+  }
+}
+submitHeaderForm() {
+  this.isFormHide=true
+    // Extract form values
+    this.selectedHeader = this.xlxsForm.get('header')?.value || [];
+    this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
+    this.xlxsForm.reset()
+    console.log(this.selectedHeader);
+  }
+  selectAll() {
+    const allHeaders = this.expDataHeader.map(option => option);
+    this.xlxsForm.get('header')?.setValue(allHeaders);
+  }
+
+  
+  getoverd() {
+    this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res: any) => {
+      this.apioverdata1 = res.data; // Assuming `res.data` contains the desired array
+      this.overdata = res.data.flatMap((group: any) => 
+        group.tasks.map((task: any) => ({
+          ...task,
+          sponsoring_directorate: group.sponsoring_directorate
+        }))
+      );
+      this.updateChartOptions1(this.apioverdata1);
+      console.log('apioverdata1', this.apioverdata1);
+    });
+  }
+  get filteredTasks() {
+    const search = this.searchValue.toLowerCase();
+    return this.overdata.filter(task => 
+      task.tasking__task_name?.toLowerCase().includes(search) ||
+      task.tasking__tasking_group_name?.toLowerCase().includes(search) ||
+      task.sponsoring_directorate?.toLowerCase().includes(search) ||
+      task.tasking__task_number_dee?.toLowerCase().includes(search)
+    );
+  }
+
+
+  updateChartOptions1(overdueData: any[]) {
+    const seriesData: number[] = [];
+    const categories: string[] = [];
+
+    
+    if (overdueData && Array.isArray(overdueData)) {
+      overdueData.forEach((item) => {
+        if (item.sponsoring_directorate && item.overdue_count != null) {
+          categories.push(item.sponsoring_directorate);
+          seriesData.push(item.overdue_count);
+        }
+      });
+    }
+
+    // Update the chart options
+    this.chartOptions9 = {
+      series: [
+        {
+          name: "Overdue Tasks",
+          data: seriesData
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "bar"
+      },
+      colors: [
+        "#008FFB",
+        "#00E396",
+        "#FEB019",
+        "#FF4560",
+        "#775DD0",
+        "#546E7A",
+        "#26a69a",
+        "#D10CE8"
+      ],
+      plotOptions: {
+        bar: {
+          columnWidth: "45%",
+          distributed: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        show: false
+      },
+      xaxis: {
+        categories: categories,
+        labels: {
+          style: {
+            colors: [
+              "#008FFB",
+              "#00E396",
+              "#FEB019",
+              "#FF4560",
+              "#775DD0",
+              "#546E7A",
+              "#26a69a",
+              "#D10CE8"
+            ],
+            fontSize: "12px"
+          }
+        }
+      }
+    };
+  }
+  
+}
+
 

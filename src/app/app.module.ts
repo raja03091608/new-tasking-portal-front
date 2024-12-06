@@ -25,6 +25,11 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { MatTableModule } from '@angular/material/table';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import{TableModule} from'primeng/table';
+
+// import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
 
 
@@ -39,7 +44,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     HttpClientModule,
     MatTableModule,
 	NgApexchartsModule,
-
+  InputTextModule,
+  DialogModule,
+  
     ToastrModule.forRoot({
 			closeButton: true,
 			timeOut: 15000, // 15 seconds
@@ -58,7 +65,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     InlineSVGModule.forRoot(),
     NgbModule,
     MaterialModule,
-    AngularEditorModule
+    AngularEditorModule,
+    TableModule
 
   ],
 

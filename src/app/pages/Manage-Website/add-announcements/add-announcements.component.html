@@ -35,7 +35,7 @@
 							ngbDatepicker
 							#d="ngbDatepicker"
 							(click)="d.toggle()" -->
-							<mat-form-field appearance="fill">
+							<mat-form-field appearance="outline">
 								<input matInput [matDatepicker]="picker_date" class="form-control form-control-solid" formControlName="date" onclick="$('#date').trigger('click'); return false;"  placeholder="MM/DD/YYYY" [(ngModel)]="date">
 								<mat-datepicker-toggle matSuffix [for]="picker_date" id="date"></mat-datepicker-toggle>
 								<mat-datepicker #picker_date></mat-datepicker>

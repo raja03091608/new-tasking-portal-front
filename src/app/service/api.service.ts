@@ -48,7 +48,8 @@ export class ApiService {
     return new Observable((observer)=>{
       this.http.post(environment.API_URL+'api/auth/token',{loginname: loginname,password:password}).subscribe((res)=>{
         localStorage.setItem('user_id', this.userid );
-        console.log(this.userid, res,"================================");
+        let data = res
+        this.saveLocalData(data)
         let response=JSON.parse(JSON.stringify(res));
         let finalRes={};
         if(response.access)
@@ -78,6 +79,10 @@ export class ApiService {
         // console.log(error);
       });
     });
+
+  }
+  saveLocalData(data:any) {
+        localStorage.setItem('sponsoring_directorate', data.user_group[0].name );
 
   }
   getAPI(url:any) : Observable<any>

@@ -2,10 +2,13 @@
 
 
   @font-face {
-    font-family: 'MontserratBold';
+    font-family: 'Roboto Condensed';
     src: url('assets/fonts/Montserrat-SemiBold.ttf');
   }
-
+  body{
+    font-family: 'Roboto Condensed'!important;
+  }
+  
   @import "./assets/sass/style.scss";
   @import "@angular/material/prebuilt-themes/indigo-pink.css";
   // Replace above style with this css file to enable RTL styles
@@ -17,9 +20,11 @@
 
   @import 'primeng/resources/themes/lara-light-blue/theme.css';
   @import 'primeng/resources/primeng.min.css';
+  @import "primeicons/primeicons.css";
+ 
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: 'MontserratBold' !important;
+  font-family: 'Roboto Condensed' !important;
   font-weight: 600;
 }
 .dark-theme .tooltip-inner {
@@ -349,7 +354,7 @@ table {
   tr {
       td {
           .btn {
-              padding: 5px 0 !important; font-size: 18px;
+              // padding: 5px 0 !important; font-size: 18px;
           }
       }
   }
@@ -708,7 +713,7 @@ apx-chart {
 .timeline li {
   list-style: none;
   display: inline-block; /* Ensure list items stay in a single line */
-  min-width: 150px; /* Set a minimum width for each timeline item */
+  min-width: 180px; /* Set a minimum width for each timeline item */
   position: relative;
   text-align: center;
   text-transform: uppercase;
@@ -1124,4 +1129,32 @@ select.form-control:focus {
   color: #dc3545;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+.mat-mdc-form-field {
+  display: block !important;
+}
+.p-dialog-draggable .p-dialog-header {
+  background: linear-gradient(0deg, rgba(9, 0, 63, 0.79), rgba(48, 0, 255, 0.63)), url(./assets/media/bg-ship.jpg);
+  background-position: -368px 0;
+  background-size: cover;
+  color: white !important;
+  font-size: 2.2rem;
+}
+
+.scrollTable {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow-y: scroll;
+  scrollbar-color: #2f5079 #dee2e6 !important;
+}
+
+// .p-datatable-resizable-table>.p-datatable-thead>tr>th, .p-datatable-resizable-table>.p-datatable-tfoot>tr>td, .p-datatable-resizable-table>.p-datatable-tbody>tr>td {
+//   overflow: hidden;
+//   white-space: normal;
+// }
+.wrappable {
+  white-space: normal; /* Allow text to wrap */
+  word-wrap: break-word; /* Break long words if necessary */
+  overflow-wrap: break-word; /* Ensures proper word breaking in modern browsers */
 }

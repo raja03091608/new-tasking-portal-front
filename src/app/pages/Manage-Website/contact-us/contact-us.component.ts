@@ -69,6 +69,7 @@ export class ContactUsComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  contactData=[]as any;
 
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService,private dataService: DataService) {
@@ -114,6 +115,7 @@ export class ContactUsComponent implements OnInit {
       .subscribe((res) => {
         //console.log('contacts',res)
         this.dataSource = new MatTableDataSource(res);
+        this.contactData=res;
 
         this.countryList = res;
         this.dataSource.paginator = this.pagination;
@@ -248,6 +250,53 @@ export class ContactUsComponent implements OnInit {
   cancelmodal(){
   closeModal('#crud-countries');
   }
+
+  gridColumns=[
+    { field: 'first_name', header: 'Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'email', header: 'Email', filter: true, filterMatchMode: 'contains' },
+    { field: 'phone', header: 'Phone', filter: true, filterMatchMode: 'contains' },
+    { field: 'message', header: 'Message', filter: true, filterMatchMode: 'contains' },
+     { field: 'purpose', header: 'Purpose', filter: true, filterMatchMode: 'contains' },
+  ]
+  exportData:any;
+  filterData:any;
+  handleFilter(filterValue: any) {
+    
+    this.filterData = filterValue;
+    console.log('Filter triggered with value:', filterValue);
+  }
+  handlePagination(pageEvent: any) {
+    console.log('Pagination triggered with event:', pageEvent);
+  }
+
+  openCurrentStatus(country){
+    // this.id=country.id;
+    //   console.log('tasking country',country)
+    //   this.taskname = country.task_name;
+    //   this.tasknumber = country.task_number_dee;
+    //   // this.selectedTrial=tasking;
+    //   openModal('#trial-status-modal');
+    // this.getComments();
+    }
+
+    UploadReceipt(country) {
+      // this.id=country.id;
+      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    }
+  
+    completedtask(country) {
+      // this.id=country.id;
+      // openModal('#completedTask-modal');
+    }
+    taskid:any;
+    opentask(country:any){
+      console.log('countyryry',country);
+      // this.resetexportform();
+      // this.exportform.reset();
+      openModal('#export');
+      this.taskid = country.id;
+  
+    }
 
 
 }

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ConsoleService } from "../../../service/console.service";
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
+
 declare var arrayColumn: any;
 declare var inArray: any;
 
@@ -32,6 +33,7 @@ export class UsersComponent implements OnInit {
 		"user_name",
 		"unit",
 		"User_Role",
+		
 		"view",
 		"edit",
 		"delete",
@@ -73,16 +75,18 @@ export class UsersComponent implements OnInit {
 		edit: true,
 		view: true,
 		delete: true
+		
 
 	};
 
-
+	
 	@ViewChild(MatPaginator) pagination: MatPaginator;
 	@ViewChild('select') select: MatSelect;
 	@ViewChild('selectSAT') selectSAT: MatSelect;
 	@ViewChild("closebutton") closebutton;
 	@ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
 	@ViewChild("fileInput") fileInput: any;
+	userData= [] as any;
 	//   set fileInput(val: ElementRef) {
 	//     if(val) {
 	//       console.log(val);
@@ -125,6 +129,8 @@ export class UsersComponent implements OnInit {
 		tasking: new FormControl(''),
 		user_role_id: new FormControl('', [Validators.required]),
 		ad_user: new FormControl(""),
+		
+		rank_code: new FormControl(""),
 		created_by: new FormControl(""),
 		modified_by: new FormControl(""),
 		status: new FormControl(""),
@@ -201,6 +207,8 @@ export class UsersComponent implements OnInit {
 	};
 
 	ngOnInit(): void {
+		
+
 		/*this.getUserRoles();*/
 		this.getProcess();
 		this.getUnit()
@@ -269,6 +277,8 @@ export class UsersComponent implements OnInit {
 			.subscribe((res) => {
 				this.api.displayLoading(false)
 				this.dataSource = new MatTableDataSource(res.data);
+				this.userData=res.data;
+
 				// this.dataSource.paginator = this.pagination;
 				this.totalLength = res.total_length
 				this.user = res.data;
@@ -477,8 +487,9 @@ export class UsersComponent implements OnInit {
 			formData.append('tasking', this.editForm.value.tasking);
 			formData.append('status', this.editForm.value.status);
 			formData.append('user_role_id', this.editForm.value.user_role_id);
-			formData.append('id', this.editForm.value.id);
+			formData.append('id', this.editForm.value.id );
 			formData.append('password', this.editForm.value.password);
+			formData.append('rankCode', this.editForm.value.rank_code);
 			formData.append('ad_user', this.editForm.value.ad_user==null?this.editForm.value.ad_user='false':this.editForm.value.ad_user);
 
 			if (this.imgToUpload1 != null) {
@@ -491,7 +502,7 @@ export class UsersComponent implements OnInit {
 			formData.append('last_name', this.editForm.value.last_name);
 			formData.append('loginname', this.editForm.value.loginname);
 			formData.append('email', this.editForm.value.email);
-
+			formData.append('rankCode', this.editForm.value.rank_code);
 			formData.append('process', this.editForm.value.process);
 			formData.append('department', this.editForm.value.department);
 			formData.append('tasking', this.editForm.value.tasking);
@@ -659,7 +670,7 @@ export class UsersComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.api.postAPI(environment.API_URL + "api/auth/users/crud", {
-					delval: delval
+					delval: delval.id
 				}).subscribe((res) => {
 					if (res.status == environment.SUCCESS_CODE) {
 						this.notification.warn(res.message);
@@ -695,5 +706,55 @@ export class UsersComponent implements OnInit {
 
 
 
+	gridColumns=[
+		{ field: 'first_name', header: ' First Name', filter: true, filterMatchMode: 'contains' },
+		{ field: 'last_name', header: 'Last Name', filter: true, filterMatchMode: 'contains' },
+		{ field: 'email', header: 'Login Email', filter: true, filterMatchMode: 'contains' },
+		{ field: 'roles[0].user_role.name', header: 'User Role', filter: true, filterMatchMode: 'contains' },
+		{ field: 'department.name', header: 'unit', filter: true, filterMatchMode: 'contains' },
 
+		// { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+	  ]
+	  exportData:any;
+	  filterData:any;
+	  handleFilter(filterValue: any) {
+		
+		this.filterData = filterValue;
+		console.log('Filter triggered with value:', filterValue);
+	  }
+	  handlePagination(pageEvent: any) {
+		console.log('Pagination triggered with event:', pageEvent);
+	  }
+	
+	  openCurrentStatus(country){
+		// this.id=country.id;
+		//   console.log('tasking country',country)
+		//   this.taskname = country.task_name;
+		//   this.tasknumber = country.task_number_dee;
+		//   // this.selectedTrial=tasking;
+		//   openModal('#trial-status-modal');
+		// this.getComments();
+		}
+	
+		UploadReceipt(country) {
+		  // this.id=country.id;
+		  // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+		}
+	  
+		completedtask(country) {
+		  // this.id=country.id;
+		  // openModal('#completedTask-modal');
+		}
+		taskid:any;
+		opentask(country:any){
+		  console.log('countyryry',country);
+		  // this.resetexportform();
+		  // this.exportform.reset();
+		  openModal('#export');
+		  this.taskid = country.id;
+	  
+		}
+	
+	
+	
 }
