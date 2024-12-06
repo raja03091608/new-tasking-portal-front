@@ -45,11 +45,19 @@
                 </td>
                 <td *ngFor="let col of gridColumns" class="wrappable">
 
-                    <ng-container *ngIf="col.header != 'Status'">
+                    <ng-container *ngIf="col.header != 'Status' ">
                         <span *ngIf="col.header == 'Time Frame for Completion'" >{{ resolveNestedField(rowData, col.field)  }} Month's</span>
-                        <span *ngIf="col.header != 'Time Frame for Completion'" >{{ resolveNestedField(rowData, col.field) }}</span>
+                        <span *ngIf="col.header != 'Time Frame for Completion' && col.header != 'Approved on'">
+                            {{ resolveNestedField(rowData, col.field) }}
+                        </span>
+                        <span *ngIf="col.header == 'Approved on'">
+                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field) }}
+                        </span>
+                        
+
 
                     </ng-container>
+                    
 
                     <ng-container *ngIf="col.header === 'Status'">
                         <div class="status" [ngClass]="getStatusClass(resolveNestedField(rowData, col.field))"
@@ -75,7 +83,7 @@
                       <button (click)="restoreEvent.emit(rowData)" *ngIf="isRestore" mat-menu-item>
                         <small class="btn btn-outline-warning btn-sm"><span class="bi bi-arrow-clockwise"></span></small>&nbsp;<small>Restore</small>
                       </button>
-                      <button (click)="permanentDeleteEvent.emit(rowData)" *ngIf="isPermanentDelete" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Perment Delete</small></button>
+                      <button (click)="permanentDeleteEvent.emit(rowData)" *ngIf="isPermanentDelete" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Permanent Delete</small></button>
                       <!-- <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-upload"></i>&nbsp;<small>Upload</small>
                       </button> -->

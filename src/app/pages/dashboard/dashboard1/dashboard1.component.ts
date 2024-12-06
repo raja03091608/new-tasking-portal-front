@@ -240,6 +240,7 @@ isFormHide=false;
 exportData:any;
 filterData:any;
 fileName:string;
+searchValue: string = '';
 expDataHeader = [
   { field: 'tasking.task_name', header: 'Task Name',  },
   { field: 'tasking.task_number_dee', header: 'Task Number',  },
@@ -2885,6 +2886,12 @@ getDashboardCount(){
   getoverdue(){
     this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res:any)=>{
       this.overdata=res.data;
+      this.overdata = res.data.flatMap((group: any) => 
+        group.tasks.map((task: any) => ({
+          ...task,
+          sponsoring_directorate: group.sponsoring_directorate
+        }))
+      );
       console.log('overdata',this.overdata);
     },
     (error)=>{
@@ -2893,6 +2900,7 @@ getDashboardCount(){
   )
   
   }
+  
   getpendingdata(){
     this.api.getAPI(environment.API_URL + '/transaction/pending-by-group/').subscribe((res:any)=>{
       this.Pendingdata=res.data;
@@ -3392,10 +3400,26 @@ submitHeaderForm() {
   getoverd() {
     this.api.getAPI(environment.API_URL + '/transaction/overdue-by-group/').subscribe((res: any) => {
       this.apioverdata1 = res.data; // Assuming `res.data` contains the desired array
+      this.overdata = res.data.flatMap((group: any) => 
+        group.tasks.map((task: any) => ({
+          ...task,
+          sponsoring_directorate: group.sponsoring_directorate
+        }))
+      );
       this.updateChartOptions1(this.apioverdata1);
       console.log('apioverdata1', this.apioverdata1);
     });
   }
+  get filteredTasks() {
+    const search = this.searchValue.toLowerCase();
+    return this.overdata.filter(task => 
+      task.tasking__task_name?.toLowerCase().includes(search) ||
+      task.tasking__tasking_group_name?.toLowerCase().includes(search) ||
+      task.sponsoring_directorate?.toLowerCase().includes(search) ||
+      task.tasking__task_number_dee?.toLowerCase().includes(search)
+    );
+  }
+
 
   updateChartOptions1(overdueData: any[]) {
     const seriesData: number[] = [];
@@ -3468,6 +3492,7 @@ submitHeaderForm() {
       }
     };
   }
+  
 }
 
 

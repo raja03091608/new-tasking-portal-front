@@ -836,10 +836,14 @@ extension(){
       .subscribe((res) => {
         if(res.status==environment.SUCCESS_CODE){
           this.countryList = res.data
+          
+          
         this.dataSourcelist = new MatTableDataSource(this.countryList);
-
+  
         this.dataSourcelist
         .paginator = this.pagination;
+        
+        
         // this.logger.log('country', this.countryList)
         }
 
@@ -1301,6 +1305,17 @@ gridColumns=[
   { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
   {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
   {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+  {
+    field: 'modified_on',
+    header: 'Approved on',
+    filter: true,
+    filterMatchMode: 'contains',
+    valueFormatter: (data: any) => {
+      const datePipe = new DatePipe('en-US');
+      return datePipe.transform(data.modified_on, 'dd-MM-yyyy');
+    },
+  },
+
   { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
 ]
 exportData:any;
