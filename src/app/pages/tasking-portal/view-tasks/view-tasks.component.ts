@@ -547,12 +547,7 @@ onCustomClear(item){
     }
 
   }
-  isViewExtension: boolean = false;
-extension(){
-  console.log('Extension button clicked'); // Add this to check if it's firing
-  this.isViewExtension = true
 
-}
 
 
   onSubmit() {
@@ -836,10 +831,14 @@ extension(){
       .subscribe((res) => {
         if(res.status==environment.SUCCESS_CODE){
           this.countryList = res.data
+          
+          
         this.dataSourcelist = new MatTableDataSource(this.countryList);
-
+  
         this.dataSourcelist
         .paginator = this.pagination;
+        
+        
         // this.logger.log('country', this.countryList)
         }
 
@@ -1049,6 +1048,78 @@ extension(){
     }
     // closeModal('#viewTasking-modal');
   }
+
+  submitExten(){
+    // `transaction/extended/details/?tasking_id=102`
+ 
+
+    let data = {
+      id: '',
+      "tasking": this.data_list.id,
+      "extension_no": this.extensionForm.value.extensionNumber,
+      "description": this.extensionForm.value.description,
+      "date": new Date(this.extensionForm.value.extendedTill).toISOString().split('T')[0],
+      "authority_letter": this.extensionForm.value.authorityLetterNumber
+    };
+    if(this.isEditExt){
+      data.id=this.extentionId ;
+    }
+    this.api
+    .postAPI(
+      environment.API_URL + "transaction/extended/details/",
+      data,
+      
+
+    )
+    .subscribe((res) => {
+      // this.logger.log('response',res);
+      //this.error= res.status;
+      if(res.status==environment.SUCCESS_CODE)
+         this.notification.success(res.message);
+        this.extensionForm.reset();
+        closeModal('#extension-modal');
+        this.isEditExt=false;
+      });
+  }
+  extentionId:any
+  isEditExt:boolean
+  extentionData=[]
+  extentionDataHeader=[
+    { field: 'extension_no', header: 'Extension no', filter: true, filterMatchMode: 'contains' },
+    { field: 'authority_letter', header: 'Authority Letter', filter: true, filterMatchMode: 'contains' },
+    { field: 'description', header: 'Description', filter: true, filterMatchMode: 'contains' },
+    { field: 'date', header: 'Date', filter: true, filterMatchMode: 'contains' },
+  
+    ]
+  extension(){
+    this.extentionData=[]
+    this.api.getAPI(environment.API_URL + `transaction/extended/details/?tasking_id=${this.data_list.id}`,)
+          .subscribe((res) => {
+           
+            this.extentionData=res;
+          })
+  
+  }
+  editExtention(rowData,str){
+    this.extentionId = rowData.id;
+    if(str==='delete'){
+      this.api.postAPI(environment.API_URL + `transaction/extended/details/`,{id:this.data_list.id,status:3},)
+      .subscribe((res) => {
+        this.extentionData=res;
+        if(res.status==environment.SUCCESS_CODE)
+          this.notification.success(res.message);
+      })
+    }else{
+      this.isEditExt=true;
+      this.extensionForm.patchValue({
+        extensionNumber:rowData.extension_no,
+        authorityLetterNumber:rowData.authority_letter,
+        description:rowData.description,
+        extendedTill:new Date(rowData.date),
+      });
+    }
+  }
+  
 
   commentDelete(country:any){
     let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -1298,9 +1369,20 @@ extension(){
 gridColumns=[
   { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
   { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-  { field: 'cost_implication', header: 'Cost Implication', filter: true, filterMatchMode: 'contains' },
+  { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
   {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
   {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+  {
+    field: 'modified_on',
+    header: 'Approved on',
+    filter: true,
+    filterMatchMode: 'contains',
+    valueFormatter: (data: any) => {
+      const datePipe = new DatePipe('en-US');
+      return datePipe.transform(data.modified_on, 'dd-MM-yyyy');
+    },
+  },
+
   { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
 ]
 exportData:any;

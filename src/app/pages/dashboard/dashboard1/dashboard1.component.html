@@ -34,7 +34,7 @@
         style="height: 140px;">
         <div class="logo-content ">
           <div class="border-rotation"></div>
-          <img src="../../../../assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
+          <img src="assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
 
         </div>
         <div class="card-content">
@@ -53,7 +53,7 @@
       class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2" style="height: 140px;">
       <div class="logo-content ">
         <div class="border-rotation"></div>
-        <img src="../../../../assets/total approved task.png" alt="Logo" class="card-logo rotation" />
+        <img src="assets/total_approved_task.png" alt="Logo" class="card-logo rotation" />
       </div>
       <div class="card-content">
         <h4 class="card-title">Total Approved Task</h4>
@@ -69,7 +69,7 @@
       style="height: 140px;">
       <div class="logo-content ">
         <div class="border-rotation"></div>
-        <img src="../../../../assets/task waiting for approve.png" alt="Logo" class="card-logo rotation" />
+        <img src="assets/task_waiting_for_approve.png" alt="Logo" class="card-logo rotation" />
       </div>
       <div class="card-content">
         <h4 class="card-title">Task Waiting For Approval</h4>
@@ -86,7 +86,7 @@
       style="height: 140px;">
       <div class="logo-content ">
         <div class="border-rotation"></div>
-        <img src="../../../../assets/archieve task.png" alt="Logo" class="card-logo rotation" />
+        <img src="assets/archieve_task.png" alt="Logo" class="card-logo rotation" />
       </div>
       <div class="card-content">
         <h4 class="card-title">Archive Task</h4>
@@ -102,7 +102,32 @@
 
 <!-- end::Row -->
 
+ 
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
+
+  <div class="col-xl-12 mb-xl-12 mt-5">
+    <div class="card card-flush h-xl-100 progress-chart mapbg">
+      <div class="card-header">
+        <h3 class="card-title align-items-start flex-column pt-5">
+          <span class="fw-bold mb-3">Group wise Task Completion</span>
+        </h3>
+        <!-- <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button> -->
+      </div>
+  
+      <div id="chartGroup">
+        <apx-chart *ngIf="chartData.series.length" [series]="chartData.series" [chart]="chartOptionsGroup.chart"
+          [xaxis]="chartOptionsGroup.xaxis" [yaxis]="chartOptionsGroup.yaxis" [legend]="chartOptionsGroup.legend"
+          [plotOptions]="chartOptionsGroup.plotOptions" [colors]="chartOptionsGroup.colors"
+          [dataLabels]="chartOptionsGroup.dataLabels"></apx-chart>
+        <div *ngIf="!chartData.series.length" class="no-data-message">
+          Loading chart data or no data available...
+        </div>
+      </div>
+  
+  
+    </div>
+  </div>
+  
   <div class="col-md-6 mt-0">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
       <div class="card-header mb-5">
@@ -119,36 +144,12 @@
       </div>
     </div>
   </div>
-
-  <div class="col-md-6 mt-0">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header mb-5">
-        <h3 class="card-title align-items-start flex-column pt-5">
-          <span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
-        </h3>
-        <!-- <p-button (onClick)="showDialog2()" label="View" class="show-button"></p-button> -->
-      </div>
-
-      <div id="chart8">
-        <apx-chart
-          [series]="chartOptions9.series"
-          [chart]="chartOptions9.chart"
-          [dataLabels]="chartOptions9.dataLabels"
-          [plotOptions]="chartOptions9.plotOptions"
-          [yaxis]="chartOptions9.yaxis"
-          [xaxis]="chartOptions9.xaxis"
-          [legend]="chartOptions9.legend"
-          [colors]="chartOptions9.colors"
-          [grid]="chartOptions9.grid"
-        ></apx-chart>
-      </div>
-
-    </div>
-  </div>
+ 
+ 
 
 
 
-  <div class="col-xl-12 mb-xl-12" style="margin-top: 30px;">
+  <div class="col-md-6 mt-0" style="margin-top: 30px;">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
       <div class="card-header">
         <h3 class="card-title align-items-start flex-column pt-5">
@@ -164,6 +165,8 @@
       </div>
     </div>
   </div>
+
+
   <p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
     <div class="input-container">
@@ -195,6 +198,73 @@
     </div>
   </p-dialog>
 
+ 
+  <p-dialog header="Group Data" [modal]="true" [(visible)]="visible4" [style]="{ width: '60rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+  <div class="input-container">
+    <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
+  </div>
+  <div class="card">
+    <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tasking Group Name
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Title
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Task Count
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-group>
+        <tr *ngFor="let title of group.titles">
+          <td>{{ group.tasking_group_name }}</td>
+          <td>{{ title.title }}</td>
+          <td>{{ title.task_count }}</td>
+        </tr>
+
+        <tr *ngFor="let title of group.titles">
+          <td colspan="3">
+            <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
+              <ng-template pTemplate="header">
+        <tr>
+          <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Task Name
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Start Date
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>End Date</th>
+          <i class="pi pi-filter" style="font-size: 1rem"></i>
+          <th>Sponsoring Directorate
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+          <th>Status Summary
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-task>
+        <tr>
+          <td>{{ task.task_number_dee }}</td>
+          <td>{{ task.task_name || 'N/A' }}</td>
+          <td>{{ task.start_date }}</td>
+          <td>{{ task.end_date }}</td>
+          <td>{{ task.sponsoring_directorate }}</td>
+          <td>{{ task.status_summary }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
 
   <!-- <div class="col-xl-12 mb-xl-12 mt-5">
 		<div class="card card-flush h-xl-100 progress-chart mapbg">
@@ -330,15 +400,15 @@
     </div>
 </div> -->
 
-</div>
 
-<div class="col-xl-12 mb-xl-12 mt-0">
+
+<!-- <div class="col-xl-12 mb-xl-12 mt-0">
   <div class="card card-flush h-xl-100 progress-chart mapbg">
     <div class="card-header">
       <h3 class="card-title align-items-start flex-column pt-5">
         <span class="fw-bold mb-3">Group wise Task Completion</span>
       </h3>
-      <!-- <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button> -->
+     <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button>
     </div>
 
     <div id="chartGroup">
@@ -353,77 +423,11 @@
 
 
   </div>
-</div>
-
-<p-dialog header="Group Data" [modal]="true" [(visible)]="visible4" [style]="{ width: '60rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <div class="input-container">
-    <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
-  </div>
-  <div class="card">
-    <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Tasking Group Name
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Title
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Task Count
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-group>
-        <tr *ngFor="let title of group.titles">
-          <td>{{ group.tasking_group_name }}</td>
-          <td>{{ title.title }}</td>
-          <td>{{ title.task_count }}</td>
-        </tr>
-
-        <tr *ngFor="let title of group.titles">
-          <td colspan="3">
-            <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
-              <ng-template pTemplate="header">
-        <tr>
-          <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Task Name
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Start Date
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>End Date</th>
-          <i class="pi pi-filter" style="font-size: 1rem"></i>
-          <th>Sponsoring Directorate
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Status Summary
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{ task.task_number_dee }}</td>
-          <td>{{ task.task_name || 'N/A' }}</td>
-          <td>{{ task.start_date }}</td>
-          <td>{{ task.end_date }}</td>
-          <td>{{ task.sponsoring_directorate }}</td>
-          <td>{{ task.status_summary }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    </td>
-    </tr>
-    </ng-template>
-    </p-table>
-  </div>
-</p-dialog>
+</div> -->
 
 
-<div class="col-xl-12 mb-xl-12 mt-0">
+
+<div class="col-md-6 mt-0">
   <div class="card card-flush h-xl-100 progress-chart mapbg">
     <div class="card-header">
       <h3 class="card-title align-items-start flex-column pt-5">
@@ -438,6 +442,31 @@
         [yaxis]="chartOptions22.yaxis" [title]="chartOptions22.title" [plotOptions]="chartOptions22.plotOptions"
         [dataLabels]="chartOptions22.dataLabels" [fill]="chartOptions22.fill"></apx-chart>
     </div>
+  </div>
+</div>
+<div class="col-md-6 mt-0">
+  <div class="card card-flush h-xl-100 progress-chart mapbg">
+    <div class="card-header mb-5">
+      <h3 class="card-title align-items-start flex-column pt-5">
+        <span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
+      </h3>
+      <!-- <p-button (onClick)="showDialog2()" label="View" class="show-button"></p-button> -->
+    </div>
+
+    <div id="chart8">
+      <apx-chart
+        [series]="chartOptions9.series"
+        [chart]="chartOptions9.chart"
+        [dataLabels]="chartOptions9.dataLabels"
+        [plotOptions]="chartOptions9.plotOptions"
+        [yaxis]="chartOptions9.yaxis"
+        [xaxis]="chartOptions9.xaxis"
+        [legend]="chartOptions9.legend"
+        [colors]="chartOptions9.colors"
+        [grid]="chartOptions9.grid"
+      ></apx-chart>
+    </div>
+
   </div>
 </div>
 
@@ -884,36 +913,40 @@
 
 <!-- overdue task -->
 
-<p-dialog header="Overdue Tasks" [modal]="true" [(visible)]="visible2" [style]="{ width: '50rem' }"
+<p-dialog header="Overdue Tasks" [modal]="true" [(visible)]="visible2" [style]="{ width: '90rem' }"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
 
   <!-- Input field placed at the top -->
   <div class="input-container">
-    <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
+    <input type="text" pInputText [(ngModel)]="searchValue" placeholder="Search" />
   </div>
 
   <div class="card">
-    <p-table [value]="overdata" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="filteredTasks" [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template pTemplate="header">
         <tr>
-          <th>Sponsoring Directorate
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Overdue Count
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
+          <th>Sponsoring Directorate <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Task Group Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Task Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Task Number <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Created On <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          <th>Due Date <i class="pi pi-filter" style="font-size: 1rem"></i></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-item>
+      <ng-template pTemplate="body" let-task>
         <tr>
-          <td>{{ item.sponsoring_directorate }}</td>
-          <td>{{ item.overdue_count }}</td>
+          <td>{{ task.tasking__sponsoring_directorate }}</td>
+          <td>{{ task.tasking__tasking_group_name }}</td>
+          <td>{{ task.tasking__task_name }}</td>
+          <td>{{ task.tasking__task_number_dee }}</td>
+          <td>{{ task.created_on | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ task.due_date | date: 'yyyy-MM-dd' }}</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
-
 </p-dialog>
+
 
 
 

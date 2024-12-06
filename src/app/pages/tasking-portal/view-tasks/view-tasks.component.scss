@@ -87,3 +87,8 @@
 
 .label-text{font-size: 16px;}
 
+.p-datatable .wrap-text {
+    max-width: 300px;    /* Limit the maximum width */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+  }

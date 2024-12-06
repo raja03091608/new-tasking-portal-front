@@ -1148,3 +1148,13 @@ select.form-control:focus {
   overflow-y: scroll;
   scrollbar-color: #2f5079 #dee2e6 !important;
 }
+
+// .p-datatable-resizable-table>.p-datatable-thead>tr>th, .p-datatable-resizable-table>.p-datatable-tfoot>tr>td, .p-datatable-resizable-table>.p-datatable-tbody>tr>td {
+//   overflow: hidden;
+//   white-space: normal;
+// }
+.wrappable {
+  white-space: normal; /* Allow text to wrap */
+  word-wrap: break-word; /* Break long words if necessary */
+  overflow-wrap: break-word; /* Ensures proper word breaking in modern browsers */
+}

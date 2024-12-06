@@ -362,7 +362,7 @@
 								</div> -->
 								<div class="d-flex flex-column w-100 me-2">
 									<div class="matt-group">
-										<button type="button" class="btn btn-success" data-bs-toggle="modal"
+										<button type="button" (click)="extension()" class="btn btn-success" data-bs-toggle="modal"
 											data-bs-target="#extension-modal" aria-label="Extension">
 											Extension
 										</button>
@@ -414,84 +414,92 @@
 </div>
 <!-- extensionpopup -->
 <div class="modal fade" id="extension-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content" style="height: auto; width: 600px;">
-			<div class="modal-header">				
-				<h2 class="modal-title" id="exampleModalLabel">Extension Status</h2>
-				<button type="button" (click)="close()" class="btn btn-warning" data-dismiss="modal" aria-label="Close">
-
-
-					
-					<span aria-hidden="false">&times;</span>
-				</button>
-				
-			</div>
-			<div class="modal-body form-style-md form-style-font linux cardd">
-				<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg == true">
-					{{ErrorMsg}}</div>
-
-				<form [formGroup]="extensionForm">
-					<!-- Extension Number -->
-					<div class="row">
-						<div class="col-md-12">
-							<div class="matt-group">
-								<mat-label>Extension Number<b class="star">*</b></mat-label>
-								<input type="number" class="form-control" formControlName="extensionNumber"
-									placeholder="Enter Extension Number" />
-							</div>
-						</div>
-					</div>
-
-					<!-- Authority Letter Number -->
-					<div class="row">
-						<div class="col-md-12 mt-3">
-							<div class="matt-group">
-								<mat-label>Authority Letter Number<b class="star">*</b></mat-label>
-								<input type="number" class="form-control" formControlName="authorityLetterNumber"
-									placeholder="Enter Authority Letter Number" />
-							</div>
-						</div>
-					</div>
-
-					<!-- Description -->
-					<div class="row">
-						<div class="col-md-12 mt-3">
-							<div class="matt-group">
-								<mat-label>Description<b class="star">*</b></mat-label>
-								<textarea class="form-control" rows="3" formControlName="description"
-									placeholder="Enter Description"></textarea>
-							</div>
-						</div>
-					</div>
-
-					<!-- Extended Till Date Picker -->
-					<div class="row">
-						<div class="col-md-12 mt-3">
-							<div class="matt-group">
-								<mat-label>Extended Till<b class="star">*</b></mat-label>
-								<input matInput [matDatepicker]="picker" formControlName="extendedTill"
-									placeholder="Choose Date" class="form-control" />
-								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-								<mat-datepicker #picker></mat-datepicker>
-							</div>
-						</div>
-					</div>
-
-					<!-- Buttons -->
-					<div class="row button-group-lg button-auto mt-4">
-						<div class="col-md-6 col-6">
-							<button type="submit" class="btn btn-success w-100" (click)="saveviewstatus()">Save</button>
-						</div>
-						<div class="col-md-6 col-6">
-							<button type="button" class="btn btn-outline-primary w-100"
-								data-bs-dismiss="modal">Cancel</button>
-						</div>
-					</div>
-				</form>
-			</div>
+	<div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 1500px;">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h2 class="modal-title" id="exampleModalLabel">Extension Status</h2>
+		  <button type="button" (click)="close()" class="btn btn-warning" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
 		</div>
+		<div class="modal-body row">
+		  <!-- Left Form Section -->
+		  <div class="col-md-3 form-style-md form-style-font linux cardd">
+			<div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg == true">
+			  {{ErrorMsg}}
+			</div>
+  
+			<form [formGroup]="extensionForm">
+			  <!-- Extension Number -->
+			  <div class="mb-3">
+				<mat-form-field appearance="outline" class="w-100">
+				  <mat-label>Extension Number <b class="star">*</b></mat-label>
+				  <input matInput type="text" formControlName="extensionNumber" placeholder="Enter Extension Number" />
+				</mat-form-field>
+			  </div>
+  
+			  <!-- Authority Letter Number -->
+			  <div class="mb-3">
+				<mat-form-field appearance="outline" class="w-100">
+				  <mat-label>Authority Letter Number <b class="star">*</b></mat-label>
+				  <input matInput type="text" formControlName="authorityLetterNumber" placeholder="Enter Authority Letter Number" />
+				</mat-form-field>
+			  </div>
+  
+			  <!-- Description -->
+			  <div class="mb-3">
+				<mat-form-field appearance="outline" class="w-100">
+				  <mat-label>Description <b class="star">*</b></mat-label>
+				  <textarea matInput rows="3" formControlName="description" placeholder="Enter Description"></textarea>
+				</mat-form-field>
+			  </div>
+  
+			  <!-- Extended Till Date Picker -->
+			  <div class="mb-3">
+				<mat-form-field class="w-100" appearance="outline">
+				  <mat-label>Extended Till <b class="star">*</b></mat-label>
+				  <input matInput [matDatepicker]="picker" formControlName="extendedTill" placeholder="Choose Date" />
+				  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				  <mat-datepicker #picker></mat-datepicker>
+				</mat-form-field>
+			  </div>
+  
+			  <!-- Save Button -->
+			  <div class="d-grid mt-3">
+				<button type="submit" class="btn btn-success" (click)="submitExten()">Save</button>
+			  </div>
+			</form>
+		  </div>
+  
+		  <!-- Right Grid Section -->
+		  <div class="col-md-9">
+			<ng-container *ngIf="extentionData.length != 0; else nodata">
+			  <app-grid-table
+				[gridColumns]="extentionDataHeader"
+				[gridData]="extentionData"
+				[ispaniNater]="true"
+				[isAction]="true"
+				(editEvent)="editExtention($event,'edit')"
+				(deleteEvent)="editExtention($event,'delete')"
+				[isEditable]="true"
+				[isDeletable]="true">
+			  </app-grid-table>
+			</ng-container>
+  
+			<ng-template #nodata>
+			  <div class="body-card">No records found</div>
+			</ng-template>
+		  </div>
+		</div>
+  
+		<!-- Cancel Button -->
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-outline-primary w-100" data-bs-dismiss="modal">Cancel</button>
+		</div>
+	  </div>
 	</div>
-</div>
+  </div>
+  
 
 
 <!-- status modal -->

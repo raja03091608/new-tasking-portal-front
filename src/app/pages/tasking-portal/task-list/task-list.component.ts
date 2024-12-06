@@ -320,7 +320,7 @@ export class TaskListComponent implements OnInit {
     this.taskForm.patchValue({ sdForm: { sponsoring_directorate: data.sponsoring_directorate, task_name: data.task_name, task_description: data.task_description } })
 
     this.allocateForm.patchValue({
-      tasking_group: data.assigned_tasking_group.length > 0 && data.assigned_tasking_group[0].tasking_group ? data.assigned_tasking_group[0].tasking_group.id : ''
+      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : ''
     });
     console.log('data.task_number_dee', data.task_number_dee);
 
