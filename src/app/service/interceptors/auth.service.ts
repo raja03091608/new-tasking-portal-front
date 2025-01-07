@@ -23,8 +23,8 @@ export class AuthService implements HttpInterceptor {
 
     const cspHeader = `
     default-src 'self';
-    script-src 'self'  'strict-dynamic';
-    style-src 'self' ;
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
+    style-src 'self' 'nonce-${nonce}' ;
     img-src 'self' blob: data:;
     font-src 'self';
     media-src 'self';
@@ -39,6 +39,7 @@ export class AuthService implements HttpInterceptor {
     'Expires': '0'
 
   `
+ 
   const userAgent = navigator.userAgent || 'unknown-agent'; 
   if (userAgent === 'bad-agent') {
       throw new Error('Blocked bad User-Agent');

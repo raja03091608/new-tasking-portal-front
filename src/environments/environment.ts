@@ -12,7 +12,7 @@ export const environment = {
   isMockEnabled: true,
   //apiUrl: 'api',
   BaseUrl: '',
-  API_URL : "https://tasking-api.ilizien-erp.com/",
+  API_URL : "https://tasking-api.ilizien-projects-cdf.in/",
   // WISH_URL :'http://'+ip_to_config.IP_ADDRESS_TO_CHANGE+':8002/',
   WISH_URL : "https://wish.ilizienprojects.com/",
   // API_URL :'http://'+ip_to_config.IP_ADDRESS_TO_CHANGE+':8000/',

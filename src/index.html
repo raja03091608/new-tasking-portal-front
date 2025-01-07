@@ -5,11 +5,23 @@
   <title>Demo</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self'; 
+  img-src 'self' data:; 
+  style-src 'self' https://tasking.ilizien-projects-cdf.in/wesee-main/; 
+  frame-ancestors 'self'; 
+  object-src 'none'; 
+  script-src 'self' https://tasking.ilizien-projects-cdf.in/wesee-main/; 
+  connect-src 'self' https://tasking-api.ilizien-projects-cdf.in; 
+  font-src 'self' https://tasking.ilizien-projects-cdf.in; 
+  form-action 'self';
+"> -->
+
   <link rel="icon" type="image/x-icon" href="./assets/media/logo.jpg">
   <link rel="stylesheet" id="layout-styles-anchor" href="./assets/splash-screen.css" />
 </head>
 <body root id="kt_body" class="mat-typography">
-  <script>
+  <!-- <script>
     if (document.documentElement) {
       var defaultThemeMode = "system";
 
@@ -27,7 +39,7 @@
 
       document.documentElement.setAttribute("data-theme", themeMode);
     }
-  </script>
+  </script> -->
   <app-root></app-root>
 </body>
 </html>

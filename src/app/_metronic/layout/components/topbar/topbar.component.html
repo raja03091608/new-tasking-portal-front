@@ -40,25 +40,25 @@
 	<!-- begin::Toggle -->
 	<div class="cursor-pointer symbol" [ngClass]="toolbarUserAvatarHeightClass" data-kt-menu-trigger="hover"
 		data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
-		<div class="avatar-log">
-			<div class="user-avatar">
-				<img src="./assets/media/avatars/demo-blank.jpg" alt="metronic" />
+		<div class="d-flex justify-content-between">
+			<div class="">
+				<img src="./assets/media/avatars/demo-blank.jpg" class="profile-img" alt="metronic" />
 			</div>
 			<ng-container *ngIf="api?.userid?.process_id==3">
-			<div class="user-name">
-				<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
+			<div class="">
+				<p class="text-white">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
 				<p class="user-type">({{ api.userid.tasking_group[0].code }})</p>
 			</div>
 			</ng-container>
 			<ng-container *ngIf="api?.userid.process_id==2">
-				<div class="user-name">
-					<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
+				<div class="">
+					<p class="text-white">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
 					<p class="user-type">({{ api.userid.user_group[0].code }})</p>
 				</div>
 			</ng-container>
 			<ng-container *ngIf="api.userid.process_id==1">
-				<div class="user-name">
-					<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
+				<div class="">
+					<p class="text-white">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
 					<p class="user-type">({{ api.userid.role_name }})</p>
 				</div>
 			</ng-container>

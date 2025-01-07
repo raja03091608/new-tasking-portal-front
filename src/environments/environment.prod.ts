@@ -11,9 +11,14 @@ export const environment = {
   isMockEnabled: true,
   //apiUrl: 'api',
   BaseUrl: '',
-  API_URL : "https://tasking-api.ilizienprojects.com/",
-  MEDIA_URL : "https://tasking-api.ilizienprojects.com/",
-  WISH_URL : "https://wish.ilizienprojects.com/",
+  API_URL : "https://tasking-api.ilizien-projects-cdf.in/",
+  MEDIA_URL : "https://tasking-api.ilizien-projects-cdf.in/ ",
+  WISH_URL : "https://tasking-api.ilizien-projects-cdf.in/",
+  // API_URL : "https://tasking-api.visolutionz.com/",
+  // MEDIA_URL : "https://tasking-api.visolutionz.com/ ",
+  // WISH_URL : "https://tasking-api.visolutionz.com/",
+
+  
   //WISH_URL :'http://'+ip_to_config.IP_ADDRESS_TO_CHANGE+':8002/',
   //API_URL :'http://192.168.1.96:8001/',
   //API_URL :'http://'+ip_to_config.IP_ADDRESS_TO_CHANGE+':8001/',
