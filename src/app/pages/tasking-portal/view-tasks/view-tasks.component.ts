@@ -1103,9 +1103,10 @@ onCustomClear(item){
   editExtention(rowData,str){
     this.extentionId = rowData.id;
     if(str==='delete'){
-      this.api.postAPI(environment.API_URL + `transaction/extended/details/`,{id:this.data_list.id,status:3},)
+      this.api.postAPI(environment.API_URL + `transaction/extended/details/`,{id:rowData.id,status:3},)
       .subscribe((res) => {
         this.extentionData=res;
+        this.extension()
         if(res.status==environment.SUCCESS_CODE)
           this.notification.success(res.message);
       })

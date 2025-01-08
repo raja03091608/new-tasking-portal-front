@@ -21,8 +21,9 @@
   @import 'primeng/resources/themes/lara-light-blue/theme.css';
   @import 'primeng/resources/primeng.min.css';
   @import "primeicons/primeicons.css";
- 
-
+  // @import "~font-awesome/scss/font-awesome.scss";
+  // @import '@kolkov/angular-editor/themes/default.scss';
+  @import "./assets/editor.scss";
 h1,h2,h3,h4,h5,h6 {
   font-family: 'Roboto Condensed' !important;
   font-weight: 600;
@@ -1072,16 +1073,16 @@ box-shadow: none !important;
   background-color: #3f33ec;
 }
 
-.angular-editor {
-  .angular-editor-toolbar {
-      background: #ddd; padding: 100px;
-      .angular-editor-button {
-          .fa {
-              font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900); font-size: 12px;
-          }
-      }
-  }
-}
+// .angular-editor {
+//   .angular-editor-toolbar {
+//       background: #ddd; padding: 100px;
+//       .angular-editor-button {
+//           .fa {
+//               font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900); font-size: 12px;
+//           }
+//       }
+//   }
+// }
 
 header {
   .menu-sub-dropdown {
@@ -1149,12 +1150,231 @@ select.form-control:focus {
   scrollbar-color: #2f5079 #dee2e6 !important;
 }
 
-// .p-datatable-resizable-table>.p-datatable-thead>tr>th, .p-datatable-resizable-table>.p-datatable-tfoot>tr>td, .p-datatable-resizable-table>.p-datatable-tbody>tr>td {
-//   overflow: hidden;
-//   white-space: normal;
-// }
+.header {
+  background-color: #170047 !important;
+}
+.avatar-log {
+  display: flex; align-items: center;
+  .user-avatar {
+      width: 50px; height: 50px; border-radius: 8px; overflow: hidden; margin-right: 10px; display: block;
+      img {
+          width: 100%; height: 100%; object-fit: cover;
+      }
+  }
+  .user-name {
+      padding-left: 5px;
+      .user-title {
+          font-size: 14px; margin: 0; color: #fff;
+      }
+      .user-type {
+          font-size: 13px; margin: 0; color: #fff;
+      }
+  }
+}
+
+.notify-icon {
+  svg {
+      width: 3rem !important; height: 3rem !important;
+  }
+  .notify-count {
+      height: 20px; padding: 0 5px; line-height: 20px; border-radius: 4px; text-align: center; font-size: 13px; background: #c79835; color: #fff;  display: block; position: relative; left: -12px; top: -15px;        
+  }
+  .btn-icon {
+      background: none !important; color: #fff !important;
+      .svg-icon {
+          color: #fff !important; background: none !important; 
+          path {
+              fill: #fff !important;
+          }
+      }
+  }
+}
 .wrappable {
   white-space: normal; /* Allow text to wrap */
   word-wrap: break-word; /* Break long words if necessary */
   overflow-wrap: break-word; /* Ensures proper word breaking in modern browsers */
 }
+
+
+.form-label span{
+  font-weight: 200;
+}
+.green-progress .mat-progress-bar-fill::after {
+  background-color: green !important;
+}
+
+
+.h-md-40 {
+  height: 40% !important;
+}
+.apexcharts-toolbar{
+visibility: hidden;
+}
+
+.percentage-map {
+  #chart2 {
+      margin-top: 25px; height: 495px !important;
+      .apexcharts-legend {
+          top: 30px;
+      }
+  }
+}
+.task-text-group {
+  display: flex; align-items: center;
+  margin: 0 10px;
+  p {
+      font-size: 13px; margin: 0;
+  }
+  .form-control {
+      width: 200px; border-bottom: 1px solid #ddd !important; border: none; height: 35px; font-size: 16px; color: #000; margin: 0; background: #fff !important; border-radius: 0;
+  }
+}
+
+.matt-group{
+  .edit-icon{
+      span{margin-right: 5px;}
+  }
+}
+
+.matselect1 {
+  .mat-form-field {
+      display: block;
+      .mat-form-field {
+          background-color: #fff !important;
+          padding-bottom: 0 !important; border: 2px solid #000000 !important; border-radius: 8px !important;
+          height: 48px; padding-top: 3px;
+          .mat-form-field-flex {
+              background: none !important;
+              .mat-form-field-infix {
+                  border-top: 0 !important;
+                  .mat-select-arrow {
+                      position: relative; top: 7px;
+                  }
+              }
+          }
+      }
+      .mat-form-field-underline {
+          display: none !important;
+      }
+  }
+}
+
+.card-h {
+height: 140px;
+}
+
+.logo-content {
+position: absolute !important;
+top: 15px;
+right: 15px;
+text-align: right ;
+}
+
+.border-rotation {
+position: absolute !important;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+border: 2px dashed #f1dada;
+border-radius: 50%;
+box-sizing: border-box;
+
+}
+
+.rotation {
+display: block !important;
+padding: 10px;
+height:9vh;
+}
+@keyframes rotate-border {
+0% {
+  transform: rotate(0deg);
+}
+100% {
+  transform: rotate(360deg);
+}
+}
+
+.border-rotation:hover {
+background-repeat: repeat-x, repeat-y;
+animation: rotate-border 5s linear infinite;
+}
+
+.card-logo {
+height: 50px;
+width: auto;
+}
+
+.btn-view {
+background-color: #66a6ff;
+color: white;
+border: none;
+border-radius: 20px;
+padding: 10px 20px;
+font-size: 14px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.btn-view:hover {
+background-color: #ffc700;
+}
+
+.btn-view:focus {
+outline: none;
+}
+// .card {
+// position: relative;
+// background-color: #ffffff;
+// // background-color: #4aa3ff;
+// border: 1px solid #dcdcdc;
+// border-radius: 8px;
+// box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+// padding: 15px;
+// overflow: hidden;
+// border-top: 3px solid #120d88;
+// }
+.card-container-c a:hover {
+background-image: linear-gradient(120deg, #89f7fe, #66a6ff);
+}
+.show-button{
+  margin-left: auto;
+}
+
+::ng-deep button.p-ripple.p-element.p-button.p-component{
+border-radius: 20px !important;
+
+}
+button.p-ripple.p-element.p-button.p-component:hover{
+background-color: #ffc700;
+
+
+}
+button.p-ripple.p-element.p-button.p-component:hover {
+background-color: #ffc700; /* Yellow color */
+}
+
+
+.card.card-flush.h-xl-100.progress-chart.mapbg {
+margin-top: 25px,!important;
+}
+.dialog-content {
+display: flex;
+flex-direction: column;
+height: 100%;
+}
+
+.input-container {
+display: flex;
+justify-content: flex-end;
+margin-bottom: 1rem;
+
+}
+
+
+.table-striped th{
+background-color: #5198ef;
+  color: white;
+}
+
