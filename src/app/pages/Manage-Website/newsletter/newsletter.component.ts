@@ -253,10 +253,10 @@ export class NewsletterComponent implements OnInit {
   handleFilter(filterValue: any) {
     
     this.filterData = filterValue;
-    console.log('Filter triggered with value:', filterValue);
+    // console.log('Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    console.log('Pagination triggered with event:', pageEvent);
+    // console.log('Pagination triggered with event:', pageEvent);
   }
 
   openCurrentStatus(country){
@@ -280,7 +280,7 @@ export class NewsletterComponent implements OnInit {
     }
     taskid:any;
     opentask(country:any){
-      console.log('countyryry',country);
+      // console.log('countyryry',country);
       // this.resetexportform();
       // this.exportform.reset();
       openModal('#export');

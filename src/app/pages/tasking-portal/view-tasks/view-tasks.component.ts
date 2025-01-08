@@ -530,14 +530,14 @@ onCustomClear(item){
 
 
   onSelectionChange(event){
-    console.log(event,"==============<<<<<<<<<<<<>>>>>>")
+    // console.log(event,"==============<<<<<<<<<<<<>>>>>>")
     if(event){
       if(event !== 'Task Closed'){
         let url  = `master/lookup?type__code=${event == 'Work In Progress'? 'PRO_SEC': 'PRO_TER'}`
         this.api
       .getAPI(environment.API_URL + url)
       .subscribe((res) => {
-        console.log(res,"============>>>>>>>>>>>>>")
+        // console.log(res,"============>>>>>>>>>>>>>")
         this.secondaryTitle = res.data;
         this.showSecTitle = true;
       });
@@ -676,7 +676,7 @@ onCustomClear(item){
   tasknumber:any
   openCurrentStatus(country){
 	this.id=country.id;
-    console.log('tasking country',country)
+    // console.log('tasking country',country)
     this.taskname = country.task_name;
     this.tasknumber = country.task_number_dee;
     // this.selectedTrial=tasking;
@@ -700,7 +700,7 @@ onCustomClear(item){
 
   archivetask(country){
     this.id=country.id;
-    console.log('this.id0',this.id)
+    // console.log('this.id0',this.id)
     openModal('#archive-modal')
   }
   commentModal(comment){
@@ -710,7 +710,7 @@ onCustomClear(item){
 
   taskid:any;
   opentask(country:any){
-	  console.log('countyryry',country);
+	  // console.log('countyryry',country);
     this.resetexportform();
     // this.exportform.reset();
     openModal('#export');
@@ -888,7 +888,7 @@ onCustomClear(item){
     this.viewlist=data
     openModal('#viewTasking-modal');
      this.getstatus(data.id);
-    console.log('datadata',data);
+    // console.log('datadata',data);
     this.taskname = data.task_name
     this.tasknumber = data.task_number_dee
 
@@ -1004,7 +1004,7 @@ onCustomClear(item){
 
   saveviewstatus() {
     this.showcomments=true;
-    console.log('commentform',this.commentForm);
+    // console.log('commentform',this.commentForm);
     if(this.commentForm.value.created_by!=null && this.commentForm.value.tasking!=null){
     this.commentForm.value.created_by = this.api.userid.user_id;
     this.commentForm.value.tasking = this.viewlist.id;
@@ -1246,7 +1246,7 @@ onCustomClear(item){
     this.showcomments=true;
     this.completedForm.value.completed_status = "1";
     this.completedForm.value.tasking=this.id;
-    console.log('completedForm', this.countryList[this.completedForm.value.tasking])
+    // console.log('completedForm', this.countryList[this.completedForm.value.tasking])
      if (this.completedForm.valid) {
       this.api
         .postAPI(
@@ -1326,7 +1326,7 @@ onCustomClear(item){
           status: 3,
         }).subscribe((res)=>{
           if(res.status==environment.SUCCESS_CODE) {
-			console.log('asdasdasd',res);
+			// console.log('asdasdasd',res);
 
             this.notification.warn('Approved Task '+language[environment.DEFAULT_LANG].deleteMsg);
             this.getTasking();
@@ -1353,7 +1353,7 @@ onCustomClear(item){
 
   exports:any
     saveform(taskid:any){
-      console.log('export form',this.exportform.value);
+      // console.log('export form',this.exportform.value);
       this.id=taskid;
       this.exportform.value.id = taskid
 
@@ -1391,10 +1391,10 @@ filterData:any;
 handleFilter(filterValue: any) {
   
   this.filterData = filterValue;
-  console.log('Filter triggered with value:', filterValue);
+  // console.log('Filter triggered with value:', filterValue);
 }
 handlePagination(pageEvent: any) {
-  console.log('Pagination triggered with event:', pageEvent);
+  // console.log('Pagination triggered with event:', pageEvent);
 }
 
 
@@ -1451,7 +1451,7 @@ submitHeaderForm() {
     this.selectedHeader = this.xlxsForm.get('header')?.value || [];
     this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
     this.xlxsForm.reset()
-    console.log(this.selectedHeader);
+    // console.log(this.selectedHeader);
   }
   selectAll() {
     const allHeaders = this.expDataHeader.map(option => option);
@@ -1469,12 +1469,13 @@ submitHeaderForm() {
     }
   }
   handleUpload(rowData: any) {
-    console.log('Uploaded row data:', rowData);}
+    // console.log('Uploaded row data:', rowData);
+    }
 
     onUpload(event) {
       for(let file of event.files) {
          
-        }
+       }
 
 
 }

@@ -535,11 +535,11 @@ formInit(){
 
     //formData.append('created_by', this.taskForm.value.created_by);
     formData.append('modified_by', this.api.userid.user_id);
-    console.log('OUT');
+    // console.log('OUT');
 
      if (this.taskForm.get('sdForm')) {
       //formData.append('id', this.editForm.value.id);
-      console.log('IN');
+      // console.log('IN');
 
       this.api
         .postAPI(
@@ -689,7 +689,7 @@ cancelmodal(){
   getInitator() {
     this.api.getAPI(environment.API_URL + "master/sponsoring_directorate?status=1").subscribe((res) => {
       this.initatorList = res.data;
-      console.log('this.initatorList',this.initatorList)
+      // console.log('this.initatorList',this.initatorList)
     });
   }
   showSD=false;

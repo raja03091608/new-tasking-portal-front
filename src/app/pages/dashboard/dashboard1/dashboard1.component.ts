@@ -1904,7 +1904,7 @@ ngOnInit(): void {
   
   // task_id:string
   onTaskChange(taskname: any){
-    console.log('Selected Task Name:', taskname.id);
+    // console.log('Selected Task Name:', taskname.id);
     // this.task_id=taskname.id
     this.getChart(taskname.id);
   }
@@ -1917,7 +1917,7 @@ ngOnInit(): void {
     });
   };
 getChart(task_id=""){
-  console.log("task_id1111",task_id);
+  // console.log("task_id1111",task_id);
  this.maybeDisposeRoot("chartChartDetailModule")
    // Chart code goes in here
    let root = am5.Root.new("chartChartDetailModule");
@@ -1964,10 +1964,10 @@ getChart(task_id=""){
          if(task_id!=''){
 
           var statusTaskingList = res.data.filter(task => task.tasking_id === task_id);
-          console.log("statusTaskingList21",statusTaskingList);
+          // console.log("statusTaskingList21",statusTaskingList);
         }
         else{
-          console.log("statusTaskingList2",statusTaskingList);
+          // // console.log("statusTaskingList2",statusTaskingList);
             statusTaskingList = res.data;
         }
 
@@ -1995,7 +1995,7 @@ getChart(task_id=""){
        });
      }
      else{
-      console.log("task_id222222",task_id);
+      // console.log("task_id222222",task_id);
        this.api
        .postAPI(environment.API_URL + "transaction/taskingchart",{})
        .subscribe((res) => {
@@ -2004,16 +2004,16 @@ getChart(task_id=""){
          let km = 0;
         //
         if(task_id!=''){
-          console.log("statusTaskingList21",statusTaskingList);
+          // console.log("statusTaskingList21",statusTaskingList);
           var statusTaskingList = res.data.filter(task => task.tasking_id === task_id);
         }
         else{
-          console.log("statusTaskingList2",statusTaskingList);
+          // console.log("statusTaskingList2",statusTaskingList);
             statusTaskingList = res.data;
         }
 
          for (let k=0;k<statusTaskingList.length;k++){
-           console.log('statusTaskingList.length',statusTaskingList);
+          //  console.log('statusTaskingList.length',statusTaskingList);
            tasking_chart_name.push({category:statusTaskingList[k].tasking__task_name});
            tasking_chart_name = tasking_chart_name.filter((test, index, array) =>
              index === array.findIndex((findTest) =>
@@ -2034,11 +2034,11 @@ getChart(task_id=""){
            }
          }
        });
-     console.log('this.tasking_chartname',tasking_chartname);
+    //  console.log('this.tasking_chartname',tasking_chartname);
      }
 
 setTimeout(() => {
- console.log('this.tasking_chartname',tasking_chartname);
+//  console.log('this.tasking_chartname',tasking_chartname);
    let data_tasking_chart = tasking_chartname;
   
    let yRenderer = am5xy.AxisRendererY.new(root, {});
@@ -2438,10 +2438,10 @@ this.chartOptions2 = {
   task_list:any;
   created_by:any;
   tasklist(){
-    console.log("taskName",this.taskName);
+    // console.log("taskName",this.taskName);
     if(this.token_detail.process_id==3){
       this.created_by=this.token_detail.user_id;
-      console.log('tokennn',this.created_by);
+      // console.log('tokennn',this.created_by);
 
      }
      else{
@@ -2454,9 +2454,9 @@ this.chartOptions2 = {
      .subscribe((res)=>{
       if(res.status==environment.SUCCESS_CODE) {
         this.task_list = res.data;
-        console.log('tasklist',this.task_list);
+        // console.log('tasklist',this.task_list);
 		this.dataTask = res.data;
-		console.log(this.dataTask,"data task")
+		// console.log(this.dataTask,"data task")
       }
     });
   }
@@ -2780,7 +2780,7 @@ getDashboardCount(){
 
   openEdit(country) {
     this.isReadonly=false;
-    console.log('edit',country)
+    // console.log('edit',country)
     // this.taskForm.enable();
     this.crudName = "View";
 	  this.id=country.id;
@@ -2860,7 +2860,7 @@ getDashboardCount(){
   getTaskingGroups() {
     this.api.getAPI(environment.API_URL + "master/taskinggroups").subscribe((res) => {
         this.taskingGroups = res.data;
-		console.log('dfdsf',this.taskingGroups);
+		// console.log('dfdsf',this.taskingGroups);
         //console.log('taskingGroups0',this.taskingGroups)
       });
   }
@@ -2868,7 +2868,7 @@ getDashboardCount(){
   getStatus(){
 	this.api.getAPI(environment.API_URL + "master/lookup?type__code=PRO").subscribe((res) => {
         this.statusData = res.data;
-		console.log('dfdstatusDatasf',this.statusData);
+		// console.log('dfdstatusDatasf',this.statusData);
       });
   }
 
@@ -2876,7 +2876,7 @@ getDashboardCount(){
     this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status/')
       .subscribe((res: any) => {
         this.yearlytaskdata = res;
-        console.log('yearlytaskdata',this.yearlytaskdata) 
+        // console.log('yearlytaskdata',this.yearlytaskdata) 
       },
       (error)=>{
         console.error('Error fetching pending data:', error);
@@ -2892,7 +2892,7 @@ getDashboardCount(){
           sponsoring_directorate: group.sponsoring_directorate
         }))
       );
-      console.log('overdata',this.overdata);
+      // console.log('overdata',this.overdata);
     },
     (error)=>{
       console.error('Error fetching pending data:',error);
@@ -2904,7 +2904,7 @@ getDashboardCount(){
   getpendingdata(){
     this.api.getAPI(environment.API_URL + 'transaction/pending-by-group/').subscribe((res:any)=>{
       this.Pendingdata=res.data;
-      console.log('Pendingdata',this.Pendingdata);
+      // console.log('Pendingdata',this.Pendingdata);
     },
     (error)=>{
       console.error('Error fetching pending data:',error );
@@ -2915,13 +2915,13 @@ getDashboardCount(){
     this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((res:any)=>{
       this.groupdata=res.data;
      
-      console.log('groupdata',this.groupdata);
+      // console.log('groupdata',this.groupdata);
     });
   }
 getdistribution(){
   this.api.getAPI(environment.API_URL +'transaction/task-distribution').subscribe((res:any)=>{
     this. distributiondata=res.data;
-    console.log('distributiondata',this.distributiondata);
+    // console.log('distributiondata',this.distributiondata);
   }
   );
 }
@@ -2933,7 +2933,7 @@ getyear() {
     .subscribe((res: any) => {
       this.apiyearlytaskdata1 = res;
       this.updateChartOptions(this.apidistributiondata1); // Update the chart options with API data
-      console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
+      // console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
     });
 }
 updateChartOptions(data: any) {
@@ -3104,7 +3104,7 @@ getgroup(): void {
     (res: any) => {
       this.apigroupdata1 = res.data;
       this.updateChartOptionsGroup(this.apigroupdata1);
-      console.log('apigroupdata1', this.apigroupdata1);
+      // console.log('apigroupdata1', this.apigroupdata1);
     },
     (error) => {
       console.error('Error fetching group data', error);
@@ -3179,7 +3179,7 @@ getdistri() {
   this.api.getAPI(environment.API_URL + 'transaction/task-distribution').subscribe((res: any) => {
     this.apidistributiondata1 = res.data;
     this.updated12(this.apidistributiondata1); // Pass the data to updated12
-    console.log('apidistributiondata', this.apidistributiondata1);
+    // console.log('apidistributiondata', this.apidistributiondata1);
   });
 }
 updated12(data: any) { 
@@ -3226,7 +3226,7 @@ getextend() {
   this.api.getAPI(environment.API_URL + 'transaction/extended-deadlines/').subscribe((res: any) => {
     this.extenddata = res.data;
     this.updated22(this.extenddata); // Pass the data to updated22
-    console.log('extenddata', this.extenddata);
+    // console.log('extenddata', this.extenddata);
   });
 }
 
@@ -3285,7 +3285,7 @@ getStatusTaskingNew() {
     .subscribe((res: any) => {
       this.statusTaskingNew = res.data;
       this.tabledata(this.statusTaskingNew);
-      console.log('statusTaskingNew', this.statusTaskingNew);
+      // console.log('statusTaskingNew', this.statusTaskingNew);
     });
   }
 
@@ -3296,7 +3296,7 @@ approveTask=[] as any
 getNewTaskingStatus() {
   this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
     .subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
       if (res && res.data) {
            
         this.newTableDataSource =res.data 
@@ -3324,10 +3324,10 @@ applyFilter1(event: Event) {
 handleFilter(filterValue: any) {
   this.filterData = filterValue;
 
-  console.log('Filter triggered with value:', filterValue);
+  // console.log('Filter triggered with value:', filterValue);
 }
 handlePagination(pageEvent: any) {
-  console.log('Pagination triggered with event:', pageEvent);
+  // console.log('Pagination triggered with event:', pageEvent);
 }
 
 gridColum = [
@@ -3389,7 +3389,7 @@ submitHeaderForm() {
     this.selectedHeader = this.xlxsForm.get('header')?.value || [];
     this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
     this.xlxsForm.reset()
-    console.log(this.selectedHeader);
+    // console.log(this.selectedHeader);
   }
   selectAll() {
     const allHeaders = this.expDataHeader.map(option => option);
@@ -3407,7 +3407,7 @@ submitHeaderForm() {
         }))
       );
       this.updateChartOptions1(this.apioverdata1);
-      console.log('apioverdata1', this.apioverdata1);
+      // console.log('apioverdata1', this.apioverdata1);
     });
   }
   get filteredTasks() {

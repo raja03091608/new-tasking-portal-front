@@ -64,7 +64,7 @@ export class ArchiveTaskComponent implements OnInit {
           this.dataSource = new MatTableDataSource(res.data);
           this.archivetask=res.data;
           this.archiveList = res.data;
-          console.log('res.data',res.data)
+          // console.log('res.data',res.data)
           this.dataSource.paginator = this.pagination;
 
 
@@ -72,20 +72,7 @@ export class ArchiveTaskComponent implements OnInit {
 
       });
     }
-    // else{
-    //   this.api
-    //   .getAPI(environment.API_URL + "transaction/tasking")
-    //   .subscribe((res) => {
-    //     if(res.status==environment.SUCCESS_CODE){
-    //       this.dataSource = new MatTableDataSource(res.data);
-    //       this.archiveList = res.data;
-    //       this.dataSource.paginator = this.pagination;
-
-    //     }
-
-    //   });
-
-    // }
+  
 
 
   }
@@ -113,7 +100,7 @@ export class ArchiveTaskComponent implements OnInit {
    }
 
    restoreDelete(id){
-    console.log("ID",id);
+    // console.log("ID",id);
     this.api.postAPI(environment.API_URL + "transaction/trial/status_restore", {
       tasking: id,
     }).subscribe((res)=>{
@@ -168,10 +155,10 @@ export class ArchiveTaskComponent implements OnInit {
   handleFilter(filterValue: any) {
     
     this.filterData = filterValue;
-    console.log('Filter triggered with value:', filterValue);
+    // console.log('Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    console.log('Pagination triggered with event:', pageEvent);
+    // console.log('Pagination triggered with event:', pageEvent);
   }
 
   openCurrentStatus(country){
@@ -195,7 +182,7 @@ export class ArchiveTaskComponent implements OnInit {
     }
     taskid:any;
     opentask(country:any){
-      console.log('countyryry',country);
+      // console.log('countyryry',country);
       // this.resetexportform();
       // this.exportform.reset();
       openModal('#export');

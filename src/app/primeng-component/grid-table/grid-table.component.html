@@ -3,8 +3,8 @@
     [value]="filteredData" 
     [paginator]="ispaniNater" 
     [scrollable]="true"
-    [ngStyle]="{'table-layout': 'fixed', 'width': '100%'}"
-    styleClass="p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
+    
+    styleClass=" auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
     resizableColumns="true" 
     columnResizeMode="expand" 
     [rows]="10"
@@ -13,12 +13,12 @@
         <!-- Dynamic Column Headers -->
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th class="headercolor" *ngIf="isCheckBox" class="text-center" style="width: 5%;">
+                <th class="headercolor" *ngIf="isCheckBox" class="text-center" >
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th class="headercolor"  [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn
-                    [ngClass]="{'text-center': col.header === 'Status'}"
-                    [ngClass]="{'column-max-width-15': col.header === 'Task Name'}">
+                <th class="headercolor "  [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn
+                    
+                   >
                     {{ col.header }}
                     
                 <!-- <p-sortIcon *ngIf="col?.filter" class="text-light pb-1 pe-2 rounded" [field]="col.field"></p-sortIcon> -->
