@@ -8,7 +8,7 @@
 			 <div class="form-style-md form-row d-flex justify-content-end button-title row">
 				<div class="col-md-3">
 					<div class="matt-group matselect">
-					  <mat-form-field appearance="fill" >
+					  <mat-form-field appearance="outline" >
 						<mat-select value="default" [(ngModel)]="process" placeholder="Select Unit" (ngModelChange)="processChange($event)">
 						  <mat-option>None</mat-option>
 						  <mat-option *ngFor="let process of processes" [value]="process.id">{{process.name}}</mat-option>
@@ -18,7 +18,7 @@
 				</div>
 				<div class="col-md-3">
 					<div class="matt-group matselect">
-					  <mat-form-field appearance="fill">
+					  <mat-form-field appearance="outline">
 						<mat-select value="default" [(ngModel)]="user_role" placeholder="Select role" (ngModelChange)="roleChange($event)">
 						  <mat-option>None</mat-option>
 						  <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>

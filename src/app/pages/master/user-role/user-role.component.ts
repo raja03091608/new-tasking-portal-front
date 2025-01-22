@@ -66,6 +66,7 @@ export class UserRoleComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  userRole=[]as any;
 
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService, private formBuilder: FormBuilder) {
@@ -162,6 +163,7 @@ export class UserRoleComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(res.data);
         // if(res.status==environment.SUCCESS_CODE){
         this.dataSource = new MatTableDataSource(res.data);
+        this.userRole=res.data;
 
         this.countryList = res.data;
 
@@ -393,6 +395,55 @@ export class UserRoleComponent implements OnInit {
         this.processview = res.data;
       });
   }
+  gridColumns=[
+    { field: 'process.name', header: ' Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'code', header: 'code', filter: true, filterMatchMode: 'contains' },
+    // { field: 'process.status', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    // { field: 'reason', header: 'Reason', filter: true, filterMatchMode: 'contains' },
+    // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+  ]
+  exportData:any;
+  filterData:any;
+  handleFilter(filterValue: any) {
+    
+    this.filterData = filterValue;
+    // console.log('Filter triggered with value:', filterValue);
+  }
+  handlePagination(pageEvent: any) {
+    // console.log('Pagination triggered with event:', pageEvent);
+  }
+
+  openCurrentStatus(country){
+    // this.id=country.id;
+    //   console.log('tasking country',country)
+    //   this.taskname = country.task_name;
+    //   this.tasknumber = country.task_number_dee;
+    //   // this.selectedTrial=tasking;
+    //   openModal('#trial-status-modal');
+    // this.getComments();
+    }
+
+    UploadReceipt(country) {
+      // this.id=country.id;
+      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    }
+  
+    completedtask(country) {
+      // this.id=country.id;
+      // openModal('#completedTask-modal');
+    }
+    taskid:any;
+    opentask(country:any){
+      // console.log('countyryry',country);
+      // this.resetexportform();
+      // this.exportform.reset();
+      openModal('#export');
+      this.taskid = country.id;
+  
+    }
+
+
+
 
 
 }

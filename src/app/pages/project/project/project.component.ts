@@ -110,6 +110,7 @@ export class ProjectComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  projectData=[]as any;
 
 
   constructor(public api: ApiService, private notification : NotificationService,
@@ -177,6 +178,7 @@ export class ProjectComponent implements OnInit {
       .subscribe((res) => {
 
         this.dataSource = new MatTableDataSource(res.data);
+        this.projectData=res.data;
 
         this.countryList = res.data;
 		this.con=this.countryList[0];
@@ -349,6 +351,53 @@ export class ProjectComponent implements OnInit {
 		closeModal('#crud-countries');
 	  }
 
-
+    gridColumns=[
+      { field: 'title', header: ' Title', filter: true, filterMatchMode: 'contains' },
+      { field: 'lead_by', header: 'Lead By	', filter: true, filterMatchMode: 'contains' },
+      { field: 'project_description', header: 'Description', filter: true, filterMatchMode: 'contains' },
+      { field: 'image', header: 'Image', filter: true, filterMatchMode: 'contains' },
+      // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
+    ]
+    exportData:any;
+    filterData:any;
+    handleFilter(filterValue: any) {
+      
+      this.filterData = filterValue;
+      // console.log('Filter triggered with value:', filterValue);
+    }
+    handlePagination(pageEvent: any) {
+      // console.log('Pagination triggered with event:', pageEvent);
+    }
+  
+    openCurrentStatus(country){
+      // this.id=country.id;
+      //   console.log('tasking country',country)
+      //   this.taskname = country.task_name;
+      //   this.tasknumber = country.task_number_dee;
+      //   // this.selectedTrial=tasking;
+      //   openModal('#trial-status-modal');
+      // this.getComments();
+      }
+  
+      UploadReceipt(country) {
+        // this.id=country.id;
+        // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+      }
+    
+      completedtask(country) {
+        // this.id=country.id;
+        // openModal('#completedTask-modal');
+      }
+      taskid:any;
+      opentask(country:any){
+        // console.log('countyryry',country);
+        // this.resetexportform();
+        // this.exportform.reset();
+        openModal('#export');
+        this.taskid = country.id;
+    
+      }
+  
+  
 }
 

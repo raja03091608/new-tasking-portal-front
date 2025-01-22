@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { RouterModule } from '@angular/router';
@@ -15,6 +15,16 @@ import { MaterialModule } from '../../material/material.module';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ArchiveTaskComponent } from './archive-task/archive-task.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { TimelineModule } from 'primeng/timeline';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { FileUploadModule } from 'primeng/fileupload';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -23,11 +33,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ViewStatusComponent,
     TaskListComponent,
     ArchiveTaskComponent,
+    
 
   ],
   imports: [
+    TimelineModule,
+    ConfirmDialogModule ,
+    ToastModule,
+    TableModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
     MatFormFieldModule,
     CommonModule,
+    DialogModule,
     ReactiveFormsModule,
     NgbModule,
     CKEditorModule,
@@ -35,6 +54,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MaterialModule,
     NgApexchartsModule,
     AngularEditorModule,
+    TableModule,
+    FileUploadModule, 
     RouterModule.forChild([
       {
         path: 'new-task',
@@ -59,4 +80,5 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ])
   ]
 })
+
 export class TaskingPortalModule { }

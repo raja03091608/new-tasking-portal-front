@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
-<section class="body-card">
+ <!-- <section class="body-card">
     <div class="container-fluid">
        <div class="row">
           <div class="col-md-12">
@@ -23,7 +23,7 @@
                          </mat-paginator>
                       </div>
                       <div class="col-md-6">
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="outline">
 							<mat-label>Search your text here</mat-label>
 							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
 						</mat-form-field>
@@ -92,8 +92,50 @@
           </div>
        </div>
     </div>
-  </section>
+  </section>  -->
 
+  <section class="body-card">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header card-header2">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h3 style="color: white;">Tasking Groups</h3>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-end">
+                           <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+                <ng-container *ngIf="tasingGroupList.length != 0">
+                 <app-grid-table [gridColumns]="gridColumns" 
+                 [gridData]="tasingGroupList"
+                    [ispaniNater]="true"
+                     [isAction]="true"
+                      (filterEvent)="handleFilter($event)"
+                    (paginationEvent)="handlePagination($event)" 
+                    (viewEvent)="onView($event)" 
+                    [isView]="true"
+                    (deleteEvent)=" onDelete($event)" 
+                    [isDeletable]="true"
+                    (editEvent)="editOption($event)" 
+                    [isEditable]="true"
+                  >
+                 </app-grid-table>
+              </ng-container> 
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+
+  
   <!-- modal -->
   <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -112,7 +154,7 @@
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
                       <mat-label>Country Id</mat-label>
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="id"  >
                       </mat-form-field>
                    </div>
@@ -148,14 +190,14 @@
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_by"  >
                       </mat-form-field>
                    </div>
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_ip"  >
                       </mat-form-field>
                    </div>
@@ -230,7 +272,7 @@
 						  <form  [formGroup]="MileStoneForm" (ngSubmit)="OnMileStoneSubmit()" >
 							<div class="matt-group">
 								<label class="required fs-5 fw-bold mb-2">Choose Tasking Group Type:</label>
-								<mat-form-field appearance="fill">
+								<mat-form-field appearance="outline">
 								  <mat-select formControlName="tasking_group_type" [(ngModel)]="tasking_group_type">
 									<ng-container *ngFor="let occ of lookup">
 									  <mat-option *ngIf="occ.type.code=='TGT'" [value]="occ.name">{{occ.name}}</mat-option>

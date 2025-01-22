@@ -1,121 +1,163 @@
+  <!-- <section class="body-card">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header card-header2">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h3 style="color: white;">Newsletter List</h3>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-end">
+                           <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="container table-options">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <mat-paginator [length]="100" [pageSize]="10"  [pageSizeOptions]="[10,20,30,50,100]" aria-label="Select page" >
+                        </mat-paginator>
+                     </div>
+                     <div class="col-md-6">
+                 <mat-form-field appearance="outline">
+                    <mat-label>Search your text here</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
+                 </mat-form-field>
+                     </div>
+                  </div>
+               </div>
+               <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+                  <ng-container matColumnDef="email">
+                     <th mat-header-cell *matHeaderCellDef><b> Email </b></th>
+                     <td mat-cell *matCellDef="let country"> {{country.email}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="created_on">
+                     <th mat-header-cell *matHeaderCellDef><b> Created Date </b></th>
+                     <td mat-cell *matCellDef="let country"> {{country.created_on}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                     <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
+                     <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)" class="status-field {{country.status=='1'?'text-success':'text-danger'}}" >{{country.status=='1'?'Active':'Inactive'}}</a>  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="view" >
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country">
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(country)" placement="end" tooltipClass="dark-theme" ngbTooltip=View  ><span class="bi bi-eye"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="edit" >
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.edit==true" ><b>Edit</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country">
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(country)" *ngIf="permission.edit==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit  ><span class="bi bi-pencil"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="delete">
+                     <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.delete==true"><b>Delete</b></ng-container></th>
+                     <td class="text-center" mat-cell *matCellDef="let country"><a href="javascript:void(0)" class="edit-icon text-danger" (click)="onDelete(country.id)" *ngIf="permission.delete==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete ><span class="bi bi-trash"></span></a></td>
+                  </ng-container>
+                  <ng-container matColumnDef="noData">
+                     <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
+                         No Records Found!
+                     </th >
+                   </ng-container>
+                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                   <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
+                   <tr class="mat-row" *matNoDataRow>
+                     <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>  -->
 <section class="body-card">
-    <div class="container-fluid">
-       <div class="row">
-          <div class="col-md-12">
-             <div class="card">
-                <div class="card-header card-header2">
-                   <div class="row">
-                      <div class="col-md-6">
-                         <h3 style="color: white;">Newsletter List</h3>
-                      </div>
-                      <div class="col-md-6">
-                         <div class="text-end">
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <div class="container table-options">
-                   <div class="row">
-                      <div class="col-md-6">
-                         <mat-paginator [length]="100" [pageSize]="10"  [pageSizeOptions]="[10,20,30,50,100]" aria-label="Select page" >
-                         </mat-paginator>
-                      </div>
-                      <div class="col-md-6">
-						<mat-form-field appearance="fill">
-							<mat-label>Search your text here</mat-label>
-							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
-						</mat-form-field>
-                      </div>
-                   </div>
-                </div>
-                <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
-                   <ng-container matColumnDef="email">
-                      <th mat-header-cell *matHeaderCellDef><b> Email </b></th>
-                      <td mat-cell *matCellDef="let country"> {{country.email}} </td>
-                   </ng-container>
-                   <ng-container matColumnDef="created_on">
-                      <th mat-header-cell *matHeaderCellDef><b> Created Date </b></th>
-                      <td mat-cell *matCellDef="let country"> {{country.created_on}} </td>
-                   </ng-container>
-                   <ng-container matColumnDef="status">
-                      <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
-                      <td mat-cell *matCellDef="let country"> <a href="javascript:void(0)" class="status-field {{country.status=='1'?'text-success':'text-danger'}}" >{{country.status=='1'?'Active':'Inactive'}}</a>  </td>
-                   </ng-container>
-                   <ng-container matColumnDef="view" >
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let country">
-                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(country)" placement="end" tooltipClass="dark-theme" ngbTooltip=View  ><span class="bi bi-eye"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="edit" >
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.edit==true" ><b>Edit</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let country">
-                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(country)" *ngIf="permission.edit==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit  ><span class="bi bi-pencil"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="delete">
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.delete==true"><b>Delete</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let country"><a href="javascript:void(0)" class="edit-icon text-danger" (click)="onDelete(country.id)" *ngIf="permission.delete==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete ><span class="bi bi-trash"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="noData">
-                      <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
-                          No Records Found!
-                      </th >
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
-                    <tr class="mat-row" *matNoDataRow>
-                      <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
-                   </tr>
-                </table>
-             </div>
-          </div>
-       </div>
-    </div>
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header card-header2">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h3 style="color: white;">News Letter</h3>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-end">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+                <ng-container *ngIf="newsletterData.length != 0">
+                 <app-grid-table [gridColumns]="gridColumns"
+                  [gridData]="newsletterData"
+                    [ispaniNater]="true" 
+                    [isAction]="true"
+                     (filterEvent)="handleFilter($event)"
+                    (paginationEvent)="handlePagination($event)" 
+                   
+                    (viewEvent)="onView($event)" 
+                    [isView]="true"
+                    (deleteEvent)=" onDelete($event)" 
+                    [isDeletable]="true"
+                    
+                    
+                      
+                     
+                    >
+                 </app-grid-table>
+              </ng-container> 
+            </div>
+         </div>
+      </div>
+   </div>
  </section>
 
- <!-- modal -->
- <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
 
-       <div class="modal-content">
-          <div class="modal-header">
-             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Newsletter</h5>
-             <button type="button" class="btn-close" (click)="cancelmodal()" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="false">&times;</span>
-               </button>
-          </div>
-          <div class="modal-body form-style-md form-style-font linux">
-             <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
-             </div>
-             <form [formGroup]="this.editForm" (ngSubmit)="onSubmit()" >
-             <div class="row">
+<!-- modal -->
+<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
 
-                <div class="col-md-12">
-                   <div class="matt-group">
-                      <mat-label>Email </mat-label>
-                        <input type="text" class="form-control" formControlName="email" autocomplete="off">
-                         <mat-error *ngIf="Error('email','required')  && showError ">Enter Email</mat-error>
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Newsletter</h5>
+            <button type="button" class="btn-close" (click)="cancelmodal()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="false">&times;</span>
+              </button>
+         </div>
+         <div class="modal-body form-style-md form-style-font linux">
+            <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+            </div>
+            <form [formGroup]="this.editForm" (ngSubmit)="onSubmit()" >
+            <div class="row">
 
-                   </div>
-                </div>
-                <div class="col-md-12">
-                   <div class="form-group form-check">
-                      <input type="checkbox" class="form-check-input " id="exampleCheck1" formControlName="status" >
-                      <label class="form-check-label" for="exampleCheck1" >Active</label>
-                   </div>
-                </div>
-             </div>
-             <div class="row button-group-lg button-auto mt-4">
-                <div class="col-md-6 col-6">
-                   <button type="submit" class="btn btn-primary w-100" *ngIf="!isReadonly" >Save</button>
-                </div>
-                <div class="col-md-6 col-6">
-                   <button type="button" class="btn btn-outline-primary w-100" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
-                </div>
-             </div>
-             </form>
-          </div>
-       </div>
-    </div>
- </div>
+               <div class="col-md-12">
+                  <div class="matt-group">
+                     <mat-label>Email </mat-label>
+                       <input type="text" class="form-control" formControlName="email" autocomplete="off">
+                        <mat-error *ngIf="Error('email','required')  && showError ">Enter Email</mat-error>
+
+                  </div>
+               </div>
+               <div class="col-md-12">
+                  <div class="form-group form-check">
+                     <input type="checkbox" class="form-check-input " id="exampleCheck1" formControlName="status" >
+                     <label class="form-check-label" for="exampleCheck1" >Active</label>
+                  </div>
+               </div>
+            </div>
+            <div class="row button-group-lg button-auto mt-4">
+               <div class="col-md-6 col-6">
+                  <button type="submit" class="btn btn-primary w-100" *ngIf="!isReadonly" >Save</button>
+               </div>
+               <div class="col-md-6 col-6">
+                  <button type="button" class="btn btn-outline-primary w-100" #closebutton data-dismiss="modal"(click)="cancelmodal()">Cancel</button>
+               </div>
+            </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>

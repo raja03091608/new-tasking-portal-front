@@ -8,55 +8,26 @@
 		<!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
 		&nbsp;
 		<div formGroupName="sdForm">
-		<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'"> -->
-		<!-- Start -->
-		<div class="timeline-cover">
-			<ul class="timeline">
-				<li class="{{initiator_active}}">
-				<p>Initiator</p>
-				</li>
-				<li class="{{apso_active}}">
-				<p>APSO</p>
-				</li>
-				<li class="{{wesee_active}}">
-				<p>WESEE GROUP</p>
-				</li>
-				<li class="{{dgwesee_active}}">
-				<p>DG WESEE</p>
-				</li>
-				<li class="{{dee_active}}">
-				<p>DEE</p>
-				</li>
-				<li class="{{acom_active}}">
-				<p>ACOM</p>
-				</li>
-				<li class="{{com_active}}">
-				<p>COM</p>
-				</li>
-			</ul>
-		</div>
-		<!-- End -->
+		
 
         <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
 
-			<div class="mb-5 ">
+			<!-- <div class="mb-5 ">
 				<div class="matt-group matselect mat-box">
 					<mat-label style="font-size:large;"><b>Sponsoring Directorate</b> <b class="star">*</b></mat-label>
-					<mat-form-field appearance="fill">
+					<mat-form-field appearance="outline">
 						<mat-select #select formControlName="sponsoring_directorate"
 					placeholder="Select Initiator" >
 							<mat-option [value]="">Select Initiator</mat-option>
 							<mat-option  (click)="optionClick(init.name)" *ngFor="let init of initatorList " [value]="init.name">{{init.name}}
 							</mat-option>
 						</mat-select>
-						<!-- <mat-error *ngIf="Error('process','required')">Please select unit</mat-error> -->
 					</mat-form-field>
 					<br>
-					<input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments"/>
 
 
 			 	</div>
-        	</div>
+        	</div> -->
 		<div class="mb-5 ">
 
 
@@ -94,7 +65,7 @@
   		</div>   -->
 
         <div class="mb-5">
-			<mat-label style="font-size:large;"><b>Task Description (Maximum 200 words)</b><b class="star">*</b></mat-label>
+			<mat-label style="font-size:large;"><b>Task Description (Maximum 500 words)</b><b class="star">*</b></mat-label>
 
 
             <!-- <ckeditor formControlName="task_description" maxlength="200"></ckeditor> -->
@@ -104,18 +75,18 @@
 				Name must be at least 200 characters long.
 		   	</mat-error>  -->
 			   <div class="limit">
-                Words remaining: {{ remainingCharacters }}
+                Words : {{ remainingCharacters }}
               </div>
-			   <mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
+			   <!-- <mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
 				Word limit exceeded! Maximum 200 words allowed.
-			  </mat-error>
+			  </mat-error> -->
             <mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter task_description</mat-error>
 
 
         </div>
 		<div class="mb-5">
 			<div class="matt-group">
-			  <mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b><b class="star">*</b></mat-label>
+			  <mat-label style="font-size:large;"><b>File (Maximum 20MB Allowed)</b></mat-label>
 
 			   <div class="row" id="addmore" *ngIf="div1">
 
@@ -195,19 +166,9 @@
 			</div>
 		</div>
         </div>
-		<ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator' || token_detail.process_id==3">
-		<div class="card-footer d-flex flex-row-reverse text-end">
-			<div class="col-md-2">
-				<button type="submit" class="btn btn-primary" >Initiate</button>
-			</div>
-			<div class="col-md-2">
-
-				<button class="btn btn-outline-primary mb-2 me-2" *ngIf="currentTaskId" (click)="openBackDropCustomClass(content); apiCall()">
-					Edit Root Config
-				</button>
-			</div>
-		</div>
-		</ng-container>
+		<button type="submit" class="btn btn-primary" >Initiate</button>
+			
+	
 		<!-- <ng-container *ngIf="token_detail.process_id==3">
 			<div class="card-footer text-end">
 				<div class="col-md-12">
@@ -217,258 +178,7 @@
 		</ng-container> -->
 	<!-- </ng-container> -->
 	</div>
-	<div formGroupName="apsoForm">
-		<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
-			<div style="text-align:center;">
-			  <mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
-			</div>
-			  <div class="alert alert-dismissible bg-light-white border border-dark p-5 mb-10">
 
-
-
-			  <div class="mb-5 ">
-				<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
-
-				<textarea rows="4"  class="form-control" formControlName="comments_of_apso" value="Test comments"></textarea>
-
-
-			  </div>
-			  <!-- <table>
-				<tr>
-				<th>Date</th><th>Status</th><th>Comments</th>
-			</tr>
-				<tr>
-					<td>11-01-2023 12:11 PM</td><td>Recommended</td><td>Rejected</td>
-				</tr>
-			  </table> -->
-			</div>
-
-			</div>
-  &nbsp;
-  <div formGroupName="weseeForm">
-  <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE'"> -->
-	<div style="text-align:center;">
-        <mat-label class="subheading3" ><b style="font-size:large; ">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
-		</div>
-		&nbsp;
-        <div class="alert alert-dismissible bg-light-info border border-info p-5 mb-10">
-
-        <div class="mb-5 ">
-			<div class="row">
-				<div class="col-md-4">
-					<mat-label style="font-size:large;"><b>Cost Implication (Approx)</b><b class="star">*</b></mat-label>
-					<div class="task-text-group">
-					<mat-label style="font-size:large;"><b>Rs&nbsp;&nbsp;</b>
-
-					</mat-label>
-
-
-				   <!-- <mat-error *ngIf="weseeError('cost_implication','required')">Enter cost_implication</mat-error> -->
-
-				<input type="text" class="form-control" formControlName="cost_implication" value="50000"/>
-				<mat-error *ngIf="showError">Required</mat-error>
-				</div>
-				</div>
-				<div class="col-md-4">
-					<mat-label style="font-size:large;"><b>Time Frame For Completion</b><b class="star">*</b></mat-label>
-					<div class="task-text-group">
-					<mat-label style="font-size:large;"><b>Months&nbsp;&nbsp;</b></mat-label>
-              <input type="text" class="form-control" formControlName="time_frame_for_completion_month" value="200 hrs"/>
-			  <!-- <mat-error *ngIf="weseeError('time_frame_for_completion','required') && showError">Enter time_frame_for_completion</mat-error> -->
-
-				</div>
-			</div>
-
-				<div class="col-md-4"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-					<div class="task-text-group">
-						<mat-label style="font-size:large;"><b>Days&nbsp;&nbsp;</b></mat-label>
-					<!-- <div class="matt-group matselect"> -->
-						<mat-label style="font-size:large; "><b>&nbsp;</b></mat-label>
-						<!-- <mat-form-field appearance="fill"> -->
-							<!-- <mat-label style="font-size:large;"><b>Time Frame For Completion</b><b class="star">*</b></mat-label> -->
-              			<input type="text" class="form-control" formControlName="time_frame_for_completion_days" value="200 hrs"/>
-						  <!-- <mat-select #select formControlName="time_frame_for_completion_type">
-							<mat-option *ngFor="let type of type; " [value]="type.id">{{type.name}} </mat-option>
-
-						  </mat-select>
-						  <mat-error>Please select Type</mat-error> -->
-						<!-- </mat-form-field> -->
-					  </div>
-					  </div>
-				  <!-- </div> -->
-
-			</div>
-
-
-
-      </div>
-
-      <div class="mb-5 ">
-        <mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-
-            <textarea rows="4"  class="form-control" formControlName="comments_of_wesee" value="Test comments"></textarea>
-			<!-- <mat-error *ngIf="weseeError('comments_of_wesee','required') && showError">Enter comments_of_wesee</mat-error> -->
-    </div>
-	<!-- <table >
-		<tr>
-		<th>Date</th><th>Status</th><th>Comments</th>
-	</tr>
-		<tr>
-			<td>{{moment(country.created_on).format('DD-MM-YYYY hh:mm A')}}</td><td>Initiated</td><td>Rejected</td>
-		</tr>
-	  </table> -->
-    </div>
-	<ng-container *ngIf="api.userid.role_center[0].user_role.code=='WESEE'">
-	<div class="card-footer text-end">
-		<div class="col-md-12">
-	<button type="submit" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='WESEE'" >Recommeneded</button>
-      &nbsp;
-		<button type="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='WESEE'" >Not Recommeneded</button>
-		</div>
-	</div>
-</ng-container>
-</div>
-<div formGroupName="deeForm">
-	<!-- </ng-container> -->
-	<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'"> -->
-		<div style="text-align:center;">
-    <mat-label class="subheading3"><b style="font-size:large;">DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label>
-</div>
-    <div class="alert alert-dismissible bg-light-success border border-success p-5 mb-10">
-
-    <!-- <div class="mb-5 ">
-		<mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
-
-          <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01"/> -->
-		  <!-- <mat-error *ngIf="deeError('task_number_dee','required') && showError">Enter task_number_dee</mat-error> -->
-  <!-- </div> -->
-  	<div class="mb-3 ">
-		<mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
-
-		<div class="task-text-group">
-			WESEE
-			<input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" />&nbsp;/&nbsp;
-			<input type="text" class="form-control" formControlName="task_number_dee1" value="WESEE/001/2022/01"/>&nbsp;/&nbsp;
-			<input type="text" class="form-control" formControlName="task_number_dee2" value="WESEE/001/2022/01"/>
-			<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" max_length="10"/> -->
-			<!-- <p>{{currentYear}}/{{currentDate1 | date:'dd'}}</p> -->
-		</div>
-	</div>
-      <div class="mb-5 ">
-		<mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-		<textarea rows="4"  class="form-control" formControlName="comments_of_dee" value="Test comments"></textarea>
-              <!-- <input type="text" class="form-control" formControlName="comments_of_dee" value="Test Comments"/> -->
-			  <!-- <mat-error *ngIf="deeError('comments_of_dee','required') && showError">Enter comments_of_dee</mat-error> -->
-      </div>
-	  <!-- <table>
-		<tr>
-		<th>Date</th><th>Status</th><th>Comments</th>
-	</tr>
-		<tr>
-			<td>11-01-2023 12:11 PM</td><td>Initiated</td><td>Rejected</td>
-		</tr>
-	  </table> -->
-
-      </div>
-	  <ng-container *ngIf="api.userid.role_center[0].user_role.code=='DEE'">
-	  <div class="card-footer text-end">
-		<div class="col-md-12">
-	<button type="submit" class="btn btn-success"  *ngIf="api.userid.role_center[0].user_role.code=='DEE'" >Recommeneded</button>
-      &nbsp;
-		<button type="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='DEE'" >Not Recommeneded</button>
-		</div>
-	</div>
-	</ng-container>
-</div>
-<div formGroupName="acomForm">
-<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
-	<div style="text-align:center;">
-      <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S) &nbsp;(Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label>
-	</div>
-      <div class="alert alert-dismissible bg-light-white border border-dark p-5 mb-10">
-
-      <!-- <div class="mb-5 ">
-		<mat-label>Comments of Dwe<b class="star">*</b></mat-label>
-		<textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
-		<mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
-              <!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
-      <!-- </div> -->
-
-
-      <div class="mb-5 ">
-		<mat-label style="font-size:large;" ><b>Comments</b><b class="star">*</b></mat-label>
-
-		<textarea rows="4"  class="form-control" formControlName="recommendation_of_acom_its" value="Test comments"></textarea>
-
-              <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-			  <!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
-      </div>
-	  <!-- <table>
-		<tr>
-		<th>Date</th><th>Status</th><th>Comments</th>
-	</tr>
-		<tr>
-			<td>11-01-2023 12:11 PM</td><td>Recommended</td><td>Rejected</td>
-		</tr>
-	  </table> -->
-    </div>
-	<ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'">
-	<div class="card-footer text-end">
-		<div class="col-md-12">
-	<button type="submit" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='ACOM'" >Recommeneded</button>
-	&nbsp;
-		<button type="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"  >Not Recommeneded</button>
-		</div>
-	</div>
-</ng-container>
-	</div>
-	<div formGroupName="comForm">
-
-	  <div style="text-align:center;">
-	  <mat-label class="subheading3"><b style="font-size:large;">COM &nbsp;(Chief of Materiel)</b></mat-label>
-	</div>
-	  <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
-
-
-
-	  <div class="mb-5 ">
-		<mat-label style="font-size:large;"><b>Comments</b><b class="star">*</b></mat-label>
-		<textarea rows="4"  class="form-control" formControlName="approval_of_com" value="Test comments"></textarea>
-
-			  <!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-			  <!-- <mat-error *ngIf="Error('approval_of_com','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
-	  </div>
-	  <!-- <table>
-		<tr>
-		<th>Date</th><th>Status</th><th>Comments</th>
-	</tr>
-		<tr>
-			<td>11-01-2023 12:11 PM</td><td>Recommended</td><td>Rejected</td>
-		</tr>
-	  </table> -->
-
-	</div>
-    <ng-container *ngIf="api.userid.role_center[0].user_role.code=='APP'">
-	<div class="card-footer text-end">
-		<div class="col-md-12">
-	<button type="submit" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" >Recommeneded</button>
-      &nbsp;
-		<button type="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommeneded</button>
-		</div>
-	</div>
-</ng-container>
-
-
-
-
-	<!-- <div class="card-footer text-end">
-	  <div class="col-md-12">
-	  <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
-
-	   </div>
-	</div> -->
-	</div>
 	</div>
 </form>
 <!-- <div class="card-footer text-end">

@@ -41,7 +41,12 @@
 						],
 						"scripts": [
 
-							"./node_modules/jquery/dist/jquery.min.js", "./node_modules/popper.js/dist/umd/popper.min.js", "./node_modules/bootstrap/dist/js/bootstrap.min.js","./node_modules/metismenu/dist/metisMenu.min.js","src/assets/js/site.js","src/assets/js/moment.min.js"
+							"./node_modules/jquery/dist/jquery.min.js",
+               "./node_modules/popper.js/dist/umd/popper.min.js", 
+               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+               "./node_modules/metismenu/dist/metisMenu.min.js",
+               "src/assets/js/site.js",
+               "src/assets/js/moment.min.js"
 						]
           },
           "configurations": {
@@ -58,7 +63,15 @@
                   "maximumError": "4MB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": false
+              }
             },
             "development": {
               "optimization": false,
@@ -106,5 +119,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "ec4ce6a7-e5e4-46fd-b319-cf83669973d1"
   }
 }

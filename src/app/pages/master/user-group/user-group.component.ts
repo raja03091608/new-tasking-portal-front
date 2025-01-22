@@ -66,6 +66,9 @@ export class UserGroupComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  departmentData= [] as any;
+
+
 
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService) {
@@ -110,12 +113,10 @@ export class UserGroupComponent implements OnInit {
   }
 
   getDepartment() {
-    this.api
-      .getAPI(environment.API_URL + "master/department")
-      .subscribe((res) => {
+    this.api.getAPI(environment.API_URL + "master/department").subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
-
         this.countryList = res.data;
+        this.departmentData = res.data;
         this.dataSource.paginator = this.pagination;
       });
   }
@@ -259,6 +260,53 @@ export class UserGroupComponent implements OnInit {
 	  closeModal('#crud-countries');
   }
 
+  gridColumns=[
+    { field: 'name', header: 'Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'code', header: 'Code', filter: true, filterMatchMode: 'contains' },
+    // { field: 'status', header: 'Staus', filter: true, filterMatchMode: 'contains' },
+    // {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
+    // {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+    // { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
+  ]
+  exportData:any;
+  filterData:any;
+  handleFilter(filterValue: any) {
+    
+    this.filterData = filterValue;
+    // console.log('Filter triggered with value:', filterValue);
+  }
+  handlePagination(pageEvent: any) {
+    // console.log('Pagination triggered with event:', pageEvent);
+  }
+
+  openCurrentStatus(country){
+    // this.id=country.id;
+    //   console.log('tasking country',country)
+    //   this.taskname = country.task_name;
+    //   this.tasknumber = country.task_number_dee;
+    //   // this.selectedTrial=tasking;
+    //   openModal('#trial-status-modal');
+    // this.getComments();
+    }
+
+    UploadReceipt(country) {
+      // this.id=country.id;
+      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    }
+  
+    completedtask(country) {
+      // this.id=country.id;
+      // openModal('#completedTask-modal');
+    }
+    taskid:any;
+    opentask(country:any){
+      // console.log('countyryry',country);
+      // this.resetexportform();
+      // this.exportform.reset();
+      openModal('#export');
+      this.taskid = country.id;
+  
+    }
+
 
 }
-

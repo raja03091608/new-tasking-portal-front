@@ -5,29 +5,25 @@
   <title>Demo</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self' https://tasking.ilizien-projects-cdf.in/; 
+  img-src 'self' data:; 
+  style-src 'self'  'nonce-CSP_NONCE_PLACEHOLDER';
+  frame-ancestors 'self'; 
+  object-src 'none'; 
+  script-src 'self' https://tasking.ilizien-projects-cdf.in/wesee-main/; 
+  connect-src 'self' https://tasking-api.ilizien-projects-cdf.in; 
+  font-src 'self' https://tasking.ilizien-projects-cdf.in; 
+  form-action 'self';
+  "> -->
+  <link rel="icon" type="image/x-icon" href="./assets/media/logo.jpg">
   <link rel="stylesheet" id="layout-styles-anchor" href="./assets/splash-screen.css" />
+  <link rel="stylesheet" nonce="CSP_NONCE_PLACEHOLDER" href="https://tasking.ilizien-projects-cdf.in/wesee-main/assets/CSS/primeng.css"  />
+  <link rel="stylesheet" nonce="CSP_NONCE_PLACEHOLDER" href="https://tasking.ilizien-projects-cdf.in/wesee-main/assets/CSS/material.min.css" />
+  <link rel="stylesheet" nonce="CSP_NONCE_PLACEHOLDER" href="https://tasking.ilizien-projects-cdf.in/wesee-main/assets/chart.css" />
+
 </head>
 <body root id="kt_body" class="mat-typography">
-  <script>
-    if (document.documentElement) {
-      var defaultThemeMode = "system";
-
-      var hasKTName = document.body.hasAttribute("data-kt-name");
-      var lsKey = "kt_" + (hasKTName ? name + "_" : "") + "theme_mode_value"
-      var themeMode = localStorage.getItem(lsKey);
-      if (!themeMode) {
-        if (defaultThemeMode === "system") {
-          themeMode =
-            window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        } else {
-          themeMode = defaultThemeMode;
-        }
-      }
-
-      document.documentElement.setAttribute("data-theme", themeMode);
-    }
-  </script>
-  <app-root></app-root>
+  <app-root ngCspNonce="CSP_NONCE_PLACEHOLDER"></app-root>
 </body>
 </html>

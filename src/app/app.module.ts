@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MaterialModule } from './material/material.module';
 import { SnackbarComponent } from './service/snackbar/snackbar.component';
@@ -25,6 +25,12 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { MatTableModule } from '@angular/material/table';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import{TableModule} from'primeng/table';
+import { AuthService } from './service/interceptors/auth.service';
+
+// import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
 
 
@@ -39,7 +45,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     HttpClientModule,
     MatTableModule,
 	NgApexchartsModule,
-
+  InputTextModule,
+  DialogModule,
+  
     ToastrModule.forRoot({
 			closeButton: true,
 			timeOut: 15000, // 15 seconds
@@ -58,11 +66,17 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     InlineSVGModule.forRoot(),
     NgbModule,
     MaterialModule,
-    AngularEditorModule
+    AngularEditorModule,
+    TableModule
 
   ],
 
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},AuthguardGuard,Title],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},AuthguardGuard,Title,
+    {provide: HTTP_INTERCEPTORS,
+			useClass: AuthService, 
+			multi: true, 
+		  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

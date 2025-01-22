@@ -1,5 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
-<section class="body-card">
+      <!-- <section class="body-card">
     <div class="container-fluid">
        <div class="row">
           <div class="col-md-12">
@@ -12,14 +12,9 @@
                       <div class="col-md-6">
                          <div class="text-end">
                             <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
-                            <!-- <ng-container>
-                              <a href="javascript:void(0)" data-toggle="modal" data-target="#import" (click)="import()" class="btn btn-light btn-round-sm m-2"  >Import</a>
-                              </ng-container> -->
+                            
                          </div>
-                         <!-- <div class="text-end"> -->
-                           <!-- <ng-container *ngIf="token_detail.process_id==1"> -->
-
-                        <!-- </div> -->
+                       
                       </div>
                    </div>
                 </div>
@@ -30,7 +25,7 @@
                          </mat-paginator>
                       </div>
                       <div class="col-md-6">
-						<mat-form-field appearance="fill">
+						<mat-form-field appearance="outline">
 							<mat-label>Search your text here</mat-label>
 							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
 						</mat-form-field>
@@ -84,8 +79,52 @@
           </div>
        </div>
     </div>
- </section>
+ </section>      -->
 
+
+ <section class="body-card">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header card-header2">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <h3 style="color: white;">User Role</h3>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-end">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+              
+              
+                <ng-container *ngIf="userRole.length != 0">
+                 <app-grid-table [gridColumns]="gridColumns"
+                  [gridData]="userRole"
+                    [ispaniNater]="true" 
+                    [isAction]="true"
+                     (filterEvent)="handleFilter($event)"
+                    (paginationEvent)="handlePagination($event)" 
+                   
+                    (viewEvent)="onView($event)" 
+                    [isView]="true"
+                    (deleteEvent)=" onDelete($event)" 
+                    [isDeletable]="true"
+                    (editEvent)="editOption($event)" 
+                    [isEditable]="true"
+                    
+                      
+                     
+                    >
+                 </app-grid-table>
+              </ng-container> 
+            </div>
+         </div>
+      </div>
+   </div>
+ </section>
  <!-- modal -->
  <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -124,14 +163,14 @@
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_by"  >
                       </mat-form-field>
                    </div>
                 </div>
                 <div class="col-md-12" hidden>
                    <div class="matt-group">
-                      <mat-form-field appearance="fill">
+                      <mat-form-field appearance="outline">
                          <input matInput placeholder="" formControlName="created_ip"  >
                       </mat-form-field>
                    </div>
@@ -139,7 +178,7 @@
                 <div class="col-md-12">
                      <div class="matt-group matselect">
                        <mat-label>Process <b class="star">*</b></mat-label>
-                       <mat-form-field appearance="fill">
+                       <mat-form-field appearance="outline">
                         <mat-select #select formControlName="process"
                           placeholder="Select Process">
                           <mat-option>Select Process</mat-option>
@@ -192,10 +231,7 @@
                                 </div>
                              </div>
 
-                                <!-- <div class="matt-group col-md-3 matt-append-button">
-                                    <button type="button" *ngIf="i==0" mat-fab color="primary"><mat-icon>add</mat-icon></button>
-                                    <button type="button" *ngIf="i>0" mat-fab color="warn"><mat-icon>remove</mat-icon></button>
-                                </div> -->
+                                
                                  <div class="matt-group col-md-3 matt-append-button">
                                  <button type="button" *ngIf="i==0" (click)="addMore()" mat-fab color="primary"><mat-icon><span class="bi bi-plus-lg"></span></mat-icon></button>
                                  <button type="button" *ngIf="i>0" (click)="removeItem(i)" mat-fab color="warn"><mat-icon><span class="bi bi-dash-lg"></span></mat-icon></button>
@@ -228,38 +264,4 @@
     </div>
  </div>
 
-  <!-- import modal -->
- <!-- <div class="modal fade master-modal-style" id="import" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-
-	   <div class="modal-content">
-		  <div class="modal-header">
-			 <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Trial</h5>
-			 <button type="button" (click)="closeimport()" class="btn-close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="false">&times;</span>
-				</button>
-		  </div>
-		  <div class="modal-body form-style-md form-style-font linux">
-			 <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
-			 </div>
-			 <form [formGroup]="this.importform" (ngSubmit)="Submit()" >
-				<div class="col-md-12">
-				  <div class="form-group">
-					<label>Import xls and xlsx File only</label>
-					<input #fileInput type="file" formControlName="file_upload"  accept="" class="form-control" name="" placeholder="" (change)="onImageHandler($event)">
-				</div>
-				</div>
-			 <div class="form-row button-group-lg mt-2">
-				<div class="col-md-12">
-				   <button type="submit" class="btn btn-primary" >{{importname}}</button>
-				   <button type="button" class="btn btn-outline-primary" #closebutton data-dismiss="modal" (click)="closeimport()">Cancel</button>
-				   <a href="/assets/media/access.user_roles.csv" class="edit-icon text-primary"
-						><span class="material-icons-outlined"><span class="bi bi-file-earmark-text-fill" style="color:blue" ></span></span>Sample Import Data</a>
-				</div>
-			 </div>
-			 </form>
-		  </div>
-	   </div>
-	</div>
-</div> -->
-
+ 

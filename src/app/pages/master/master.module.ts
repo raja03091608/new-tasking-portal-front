@@ -11,8 +11,14 @@ import { DataTablesModule } from 'angular-datatables';
 import { MaterialModule } from '../../material/material.module';
 import { TaskingGroupComponent } from './tasking-group/tasking-group.component';
 import { UserRoleComponent } from './user-role/user-role.component';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 import { SponsoringDirectorateComponent } from './sponsoring-directorate/sponsoring-directorate.component';
 
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +36,11 @@ import { SponsoringDirectorateComponent } from './sponsoring-directorate/sponsor
     CKEditorModule,
     DataTablesModule,
     MaterialModule,
+    TableModule,
+    DialogModule,
+    InputTextModule, 
+    PringeComponentModule, 
+    DropdownModule,  ButtonModule,
     RouterModule.forChild([
       {
         path: 'user-group',
