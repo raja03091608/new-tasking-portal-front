@@ -543,6 +543,10 @@ onCustomClear(item){
       });
       }else{
         this.showSecTitle = false;
+        this.taskingForm.patchValue({
+          secTitle: 'Task Close'
+        });
+        
       }
     }
 
