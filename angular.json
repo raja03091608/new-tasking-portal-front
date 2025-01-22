@@ -41,7 +41,12 @@
 						],
 						"scripts": [
 
-							"./node_modules/jquery/dist/jquery.min.js", "./node_modules/popper.js/dist/umd/popper.min.js", "./node_modules/bootstrap/dist/js/bootstrap.min.js","./node_modules/metismenu/dist/metisMenu.min.js","src/assets/js/site.js","src/assets/js/moment.min.js"
+							"./node_modules/jquery/dist/jquery.min.js",
+               "./node_modules/popper.js/dist/umd/popper.min.js", 
+               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+               "./node_modules/metismenu/dist/metisMenu.min.js",
+               "src/assets/js/site.js",
+               "src/assets/js/moment.min.js"
 						]
           },
           "configurations": {

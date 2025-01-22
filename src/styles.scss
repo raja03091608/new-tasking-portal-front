@@ -763,13 +763,13 @@ to {
 }
 }
 
-.dashboard-box {
-  .card {
-      apx-chart {
-          .apexcharts-gridline {stroke: #e112d5 !important;}
-      }
-  }
-}
+// .dashboard-box {
+//   .card {
+//       apx-chart {
+//           .apexcharts-gridline {stroke: #e112d5 !important;}
+//       }
+//   }
+// }
 
 //   new css oct31
 
@@ -1167,18 +1167,7 @@ select.form-control:focus {
 .h-md-40 {
   height: 40% !important;
 }
-.apexcharts-toolbar{
-visibility: hidden;
-}
 
-.percentage-map {
-  #chart2 {
-      margin-top: 25px; height: 495px !important;
-      .apexcharts-legend {
-          top: 30px;
-      }
-  }
-}
 .task-text-group {
   display: flex; align-items: center;
   margin: 0 10px;
