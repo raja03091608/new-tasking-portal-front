@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 	public signinDisable=false;
 	isLoading$: Observable<boolean>;
 	showError=false;
-
+	showPassword=false;
 
 	ngOnInit(): void {
 		let data = 'abc';
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
 				  userDetail.loginname=this.loginForm.value.username;
 				  //userDetail.email=this.loginForm.value.email;
 				  userDetail.password=this.loginForm.value.password;
-				  localStorage.setItem('APPLOGO','assets/images/logo.png');
+				  localStorage.setItem('APPLOGO','assets/meadia/logos/logo.png');
 				  localStorage.setItem('LOGINPAGE','/authenticate/login');
 				  this.api.setUserLoggedIn(true);
 				  if(this.loginForm.value.remember) {

@@ -18,7 +18,7 @@ export class ApiService {
 
   public token='';
   public previlleges:any;
-  appLogo=localStorage.getItem('APPLOGO')?localStorage.getItem('APPLOGO'):'assets/images/logo.png';
+  appLogo=localStorage.getItem('APPLOGO')?localStorage.getItem('APPLOGO'):'assets/meadia/logos/logo.png';
   userid:any;
   public tmsToken='';
   private userLoggedIn = new Subject<boolean>();

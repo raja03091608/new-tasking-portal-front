@@ -150,12 +150,12 @@ export class UsersComponent implements OnInit {
 
 	populate(data) {
 		console.log('data', data)
-		this.editForm.get('password').clearValidators();
-		this.editForm.get('password').updateValueAndValidity();
+		// this.editForm.get('password').clearValidators();
+		// this.editForm.get('password').updateValueAndValidity();
 		console.log('api', this.api.userid)
-		this.items = this.docForm.get('items') as FormArray;
-		this.clearFormArray(this.items);
-		this.editForm.patchValue({ id: data.id, first_name: data.first_name, last_name: data.last_name, loginname: data.loginname, email: data.email, created_by: data.created_by, modified_by: this.api.userid.user_id, status: data.status, ad_user: data.ad_user, hrcdf_designation: data.hrcdf_designation});
+		// this.items = this.docForm.get('items') as FormArray;
+		// this.clearFormArray(this.items);
+		this.editForm.patchValue({ id: data?.id, first_name: data?.first_name, last_name: data?.last_name, loginname: data?.loginname, email: data?.email, created_by: data?.created_by, modified_by: this.api?.userid?.user_id, status: data?.status, ad_user: data?.ad_user, hrcdf_designation: data?.hrcdf_designation});
 		setTimeout(() => {
 			if (data.department != null) {
 				this.editForm.patchValue({ department: data.department.id });
@@ -168,7 +168,7 @@ export class UsersComponent implements OnInit {
 			//   this.editForm.patchValue({user_role_id: data.user_role_id.id});
 			//   }
 			// let actions = data.roles.map(function (a) { console.log(a.user_role.id); return a.user_role.id; });
-			this.editForm.patchValue({ user_role_id: data.roles[0].user_role.id });
+			this.editForm.patchValue({ user_role_id: data?.roles[0]?.user_role?.id });
 
 		}, 500);
 		// if (data.user_role_id) {
@@ -218,7 +218,7 @@ export class UsersComponent implements OnInit {
 		this.getUserList();
 		this.getDeletedUserList();
 		this.getTasking();
-		this.refreshPaginator()
+		// this.refreshPaginator()
 
 	}
 
@@ -264,23 +264,15 @@ export class UsersComponent implements OnInit {
 
 	param: any;
 	getUserList() {
-		let limit_start = 0;
-		let limit_end = 10;
-		if (this.pageEvent) {
-			limit_end = (this.pageEvent.pageIndex + 1) * this.pageEvent.pageSize;
-			limit_start = (this.pageEvent.pageIndex) * this.pageEvent.pageSize;
-		}
-		if (this.param == undefined) this.param = ""; else this.param;
+		this.userData=[]
+		// if (this.param == undefined) this.param = ""; else this.param;
 		this.api.displayLoading(true);
 		this.api
-			.getAPI(environment.API_URL + "api/auth/users?order_type=desc" + this.param + "&limit_start=" + limit_start + "&limit_end=" + limit_end)
+			.getAPI(environment.API_URL + "api/auth/users?order_type=desc")
 			.subscribe((res) => {
 				this.api.displayLoading(false)
-				this.dataSource = new MatTableDataSource(res.data);
+				// this.dataSource = new MatTableDataSource(res.data);
 				this.userData=res.data;
-
-				// this.dataSource.paginator = this.pagination;
-				this.totalLength = res.total_length
 				this.user = res.data;
 				console.log('User', this.user);
 
@@ -632,7 +624,7 @@ export class UsersComponent implements OnInit {
 
 	Submit() {
 		const formData = new FormData();
-
+		formData.append('file_upload', this.imgToUpload);
 		if (this.importform.valid) {
 			this.api
 				.postAPI(

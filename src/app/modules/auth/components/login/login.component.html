@@ -79,14 +79,18 @@ id="kt_login_signin_form"
       </div>
     </div>
 
-    <input
-      class="form-control form-control-lg "
-      type="password"
-      name="password"
-      autocomplete="off"
-      formControlName="password"
-
-    />
+    <div class="input-group ">
+      <input
+        class="form-control form-control-lg"
+        [type]="showPassword ? 'text' : 'password'"
+        name="password"
+        autocomplete="off"
+        formControlName="password"
+      />
+      <button type="button" class="btn btn-primary" (click)="showPassword = !showPassword">
+        <i [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+      </button>
+    </div>
     <ng-container  *ngIf="showError"
       [ngTemplateOutlet]="formError"
       [ngTemplateOutletContext]="{
