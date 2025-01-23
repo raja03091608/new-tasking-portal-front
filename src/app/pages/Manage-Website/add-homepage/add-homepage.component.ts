@@ -158,7 +158,7 @@ export class AddHomepageComponent implements OnInit {
       formData.append('email', data.email)
       formData.append('user', this.api.userid.user_id)
       // formData.append('website_menu', this.userData.user_id)
-      // console.log(formData)
+      // // console.logformData)
 
       this.dataService.putRequest('website/website_settings/details/'+ this.id +'/', formData).subscribe((data: any) => {
         this.webSetting = data;
@@ -174,7 +174,7 @@ export class AddHomepageComponent implements OnInit {
         this.isLoading$ = false
         this.websiteSettingForm.reset()
         this.submitted = false
-        // console.log(this.webSetting);
+        // // console.logthis.webSetting);
 
       },error => {
         this.errorMessage = error.error ? error.error.Message : error.Message;
@@ -196,7 +196,7 @@ export class AddHomepageComponent implements OnInit {
     formData.append('email', data.email)
     formData.append('user', this.api.userid.user_id)
     formData.append('website_menu', this.api.userid.user_id)
-    // console.log(formData)
+    // // console.logformData)
 
     this.dataService.postRequest('website/website_settings/', formData).subscribe((data: any) => {
       this.webSetting = data;
@@ -210,7 +210,7 @@ export class AddHomepageComponent implements OnInit {
       this.isLoading$ = false
       this.websiteSettingForm.reset()
       this.submitted = false
-      // console.log(this.webSetting);
+      // // console.logthis.webSetting);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)

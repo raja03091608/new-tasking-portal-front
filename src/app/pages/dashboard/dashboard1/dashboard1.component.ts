@@ -1188,7 +1188,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     //     type: "bar",
     //     events: {
     //       click: function(chart, w, e) {
-    //         // console.log(chart, w, e)
+    //         // // console.logchart, w, e)
     //       }
     //     }
     //   },
@@ -1541,7 +1541,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     });
   };
   getChart(task_id = "") {
-    // console.log("task_id1111",task_id);
+    // // console.log"task_id1111",task_id);
     this.maybeDisposeRoot("chartChartDetailModule")
     // Chart code goes in here
     let root = am5.Root.new("chartChartDetailModule");
@@ -1585,15 +1585,15 @@ export class Dashboard1Component implements OnInit, OnDestroy {
           if (task_id != '') {
 
             var statusTaskingList = res.data.filter(task => task.tasking_id === task_id);
-            // console.log("statusTaskingList21",statusTaskingList);
+            // // console.log"statusTaskingList21",statusTaskingList);
           }
           else {
-            // // console.log("statusTaskingList2",statusTaskingList);
+            // // // console.log"statusTaskingList2",statusTaskingList);
             statusTaskingList = res.data;
           }
 
           for (let k = 0; k < statusTaskingList.length; k++) {
-            //console.log('statusTaskingList.length',statusTaskingList);
+            //// console.log'statusTaskingList.length',statusTaskingList);
             tasking_chart_name.push({ category: statusTaskingList[k].tasking__task_name });
             tasking_chart_name = tasking_chart_name.filter((test, index, array) =>
               index === array.findIndex((findTest) =>
@@ -1616,7 +1616,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
         });
     }
     else {
-      // console.log("task_id222222",task_id);
+      // // console.log"task_id222222",task_id);
       this.api
         .postAPI(environment.API_URL + "transaction/taskingchart", {})
         .subscribe((res) => {
@@ -1625,23 +1625,23 @@ export class Dashboard1Component implements OnInit, OnDestroy {
           let km = 0;
           //
           if (task_id != '') {
-            // console.log("statusTaskingList21",statusTaskingList);
+            // // console.log"statusTaskingList21",statusTaskingList);
             var statusTaskingList = res.data.filter(task => task.tasking_id === task_id);
           }
           else {
-            // console.log("statusTaskingList2",statusTaskingList);
+            // // console.log"statusTaskingList2",statusTaskingList);
             statusTaskingList = res.data;
           }
 
           for (let k = 0; k < statusTaskingList.length; k++) {
-            //  console.log('statusTaskingList.length',statusTaskingList);
+            //  // console.log'statusTaskingList.length',statusTaskingList);
             tasking_chart_name.push({ category: statusTaskingList[k].tasking__task_name });
             tasking_chart_name = tasking_chart_name.filter((test, index, array) =>
               index === array.findIndex((findTest) =>
                 findTest.category === test.category
               )
             );
-            // console.log('tasking_chart_name',tasking_chart_name);
+            // // console.log'tasking_chart_name',tasking_chart_name);
             km += 2;
             if (statusTaskingList[k].title) {
               if (statusTaskingList[k].start_date != '' && statusTaskingList[k].end_date != '' && statusTaskingList[k].title != '') {
@@ -1655,11 +1655,11 @@ export class Dashboard1Component implements OnInit, OnDestroy {
             }
           }
         });
-      //  console.log('this.tasking_chartname',tasking_chartname);
+      //  // console.log'this.tasking_chartname',tasking_chartname);
     }
 
     setTimeout(() => {
-      //  console.log('this.tasking_chartname',tasking_chartname);
+      //  // console.log'this.tasking_chartname',tasking_chartname);
       let data_tasking_chart = tasking_chartname;
 
       let yRenderer = am5xy.AxisRendererY.new(root, {});
@@ -1672,7 +1672,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
           tooltip: am5.Tooltip.new(root, {})
         })
       );
-      //console.log('this.tasking_chart_name',tasking_chart_name);
+      //// console.log'this.tasking_chart_name',tasking_chart_name);
       yAxis.data.setAll(
         tasking_chart_name
         // [
@@ -1706,7 +1706,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
         strokeOpacity: 0,
         tooltipText: "{task}:\n[bold]{openValueX}[/] - [bold]{valueX}[/]"
       });
-      //console.log('tasking_chartname',data_tasking_chart);
+      //// console.log'tasking_chartname',data_tasking_chart);
       series.data.setAll(data_tasking_chart);
 
       // Add scrollbars
@@ -2040,10 +2040,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   task_list: any;
   created_by: any;
   tasklist() {
-    // console.log("taskName",this.taskName);
+    // // console.log"taskName",this.taskName);
     if (this.token_detail.process_id == 3) {
       this.created_by = this.token_detail.user_id;
-      // console.log('tokennn',this.created_by);
+      // // console.log'tokennn',this.created_by);
 
     }
     else {
@@ -2056,9 +2056,9 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       .subscribe((res) => {
         if (res.status == environment.SUCCESS_CODE) {
           this.task_list = res.data;
-          // console.log('tasklist',this.task_list);
+          // // console.log'tasklist',this.task_list);
           this.dataTask = res.data;
-          // console.log(this.dataTask,"data task")
+          // // console.logthis.dataTask,"data task")
         }
       });
   }
@@ -2372,7 +2372,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   //   openPopup(index){
   //   this.task_del=this.statusTasking[index]
   //     // this.chart_data[0].series[0].data[0].id;
-  //     // console.log('iiui',this.task_del.project_status.start_date )
+  //     // // console.log'iiui',this.task_del.project_status.start_date )
   //     this.deleteProjectRef = this.modalService.open(this.template1);
   //   }
 
@@ -2382,14 +2382,14 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
   openEdit(country) {
     this.isReadonly = false;
-    // console.log('edit',country)
+    // // console.log'edit',country)
     // this.taskForm.enable();
     this.crudName = "View";
     this.id = country.id;
     this.populate(country.tasking, country);
     this.list = country;
     this.taskForm.disable();
-    //console.log('country',country)
+    //// console.log'country',country)
     openModal('#crud-countries');
   }
 
@@ -2463,15 +2463,15 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   getTaskingGroups() {
     this.api.getAPI(environment.API_URL + "master/taskinggroups").subscribe((res) => {
       this.taskingGroups = res.data;
-      // console.log('dfdsf',this.taskingGroups);
-      //console.log('taskingGroups0',this.taskingGroups)
+      // // console.log'dfdsf',this.taskingGroups);
+      //// console.log'taskingGroups0',this.taskingGroups)
     });
   }
   statusData: any;
   getStatus() {
     this.api.getAPI(environment.API_URL + "master/lookup?type__code=PRO").subscribe((res) => {
       this.statusData = res.data;
-      // console.log('dfdstatusDatasf',this.statusData);
+      // // console.log'dfdstatusDatasf',this.statusData);
     });
   }
 
@@ -2479,7 +2479,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status/')
       .subscribe((res: any) => {
         this.yearlytaskdata = res;
-        // console.log('yearlytaskdata',this.yearlytaskdata) 
+        // // console.log'yearlytaskdata',this.yearlytaskdata) 
       },
         (error) => {
           console.error('Error fetching pending data:', error);
@@ -2495,7 +2495,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
           sponsoring_directorate: group.sponsoring_directorate
         }))
       );
-      // console.log('overdata',this.overdata);
+      // // console.log'overdata',this.overdata);
     },
       (error) => {
         console.error('Error fetching pending data:', error);
@@ -2507,7 +2507,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   getpendingdata() {
     this.api.getAPI(environment.API_URL + 'transaction/pending-by-group/').subscribe((res: any) => {
       this.Pendingdata = res.data;
-      // console.log('Pendingdata',this.Pendingdata);
+      // // console.log'Pendingdata',this.Pendingdata);
     },
       (error) => {
         console.error('Error fetching pending data:', error);
@@ -2518,13 +2518,13 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((res: any) => {
       this.groupdata = res.data;
 
-      // console.log('groupdata',this.groupdata);
+      // // console.log'groupdata',this.groupdata);
     });
   }
   getdistribution() {
     this.api.getAPI(environment.API_URL + 'transaction/task-distribution').subscribe((res: any) => {
       this.distributiondata = res.data;
-      // console.log('distributiondata',this.distributiondata);
+      // // console.log'distributiondata',this.distributiondata);
     }
     );
   }
@@ -2536,7 +2536,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.apiyearlytaskdata1 = res;
         this.updateChartOptions(this.apidistributiondata1); // Update the chart options with API data
-        // console.log('apiyearlytaskdata1', this.apiyearlytaskdata1);
+        // // console.log'apiyearlytaskdata1', this.apiyearlytaskdata1);
       });
   }
   updateChartOptions(data: any) {
@@ -2586,7 +2586,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   //   this.api.getAPI(environment.API_URL + 'transaction/overdue-by-group/').subscribe((res:any)=>{
   //     this.apioverdata1=res.data;
   //     this.updateChartOptions1(this.apioverdata1);
-  //     console.log('apioverdata1',this.apioverdata1);
+  //     // console.log'apioverdata1',this.apioverdata1);
   //   });
   // }
 
@@ -2637,7 +2637,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   //   this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((res:any)=>{
   //     this.apigroupdata1=res.data;
   //     this.updateChartOptions21(this.apigroupdata1);
-  //     console.log('apigroupdata1',this.apigroupdata1);
+  //     // console.log'apigroupdata1',this.apigroupdata1);
   //   });
   // }
   // updateChartOptions21(data: any) {
@@ -2707,7 +2707,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       (res: any) => {
         this.apigroupdata1 = res.data;
         this.updateChartOptionsGroup(this.apigroupdata1);
-        // console.log('apigroupdata1', this.apigroupdata1);
+        // // console.log'apigroupdata1', this.apigroupdata1);
       },
       (error) => {
         console.error('Error fetching group data', error);
@@ -2782,7 +2782,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.api.getAPI(environment.API_URL + 'transaction/task-distribution').subscribe((res: any) => {
       this.apidistributiondata1 = res.data;
       this.updated12(this.apidistributiondata1); // Pass the data to updated12
-      // console.log('apidistributiondata', this.apidistributiondata1);
+      // // console.log'apidistributiondata', this.apidistributiondata1);
     });
   }
   updated12(data: any) {
@@ -2834,7 +2834,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.api.getAPI(environment.API_URL + 'transaction/extended-deadlines/').subscribe((res: any) => {
       this.extenddata = res.data;
       this.updated22(this.extenddata); // Pass the data to updated22
-      // console.log('extenddata', this.extenddata);
+      // // console.log'extenddata', this.extenddata);
     });
   }
 
@@ -2898,7 +2898,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         this.statusTaskingNew = res.data;
         this.tabledata(this.statusTaskingNew);
-        // console.log('statusTaskingNew', this.statusTaskingNew);
+        // // console.log'statusTaskingNew', this.statusTaskingNew);
       });
   }
 
@@ -2909,7 +2909,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   getNewTaskingStatus() {
     this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
       .subscribe((res: any) => {
-        // console.log(res);
+        // // console.logres);
         if (res && res.data) {
 
           this.newTableDataSource = res.data
@@ -2937,10 +2937,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   handleFilter(filterValue: any) {
     this.filterData = filterValue;
 
-    // console.log('Filter triggered with value:', filterValue);
+    // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // console.log('Pagination triggered with event:', pageEvent);
+    // // console.log'Pagination triggered with event:', pageEvent);
   }
 
   gridColum = [
@@ -3002,7 +3002,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.selectedHeader = this.xlxsForm.get('header')?.value || [];
     this.fileName = this.xlxsForm.get('fileName')?.value + ".xlsx" || 'sheet.xlsx';
     this.xlxsForm.reset()
-    // console.log(this.selectedHeader);
+    // // console.logthis.selectedHeader);
   }
   selectAll() {
     const allHeaders = this.expDataHeader.map(option => option);
@@ -3020,7 +3020,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
         }))
       );
       this.updateChartOptions1(this.apioverdata1);
-      // console.log('apioverdata1', this.apioverdata1);
+      // // console.log'apioverdata1', this.apioverdata1);
     });
   }
   get filteredTasks() {

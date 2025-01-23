@@ -8,7 +8,7 @@ export class ConsoleService {
   constructor() { }
 
   log(msg:any, data:any) {
-    //console.log(msg,data);
+    //// console.logmsg,data);
   }
 
   warn(msg:any,data:any) {

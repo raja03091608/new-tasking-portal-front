@@ -159,7 +159,7 @@ export class AddSliderComponent implements OnInit {
   }
   sliderDetails:any;
   submitSliderData(data:any) {
-    // console.log("DATA",data);
+    // // console.log"DATA",data);
     this.submitted = true;
     this.isLoading$ = true
     if (this.id) {
@@ -174,10 +174,10 @@ export class AddSliderComponent implements OnInit {
         formData.append('image', this.selectedFile)
       }
 
-      // console.log(formData, '=========>', formData)
+      // // console.logformData, '=========>', formData)
       this.dataService.putRequest('website/sliders/details/' + this.id + '/', formData).subscribe((data:any) => {
         this.sliderDetails=data;
-        // console.log(data, 'post======>');
+        // // console.logdata, 'post======>');
         setTimeout(()=> {
           this.toastr.success('Slider Updated Successfully!');
        }, 500);
@@ -211,9 +211,9 @@ export class AddSliderComponent implements OnInit {
     //   formData.append('slider_type', data.slider_type)
     //   formData.append('slider_link', data.slider_link)
     //   formData.append('user', this.api.userid.user_id)
-    //   // console.log(formData, '=========>', formData)
+    //   // // console.logformData, '=========>', formData)
     //   this.dataService.postRequest('website/sliders/', formData).subscribe((data:any) => {
-    //     // console.log(data, 'post======>');
+    //     // // console.logdata, 'post======>');
     //     this.sliderDetails=data;
     //     this.toastr.success('Slider Added Successfully!');
     //     this.add_slider.reset()

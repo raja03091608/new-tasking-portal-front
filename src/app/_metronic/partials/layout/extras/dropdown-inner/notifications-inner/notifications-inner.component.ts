@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit,ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostBinding, OnInit,Output,ViewChild } from '@angular/core';
 import { LayoutService } from '../../../../../layout';
 import { environment } from "../../../../../../../environments/environment";
 import { language } from "../../../../../../../environments/language";
@@ -40,7 +40,7 @@ export class NotificationsInnerComponent implements OnInit {
   taskinglist:any;
   data:any;
   token_detail:any;
-
+  @Output() closeNotificationClick = new EventEmitter<any>();
   // @ViewChild(TopbarComponent,{static:false}) headercom:TopbarComponent ;
 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class NotificationsInnerComponent implements OnInit {
   }
   getPage(modules) {
     let currentUrl = modules.map(value => value.url);
-    // console.log(currentUrl);
+    // // console.logcurrentUrl);
 
   }
 
@@ -95,106 +95,116 @@ export class NotificationsInnerComponent implements OnInit {
 
 
 
-  getNotifications() {
+    getNotifications() {
 
-        if( this.token_detail.role_id==3 &&this.token_detail.process_id==2){
-          this.api.getAPI(environment.API_URL + "notification/get-notifications?tasking__created_by_id="+this.token_detail.user_id).subscribe((res) => {
-            if(res.status==environment.SUCCESS_CODE){
+          if( this.token_detail.role_id==3 &&this.token_detail.process_id==2){
+            this.api.getAPI(environment.API_URL + "notification/get-notifications?tasking__created_by_id="+this.token_detail.user_id).subscribe((res) => {
+              if(res.status==environment.SUCCESS_CODE){
 
-             this.notificationsList=res.data;
-             $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
+              this.notificationsList=res.data;
+              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
 
 
-            } else if(res.status==environment.ERROR_CODE) {
-                this.notification.displayMessage(res.message);
-            } else {
-              this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-            }
-          });
+              } else if(res.status==environment.ERROR_CODE) {
+                  this.notification.displayMessage(res.message);
+              } else {
+                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+              }
+            });
+          }
+
+          else if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
+            this.api.getAPI(environment.API_URL +"notification/get-notifications?process_id="+this.token_detail.process_id +'&tasking_group_id='+this.token_detail.tasking_id).subscribe((res) => {
+              if(res.status==environment.SUCCESS_CODE){
+
+              this.notificationsList=res.data;
+              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
+
+              } else if(res.status==environment.ERROR_CODE) {
+                  this.notification.displayMessage(res.message);
+              } else {
+                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+              }
+            });
+
+
+          }
+          else{
+            this.api.getAPI(environment.API_URL + "notification/get-notifications").subscribe((res) => {
+              if(res.status==environment.SUCCESS_CODE){
+
+              this.notificationsList=res.data;
+              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
+              } else if(res.status==environment.ERROR_CODE) {
+                  this.notification.displayMessage(res.message);
+              } else {
+                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+              }
+            });
+
+
+          }
+
+
+
+
+    }
+  //  notification1
+    saveNotificationsLog(notification_id) {
+      this.api.postAPI(environment.API_URL + "notification/save-notification-log",{notification_id:notification_id}).subscribe((res) => {
+        if(res.status==environment.SUCCESS_CODE){
+        this.getNotifications();
+        //// console.log'save',res)
+        } else if(res.status==environment.ERROR_CODE) {
+            this.notification.displayMessage(res.message);
+        } else {
+          // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
         }
-
-        else if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
-          this.api.getAPI(environment.API_URL +"notification/get-notifications?process_id="+this.token_detail.process_id +'&tasking_group_id='+this.token_detail.tasking_id).subscribe((res) => {
-            if(res.status==environment.SUCCESS_CODE){
-
-             this.notificationsList=res.data;
-             $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
-
-            } else if(res.status==environment.ERROR_CODE) {
-                this.notification.displayMessage(res.message);
-            } else {
-              this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-            }
-          });
-
-
-        }
-        else{
-          this.api.getAPI(environment.API_URL + "notification/get-notifications").subscribe((res) => {
-            if(res.status==environment.SUCCESS_CODE){
-
-             this.notificationsList=res.data;
-             $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
-            } else if(res.status==environment.ERROR_CODE) {
-                this.notification.displayMessage(res.message);
-            } else {
-              this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-            }
-          });
-
-
-        }
-
-
-
-
+      });
   }
-//  notification1
-  saveNotificationsLog(notification_id) {
-    this.api.postAPI(environment.API_URL + "notification/save-notification-log",{notification_id:notification_id}).subscribe((res) => {
-      if(res.status==environment.SUCCESS_CODE){
-       this.getNotifications();
-       //console.log('save',res)
-      } else if(res.status==environment.ERROR_CODE) {
-          this.notification.displayMessage(res.message);
-      } else {
-        this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+
+
+  viewTrialRequest(tasking_id,notification_id,comment_status)
+    {
+
+      this.saveNotificationsLog(notification_id);
+      let viewTrial=tasking_id;
+
+      if(comment_status!='' && comment_status=='3' && tasking_id!=''){
+
+        this.router.navigateByUrl('/tasking-portal/view-tasking-status');
       }
-    });
-}
+      else if(tasking_id==null && comment_status==null){
 
+        this.router.navigateByUrl('/wish/tickets');
+      }
+      else{
 
-viewTrialRequest(tasking_id,notification_id,comment_status)
-  {
+        this.router.navigateByUrl('/tasking-portal/task-list');
 
-    this.saveNotificationsLog(notification_id);
-    let viewTrial=tasking_id;
+      }
 
-    if(comment_status!='' && comment_status=='3' && tasking_id!=''){
+      // viewTrial['type']='view';
+      // localStorage.setItem('trial_form',this.api.encryptData(viewTrial));
 
-      this.router.navigateByUrl('/tasking-portal/view-tasking-status');
-    }
-    else if(tasking_id==null && comment_status==null){
-
-      this.router.navigateByUrl('/wish/tickets');
-    }
-    else{
-
-      this.router.navigateByUrl('/tasking-portal/task-list');
-
+      //this.goToTrialForm(viewTrial.trial_type.code);
+      // if(tasking_id.trial_type.type=='Trials')
+      //   this.router.navigateByUrl('/transaction/trials');
+      // if(trial.trial_type.type=='Returns')
+      //   this.router.navigateByUrl('/transaction/returns');
+      // if(trial.trial_type.type=='CBPM')
+      //   this.router.navigateByUrl('/transaction/cbpm');
     }
 
-    // viewTrial['type']='view';
-    // localStorage.setItem('trial_form',this.api.encryptData(viewTrial));
+    closeNotification(notificationId: number): void {
+      // // console.log'Close notification clicked:', notificationId);
+      // Remove the notification from the list
+      this.notificationsList = this.notificationsList.filter(notification => notification.id !== notificationId);
+      this.api.postAPI(environment.API_URL + "notification/notification-closed",{id:notificationId}).subscribe((res) => {});
+    }
+  
 
-    //this.goToTrialForm(viewTrial.trial_type.code);
-    // if(tasking_id.trial_type.type=='Trials')
-    //   this.router.navigateByUrl('/transaction/trials');
-    // if(trial.trial_type.type=='Returns')
-    //   this.router.navigateByUrl('/transaction/returns');
-    // if(trial.trial_type.type=='CBPM')
-    //   this.router.navigateByUrl('/transaction/cbpm');
-  }
+
 }
 
 interface AlertModel {

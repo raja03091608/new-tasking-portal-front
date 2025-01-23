@@ -232,7 +232,7 @@ export class TaskListComponent implements OnInit {
   txtwordCount = 0;
   wordCountValidator = (control: FormControl) => {
     const txtwordCount = control.value.split(' ').length;
-    // console.log('txtwordCount',txtwordCount);
+    // // console.log'txtwordCount',txtwordCount);
     if (txtwordCount > 200) {
       return {
         wordCountError: 'The word count must be greater than 200.'
@@ -322,7 +322,7 @@ export class TaskListComponent implements OnInit {
     this.allocateForm.patchValue({
       tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : ''
     });
-    // console.log('data.task_number_dee', data.task_number_dee);
+    // // console.log'data.task_number_dee', data.task_number_dee);
 
     if (data.task_number_dee != null) {
       let split_task_number_dee = data.task_number_dee.split("/");
@@ -334,11 +334,11 @@ export class TaskListComponent implements OnInit {
       var img_link = data.file;
       //var trim_img = img_link.substring(1)
       this.ImageUrl = img_link;
-      // console.log('ImageUrl', this.ImageUrl);
+      // // console.log'ImageUrl', this.ImageUrl);
 
     } else {
       this.ImageUrl = "";
-      // console.log('ImageUrl "d"', this.ImageUrl);
+      // // console.log'ImageUrl "d"', this.ImageUrl);
 
     }
 
@@ -463,7 +463,7 @@ export class TaskListComponent implements OnInit {
     this.formInit();
     this.getUser();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
-    // console.log('token_api', this.token_detail)
+    // // console.log'token_api', this.token_detail)
     this.getTasking();
     this.getAccess();
     this.getComments;
@@ -497,7 +497,7 @@ export class TaskListComponent implements OnInit {
     this.taskForm.get('deeForm').disable();
     this.taskForm.get('acomForm').disable();
     this.taskForm.get('comForm').disable();
-    // console.log(this.taskForm.get('deeForm'), "====================%%%%%%%%%%%%%%%%%%%%")
+    // // console.logthis.taskForm.get('deeForm'), "====================%%%%%%%%%%%%%%%%%%%%")
 
 
 
@@ -604,7 +604,7 @@ export class TaskListComponent implements OnInit {
       .getAPI(environment.API_URL + "master/taskinggroups")
       .subscribe((res) => {
         this.taskingGroups = res.data;
-        // console.log('TTTTT', this.taskingGroups);
+        // // console.log'TTTTT', this.taskingGroups);
 
       });
   }
@@ -664,7 +664,7 @@ export class TaskListComponent implements OnInit {
       .getAPI(environment.API_URL + "transaction/trials_status?tasking=" + this.id)
       .subscribe((res) => {
         this.countryList1 = res.data;
-        // console.log('comments', res);
+        // // console.log'comments', res);
 
         if (res.data[0]?.sponsoring_directorate && res.data[0]?.sponsoring_directorate?.skip_apso == 1) {
           this.is_sponsoring_directorate = false
@@ -824,13 +824,13 @@ export class TaskListComponent implements OnInit {
   editOption(country) {
     this.onEditRole(country);
     this.commentEditor.editable = true;
-    // console.log(country, "==================>>>>>>>>>>>>")
+    // // console.logcountry, "==================>>>>>>>>>>>>")
     this.apiCall();
     this.taskListRoot = country;
     this.formGroup.get('taskId').setValue(this.taskListRoot.task_name);
-    // console.log('country', country)
+    // // console.log'country', country)
     this.listassign = country.assigned_tasking_group
-    // console.log('this.listassign', this.listassign)
+    // // console.log'this.listassign', this.listassign)
     this.listDelapso = country.APSO_recommender
     this.listwesee = country.WESEE_recommender
     this.listdee = country.DEE_recommender
@@ -954,7 +954,7 @@ export class TaskListComponent implements OnInit {
     this.taskForm.get('sdForm').disable();
     this.populate(country);
     // var element = <HTMLInputElement> document.getElementById("exampleCheck1");
-    // console.log('tr', country)
+    // // console.log'tr', country)
     this.list = country;
     
     this.getComments();
@@ -1017,7 +1017,7 @@ export class TaskListComponent implements OnInit {
     this.showError = true;
     this.currentDate = new Date();
     //this.taskForm.value.id=this.id;
-    // console.log('this.taskForm', this.taskForm.value)
+    // // console.log'this.taskForm', this.taskForm.value)
 
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
@@ -1151,10 +1151,10 @@ export class TaskListComponent implements OnInit {
 
   imgToUpload: any;
   onImageHandler(event) {
-    // console.log('image', event.target.files[0])
+    // // console.log'image', event.target.files[0])
     if (event.target.files.length > 0) {
       this.imgToUpload = event.target.files[0];
-      // console.log('img', event)
+      // // console.log'img', event)
 
     };
 
@@ -1214,7 +1214,7 @@ export class TaskListComponent implements OnInit {
 
         )
         .subscribe((res) => {
-          // console.log('tasking res', res)
+          // // console.log'tasking res', res)
           if (res.status == environment.SUCCESS_CODE) {
             // this.logger.log('Formvalue',this.editForm.value);
             localStorage.setItem('allocate_Del', this.api.encryptData(res));
@@ -1459,7 +1459,7 @@ export class TaskListComponent implements OnInit {
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
     (new Date(), 'yyyy/MM/dd', 'en');
-    // console.log('trr',this.taskForm.get('deeForm').value.task_number_dee);
+    // // console.log'trr',this.taskForm.get('deeForm').value.task_number_dee);
 
     // this.taskForm.get('deeForm').value.task_number_dee;
     if (this.taskForm.get('deeForm').value.task_number_dee0 == '' || this.taskForm.get('deeForm').value.task_number_dee0 == null) {
@@ -1508,7 +1508,7 @@ export class TaskListComponent implements OnInit {
 
     const formData = new FormData();
     //this.taskForm.value.id=this.id;
-    // console.log('task_number_dee', this.taskForm.get('deeForm').value.task_number_dee0)
+    // // console.log'task_number_dee', this.taskForm.get('deeForm').value.task_number_dee0)
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
     (new Date(), 'yyyy/MM/dd', 'en');
@@ -2012,7 +2012,7 @@ export class TaskListComponent implements OnInit {
     this.minitingList=[]
     this.api.getAPI(environment.API_URL + `transaction/comments?tasking_id=${this.id}`).subscribe(res => {
       this.minitingList = res.data;
-      // console.log(res, "miniting sheet");
+      // // console.logres, "miniting sheet");
     })
   }
 
@@ -2034,7 +2034,7 @@ export class TaskListComponent implements OnInit {
       recommendation_status: 1
     };
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
-      // console.log(res)
+      // // console.logres)
       this.getMiniting();
       this.getStatusTimeline();
       this.close();
@@ -2054,15 +2054,15 @@ export class TaskListComponent implements OnInit {
   ]
   // Event handlers
   handleFilter(filterValue: any) {
-    // console.log('Filter triggered with value:', filterValue);
+    // // console.log'Filter triggered with value:', filterValue);
   }
 
   handlePagination(pageEvent: any) {
-    // console.log('Pagination triggered with event:', pageEvent);
+    // // console.log'Pagination triggered with event:', pageEvent);
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
-    // console.log('Edit triggered for row:', rowData);
+    // // console.log'Edit triggered for row:', rowData);
   }
   handleDelete(rowData: any) {
     this.onDelete(rowData.id)
@@ -2072,7 +2072,7 @@ export class TaskListComponent implements OnInit {
 
   handleView(rowData: any) {
     this.onView(rowData)
-    // console.log('View triggered for row:', rowData);
+    // // console.log'View triggered for row:', rowData);
   }
 
 

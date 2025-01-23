@@ -119,8 +119,8 @@ constructor(private modalService: NgbModal, private route: ActivatedRoute,public
         type: "rangeBar",
         events: {
           click: (event:any, chartContext:any, config:any) => {
-            // console.log(config.seriesIndex);
-            // console.log(config.dataPointIndex);
+            // // console.logconfig.seriesIndex);
+            // // console.logconfig.dataPointIndex);
             this.openPopup();
           }
         }
@@ -382,7 +382,7 @@ this.series.appear(1000, 100);
  	  this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
 	 	}
 
-//console.log(this.sponsoring_directorate,this.taskForm.get('sdForm').value.sponsoring_directorate)
+//// console.logthis.sponsoring_directorate,this.taskForm.get('sdForm').value.sponsoring_directorate)
 //  if(this.taskForm.get('sdForm').value.sponsoring_directorate!=''){
 // 	this.taskForm.get('sdForm').value.sponsoring_directorate='IHQ MOD(N)/'+this.api.userid.first_name;
 // 	  }

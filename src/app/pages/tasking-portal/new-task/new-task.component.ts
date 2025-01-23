@@ -202,7 +202,7 @@ get remainingCharacters(): number {
 txtwordCount = 0;
 wordCountValidator = (control: FormControl) => {
   const txtwordCount = control.value.split(' ').length;
-  // console.log('txtwordCount',txtwordCount);
+  // // console.log'txtwordCount',txtwordCount);
   if (txtwordCount > 200) {
     return {
       wordCountError: 'The word count must be greater than 200.'
@@ -256,9 +256,9 @@ formInit(){
 
   //   // const editorValue:any = this.taskForm.get('sdForm.task_description').value;
   //   const wordCount = this.wordlimit.split(/\s+/).length;
-	// // console.log(this.wordlimit.length)
+	// // // console.logthis.wordlimit.length)
   //   if (wordCount > 2) {
-	// console.log("hlo")
+	// // console.log"hlo")
   //    this.taskForm.get('sdForm.task_description').setErrors({ wordLimitExceeded: true });
   //   } else {
   //    this.taskForm.get('sdForm.task_description').setErrors(null);
@@ -481,8 +481,8 @@ formInit(){
 	const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
 	const ccValue=formatDate(this.currentDate,'dd','en-US');
 	(new Date(),'yyyy/MM/dd', 'en');
-	// console.log(this.currentDate);
-	// console.log(this.taskForm.get('deeForm').value.task_number_dee);
+	// // console.logthis.currentDate);
+	// // console.logthis.taskForm.get('deeForm').value.task_number_dee);
 	this.taskForm.get('deeForm').value.task_number_dee;
  	if(this.taskForm.get('deeForm').value.task_number_dee!=''){
     this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+this.taskForm.get('deeForm').value.task_number_dee1+'/'+this.taskForm.get('deeForm').value.task_number_dee2
@@ -535,11 +535,11 @@ formInit(){
 
     //formData.append('created_by', this.taskForm.value.created_by);
     formData.append('modified_by', this.api.userid.user_id);
-    // console.log('OUT');
+    // // console.log'OUT');
 
      if (this.taskForm.get('sdForm')) {
       //formData.append('id', this.editForm.value.id);
-      // console.log('IN');
+      // // console.log'IN');
 
       this.api
         .postAPI(
@@ -573,12 +573,12 @@ formInit(){
 
 // onweseeSubmit(){
 //   this.weseeForm.value.id=this.id;
-//  console.log(this.weseeForm.value)
+//  // console.logthis.weseeForm.value)
 
 //   if (this.weseeForm.valid) {
 //    // this.weseeForm.value.created_by = this.api.userid.user_id;
 //     //this.weseeForm.value.status = this.weseeForm.value.status==true ? 1 : 2;
-//     //console.log("Editform",this.editForm.value.id)
+//     //// console.log"Editform",this.editForm.value.id)
 
 //     this.api
 //       .postAPI(
@@ -689,7 +689,7 @@ cancelmodal(){
   getInitator() {
     this.api.getAPI(environment.API_URL + "master/sponsoring_directorate?status=1").subscribe((res) => {
       this.initatorList = res.data;
-      // console.log('this.initatorList',this.initatorList)
+      // // console.log'this.initatorList',this.initatorList)
     });
   }
   showSD=false;

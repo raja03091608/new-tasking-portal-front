@@ -1,32 +1,24 @@
-<!-- Search toolbar -->
-<!-- <div class="d-flex align-items-center" [ngClass]="toolbarButtonMarginClass">
-	<div class="btn btn-icon btn-active-light-primary position-relative" [ngClass]="toolbarButtonHeightClass"
-		data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
-		data-kt-menu-flip="bottom">
-		<span [inlineSVG]="'./assets/media/icons/duotune/general/gen021.svg'" class="svg-icon"
-			[ngClass]="toolbarButtonIconSizeClass"></span>
-	</div>
-	<app-search-result-inner></app-search-result-inner>
-</div> -->
+
 
 <!-- Notifications -->
 <div class="d-flex align-items-center notify-icon" [ngClass]="toolbarButtonMarginClass">
 	<div
-	  class="btn btn-icon btn-active-light-primary btn-custom position-relative"
+	  class="btn btn-icon  btn-custom position-relative"
 	  [ngClass]="toolbarButtonHeightClass"
-	  data-kt-menu-trigger="hover"
+	  data-kt-menu-trigger="click"
 	  data-kt-menu-attach="parent"
 	  data-kt-menu-placement="bottom-end"
 	  data-kt-menu-flip="bottom"
+	  (click)="toggleNotificationsDropdown()"
 	>
 	  <div
 		[inlineSVG]="'./assets/media/icons/duotune/general/gen007.svg'"
 		class="svg-icon"
 		[ngClass]="toolbarButtonIconSizeClass"
 	  ></div>
-	  <span class="notify-count" *ngIf="notificationsList && notificationsList.length>0"><span>{{ notificationsList.length }}</span></span>
+	  <span class="notify-count" *ngIf="isNotificationSeen && notificatiUnread > 0"><span>{{ notificatiUnread }}</span></span>
 	</div>
-	<app-notifications-inner></app-notifications-inner>
+	<app-notifications-inner  ></app-notifications-inner>
   </div>
 
 <!-- begin::Theme mode -->
@@ -46,20 +38,23 @@
 			</div>
 			<ng-container *ngIf="api?.userid?.process_id==3">
 			<div class="user-name">
-				<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
-				<p class="user-type">({{ api.userid.tasking_group[0].code }})</p>
+				<p class="user-type">{{ api?.userid?.loginname }}</p>
+				<p class="user-title"><span>{{api?.userid?.rankCode}}</span> {{ api.userid.first_name+' '+api.userid.last_name }} </p>
+				<p class="user-type">({{ api?.userid?.tasking_group[0].code }})</p>
 			</div>
 			</ng-container>
 			<ng-container *ngIf="api?.userid.process_id==2">
 				<div class="user-name">
-					<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
-					<p class="user-type">({{ api.userid.user_group[0].code }})</p>
+					<p class="user-type">{{ api?.userid?.loginname }}</p>
+				<p class="user-title"><span>{{api?.userid?.rankCode}}</span> {{ api.userid.first_name+' '+api.userid.last_name }} </p>
+				<p class="user-type">({{ api.userid.user_group[0].code }})</p>
 				</div>
 			</ng-container>
 			<ng-container *ngIf="api.userid.process_id==1">
 				<div class="user-name">
-					<p class="user-title">{{ api.userid.first_name+' '+api.userid.last_name }} </p>
-					<p class="user-type">({{ api.userid.role_name }})</p>
+					<p class="user-type">{{ api?.userid?.loginname }}</p>
+				<p class="user-title"><span>{{api?.userid?.rankCode}}</span> {{api.userid.first_name+' '+api.userid.last_name }} </p>
+				<p class="user-type">({{ api.userid.role_name }})</p>
 				</div>
 			</ng-container>
 		</div>

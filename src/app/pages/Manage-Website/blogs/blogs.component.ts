@@ -33,7 +33,7 @@ export class BlogsComponent implements OnInit {
   getBlog(){
     this.apiService.getRequest('blog/').subscribe((result: any) => {
       this.blogs=result
-      // console.log(result);
+      // // console.logresult);
   },error => {
     this.errorMessage = error.error ? error.error.Message : error.Message;
     if (!this.errorMessage)

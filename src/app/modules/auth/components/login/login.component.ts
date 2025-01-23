@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 	public signinDisable=false;
 	isLoading$: Observable<boolean>;
 	showError=false;
-
+	showPassword=false;
 
 	ngOnInit(): void {
 		let data = 'abc';
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 	  if (this.loginForm.valid) {
 		this.loginButton='Please wait...';
 		this.signinDisable=true;
-		console.log('djfjks',this.loginForm.value)
+		// console.log'djfjks',this.loginForm.value)
 		this.api.getToken(
 			//this.loginForm.value.email,
 			this.loginForm.value.username,
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
 		  .subscribe((res) => {
 				this.showError=false;
 
-				// console.log(res,'res')
+				// // console.logres,'res')
 				this.loginButton='Sign in';
 				this.signinDisable=false;
 				if(res.status=='success')
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
 				  userDetail.loginname=this.loginForm.value.username;
 				  //userDetail.email=this.loginForm.value.email;
 				  userDetail.password=this.loginForm.value.password;
-				  localStorage.setItem('APPLOGO','assets/images/logo.png');
+				  localStorage.setItem('APPLOGO','assets/meadia/logos/logo.png');
 				  localStorage.setItem('LOGINPAGE','/authenticate/login');
 				  this.api.setUserLoggedIn(true);
 				  if(this.loginForm.value.remember) {
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
 	          if(res.role_center.length>1) {
 	              this.router.navigateByUrl('/authenticate/role-selection');
 	          } else {
-	            //console.log(res.role_center[0].user_role.id)
+	            //// console.logres.role_center[0].user_role.id)
 	            this.api.getAPI(environment.API_URL+"access/permissions?user_role_id="+res.role_center[0].user_role.id+'&process_id='+res.process_id).subscribe((res1)=>{
 	              if(res1.status==environment.SUCCESS_CODE) {
 	                if(res1.data.length==1){
@@ -150,7 +150,14 @@ export class LoginComponent implements OnInit {
 	  this.notification.displayMessage(language[environment.DEFAULT_LANG].contactAdmin);
 	}
 
-
+	capitalizeInput(controlName: string): void {
+		const control = this.loginForm.get(controlName);
+		if (control && control.value) {
+		  const capitalizedValue = control.value.toUpperCase();
+		  control.setValue(capitalizedValue, { emitEvent: false });
+		}
+	  }
+	  
 	populate(user) {
 	//  this.logger.info(user)
 	 if(user)

@@ -5,6 +5,7 @@ import { language } from "../../../../../environments/language";
 import { ApiService } from "../../../../service/api.service";
 import { NotificationService } from "../../../../service/notification.service";
 import { ConsoleService } from "../../../../service/console.service";
+import { is } from 'date-fns/locale';
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
@@ -16,14 +17,14 @@ export class TopbarComponent implements OnInit {
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px';
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
-
+  isNotificationSeen=true
   constructor(private logger: ConsoleService,private layout: LayoutService,public api: ApiService, private notification : NotificationService) {}
   data:any;
   interval;
   modules = [];
   ngOnInit(): void {
     this.data = this.api.decryptData(localStorage.getItem('token-detail'));
-
+    // console.log(this.api)
     this.getNotifications()
 
     this.headerLeft = this.layout.getProp('header.left') as string;
@@ -32,16 +33,18 @@ export class TopbarComponent implements OnInit {
 
 
 
-  notificationsList=[];
+  notificationsList:any;
+  notificatiUnread:number
   created:any;
   notifyLength:any;
   getNotifications() {
+    
 
         if(this.data.process_id==2 && this.data.role_id==3 ){
           this.api.getAPI(environment.API_URL + "notification/get-notifications?tasking__created_by_id="+this.data.user_id).subscribe((res) => {
             if(res.status==environment.SUCCESS_CODE){
 
-             this.notificationsList=res.data;
+             this.notificatiUnread=res.total_unread_notifications;
 
             } else if(res.status==environment.ERROR_CODE) {
                 this.notification.displayMessage(res.message);
@@ -55,12 +58,12 @@ export class TopbarComponent implements OnInit {
           this.api.getAPI(environment.API_URL + "notification/get-notifications?process_id="+this.data.process_id +'&tasking_group='+this.data.tasking_id).subscribe((res) => {
             if(res.status==environment.SUCCESS_CODE){
 
-             this.notificationsList=res.data;
+             this.notificatiUnread=res.total_unread_notifications;
 
             } else if(res.status==environment.ERROR_CODE) {
                 this.notification.displayMessage(res.message);
             } else {
-              this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+              // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
             }
           });
 
@@ -70,7 +73,7 @@ export class TopbarComponent implements OnInit {
           this.api.getAPI(environment.API_URL + "notification/get-notifications").subscribe((res) => {
             if(res.status==environment.SUCCESS_CODE){
 
-             this.notificationsList=res.data;
+             this.notificatiUnread=res.total_unread_notifications;
 
             } else if(res.status==environment.ERROR_CODE) {
                 this.notification.displayMessage(res.message);
@@ -81,9 +84,17 @@ export class TopbarComponent implements OnInit {
 
 
         }
+  }
+  toggleNotificationsDropdown(){
+    if(this.data.process_id==1){
+      return;
+    }
 
-
+    this.isNotificationSeen=false;
+    this.api.postAPI(environment.API_URL + "notification/notification-seen",{}).subscribe((res) => {});
 
   }
 
+
+  
 }
