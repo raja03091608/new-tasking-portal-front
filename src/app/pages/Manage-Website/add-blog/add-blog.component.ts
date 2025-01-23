@@ -27,7 +27,7 @@ export class AddBlogComponent implements OnInit {
     this.apiService.getRequest('categories/').subscribe((result: any) => {
       if(!result.length)this.toastr.error("Data Not Found")
       this.categories = result;
-      // console.log(result);
+      // // console.logresult);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)
@@ -62,7 +62,7 @@ export class AddBlogComponent implements OnInit {
 
     this.apiService.postRequest('blog/',formData).subscribe((result: any) => {
       this.toastr.success('Blog Added Successfully!');
-      // console.log(result);
+      // // console.logresult);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)

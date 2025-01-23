@@ -25,6 +25,7 @@ id="kt_login_signin_form"
       formControlName="username"
       autocomplete="off"
       (keydown.space)="false"
+      (input)="capitalizeInput('username')"
 
     />
     <!-- <ng-container *ngIf="showError"

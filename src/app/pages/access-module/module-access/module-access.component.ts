@@ -100,7 +100,7 @@ export class ModuleAccessComponent implements OnInit {
       .getAPI(environment.API_URL + "access/allmodules?process_id="+process_id)
       .subscribe((res) => {
         this.modules=this.formatStatus(res.data);
-        console.log('this.modules',this.modules)
+        // console.log'this.modules',this.modules)
       });
   }
 
@@ -200,7 +200,7 @@ export class ModuleAccessComponent implements OnInit {
               });
             }
           });
-          //console.log('moduleActionStatus',moduleActionStatus);
+          //// console.log'moduleActionStatus',moduleActionStatus);
          // module_action.status=moduleActionStatus.length==0?false:moduleActionStatus;
         });
 

@@ -63,7 +63,7 @@ export class ApiService {
           };
 
           //   this.getPrivileges(finalRes.role_id);
-          // console.log('finalres',finalRes.role_id);
+          // // console.log'finalres',finalRes.role_id);
         }
         if(response.status)
         {
@@ -76,7 +76,7 @@ export class ApiService {
       },(error)=>{
         let finalRes={status:'error',message:'Incorrect username/password'};
         observer.next(finalRes);
-        // console.log(error);
+        // // console.logerror);
       });
     });
 
@@ -163,7 +163,7 @@ getPageAction()
       let access = this.decryptData(data);
       let modules = JSON.parse(access.permissions);
 
-      // console.log('modules',modules)
+      // // console.log'modules',modules)
 
       let components = modules.map(value => value.components);
       let mergedComponents = [].concat.apply([], components);
@@ -185,7 +185,7 @@ getPageAction()
         return el != '';
       });
 
-      // console.log('filtered',filtered);
+      // // console.log'filtered',filtered);
       let finalActions=filtered.length>0?filtered[0]:'';
       if(finalActions!='')
       {
@@ -257,7 +257,7 @@ getPageAction()
     try {
       return CryptoJS.AES.encrypt(JSON.stringify(data), environment.CRYPTO_KEY).toString();
     } catch (e) {
-      // console.log(e);
+      // // console.loge);
     }
   }
 
@@ -270,7 +270,7 @@ getPageAction()
       }
       return data;
     } catch (e) {
-      // console.log(e);
+      // // console.loge);
     }
   }
 
@@ -290,7 +290,7 @@ getPageAction()
   applicationLogoutLog()
   {
     this.userid=this.decryptData(localStorage.getItem('token-detail'));
-    //console.log('this.userid',this.userid);
+    //// console.log'this.userid',this.userid);
     this.postAPI(environment.API_URL + "api/auth/logout",{user_id:this.userid.user_id}).subscribe((res)=>{
       this.notification.displayMessage(res.message);
       localStorage.removeItem('userDetail');
@@ -352,7 +352,7 @@ getPageAction()
           var decryptedText = CryptoJS.AES.decrypt(text, Key, { keySize: 128 / 8, iv: IV, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
           return decryptedText.toString(CryptoJS.enc.Utf8); //binascii.unhexlify(decryptedText)
       } catch (e) {
-          // console.log("Error", e)
+          // // console.log"Error", e)
       }
   }
 

@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
        this.id = atob(params['tasking_id']);
-       console.log('iddd',this.id);
+       // console.log'iddd',this.id);
        this.login_id = this.api.userid.user_id
      // Print the parameter to the console.
   });
@@ -475,7 +475,7 @@ export class DashboardComponent implements OnInit {
 		  .getAPI(environment.API_URL + "transaction/trials_status?tasking="+this.id)
 		  .subscribe((res) => {
 			this.countryList1 = res.data;
-			console.log('List',this.countryList1);
+			// console.log'List',this.countryList1);
 
 		  });
 
@@ -696,7 +696,7 @@ tasknumber:any;
   showcomments=false;
   saveviewstatus() {
     this.showcomments=true;
-    console.log('commentform',this.commentForm);
+    // console.log'commentform',this.commentForm);
     if(this.commentForm.value.created_by!=null && this.commentForm.value.tasking!=null){
     this.commentForm.value.created_by = this.api.userid.user_id;
     this.commentForm.value.tasking = this.id;
@@ -750,9 +750,9 @@ tasknumber:any;
 	// 	  .getAPI(environment.API_URL + "master/taskinggroups")
 	// 	  .subscribe((res) => {
 	// 		this.taskingGroups = res.data;
-	// 		console.log('Tasking Group',this.taskingGroups);
+	// 		// console.log'Tasking Group',this.taskingGroups);
 
-	// 		//console.log('taskingGroups0',this.taskingGroups)
+	// 		//// console.log'taskingGroups0',this.taskingGroups)
 	// 	  });
 	//   }
   }

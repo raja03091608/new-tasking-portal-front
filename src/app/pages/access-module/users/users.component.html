@@ -44,45 +44,7 @@
 	  </div>
 	</div>
 </section>  
-<!-- <section class="body-card">
-	<div class="container-fluid">
-	   <div class="row">
-		  <div class="col-md-12">
-			 <div class="card">
-				<div class="card-header card-header2">
-				   <div class="row">
-					  <div class="col-md-6">
-						 <h3 style="color: white;">Users</h3>
-					  </div>
-					  <div class="col-md-6">
-						 <div class="text-end">
-						 </div>
-					  </div>
-				   </div>
-				</div>
-				 <ng-container *ngIf="userData.length != 0">
-				  <app-grid-table [gridColumns]="gridColumns" 
-				  [gridData]="userData"
-					 [ispaniNater]="true" [isAction]="true"
-					  (filterEvent)="handleFilter($event)"
-					 (paginationEvent)="handlePagination($event)"
-					 (viewEvent)="onView($event)" 
-                    [isView]="permission.view"
-                    (deleteEvent)=" onDelete($event.id)" 
-                    [isDeletable]="permission.delete"
-                    (editEvent)="editOption($event)" 
-					[isPermanentDelete]="permission.delete"
-					(permanentDeleteEvent)="onPermanentDelete($event.id)"
-					
-                    [isEditable]="permission.edit">
-				  </app-grid-table>
-			   </ng-container> 
-			 </div>
-		  </div>
-	   </div>
-	</div>
-  </section> -->
-  <!-- modal -->
+
   <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static"
 	tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl">
@@ -171,13 +133,17 @@
 			  <div class="col-md-4">
 				<div class="matt-group">
 				  <mat-label>Login Name <b class="star">*</b></mat-label>
-
-					<input type="text" class="form-control form-control-lg" formControlName="loginname" autocomplete="off">
-					<!-- <input matInput placeholder="" formControlName="loginname" maxlength="20"> -->
-					<mat-error *ngIf="Error('loginname','required') && showcomments">Please enter loginname name</mat-error>
-
+				  <input
+					type="text"
+					class="form-control form-control-lg"
+					formControlName="loginname"
+					autocomplete="off"
+					(input)="capitalizeInput('loginname')"
+				  />
+				  <mat-error *ngIf="Error('loginname', 'required') && showcomments">Please enter login name</mat-error>
 				</div>
 			  </div>
+			  
 			  <div class="col-md-4" *ngIf="isPassword">
 				<div class="matt-group">
 				  <mat-label>Password <b class="star">*</b></mat-label>

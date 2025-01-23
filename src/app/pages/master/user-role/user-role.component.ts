@@ -111,14 +111,14 @@ export class UserRoleComponent implements OnInit {
 
     this.editForm.patchValue({id:data.id,name:data.name,code:data.code,created_by:data.created_by,modified_by:this.api.userid.user_id,status:data.status});
     this.editForm.patchValue({process: data.process.id})
-    // let actions = data.user_designation.map(function(a){console.log('testa',a.user_role_id);return a.user_role_id;});
+    // let actions = data.user_designation.map(function(a){// console.log'testa',a.user_role_id);return a.user_role_id;});
     // this.editForm.patchValue({id:actions});
     if(data.user_designation.length>0)
     {
       // let id = '';
       let name ='';
       let  code = '';
-      //console.log('ship_id',ship_id);
+      //// console.log'ship_id',ship_id);
       for(let i=0;i<data.user_designation.length;i++)
       {
 
@@ -407,15 +407,15 @@ export class UserRoleComponent implements OnInit {
   handleFilter(filterValue: any) {
     
     this.filterData = filterValue;
-    // console.log('Filter triggered with value:', filterValue);
+    // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // console.log('Pagination triggered with event:', pageEvent);
+    // // console.log'Pagination triggered with event:', pageEvent);
   }
 
   openCurrentStatus(country){
     // this.id=country.id;
-    //   console.log('tasking country',country)
+    //   // console.log'tasking country',country)
     //   this.taskname = country.task_name;
     //   this.tasknumber = country.task_number_dee;
     //   // this.selectedTrial=tasking;
@@ -434,7 +434,7 @@ export class UserRoleComponent implements OnInit {
     }
     taskid:any;
     opentask(country:any){
-      // console.log('countyryry',country);
+      // // console.log'countyryry',country);
       // this.resetexportform();
       // this.exportform.reset();
       openModal('#export');

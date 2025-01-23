@@ -46,7 +46,7 @@ export class SliderComponent implements OnInit {
 
       this.allSlider=data;
       this.totalslider=data.length
-      // console.log(data,"=======>",this.allSlider)
+      // // console.logdata,"=======>",this.allSlider)
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)

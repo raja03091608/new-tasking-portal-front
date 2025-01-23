@@ -84,7 +84,7 @@ function triggerClick(selector)
 
 $(document).on('click','.package-place-order',function(){
 	$(this).closest('.form-row').toggleClass('active');
-	//console.log('package change');
+	//// console.log'package change');
 });
 
 $(document).on('click','.mat-datepicker-input',function(){

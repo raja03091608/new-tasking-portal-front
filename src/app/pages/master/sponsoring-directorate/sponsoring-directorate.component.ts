@@ -239,8 +239,8 @@ export class SponsoringDirectorateComponent implements OnInit {
 
   getAccess() {
     this.moduleAccess=this.api.getPageAction();
-    // console.log('addPermission',this.permission.delete)
-    // console.log('addPermission122',)
+    // // console.log'addPermission',this.permission.delete)
+    // // console.log'addPermission122',)
 
 
     if(this.moduleAccess)
@@ -281,15 +281,15 @@ export class SponsoringDirectorateComponent implements OnInit {
   handleFilter(filterValue: any) {
     
     this.filterData = filterValue;
-    // console.log('Filter triggered with value:', filterValue);
+    // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // console.log('Pagination triggered with event:', pageEvent);
+    // // console.log'Pagination triggered with event:', pageEvent);
   }
 
   openCurrentStatus(country){
     // this.id=country.id;
-    //   console.log('tasking country',country)
+    //   // console.log'tasking country',country)
     //   this.taskname = country.task_name;
     //   this.tasknumber = country.task_number_dee;
     //   // this.selectedTrial=tasking;
@@ -308,7 +308,7 @@ export class SponsoringDirectorateComponent implements OnInit {
     }
     taskid:any;
     opentask(country:any){
-      // console.log('countyryry',country);
+      // // console.log'countyryry',country);
       // this.resetexportform();
       // this.exportform.reset();
       openModal('#export');

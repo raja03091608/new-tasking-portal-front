@@ -66,7 +66,7 @@ export class HeaderMenuComponent implements OnInit {
   goToPage(url)
   {
 
-    // console.log('url',url);
+    // // console.log'url',url);
     if(url)
       this.router.navigateByUrl(url);
 

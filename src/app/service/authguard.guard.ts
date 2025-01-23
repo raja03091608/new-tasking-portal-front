@@ -53,8 +53,8 @@ export class AuthguardGuard implements CanActivate {
 
   //   let currentPath=location.hash;
   //   currentPath=currentPath.substring(2);
-  //   /*console.log('currentPath',currentPath);
-  //   console.log('mergedURLs',mergedURLs);*/
+  //   /*// console.log'currentPath',currentPath);
+  //   // console.log'mergedURLs',mergedURLs);*/
   //   if(mergedURLs.indexOf(currentPath)===-1)
   //   {
   //     this.router.navigateByUrl('/error/403');
@@ -82,8 +82,8 @@ export class AuthguardGuard implements CanActivate {
 
   let currentPath=location.hash;
   currentPath=currentPath.substring(2);
-  /*console.log('currentPath',currentPath);
-  console.log('mergedURLs',mergedURLs);*/
+  /*// console.log'currentPath',currentPath);
+  // console.log'mergedURLs',mergedURLs);*/
   mergedURLs.push('authenticate/biometrics-log');
   mergedURLs.push('authenticate/biometrics-verify');
   if(mergedURLs.indexOf(currentPath)===-1 && tokenDetail.role_code=='admin')

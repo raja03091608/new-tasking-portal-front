@@ -89,7 +89,7 @@ export class UsersComponent implements OnInit {
 	userData= [] as any;
 	//   set fileInput(val: ElementRef) {
 	//     if(val) {
-	//       console.log(val);
+	//       // console.logval);
 	//     }
 	// }
 	constructor(public api: ApiService, private notification: NotificationService,
@@ -149,13 +149,13 @@ export class UsersComponent implements OnInit {
 
 
 	populate(data) {
-		console.log('data', data)
+		// console.log'data', data)
 		// this.editForm.get('password').clearValidators();
 		// this.editForm.get('password').updateValueAndValidity();
-		console.log('api', this.api.userid)
+		// console.log'api', this.api.userid)
 		// this.items = this.docForm.get('items') as FormArray;
 		// this.clearFormArray(this.items);
-		this.editForm.patchValue({ id: data?.id, first_name: data?.first_name, last_name: data?.last_name, loginname: data?.loginname, email: data?.email, created_by: data?.created_by, modified_by: this.api?.userid?.user_id, status: data?.status, ad_user: data?.ad_user, hrcdf_designation: data?.hrcdf_designation});
+		this.editForm.patchValue({ id: data?.id, first_name: data?.first_name, last_name: data?.last_name, loginname: data?.loginname, email: data?.email, created_by: data?.created_by, modified_by: this.api?.userid?.user_id, status: data?.status, ad_user: data?.ad_user, hrcdf_designation: data?.hrcdf_designation,rank_code: data?.rankCode });
 		setTimeout(() => {
 			if (data.department != null) {
 				this.editForm.patchValue({ department: data.department.id });
@@ -167,7 +167,7 @@ export class UsersComponent implements OnInit {
 			// if(data.user_role_id!=null){
 			//   this.editForm.patchValue({user_role_id: data.user_role_id.id});
 			//   }
-			// let actions = data.roles.map(function (a) { console.log(a.user_role.id); return a.user_role.id; });
+			// let actions = data.roles.map(function (a) { // console.loga.user_role.id); return a.user_role.id; });
 			this.editForm.patchValue({ user_role_id: data?.roles[0]?.user_role?.id });
 
 		}, 500);
@@ -175,7 +175,7 @@ export class UsersComponent implements OnInit {
 		// 	let id = '';
 		// 	let name = '';
 		// 	let code = '';
-		// 	//console.log('ship_id',ship_id);
+		// 	//// console.log'ship_id',ship_id);
 		// 	for (let i = 0; i < data.user_role_id.length; i++) {
 
 		// 		id = data.user_role_id[i].code;
@@ -249,7 +249,7 @@ export class UsersComponent implements OnInit {
 	}
 	UserGroup: any;
 	processChange(process_id) {
-		console.log("Process   " + process_id )
+		// console.log"Process   " + process_id )
 		if (process_id) {
 			this.getUserRoles(process_id);
 			if (process_id == 1 ) {
@@ -274,7 +274,7 @@ export class UsersComponent implements OnInit {
 				// this.dataSource = new MatTableDataSource(res.data);
 				this.userData=res.data;
 				this.user = res.data;
-				console.log('User', this.user);
+				// console.log'User', this.user);
 
 			});
 	}
@@ -284,7 +284,7 @@ export class UsersComponent implements OnInit {
 			.getAPI(environment.API_URL + "api/auth/deleted/users")
 			.subscribe((res) => {
 				this.deleted_users = res.data;
-				console.log("Deleted", this.deleted_users);
+				// console.log"Deleted", this.deleted_users);
 			});
 	}
 	deleteusers: any;
@@ -293,8 +293,8 @@ export class UsersComponent implements OnInit {
 		closeModal('#deleteuser');
 	}
 	undeleteUser() {
-		// console.log("deleteusers",this.deleteusers);
-		// console.log("deletedstatus",this.deletedstatus);
+		// // console.log"deleteusers",this.deleteusers);
+		// // console.log"deletedstatus",this.deletedstatus);
 		this.deleteform.value.user = this.deleteusers;
 		this.deleteform.value.status = this.deletedstatus;
 		let formval = { id: this.deleteform.value.user, status: this.deleteform.value.status };
@@ -303,7 +303,7 @@ export class UsersComponent implements OnInit {
 				this.deleted_users = res.data;
 				this.notification.success(res.message);
 				closeModal('#deleteuser');
-				console.log("Deleted", this.deleted_users);
+				// console.log"Deleted", this.deleted_users);
 			});
 		this.getDeletedUserList()
 
@@ -442,7 +442,7 @@ export class UsersComponent implements OnInit {
 	}
 	imgToUpload1: File | null = null;
 	onImageHandler1(event) {
-		// console.log(event,event.target.files[0])
+		// // console.logevent,event.target.files[0])
 		if (event.target.files.length > 0) {
 			this.imgToUpload1 = event.target.files[0];
 
@@ -454,7 +454,7 @@ export class UsersComponent implements OnInit {
 	// accessArr = [];
 	onSubmit() {
 
-		console.log("this.editForm.value", this.editForm.value);
+		// console.log("this.editForm.value", this.editForm.value);
 
 		this.showcomments = true;
 
@@ -469,7 +469,7 @@ export class UsersComponent implements OnInit {
 		}
 		const formData = new FormData();
 		if (!this.editForm.value.id) {
-			console.log('1111')
+			// console.log'1111')
 			formData.append('first_name', this.editForm.value.first_name);
 			formData.append('last_name', this.editForm.value.last_name);
 			formData.append('loginname', this.editForm.value.loginname);
@@ -489,7 +489,7 @@ export class UsersComponent implements OnInit {
 			}
 		}
 		else {
-			console.log('22222')
+			// console.log'22222')
 			formData.append('first_name', this.editForm.value.first_name);
 			formData.append('last_name', this.editForm.value.last_name);
 			formData.append('loginname', this.editForm.value.loginname);
@@ -614,7 +614,7 @@ export class UsersComponent implements OnInit {
 
 	imgToUpload: File | null = null;
 	onImageHandler(event) {
-		// console.log(event,event.target.files[0])
+		// // console.logevent,event.target.files[0])
 		if (event.target.files.length > 0) {
 			this.imgToUpload = event.target.files[0];
 
@@ -712,15 +712,15 @@ export class UsersComponent implements OnInit {
 	  handleFilter(filterValue: any) {
 		
 		this.filterData = filterValue;
-		console.log('Filter triggered with value:', filterValue);
+		// console.log'Filter triggered with value:', filterValue);
 	  }
 	  handlePagination(pageEvent: any) {
-		console.log('Pagination triggered with event:', pageEvent);
+		// console.log'Pagination triggered with event:', pageEvent);
 	  }
 	
 	  openCurrentStatus(country){
 		// this.id=country.id;
-		//   console.log('tasking country',country)
+		//   // console.log'tasking country',country)
 		//   this.taskname = country.task_name;
 		//   this.tasknumber = country.task_number_dee;
 		//   // this.selectedTrial=tasking;
@@ -739,7 +739,7 @@ export class UsersComponent implements OnInit {
 		}
 		taskid:any;
 		opentask(country:any){
-		  console.log('countyryry',country);
+		  // console.log'countyryry',country);
 		  // this.resetexportform();
 		  // this.exportform.reset();
 		  openModal('#export');
@@ -747,6 +747,12 @@ export class UsersComponent implements OnInit {
 	  
 		}
 	
-	
+		capitalizeInput(controlName: string): void {
+			const control = this.editForm.get(controlName);
+			if (control && control.value) {
+			  const capitalizedValue = control.value.toUpperCase();
+			  control.setValue(capitalizedValue, { emitEvent: false });
+			}
+		  }
 	
 }

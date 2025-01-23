@@ -57,7 +57,7 @@ export class AddCategoryComponent implements OnInit {
     this.apiService.getRequest('category-type/cbj/').subscribe((result: any) => {
       if(!result.length)this.toastr.error("Data Not Found")
       this.categories = result;
-      // console.log(result);
+      // // console.logresult);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)

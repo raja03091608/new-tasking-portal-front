@@ -1327,36 +1327,11 @@ margin-bottom: 1rem;
   color: white;
 }
 
-// .p-column-filter-overlay {
-//   z-index: 1002;
-//   transform-origin: center top;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   // transform: translate( -50%);
-//   margin-top: calc(var(--p-anchor-gutter));
-// }
-
-// .p-paginator {
-//   padding: 10px;
-//   text-align: center;
-// }
-
-// .p-paginator .p-paginator-element {
-//   display: inline-block;
-//   padding: 8px;
-//   margin: 2px;
-//   background-color: #007ad9;
-//   color: white;
-//   border-radius: 4px;
-//   cursor: pointer;
-// }
-
-// .p-paginator .p-paginator-element:hover {
-//   background-color: #005bb5;
-// }
-
-// table {
-//   width: 100% !important;
-//   table-layout: auto !important; 
-// }
+.bg-liteRed{
+  background-color: #75252b;
+}
+.bg-liteBlue{
+  background-color: #1135ff;
+  color: #f9f7f7;
+  float: right;
+}

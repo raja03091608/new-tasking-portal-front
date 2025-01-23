@@ -117,7 +117,7 @@ export class AllocateTasksComponent implements OnInit {
   //         this.dataSource.paginator = this.pagination;
   //         this.logger.log('countryds', this.created_list[0].created_by.id)
   //         this.creList=this.created_list[0].created_by.id
-  //         console.log('fdfd',this.creList)
+  //         // console.log'fdfd',this.creList)
   //         this.getTasking();
 
   //       }

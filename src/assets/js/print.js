@@ -98,7 +98,7 @@ function checkPrinterStatus(finishedFunction) {
 };
 
 function printerError(text) {
-  console.log("An error occurred while printing. Please try again." + text);
+  // console.log"An error occurred while printing. Please try again." + text);
 }
 function openInNewTab(href) {
   Object.assign(document.createElement('a'), {

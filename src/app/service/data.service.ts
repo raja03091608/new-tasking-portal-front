@@ -17,9 +17,9 @@ export class DataService {
 
 		this.user = localStorage.getItem('currentUser') || '{}';
 		this.a = JSON.parse(this.user);
-		// console.log(this.a);
+		// // console.logthis.a);
 		this.token = this.a.token;
-		// console.log(this.token);
+		// // console.logthis.token);
 		this.httpOptions = {
 			headers: new HttpHeaders({
 				Authorization: `${this.token}`

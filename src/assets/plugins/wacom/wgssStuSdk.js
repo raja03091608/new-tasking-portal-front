@@ -56,11 +56,11 @@ WacomGSS.STUConstructor = (function() {
     websocket = new WebSocket("wss://localhost:" + port.toString() + "/ws");
     
     websocket.onopen = function() { 
-      console.log("connected");
+      // console.log"connected");
     }
     websocket.onmessage = receive;
     websocket.onclose = function() {
-      console.log("disconnected");
+      // console.log"disconnected");
       if (typeof self.onDCAtimeout === "function") {
         self.onDCAtimeout();
       }
@@ -113,7 +113,7 @@ WacomGSS.STUConstructor = (function() {
 
   function receive(message) {
     if (typeof message.data !== 'undefined' && message.data != "") {
-      //console.log("receive: " + message.data);
+      //// console.log"receive: " + message.data);
       var arg = JSON.parse(message.data);
       if (checkExists(arg.ticket) && checkExists(table[arg.ticket])) {
         if (checkExists(arg.success) && true == arg.success && checkExists(arg.data)) {
@@ -132,13 +132,13 @@ WacomGSS.STUConstructor = (function() {
       }
     }
     else {
-      console.log("Unexpected message type " + typeof message + " = " + JSON.stringify(message));
+      // console.log"Unexpected message type " + typeof message + " = " + JSON.stringify(message));
     }
   }
   
   // sends unlimited sized message strings
   function wsSend(myString) {
-    //console.log("Sending " + myString);
+    //// console.log"Sending " + myString);
     var length = myString.length;
     var pos = 0;
 
@@ -179,7 +179,7 @@ WacomGSS.STUConstructor = (function() {
       var str = JSON.stringify(object);
       wsSend(str);
       table[ticket] = deferred;
-      //console.log("send: " + JSON.stringify(object));
+      //// console.log"send: " + JSON.stringify(object));
     } catch (err) {
       deferred.reject(err);
     }
@@ -189,7 +189,7 @@ WacomGSS.STUConstructor = (function() {
   STU.prototype.sendNoReturn = function(object) {
     var str = JSON.stringify(object);
     wsSend(str);
-    //console.log("send: " + str);
+    //// console.log"send: " + str);
   }
   
   STU.prototype.setStream = function(functor) {

@@ -178,8 +178,8 @@ export class GridTableComponent implements OnInit {
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     
       this.filteredData = this.gridData;
-      console.log(this.gridData);
-      console.log(this.gridColumns);
+      // console.logthis.gridData);
+      // console.logthis.gridColumns);
   }
 
   constructor(private filterService: FilterService, private api:ApiService) { }
@@ -335,7 +335,7 @@ export class GridTableComponent implements OnInit {
   }
   onRestore(rowData: any): void {
     // Handle the restore action here
-    console.log('Restoring:', rowData);
+    // console.log'Restoring:', rowData);
   }
   uploadData(rowData:any):boolean {
     if(!rowData?.legacy_attachment && rowData?.legacy_data =='Yes' && this.token_detail.process_id==1 )

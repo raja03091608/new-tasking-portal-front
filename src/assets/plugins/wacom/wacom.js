@@ -27,9 +27,9 @@
       retry = retry + 1;
       if (WacomGSS.STU.isServiceReady()) {
         retry = 0;
-        console.log("SigCaptX Web Service: ready");
+        // console.log"SigCaptX Web Service: ready");
       } else {
-        console.log("SigCaptX Web Service: not connected");
+        // console.log"SigCaptX Web Service: not connected");
         if (retry < 20) {
           setTimeout(checkForSigCaptX, 1000);
         }
@@ -45,7 +45,7 @@
     function onDCAtimeout() {
       // Device Control App has timed-out and shut down
       // For this sample, we just closedown tabletDemo (assumking it's running)
-      console.log("DCA disconnected");
+      // console.log"DCA disconnected");
       setTimeout(close, 0);
     }
 
@@ -126,11 +126,11 @@
         var p = new WacomGSS.STU.Protocol();
         tablet.setInkingMode(p.InkingMode.InkingMode_Off)
           .then(function (message) {
-            console.log("received: " + JSON.stringify(message));
+            // console.log"received: " + JSON.stringify(message));
             return tablet.endCapture();
           })
           .then(function (message) {
-            console.log("received: " + JSON.stringify(message));
+            // console.log"received: " + JSON.stringify(message));
             if (m_imgData !== null) {
               return m_imgData.remove();
             }
@@ -139,16 +139,16 @@
             }
           })
           .then(function (message) {
-            console.log("received: " + JSON.stringify(message));
+            // console.log"received: " + JSON.stringify(message));
             m_imgData = null;
             return tablet.setClearScreen();
           })
           .then(function (message) {
-            console.log("received: " + JSON.stringify(message));
+            // console.log"received: " + JSON.stringify(message));
             return tablet.disconnect();
           })
           .then(function (message) {
-            console.log("received: " + JSON.stringify(message));
+            // console.log"received: " + JSON.stringify(message));
             tablet = null;
             // clear canvas
             clearCanvas(canvas, ctx);
@@ -157,7 +157,7 @@
             deferred.resolve();
           })
           .fail(function (message) {
-            console.log("disconnect error: " + message);
+            // console.log"disconnect error: " + message);
             deferred.resolve();
           })
       } else {
@@ -189,7 +189,7 @@
       var m_encH;
       var m_encH2;
       var m_encH2Impl;
-      console.log(WacomGSS.STU);
+      // console.logWacomGSS.STU);
       WacomGSS.STU.isDCAReady()
       .then(function (message) {
         if (!message) {
@@ -204,68 +204,68 @@
         if (message == null || message.length == 0) {
           throw new Error("No STU devices found");
         }
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_usbDevices = message;
         return WacomGSS.STU.isSupportedUsbDevice(m_usbDevices[0].idVendor, m_usbDevices[0].idProduct);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         intf = new WacomGSS.STU.UsbInterface();
         return intf.Constructor();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return intf.connect(m_usbDevices[0], true);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
-        console.log(0 == message.value ? "connected!" : "not connected");
+        // console.log"received: " + JSON.stringify(message));
+        // console.log0 == message.value ? "connected!" : "not connected");
         if (0 == message.value) {
           m_encH = new WacomGSS.STU.EncryptionHandler(new encryptionHandler());
           return m_encH.Constructor();
         }
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_encH2Impl = new encryptionHandler2();
         m_encH2 = new WacomGSS.STU.EncryptionHandler2(m_encH2Impl);
         return m_encH2.Constructor();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         tablet = new WacomGSS.STU.Tablet();
         return tablet.Constructor(intf, m_encH, m_encH2);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         intf = null;
         return tablet.getInkThreshold();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_inkThreshold = message;
         return tablet.getCapability();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_capability = message;
         createModalWindow(m_capability.screenWidth, m_capability.screenHeight);
         return tablet.getInformation();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.getInkThreshold();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.getProductId();
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return WacomGSS.STU.ProtocolHelper.simulateEncodingFlag(message, m_capability.encodingFlag);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         var encodingFlag = message;
         if ((encodingFlag & p.EncodingFlag.EncodingFlag_24bit) != 0) {
           return tablet.supportsWrite()
@@ -282,25 +282,25 @@
         }
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.isSupported(p.ReportId.ReportId_EncryptionStatus); // v2 encryption
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_usingEncryption = message;
         // if the encryption script is missing turn off encryption regardless
         if (typeof window.sjcl == 'undefined') {
-          console.log("sjcl not found - encryption disabled");
+          // console.log"sjcl not found - encryption disabled");
           m_usingEncryption = false;
         }
         return tablet.getDHprime();
       })
       .then(function (dhPrime) {
-        console.log("received: " + JSON.stringify(dhPrime));
+        // console.log"received: " + JSON.stringify(dhPrime));
         return WacomGSS.STU.ProtocolHelper.supportsEncryption_DHprime(dhPrime); // v1 encryption
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         m_usingEncryption = (message ? true : m_usingEncryption);
         return tablet.setClearScreen();
       })
@@ -319,11 +319,11 @@
         return message;
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.isSupported(p.ReportId.ReportId_PenDataOptionMode);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         if (message) {
           return tablet.getProductId()
             .then(function (message) {
@@ -337,7 +337,7 @@
                   penDataOptionMode = p.PenDataOptionMode.PenDataOptionMode_TimeCountSequence;
                   break;
                 default:
-                  console.log("Unknown tablet supporting PenDataOptionMode, setting to None.");
+                  // console.log"Unknown tablet supporting PenDataOptionMode, setting to None.");
               };
               return tablet.setPenDataOptionMode(penDataOptionMode);
             });
@@ -348,7 +348,7 @@
         }
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         addButtons();
         var canvasImage = canvas.toDataURL("image/jpeg");
         return WacomGSS.STU.ProtocolHelper.resizeAndFlatten
@@ -369,7 +369,7 @@
       })
       .then(function (message) {
         m_imgData = message;
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.writeImage(m_encodingMode, message);
       })
       .then(function (message) {
@@ -379,24 +379,24 @@
         return message;
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         return tablet.setInkingMode(p.InkingMode.InkingMode_On);
       })
       .then(function (message) {
-        console.log("received: " + JSON.stringify(message));
+        // console.log"received: " + JSON.stringify(message));
         var reportHandler = new WacomGSS.STU.ProtocolHelper.ReportHandler();
         lastPoint = { "x": 0, "y": 0 };
         isDown = false;
         ctx.lineWidth = 1;
 
         var penData = function (report) {
-          //console.log("report: " + JSON.stringify(report));
+          //// console.log"report: " + JSON.stringify(report));
           m_penData.push(report);
           processButtons(report, canvas);
           processPoint(report, canvas, ctx);
         }
         var penDataEncryptedOption = function (report) {
-          //console.log("reportOp: " + JSON.stringify(report));
+          //// console.log"reportOp: " + JSON.stringify(report));
           m_penData.push(report.penData[0], report.penData[1]);
           processButtons(report.penData[0], canvas);
           processPoint(report.penData[0], canvas, ctx);
@@ -405,11 +405,11 @@
         }
 
         var log = function (report) {
-          //console.log("report: " + JSON.stringify(report));
+          //// console.log"report: " + JSON.stringify(report));
         }
 
         var decrypted = function (report) {
-          //console.log("decrypted: " + JSON.stringify(report));
+          //// console.log"decrypted: " + JSON.stringify(report));
         }
         m_penData = new Array();
         reportHandler.onReportPenData = penData;
@@ -424,7 +424,7 @@
         return reportHandler.startReporting(tablet, true);
       })
       .fail( function(ex) {
-       // console.log(ex);
+       // // console.logex);
 
         if (ex instanceof DCANotReady) {
           // Device Control App not detected 
@@ -541,7 +541,7 @@
 
     function btnClear_Click() {
       // You probably want to add additional processing here.
-      console.log("clear!");
+      // console.log"clear!");
       clearScreen();
     }
 

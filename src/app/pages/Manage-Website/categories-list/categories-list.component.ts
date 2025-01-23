@@ -28,7 +28,7 @@ export class CategoriesListComponent implements OnInit {
   getCategories(){
     this.apiService.getRequest('category/cbj/').subscribe((result:any)=>{
       if(!result.length)this.toastr.error("Data Not Found")
-      // console.log(result);
+      // // console.logresult);
       this.categories= result;
       this.totaljobs=result.length
     },error => {

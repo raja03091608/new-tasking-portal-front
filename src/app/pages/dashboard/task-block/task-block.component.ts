@@ -80,13 +80,13 @@ status = this.taskForm.value.status;
 
   populate(data) {
     this.taskForm.get('sdForm').patchValue(data);
-	//console.log('sdform',this.taskForm.get('sdForm').patchValue(data));
+	//// console.log'sdform',this.taskForm.get('sdForm').patchValue(data));
 	this.taskForm.get('weseeForm').patchValue(data);
 	this.taskForm.get('deeForm').patchValue(data);
 	this.taskForm.get('acomForm').patchValue(data);
 	this.taskForm.get('comForm').patchValue(data);
-	//console.log('data',data);
-	//console.log('data',data.file);
+	//// console.log'data',data);
+	//// console.log'data',data.file);
 	if (data ? data.file : "") {
 		var img_link = data.file;
 		//var trim_img = img_link.substring(1)
@@ -114,7 +114,7 @@ status = this.taskForm.value.status;
 	this.getTasking();
 	//this.getAccess();
 
-    //console.log(this.modelData.data);
+    //// console.logthis.modelData.data);
 
     // if(this.modelData.data == 'view'){
     //   this.taskForm.disable();
@@ -130,7 +130,7 @@ status = this.taskForm.value.status;
     // this.logger.info(country);
     this.populate(country);
     this.list=country;
-	//console.log('list',this.list.recommendation_of_acom_its);
+	//// console.log'list',this.list.recommendation_of_acom_its);
 
 
 
