@@ -9,7 +9,7 @@ export const environment = {
   appVersion: 'v8.1.3',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  //apiUrl: 'api',
+  //apiUrl: 'api',\
   BaseUrl: '',
   API_URL : "https://tasking-api.ilizien-projects-cdf.in/",
   MEDIA_URL : "https://tasking-api.ilizien-projects-cdf.in/ ",

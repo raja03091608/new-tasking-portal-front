@@ -128,7 +128,10 @@ export class LoginComponent implements OnInit {
 	                      }
 	                    } else if(res2.authentication.twofactor){
 	                      this.router.navigateByUrl('/authenticate/twofactor');
-	                    } else {
+	                    }else if(res2.isTicket) {
+	                      this.router.navigateByUrl('/wish/wish-dashboard');
+	                    }
+						else {
 	                      this.router.navigateByUrl('/dashboard/dashboard1');
 	                    }
 	                  });
