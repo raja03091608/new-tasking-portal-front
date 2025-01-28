@@ -32,13 +32,8 @@
                     (editEvent)="editOption($event)" 
 					[isEditable]="true"
 
-                    (deleteEvent)=" onDelete($event)" 
+                    (deleteEvent)=" onDelete($event.id)" 
                     [isDeletable]="true"
-                    
-                   
-                    
-                      
-                     
                     >
                  </app-grid-table>
               </ng-container> 

@@ -154,7 +154,13 @@ export class ApiService {
       });
     });
   }
+  getAccessJson(){
+    let data = localStorage.getItem('token-detail');
+    let access = this.decryptData(data);
+    let modules = JSON.parse(access.permissions);
 
+    return modules;
+  }
 getPageAction()
   {
     let data = localStorage.getItem('token-detail');
@@ -163,7 +169,6 @@ getPageAction()
       let access = this.decryptData(data);
       let modules = JSON.parse(access.permissions);
 
-      // // console.log'modules',modules)
 
       let components = modules.map(value => value.components);
       let mergedComponents = [].concat.apply([], components);

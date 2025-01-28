@@ -135,19 +135,20 @@
 							<ng-container *ngIf="minitingList && minitingList?.length > 0">
 								<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
 								  <div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments"></div>
-								  <div class="alert-footer">
+								  <div >
 									<span class="float-end">
-									  <b>Rank:</b>&nbsp;
-									  <i style="color: black; font-weight: 600;">{{data?.created_by?.rankCode}}</i>
+									 <i class="font-normal"> Electronically Signed by:</i>
 									</span>
 									<br>
 									<span class="float-end">
-									  <b>Created By:</b>&nbsp; {{data?.created_by?.first_name}} {{data.created_by?.last_name}}
+										{{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{ data?.created_by?.last_name }} 
 									</span>
 									<br>
-									<span class="float-end">{{data?.created_on ? (data.created_on | date: 'dd-MM-yyyy hh:mm') : 'N/A'}}</span>
-									<br />
+									<span class="float-end">
+									  {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ? (data.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+									</span>
 								  </div>
+								  
 								</div>
 							  </ng-container>
 							  
@@ -552,27 +553,20 @@
 														*ngIf="taskForm.get('weseeForm.comments_of_tasking_group')?.errors?.['required'] && showError">Enter
 														Comments</mat-error>
 												</ng-container>
-												<div class="alert-footer "
-												*ngIf="signeture(countryList1, 'TS_recommender')">
-
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataTs?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{
-														signatureDataTs?.created_by?.first_name }} {{
-														signatureDataTs?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataTs?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
+												<div *ngIf="signeture(countryList1, 'TS_recommender')" class="alert-footer">
+													<span class="float-end">
+													 <i class="font-normal"> Electronically Signed by:</i>
+													</span>
+													<br>
+													<span class="float-end">
+														{{ signatureDataTs?.created_by?.rankCode }} {{ signatureDataTs?.created_by?.first_name }} {{ signatureDataTs?.created_by?.last_name }} 
+													</span>
+													<br>
+													<span class="float-end">
+													  {{signatureDataTs?.created_by?.department?.name}} ,&nbsp;{{ signatureDataTs?.created_on ? (signatureDataTs.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+													</span>
+												  </div>
+												
 											<div class="card-footer mb-5 ">
 												<div class="col-md-12" *ngIf="!disableWesee2()">
 													<button type="button" class="btn btn-success"

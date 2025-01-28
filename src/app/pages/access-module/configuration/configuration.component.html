@@ -156,7 +156,7 @@
 				  
 				  (viewEvent)="onView($event)" 
                     [isView]="true"
-                    (deleteEvent)=" onDelete($event)" 
+                    (deleteEvent)=" onDelete($event.id)" 
                     [isDeletable]="true"
                     (editEvent)="editOption($event)" 
 					[isEditable]="true"

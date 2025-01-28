@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 
 <div class="row g-5 g-xl-8 justify-content-center">
-  <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'|| api.userid.role_center[0].user_role.code=='Recommender' || token_detail.process_id==3">
+  <ng-container *ngIf="(api?.userid?.role_center[0]?.user_role?.code=='Initiator'|| api?.userid?.role_center[0]?.user_role?.code=='Recommender' || token_detail?.process_id==3) && permission.santC">
     <div class="col-md-3 card-container-c">
       <!--begin::Statistics Widget 5-->
       <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">
@@ -48,7 +48,7 @@
   </ng-container>
 
 
-  <div class="col-md-3 card-container-c">
+  <div *ngIf="permission.tatC" class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/view-tasking-status"
       class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-h card-bg-2" >
       <div class="logo-content ">
@@ -64,7 +64,7 @@
       </div>
     </a>
   </div>
-  <div class="col-md-3 card-container-c">
+  <div  *ngIf="permission.twaC" class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/task-list" class="card-hover card  card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
       >
       <div class="logo-content ">
@@ -81,7 +81,7 @@
     </a>
   </div>
 
-  <div class="col-md-3 card-container-c">
+  <div *ngIf="permission.atC" class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/archive-task" class="card-hover card card-h  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
       >
       <div class="logo-content ">
@@ -105,7 +105,7 @@
  
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
 
-  <div class="col-xl-12 mb-xl-12 mt-5">
+  <div *ngIf="permission.gwtcG" class="col-xl-12 mb-xl-12 mt-5">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
       <div class="card-header">
         <h3 class="card-title align-items-start flex-column pt-5">
@@ -128,7 +128,7 @@
     </div>
   </div>
   
-  <div class="col-md-6 mt-0">
+  <div *ngIf="permission.tsdG" class="col-md-6 mt-0">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
       <div class="card-header mb-5">
         <h3 class="card-title align-items-start flex-column pt-5">
@@ -149,7 +149,7 @@
 
 
 
-  <div class="col-md-6 mt-0" style="margin-top: 30px;">
+  <div *ngIf="permission.ywtcG" class="col-md-6 mt-0" style="margin-top: 30px;">
     <div class="card card-flush h-xl-100 progress-chart mapbg">
       <div class="card-header">
         <h3 class="card-title align-items-start flex-column pt-5">
@@ -427,7 +427,7 @@
 
 
 
-<div class="col-md-6 mt-0">
+<div *ngIf="permission.twedBYG" class="col-md-6 mt-0">
   <div class="card card-flush h-xl-100 progress-chart mapbg">
     <div class="card-header">
       <h3 class="card-title align-items-start flex-column pt-5">
@@ -444,7 +444,7 @@
     </div>
   </div>
 </div>
-<div class="col-md-6 mt-0">
+<div *ngIf="permission.otsBYG" class="col-md-6 mt-0">
   <div class="card card-flush h-xl-100 progress-chart mapbg">
     <div class="card-header mb-5">
       <h3 class="card-title align-items-start flex-column pt-5">
@@ -956,7 +956,7 @@
 
 
 
-<div class="row g-5 map-card g-xl-8">
+<div *ngIf="permission.mtP" class="row g-5 map-card g-xl-8">
   <div class="col-md-12">
     <div class="card p-0" style="margin-bottom: 60px;">
       <div class="card-header mb-5 d-flex justify-content-between align-items-center">

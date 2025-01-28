@@ -351,6 +351,17 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   public permission = {
     add: false,
     view: false,
+    gwtcG: false,
+    tsdG: false,
+    ywtcG: false,
+    twedBYG: false,
+    otsBYG: false,
+    mtP: false,
+    tatC: false,
+    twaC: false,
+    atC: false,
+    santC: false
+
   };
   @ViewChild('template') template: ElementRef;
   @ViewChild('template1') template1: ElementRef;
@@ -1464,7 +1475,9 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   tasking_ID: any;
   getAccess() {
     this.moduleAccess = this.api.getPageAction();
+
     if (this.moduleAccess) {
+
       let addPermission = (this.moduleAccess).filter(function (access) { if (access.code == 'ADD') return access.status; }).map(function (obj) { return obj.status; });
       let viewPermission = (this.moduleAccess).filter(function (access) { if (access.code == 'VIW') { return access.status; } }).map(function (obj) { return obj.status; });;
       this.permission.add = addPermission.length > 0 ? addPermission[0] : false;
@@ -1480,7 +1493,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    this.getJSON()
     this.getStatus();
     this.getyear();
     this.getoverd();
@@ -1503,6 +1516,52 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.getTaskingGroups();
     this.tasklist();
     this.getChart();
+    
+
+  }
+
+  getJSON() {
+    let acceaa = this.api.getAccessJson();
+    if (acceaa) {
+      acceaa.find((x: any) => x.url === 'dashboard/dashboard1').action.map((y: any) => {
+        if (y.code === 'ADD') {
+          this.permission.add = y.status;
+        }
+        if (y.code === 'VIW') {
+          this.permission.view = y.status;
+        }
+        if (y.code === 'GWTC') {
+          this.permission.gwtcG = y.status;
+        }
+        if (y.code === 'OTS') {
+          this.permission.otsBYG = y.status;
+        }
+        if (y.code === 'MTS') {
+          this.permission.mtP = y.status;
+        }
+        if (y.code === 'TWAT') {
+          this.permission.twaC = y.status;
+        }
+        if (y.code === 'NEW Task') {
+          this.permission.santC = y.status;
+        }
+        if (y.code === 'Archive Task') {
+          this.permission.atC = y.status;
+        }
+        if (y.code === 'TSD') {
+          this.permission.tsdG = y.status;
+        }
+        if (y.code === 'YWTC') {
+          this.permission.ywtcG = y.status;
+        }
+        if (y.code === 'TED') {
+          this.permission.twedBYG = y.status;
+        }
+        if (y.code === 'TAT') {
+          this.permission.tatC = y.status;
+        }
+      });
+    }
   }
   showDialog() {
     this.getyearData();
