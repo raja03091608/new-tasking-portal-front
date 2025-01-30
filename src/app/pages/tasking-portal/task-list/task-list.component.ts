@@ -2062,7 +2062,7 @@ export class TaskListComponent implements OnInit {
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
-    // // console.log'Edit triggered for row:', rowData);
+    
   }
   handleDelete(rowData: any) {
     this.onDelete(rowData.id)
@@ -2072,7 +2072,7 @@ export class TaskListComponent implements OnInit {
 
   handleView(rowData: any) {
     this.onView(rowData)
-    // // console.log'View triggered for row:', rowData);
+    console.log('Edit triggered for row:', rowData);
   }
 
 

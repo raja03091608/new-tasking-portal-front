@@ -33,6 +33,16 @@ export class WishDashboardComponent implements OnInit {
 
 
 	  ];
+    gridColumns = [
+      { field: 'ticket', header: 'Ticket', filter: true, filterMatchMode: 'contains' },
+      { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
+      { field: 'priority', header: 'Priority', filter: true, filterMatchMode: 'contains' },
+      { field: 'assigned_to', header: 'Assigned To', filter: true, filterMatchMode: 'contains' },
+      { field: 'submitter', header: 'Submitter', filter: true, filterMatchMode: 'contains' },
+      { field: 'created', header: 'Created', filter: true, filterMatchMode: 'contains' },
+      { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
+
+    ]
 	dataSource: MatTableDataSource<any>;
 	dataSourcelist: MatTableDataSource<any>;
 	@ViewChild(MatPaginator) pagination: MatPaginator;
@@ -49,6 +59,18 @@ export class WishDashboardComponent implements OnInit {
 	this.getcloseddata();
   this.url=environment.WISH_URL;
   }
+
+  
+
+
+
+
+
+
+
+
+
+
   getopendata() {
     this.http.get(environment.WISH_URL + "ticket/view?status=1")
       .subscribe((res:any) => {

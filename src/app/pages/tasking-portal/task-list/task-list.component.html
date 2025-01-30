@@ -346,6 +346,19 @@
 													</div>
 												</div>
 											</div>
+											<div class="mb-3" *ngIf="signeture(countryList1,'SD_initiater' )" >
+												<span class="float-end">
+												 <i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDataIni?.created_by?.rankCode }} {{ signatureDataIni?.created_by?.first_name }} {{ signatureDataIni?.created_by?.last_name }} 
+												</span>
+												<br>
+												<span class="float-end">
+												  {{signatureDataIni?.created_by?.department?.name}} ,&nbsp;{{ signatureDataIni?.created_on ? (signatureDataIni.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+												</span>
+											  </div>
 											<button type="submit"
 												*ngIf="taskListRoot?.level== null || taskListRoot?.level === 1 && (api.userid.role_center[0].user_role.code=='Initiator' || api.userid.role_center[0].user_role.code=='Recommender')"
 												class="btn btn-primary me-2">Initiate</button>
@@ -374,37 +387,21 @@
 													*ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter
 													Comments</mat-error>
 											</div>
-											<!-- <div class="alert-footer" *ngIf="list && list.APSO_recommender === 1" >
-												<span class="float-end"> <b>Rank:</b>&nbsp;<i
-														style="color: black; font-weight: 600;">{{list1?.created_by.rankCode}}</i>
+											
+											
+											  <div *ngIf="signeture(countryList1,'APSO_recommender' )" >
+												<span class="float-end">
+												 <i class="font-normal"> Electronically Signed by:</i>
 												</span>
 												<br>
-												<span class="float-end"><b>Created By:</b>&nbsp; {{list1?.created_by.first_name}}
-													{{list?.created_by.last_name}}</span>
+												<span class="float-end">
+													{{ signatureDataApso?.created_by?.rankCode }} {{ signatureDataApso?.created_by?.first_name }} {{ signatureDataApso?.created_by?.last_name }} 
+												</span>
 												<br>
-												<span class="float-end">{{list1.created_on | date:'dd-MM-yyyy hh:mm '}}</span>
-												<br />
-		
-											</div> -->
-											<table *ngIf="list && list.SD_initiater==1">
-
-												<tr>
-													<th width="20%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-
-												<tr>
-
-													<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-													<td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}
-													</td>
-
-													<td>{{list && list.created_by.first_name}}</td>
-												</tr>
-												<!-- </ng-template> -->
-											</table>
+												<span class="float-end">
+												  {{signatureDataApso?.created_by?.department?.name}} ,&nbsp;{{ signatureDataApso?.created_on ? (signatureDataApso.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+												</span>
+											  </div>
 											<div class="card-footer mt-3 ">
 
 												<button type="button" class="btn btn-success" *ngIf="!disableApso()"
@@ -455,7 +452,20 @@
 																	</mat-select>
 																</ng-container>
 															</mat-form-field>
-
+															
+															  <div *ngIf="signeture(countryList1,'WESEE_recommender' )" >
+																<span class="float-end">
+																 <i class="font-normal"> Electronically Signed by:</i>
+																</span>
+																<br>
+																<span class="float-end">
+																	{{ signatureDatawesee?.created_by?.rankCode }} {{ signatureDatawesee?.created_by?.first_name }} {{ signatureDatawesee?.created_by?.last_name }} 
+																</span>
+																<br>
+																<span class="float-end">
+																  {{signatureDatawesee?.created_by?.department?.name}} ,&nbsp;{{ signatureDatawesee?.created_on ? (signatureDatawesee.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+																</span>
+															  </div>
 															<!-- <button type="submit" class="btn btn-primary" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && !disableWesee()">Submit</button> -->
 															<div class="col-md-4" *ngIf="!disableWesee()">
 																<button type="submit" class="btn btn-primary"
@@ -538,6 +548,7 @@
 															</ng-container>
 														</div>
 													</div>
+													
 
 												</div>
 											</div>
@@ -583,10 +594,10 @@
 													<mat-error
 														*ngIf="taskForm.get('weseeForm.comments_of_wesee')?.errors?.['required'] && showError">Enter
 														Comments</mat-error>
-												</ng-container>
-											</div>
-											<div *ngIf="(list && list.comments_of_wesee=='' && !disableWesee2())">
-												<ng-container *ngIf="!disableWesee2()">
+													</ng-container>
+												</div>
+												<div *ngIf="(list && list.comments_of_wesee=='' && !disableWesee2())">
+													<ng-container *ngIf="!disableWesee2()">
 													<div class="row" id="addmore" *ngIf="div1">
 
 														<div class="col-md-6">
@@ -678,43 +689,19 @@
 												</ng-container>
 											</div>
 											
-
-
-
-											<table
-												*ngIf="list && list.APSO_recommender==1||list && list.APSO_recommender==2">
-
-												<tr>
-													<th width="20%">Date</th>
-													<th width="20%">Status</th>
-													<th width="20%">Comments</th>
-													<th width="20%">Created By</th>
-													<th width="20%">Tasking group Comments</th>
-												</tr>
-
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="(list1.APSO_recommender==1||list1.APSO_recommender==2)">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-														<td>{{list1&& list1.comments}}</td>
-														<td>{{list1 && list1.created_by.first_name}}</td>
-														<td>-</td>
-													</ng-container>
-													<ng-container *ngIf="list1.WESEE_recommender==4">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-														<td>-</td>
-														<td>{{list1 && list1.created_by.first_name}}</td>
-														<td>{{list1&& list1.comments}}</td>
-													</ng-container>
-												</tr>
-
-
-												<!-- </ng-template> -->
-											</table>
+													<div *ngIf="signeture(countryList1,'WESEE_recommender' )" >
+														<span class="float-end">
+														 <i class="font-normal"> Electronically Signed by:</i>
+														</span>
+														<br>
+														<span class="float-end">
+															{{ signatureDatawesee?.created_by?.rankCode }} {{ signatureDatawesee?.created_by?.first_name }} {{ signatureDatawesee?.created_by?.last_name }} 
+														</span>
+														<br>
+														<span class="float-end">
+														  {{signatureDatawesee?.created_by?.department?.name}} ,&nbsp;{{ signatureDatawesee?.created_on ? (signatureDatawesee.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+														</span>
+													  </div>
 
 
 											<div class="card-footer  mt-2"
@@ -769,25 +756,19 @@
 												</div>
 											</ng-container>
 
-											<table
-												*ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'DEE_recommender' )" >
+												<span class="float-end">
+												 <i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDataDee?.created_by?.rankCode }} {{ signatureDataDee?.created_by?.first_name }} {{ signatureDataDee?.created_by?.last_name }} 
+												</span>
+												<br>
+												<span class="float-end">
+												  {{signatureDataDee?.created_by?.department?.name}} ,&nbsp;{{ signatureDataDee?.created_on ? (signatureDataDee.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+												</span>
+									</div>
 											<ng-container
 												*ngIf=" (list && list.WESEE_recommender==1) && (api.userid.role_center[0].user_role.code=='DEE') && (list && list.comments_of_dee=='' || list && list.comments_of_dee==null)">
 												<div class="row" id="addmore" *ngIf="div3">
@@ -892,6 +873,7 @@
 
 												</div>
 											</div>
+											
 										</div>
 									</div>
 									<div formGroupName="acomForm">
@@ -926,25 +908,19 @@
 												<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
 												<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
 											</div>
-											<table
-												*ngIf="list && list.DEE_recommender==1 && list && list.DEE_recommender==2 ">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'ACOM_recommender' )" >
+														<span class="float-end">
+														 <i class="font-normal"> Electronically Signed by:</i>
+														</span>
+														<br>
+														<span class="float-end">
+															{{ signatureDataAcom?.created_by?.rankCode }} {{ signatureDataAcom?.created_by?.first_name }} {{ signatureDataAcom?.created_by?.last_name }} 
+														</span>
+														<br>
+														<span class="float-end">
+														  {{signatureDataAcom?.created_by?.department?.name}} ,&nbsp;{{ signatureDataAcom?.created_on ? (signatureDataAcom.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+														</span>
+													  </div>
 
 											<div class="card-footer  mb-4">
 												<div class="col-md-12">
@@ -983,25 +959,19 @@
 													*ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
 											</div>
-											<table
-												*ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'COM_approver' )" >
+														<span class="float-end">
+														 <i class="font-normal"> Electronically Signed by:</i>
+														</span>
+														<br>
+														<span class="float-end">
+															{{ signatureDatacom?.created_by?.rankCode }} {{ signatureDatacom?.created_by?.first_name }} {{ signatureDatacom?.created_by?.last_name }} 
+														</span>
+														<br>
+														<span class="float-end">
+														  {{signatureDatacom?.created_by?.department?.name}} ,&nbsp;{{ signatureDatacom?.created_on ? (signatureDatacom.created_on | date: 'dd MMM yy hh:mm:ss') : 'N/A' }}
+														</span>
+													  </div>
 
 
 											<div class="card-footer  mt-4">
@@ -1095,7 +1065,7 @@
 			  <!-- User Type Dropdown (Visible only if Main User is selected) -->
 			  <div class="form-group mt-4 col-4" *ngIf="isMainUser">
 				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
+				  <mat-label>Directorate/User Role</mat-label>
 				  <mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
 					
 					<mat-option *ngFor="let option of userRoleListFrom" [value]="option.id">{{option.name}}</mat-option>
@@ -1104,7 +1074,7 @@
 			  </div>
 			  <div class="form-group mt-4 col-4" *ngIf="!isMainUser">
 				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
+				  <mat-label>Directorate/User Role</mat-label>
 				  <mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
 					
 					<mat-option *ngFor="let option of directList" [value]="option.id">{{option.name}}</mat-option>
@@ -1136,7 +1106,7 @@
 			  </div>
 			  <div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
 				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
+				  <mat-label>Directorate/User Role</mat-label>
 				  <mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
 					<mat-option [value]="null">Select User Type</mat-option>
 					<mat-option *ngFor="let option of userRoleListTo" [value]="option.id">{{option.name}}</mat-option>
@@ -1147,9 +1117,9 @@
 			  <!-- Conditional Directorate Selection -->
 			  <div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
 				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
+				  <mat-label>Directorate/User Role</mat-label>
 				  <mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
-					<mat-option [value]="null">Select Directorate</mat-option>
+					<mat-option [value]="null">Select Directorate/User Role</mat-option>
 					<mat-option *ngFor="let option of directList" [value]="option.id">{{option.name}}</mat-option>
 				  </mat-select>
 				</mat-form-field>

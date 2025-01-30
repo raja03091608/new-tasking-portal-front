@@ -21,10 +21,10 @@
 					</div>
 
 					<div class="card mt-5">
-						<ng-container *ngIf="dataSourcelist.data.length != 0">
+						<ng-container *ngIf="countryList.length != 0">
 
 							<app-grid-table [gridColumns]="gridColumns"
-							 [gridData]="dataSourcelist.data"
+							 	[gridData]="countryList"
 								[ispaniNater]="true"
 								 [isAction]="true" 
 								 (filterEvent)="handleFilter($event)"
@@ -34,7 +34,7 @@
 								(exportEvent)="opentask($event)" 
 								(downloadEvent)="UploadReceipt($event)"
 								(completedEvent)="completedtask($event)"
-								(uploadEvent)="isfileUpload=true"
+								(uploadEvent)="fileUpload($event)"
 								[isupload]="true"
 								 [isExport]="true"
 								  [isStatus]="true"
@@ -938,7 +938,7 @@
 
 
 </p-dialog>
-<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '90vw' }">
+<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '40vw' }">
 <div class="card flex justify-content-center">
 <p-fileUpload class="mt-4" name="file[]" customUpload="true" (uploadHandler)="onFileUpload($event)" [multiple]="false" maxFileSize="1000000">
 </p-fileUpload>

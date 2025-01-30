@@ -173,7 +173,7 @@
 				  <mat-form-field appearance="outline">
 					<mat-select #select formControlName="process" (ngModelChange)="processChange($event)"
 					  placeholder="Select Process">
-					  <mat-option [value]="">Select Process</mat-option>
+					  
 					  <mat-option *ngFor="let user of processList" [value]="user.id">{{user.name}}</mat-option>
 					</mat-select>
 					<mat-error *ngIf="Error('process','required')">Please select unit</mat-error>
@@ -199,8 +199,8 @@
 				</div>
 			  </div>
 			  <!-- For Wish To Assign to the Tasking Group  -->
-			  <div class="col-md-4">
-				<div class="matt-group matselect" *ngIf="Task">
+			  <div *ngIf="taskingG" class="col-md-4">
+				<div class="matt-group matselect" >
 				  <mat-label>Tasking Group <b class="star">*</b></mat-label>
 				  <mat-form-field appearance="outline">
 					<mat-select #select formControlName="tasking" placeholder="Select Tasking">

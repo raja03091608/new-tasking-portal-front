@@ -248,6 +248,7 @@ export class UsersComponent implements OnInit {
 		});
 	}
 	UserGroup: any;
+	taskingG=false
 	processChange(process_id) {
 		// console.log"Process   " + process_id )
 		if (process_id) {
@@ -258,6 +259,13 @@ export class UsersComponent implements OnInit {
 			else {
 				this.Task = true;
 			}
+
+		}
+		if (process_id == 3) {
+			this.taskingG = true;
+		}else{
+			this.taskingG = false;
+			this.editForm.get('tasking').setValidators(null);
 
 		}
 	}
@@ -318,9 +326,6 @@ export class UsersComponent implements OnInit {
 			.getAPI(environment.API_URL + "access/access_user_roles" + searchString)
 			.subscribe((res) => {
 				this.UserList = res.data;
-
-
-
 			});
 
 	}
@@ -476,7 +481,7 @@ export class UsersComponent implements OnInit {
 			formData.append('email', this.editForm.value.email);
 			formData.append('process', this.editForm.value.process);
 			formData.append('department', this.editForm.value.department);
-			formData.append('tasking', this.editForm.value.tasking);
+			formData.append('tasking', parseInt(this.editForm.value.process) === 3? this.editForm.value.tasking : '' );
 			formData.append('status', this.editForm.value.status);
 			formData.append('user_role_id', this.editForm.value.user_role_id);
 			formData.append('id', this.editForm.value.id );
@@ -497,7 +502,7 @@ export class UsersComponent implements OnInit {
 			formData.append('rankCode', this.editForm.value.rank_code);
 			formData.append('process', this.editForm.value.process);
 			formData.append('department', this.editForm.value.department);
-			formData.append('tasking', this.editForm.value.tasking);
+			formData.append('tasking', parseInt(this.editForm.value.process) === 3? this.editForm.value.tasking : '');
 			formData.append('status', this.editForm.value.status);
 			formData.append('user_role_id', this.editForm.value.user_role_id);
 			formData.append('id', this.editForm.value.id);

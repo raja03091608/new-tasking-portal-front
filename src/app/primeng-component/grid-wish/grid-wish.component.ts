@@ -15,14 +15,14 @@ import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
 
 @Component({
-  selector: 'app-grid-table',
-  templateUrl: './grid-table.component.html',
-  styleUrl: './grid-table.component.scss'
-})
-export class GridTableComponent implements OnInit {
+  selector: 'app-grid-wish',
 
-    @Input() isupload:boolean;
-    @Input() isPermanentDelete: boolean;
+  templateUrl: './grid-wish.component.html',
+  styleUrl: './grid-wish.component.scss'
+})
+export class GridWishComponent implements OnInit {
+
+  
     @Input() isRestore: boolean;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
@@ -30,28 +30,14 @@ export class GridTableComponent implements OnInit {
   @Input() isStatusAdd: boolean;
   @Input() isArchiveTask: boolean;
   @Input() isAction: boolean;
-  @Input() isFormEditable: boolean;
   @Input() isDeletable: boolean;
-  @Input() ispaniNater: boolean;
   @Input() isView: boolean;
-  @Input() isCheckBox: boolean;
-  @Input() isStatus: boolean;
-  @Input() isCompleted: boolean;
-  @Input() isExport: boolean;
-  @Input() isDownload: boolean;
   @Output() filterEvent = new EventEmitter<any>();
   @Output() paginationEvent = new EventEmitter<any>();
   @Output() editEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();
   @Output() viewEvent = new EventEmitter<any>();
-  @Output() exportEvent = new EventEmitter<any>();
-  @Output() downloadEvent = new EventEmitter<any>();
-  @Output() statusEvent = new EventEmitter<any>();
   @Output() statusEventAdd = new EventEmitter<any>();
-  @Output() completedEvent = new EventEmitter<any>();
-  @Output() restoreEvent = new EventEmitter<any>();
-  @Output() permanentDeleteEvent = new EventEmitter<any>();
-  @Output() uploadEvent = new EventEmitter<any>();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
@@ -63,7 +49,7 @@ export class GridTableComponent implements OnInit {
   filteredData: any[];  // New property to store filtered data
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
-    searchValue: string;
+  searchValue: string;
   
 
 
@@ -106,11 +92,7 @@ export class GridTableComponent implements OnInit {
       return this.resolveNestedField(item, field);
   }
 
-  clear(dataTable: any) {
-    dataTable.clear(); // Clears all filters applied to the table
-    this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
-    this.searchValue = ''; // Clear the search box value
-}
+
 
 
 
@@ -183,8 +165,7 @@ export class GridTableComponent implements OnInit {
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     
       this.filteredData = this.gridData;
-      // console.logthis.gridData);
-      // console.logthis.gridColumns);
+      
   }
 
   constructor(private filterService: FilterService, private api:ApiService) { }
@@ -196,9 +177,15 @@ export class GridTableComponent implements OnInit {
 
 
 
-  onCustomClear() {
-    this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
-    this.searchValue = ''; 
+  onCustomClear(field: string) {
+      // Find the column in the gridColumns array
+      const column = this.gridColumns.find(col => col.field === field);
+      if (column) {
+          // Reset the filter value for the column
+          column.filterValue = null;
+          // Apply filtering logic here
+          this.applyFilters();
+      }
   }
 
 
@@ -325,38 +312,12 @@ export class GridTableComponent implements OnInit {
   }
     
   
-  deleteTask(item: any) {
-    this.deleteEvent.emit(item);
-  }
-
-  restoreTask(item: any) {
-    this.restoreEvent.emit(item);
-  }
-  onRestore(rowData: any): void {
-    // Handle the restore action here
-    // console.log'Restoring:', rowData);
-  }
-  uploadData(rowData:any):boolean {
-    if(!rowData?.legacy_attachment && rowData?.legacy_data =='Yes' && this.token_detail.process_id==1 )
-        return true
-
-
-    return false
-  }
-  downloadData(rowData:any):boolean {
-    if(rowData?.legacy_attachment && rowData?.legacy_data =='Yes')
-        { return true} return false
-    
-
-  }
-  formatApprovedDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+  clear(table: Table) {
+    table.clear();
+    table.filterGlobal('', 'contains');
+    this.searchValue = ''
 }
+
 
 }
 

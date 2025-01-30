@@ -10,6 +10,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { DataTablesModule } from 'angular-datatables';
 import { MaterialModule } from '../../material/material.module';
 import { TicketsComponent } from './tickets/tickets.component';
+import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 
 
 
@@ -22,6 +23,7 @@ import { TicketsComponent } from './tickets/tickets.component';
   ],
   imports: [
     CommonModule,
+    PringeComponentModule,
     WishRoutingModule,
 	CommonModule,
     ReactiveFormsModule,

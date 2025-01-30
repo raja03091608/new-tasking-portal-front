@@ -632,7 +632,10 @@ onCustomClear(item){
      };
 
     }
-
+    fileUpload(event:any) {
+      this.id=event.id;
+      this.isfileUpload=true;
+    }
 
 
   taskingGroups: any;
@@ -694,7 +697,8 @@ onCustomClear(item){
 
   UploadReceipt(country) {
     this.id=country.id;
-    window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    window.open(country.legacy_attachment)
   }
 
   completedtask(country) {
@@ -828,6 +832,7 @@ onCustomClear(item){
 
   // tasking_id:any;
   getTasking() {
+    this.countryList=[]
     // if(this.token_detail.role_id==3 ){
       if(this.token_detail.process_id==3 ){
       this.api
@@ -1495,7 +1500,8 @@ onFileUpload(event) {
   this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(res=>{
     if (res.status === 1) {
       this.notification.success(res.message);
-
+      this.isfileUpload=false;
+      this.getTasking()
     }
     else {
       this.notification.success(res.message);
