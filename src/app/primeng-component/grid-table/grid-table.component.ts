@@ -200,6 +200,9 @@ export class GridTableComponent implements OnInit {
     this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
     this.searchValue = ''; 
   }
+  onSearchInput(val):string {
+    return val.trimStart(); // Remove leading spaces
+}
 
 
  

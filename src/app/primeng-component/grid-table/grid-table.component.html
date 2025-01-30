@@ -5,19 +5,19 @@
         (onPage)="paginationEvent.emit($event)">
         <!-- Dynamic Column Headers -->
         <ng-template pTemplate="caption">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-between">
                 <!-- Clear Button -->
-                <button class="btn btn-primary me-auto" (click)="clear(dataTable)">
-                    <i class="pi pi-filter-slash me-2"></i>Clear
+                <button class="btn btn-primary my-4 " (click)="clear(dataTable)">
+                    <i class="pi pi-filter-slash "></i>Clear
                 </button>
 
                 <!-- Search Input -->
-                <div class="input-group ms-auto" style="max-width: 300px;">
+                <div class="input-group ms-auto w-25 " >
                     <span class=" btn btn-primary">
                         <i class="pi pi-search"></i>
                     </span>
                     <input type="text" class="form-control" [(ngModel)]="searchValue"
-                        (input)="dataTable.filterGlobal(searchValue, 'contains')" placeholder="Search keyword" />
+                        (input)="dataTable.filterGlobal( onSearchInput(searchValue), 'contains')" placeholder="Search keyword" />
                 </div>
             </div>
         </ng-template>

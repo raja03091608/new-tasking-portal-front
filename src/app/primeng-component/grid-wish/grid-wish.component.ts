@@ -177,16 +177,13 @@ export class GridWishComponent implements OnInit {
 
 
 
-  onCustomClear(field: string) {
-      // Find the column in the gridColumns array
-      const column = this.gridColumns.find(col => col.field === field);
-      if (column) {
-          // Reset the filter value for the column
-          column.filterValue = null;
-          // Apply filtering logic here
-          this.applyFilters();
-      }
+  onCustomClear() {
+    this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
+    this.searchValue = ''; 
   }
+  onSearchInput(val):string {
+    return val.trimStart(); // Remove leading spaces
+}
 
 
  
