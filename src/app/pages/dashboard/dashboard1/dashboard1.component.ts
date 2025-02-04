@@ -2953,7 +2953,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
 
   getStatusTaskingNew() {
-    this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
+    this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard')
       .subscribe((res: any) => {
         this.statusTaskingNew = res.data;
         this.tabledata(this.statusTaskingNew);
@@ -2966,7 +2966,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   }
   approveTask = [] as any
   getNewTaskingStatus() {
-    this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard/')
+    this.api.getAPI(environment.API_URL + 'transaction/tasking-status?flag=dashboard')
       .subscribe((res: any) => {
         // // console.logres);
         if (res && res.data) {
@@ -3164,6 +3164,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       }
     };
   }
+
+  getFileNameFromUrl(url: string): string {
+    return url ? url.substring(url.lastIndexOf('/') + 1) : '';
+}
 
 }
 

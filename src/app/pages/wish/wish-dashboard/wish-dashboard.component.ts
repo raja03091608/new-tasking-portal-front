@@ -31,11 +31,11 @@ export class WishDashboardComponent implements OnInit {
     { field: 'id', header: 'Ticket No.', filter: true, filterMatchMode: 'contains' },
     { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
     { field: 'priority', header: 'Priority', filter: true, filterMatchMode: 'contains' },
-    // { field: 'status', header: 'status', filter: true, filterMatchMode: 'contains' },
+    { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_to.first_name', header: 'Assigned To', filter: true, filterMatchMode: 'contains' },
     { field: 'submitter_email', header: 'Submitter', filter: true, filterMatchMode: 'contains' },
     { field: 'resolution', header: 'Resolution', filter: true, filterMatchMode: 'contains' },
-    // { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
+    { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: ' Description', filter: true, filterMatchMode: 'contains' },
   ]
 

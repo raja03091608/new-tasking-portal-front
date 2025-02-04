@@ -120,6 +120,7 @@ export class TaskListComponent implements OnInit {
     this.allocateForm = new FormGroup({
       id: new FormControl(""),
       tasking_group: new FormControl(""),
+      tasking_user: new FormControl(""),
       tasking: new FormControl(""),
       created_by: new FormControl(""),
       created_role: new FormControl(this.token_detail.role_id),
@@ -320,9 +321,10 @@ export class TaskListComponent implements OnInit {
     this.taskForm.patchValue({ sdForm: { sponsoring_directorate: data.sponsoring_directorate, task_name: data.task_name, task_description: data.task_description } })
 
     this.allocateForm.patchValue({
-      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : ''
-    });
-    // // console.log'data.task_number_dee', data.task_number_dee);
+      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : '',
+      tasking_user:data?.assigned_tasking_group?.tasking_user
+     });
+    // console.log('data.task_number_dee', data);
 
     if (data.task_number_dee != null) {
       let split_task_number_dee = data.task_number_dee.split("/");
@@ -420,7 +422,7 @@ export class TaskListComponent implements OnInit {
 
 
         if (data.assigned_tasking_group[0] != null) {
-          this.allocateForm.patchValue({ tasking_group: data.assigned_tasking_group[0].tasking_group.id });
+          this.allocateForm.patchValue({ tasking_group: data.assigned_tasking_group[0].tasking_group.id ,tasking_user:data.assigned_tasking_group[0].tasking_group.id });
         }
       }
     }, 500);
@@ -542,12 +544,13 @@ export class TaskListComponent implements OnInit {
     return true;
   }
   disableWesee2(): boolean {
-    if (this.api.userid.process_id === 3) {
+    if (this.api.userid.process_id === 3 && this.pass=== 'Passed') {
       return false;
     }
     if (this.role === 4 && this.taskListRoot.comment_status == 4) {
       return false;
     }
+    
     return true;
   }
 
@@ -565,6 +568,7 @@ export class TaskListComponent implements OnInit {
   }
   role: any;
   releDetaile:any
+  pass:string;
   onEditRole(rowData) {
 
     this.taskForm.get('sdForm')?.disable();
@@ -578,7 +582,7 @@ export class TaskListComponent implements OnInit {
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
       this.releDetaile=res
       this.role = res.role;
-
+      this.pass=res.detail;
 
     })
 
@@ -822,6 +826,10 @@ export class TaskListComponent implements OnInit {
   rowId
 
   editOption(country) {
+    const taskingGroupId = country?.assigned_tasking_group?.tasking_group?.id;
+    if (typeof taskingGroupId !== 'undefined' && taskingGroupId !== null) {
+        this.getTaskingUser({ value: taskingGroupId });
+    }
     this.onEditRole(country);
     this.commentEditor.editable = true;
     // // console.logcountry, "==================>>>>>>>>>>>>")
@@ -929,6 +937,9 @@ export class TaskListComponent implements OnInit {
     openModal('#crud-countries');
 
   }
+  getFileNameFromUrl(url: string): string {
+    return url ? url.substring(url.lastIndexOf('/') + 1) : '';
+}
 
   onView(country) {
     // this.commentEditor.editable=false;
@@ -2089,6 +2100,15 @@ export class TaskListComponent implements OnInit {
     this.messageService.clear();
     this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Configure Route', detail: 'Please configure route before submitting your response' });
   }
+  usersList=[]
+  getTaskingUser(event){
+    console.log(event,"Console not work ing please chaeck ")
+    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event.value}`).subscribe(res => {
+        this.usersList=res.data
+    })
+  }
+  
 }
+
 
 
