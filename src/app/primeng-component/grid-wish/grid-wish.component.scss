@@ -18,36 +18,74 @@
     padding: 4px 8px;
     border-radius: 6px;
 }
-.status {
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    min-width: 100px;
+.status{
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 4px;
+    padding: 0.25rem 0.4rem;
+    border-radius: 6px;
+    font-family: "Inter var", sans-serif !important;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
+
+
 .status-open {
-    background-color: #007bff; /* Light Blue */
+    background-color: #FFECB3; /* Light Amber */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FFA000;
 }
 
 .status-in-progress {
-    background-color: #ffc107; /* Yellow */
+    background-color: #FFFDE7; /* Light Yellow */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FBC02D;
 }
 
 .status-resolved {
-    background-color: #28a745; /* Green */
+    background-color: #FFF9C4; /* Light Gold */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FDD835;
 }
 
 .status-closed {
-    background-color: #dc3545; /* Red */
+    background-color: #FFE0B2; /* Light Orange */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FB8C00;
 }
 
 .status-reopened {
-    background-color: #17a2b8; /* Blue */
+    background-color: #FFCCBC; /* Light Red */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #F4511E;
 }
 
 .status-neutral {
-    background-color: #6c757d; /* Gray */
+    background-color: #F3E5F5; /* Light Purple */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #8E24AA;
+}
+
+.status-dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #333;
+    font-size: 14px;
 }

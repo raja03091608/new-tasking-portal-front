@@ -105,67 +105,13 @@
  
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
 
-  <div *ngIf="permission.gwtcG" class="col-xl-12 mb-xl-12 mt-5">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header">
-        <h3 class="card-title align-items-start flex-column pt-5">
-          <span class="fw-bold mb-3">Group wise Task Completion</span>
-        </h3>
-        <!-- <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button> -->
-      </div>
-  
-      <div nonce="CSP_NONCE_PLACEHOLDER" id="chartGroup">
-        <apx-chart *ngIf="chartData.series.length" [series]="chartData.series" [chart]="chartOptionsGroup.chart"
-          [xaxis]="chartOptionsGroup.xaxis" [yaxis]="chartOptionsGroup.yaxis" [legend]="chartOptionsGroup.legend"
-          [plotOptions]="chartOptionsGroup.plotOptions" [colors]="chartOptionsGroup.colors"
-          [dataLabels]="chartOptionsGroup.dataLabels"></apx-chart>
-        <div *ngIf="!chartData.series.length" class="no-data-message">
-          Loading chart data or no data available...
-        </div>
-      </div>
-  
-  
-    </div>
-  </div>
-  
-  <div *ngIf="permission.tsdG" class="col-md-6 mt-0">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header mb-5">
-        <h3 class="card-title align-items-start flex-column pt-5">
-          <span class="fw-bold mb-3">Task Status Distribution</span>
-        </h3>
-        <!-- <p-button (onClick)="showDialog1()" label="View" class="show-button"></p-button> -->
-      </div>
-      <div nonce="CSP_NONCE_PLACEHOLDER" id="chart5">
-        <apx-chart [series]="chartOptions12.series" [chart]="chartOptions12.chart" [labels]="chartOptions12.labels"
-          [responsive]="chartOptions12.responsive" [legend]="chartOptions12.legend"
-          [dataLabels]="chartOptions12.dataLabels" [colors]="chartOptions12.colors" [title]="chartOptions12.title">
-        </apx-chart>
-      </div>
-    </div>
-  </div>
- 
- 
-
-
-
-  <div *ngIf="permission.ywtcG" class="col-md-6 mt-0" style="margin-top: 30px;">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-      <div class="card-header">
-        <h3 class="card-title align-items-start flex-column pt-5">
-          <span class="fw-bold mb-3">Year wise Task Completion</span>
-        </h3>
-        <!-- <p-button (onClick)="showDialog()" label="View" class="show-button"></p-button> -->
-
-      </div>
-      <div nonce="CSP_NONCE_PLACEHOLDER" id="chart4">
-        <apx-chart [series]="chartOptions11.series" [chart]="chartOptions11.chart" [xaxis]="chartOptions11.xaxis"
-          >
-        </apx-chart>
-      </div>
-    </div>
-  </div>
-
+  <app-chart 
+  [showGroupWiseChart]="permission.gwtcG"
+  [showYearlyReport]="permission.ywtcG"
+  [showTaskDistribution]="permission.tsdG"
+  [showExtendedDeadlines]="permission.twedBYG"
+  [showOverdueTasks]="permission.otsBYG">
+</app-chart>
 
   <p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
@@ -266,209 +212,8 @@
   </div>
 </p-dialog>
 
-  <!-- <div class="col-xl-12 mb-xl-12 mt-5">
-		<div class="card card-flush h-xl-100 progress-chart mapbg">
-			<div class="card-header">
-				<h3 class="card-title align-items-start flex-column pt-5">
-					<span class="fw-bold mb-3">Pending Task Summary By Groups</span>
-				</h3>
-        <p-button (onClick)="showDialog3()" label="View" class="show-button"></p-button>
-			</div>
-				<div id="chart7">
-					<apx-chart
-				[series]="chartOptions14.series"
-				[chart]="chartOptions14.chart"
-				[xaxis]="chartOptions14.xaxis"
-				[yaxis]="chartOptions14.yaxis"
-				[plotOptions]="chartOptions14.plotOptions"
-				[fill]="chartOptions14.fill"
-				[title]="chartOptions14.title">
-				</apx-chart>
-				</div>
-		</div>
-	</div>
-
-  <p-dialog 
-  header="Pending Tasks" 
-  [modal]="true"
-  [(visible)]="visible3" 
-  [style]="{ width: '50rem' }" 
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-  [maximizable]="true">
-  <div class="card">
-    <p-table [value]="Pendingdata" [tableStyle]="{ 'min-width': '50rem' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Tasking Group Name
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Task Count</th>
-          <i class="pi pi-filter" style="font-size: 1rem"></i>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{ task.tasking_group_name }}</td>
-          <td>{{ task.task_count }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-</p-dialog> -->
-
-  <!-- <div class="row">
-		<div class="col-md-6">
-		  <div class="matt-group matselect1" >
-			<mat-label>Task List <b class="star">*</b></mat-label>
-			<mat-form-field appearance="outline">
-			<mat-select #select  placeholder="Select Tasking" [(ngModel)]="taskName" (ngModelChange)="onTaskChange($event)">
-			  <mat-option *ngFor="let task of task_list" [value]="task"  >{{task.task_name}} ({{task.task_number_dee}})</mat-option>
-			</mat-select>
-			</mat-form-field>
-		  </div>
-		  </div>
-	  </div> -->
-
-  <!-- <div class="col-xl-12 mb-xl-12">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-        <div class="card-header">
-            <h3 class="card-title align-items-start flex-column pt-5">
-                <span class="fw-bold mb-3">DETAILS OF TASKS</span>
-            </h3>
-        </div>
-
-        <div class="card-body responsive" layout-xs="columns">
-            <ngb-accordion class="accordion2" [closeOthers]="true" activeIds="static-b3">
-              <ngb-panel id="static-b3" title="Details of Tasks">
-                <ng-template ngbPanelContent>
-                  <div class="card-body mt-n10">
-                    <div id="chartChartDetailModule" style="width: 100%; height: 450px"></div>
-                  </div>
-                </ng-template>
-              </ngb-panel>
-            </ngb-accordion>
-
-        </div>
-    </div>
-</div> -->
-
-  <!-- <div class="col-xl-12 mb-xl-12 mt-0">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-        <div class="card-header">
-            <h3 class="card-title align-items-start flex-column pt-5">
-                <span class="fw-bold mb-3">Percentage Completion of Tasks</span>
-            </h3>
-        </div>
-        <div class="card-body responsive" layout-xs="columns">
-            <ngb-accordion class="accordion2" [closeOthers]="true" activeIds="static-b3">
-              <ngb-panel id="static-b3" title="Percentage Completion of Tasks">
-                <ng-template ngbPanelContent>
-                  <div class="card-body mt-n10">
-                    <div id="chartTaskCompletionModule" style="width: 100%; height: 450px"></div>
-                  </div>
-                </ng-template>
-              </ngb-panel>
-            </ngb-accordion>
-
-        </div>
-    </div>
-</div> -->
 
 
-  <!-- <div class="col-xl-12 mb-xl-12 mt-0">
-    <div class="card card-flush h-xl-100 progress-chart mapbg">
-        <div class="card-header">
-            <h3 class="card-title align-items-start flex-column pt-5">
-                <span class="fw-bold mb-3">Milestone Tasks</span>
-            </h3>
-        </div>
-        <div class="card-body responsive" layout-xs="columns">
-            <div id="chart1" >
-              <apx-chart
-                [series]="chartOptions1.series"
-                [chart]="chartOptions1.chart"
-                [fill]="chartOptions1.fill"
-                [stroke]="chartOptions1.stroke"
-                [legend]="chartOptions1.legend"
-                [plotOptions]="chartOptions1.plotOptions"
-                [grid]="chartOptions1.grid"
-                [xaxis]="chartOptions1.xaxis"
-                [markers]="chartOptions1.markers"
-              ></apx-chart>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
-
-<!-- <div class="col-xl-12 mb-xl-12 mt-0">
-  <div class="card card-flush h-xl-100 progress-chart mapbg">
-    <div class="card-header">
-      <h3 class="card-title align-items-start flex-column pt-5">
-        <span class="fw-bold mb-3">Group wise Task Completion</span>
-      </h3>
-     <p-button (onClick)="showDialog4()" label="View" class="show-button"></p-button>
-    </div>
-
-    <div id="chartGroup">
-      <apx-chart *ngIf="chartData.series.length" [series]="chartData.series" [chart]="chartOptionsGroup.chart"
-        [xaxis]="chartOptionsGroup.xaxis" [yaxis]="chartOptionsGroup.yaxis" [legend]="chartOptionsGroup.legend"
-        [plotOptions]="chartOptionsGroup.plotOptions" [colors]="chartOptionsGroup.colors"
-        [dataLabels]="chartOptionsGroup.dataLabels"></apx-chart>
-      <div *ngIf="!chartData.series.length" class="no-data-message">
-        Loading chart data or no data available...
-      </div>
-    </div>
-
-
-  </div>
-</div> -->
-
-
-
-<div *ngIf="permission.twedBYG" class="col-md-6 mt-0">
-  <div class="card card-flush h-xl-100 progress-chart mapbg">
-    <div class="card-header">
-      <h3 class="card-title align-items-start flex-column pt-5">
-        <span class="fw-bold mb-3">Task With Extended Deadline By Groups </span>
-      </h3>
-      <!-- <p-button (onClick)="showDialog()" label="View" class="show-button"></p-button> -->
-
-    </div>
-
-    <div nonce="CSP_NONCE_PLACEHOLDER" id="chart9">
-      <apx-chart [series]="chartOptions22.series" [chart]="chartOptions22.chart" [xaxis]="chartOptions22.xaxis"
-        [yaxis]="chartOptions22.yaxis" [title]="chartOptions22.title" [plotOptions]="chartOptions22.plotOptions"
-        [dataLabels]="chartOptions22.dataLabels" [fill]="chartOptions22.fill"></apx-chart>
-    </div>
-  </div>
-</div>
-<div *ngIf="permission.otsBYG" class="col-md-6 mt-0">
-  <div class="card card-flush h-xl-100 progress-chart mapbg">
-    <div class="card-header mb-5">
-      <h3 class="card-title align-items-start flex-column pt-5">
-        <span class="fw-bold mb-3">Overdue Task Summary By Groups</span>
-      </h3>
-      <!-- <p-button (onClick)="showDialog2()" label="View" class="show-button"></p-button> -->
-    </div>
-
-    <div id="chart8">
-      <apx-chart
-        [series]="chartOptions9.series"
-        [chart]="chartOptions9.chart"
-        [dataLabels]="chartOptions9.dataLabels"
-        [plotOptions]="chartOptions9.plotOptions"
-        [yaxis]="chartOptions9.yaxis"
-        [xaxis]="chartOptions9.xaxis"
-        [legend]="chartOptions9.legend"
-        [colors]="chartOptions9.colors"
-        [grid]="chartOptions9.grid"
-      ></apx-chart>
-    </div>
-
-  </div>
-</div>
 
 <ng-template #template let-modal>
   <div class="modal-header">
@@ -944,9 +689,10 @@
         </tr>
       </ng-template>
     </p-table>
+   
+  
   </div>
 </p-dialog>
-
 
 
 

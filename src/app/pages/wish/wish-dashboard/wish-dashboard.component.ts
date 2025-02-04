@@ -31,11 +31,11 @@ export class WishDashboardComponent implements OnInit {
     { field: 'id', header: 'Ticket No.', filter: true, filterMatchMode: 'contains' },
     { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
     { field: 'priority', header: 'Priority', filter: true, filterMatchMode: 'contains' },
-    // { field: 'status', header: 'status', filter: true, filterMatchMode: 'contains' },
+    { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_to.first_name', header: 'Assigned To', filter: true, filterMatchMode: 'contains' },
     { field: 'submitter_email', header: 'Submitter', filter: true, filterMatchMode: 'contains' },
     { field: 'resolution', header: 'Resolution', filter: true, filterMatchMode: 'contains' },
-    // { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
+    { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: ' Description', filter: true, filterMatchMode: 'contains' },
   ]
 
@@ -363,18 +363,15 @@ onCommentPopup() {
 
 
 
-// // Handling the "Add Comment" action
-// addComment() {
-//   if (this.new) {
-//     // Assuming you want to add the comment to the list and reset the input
-//     const comment = {
-//       user: 'User Name',  // You can replace this with actual user data
-//       timestamp: new Date(),
-//       text: this.new
-//     };
-//     this.comments.push(comment);
-//     this.new = '';  // Reset the comment input
-//   }
-// }
+statusUpadetd(str){
+  if(str.code === 1){
+    this.toastr.success(str.status, 'Success');
+    this.ticketData=[]
+    this.loadTickets()
+  }
+  else
+  this.toastr.error(str.status, 'Error');
+
+}
 
 }

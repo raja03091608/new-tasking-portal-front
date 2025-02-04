@@ -117,7 +117,6 @@ export class ViewTasksComponent implements OnInit {
   image: any;
   public crudName = "Add";
   public countryList = [];
-  public countryList1 = [];
   public statuslist:any = [];
   imgToUpload: any = null;
   filterValue: any;
@@ -669,26 +668,26 @@ onCustomClear(item){
 
   }
 
-  // applyFilter(event: Event) {
-  //   this.filterValue = (event.target as HTMLInputElement).value;
-  //   if (this.filterValue) {
-  //     this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
-  //   } else {
-  //     this.getTasking();
-  //   }
-  // }
+  
 
   selectedTrial:any;
   taskname:any;
   tasknumber:any
-  openCurrentStatus(country){
-	this.id=country.id;
-    // // console.log'tasking country',country)
-    this.taskname = country.task_name;
-    this.tasknumber = country.task_number_dee;
-    // this.selectedTrial=tasking;
-    openModal('#trial-status-modal');
-	this.getComments();
+  isStatusOpen=false;
+  statusData:any;
+  statusDataMainUser:object
+
+  openCurrentStatus(eventRow){
+    this.statusData=eventRow;
+    this.isStatusOpen=true
+    console.log('tasking country',eventRow)
+   
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking="+eventRow.id)
+    .subscribe((res) => {
+      this.statusDataMainUser = res.data;
+
+    });
+
   }
   printReceipt(country) {
     this.id=country.id;
@@ -872,16 +871,7 @@ onCustomClear(item){
 
   }
 
-  getComments() {
 
-    this.api
-      .getAPI(environment.API_URL + "transaction/trials_status?tasking="+this.id)
-      .subscribe((res) => {
-        this.countryList1 = res.data;
-
-      });
-
-  }
 
   approvalID:any;
   // openStatusDialog(id){

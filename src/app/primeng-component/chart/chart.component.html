@@ -1,0 +1,146 @@
+<div class="container-fluid">
+    <!-- Group Wise Chart -->
+    <div class="row" *ngIf="showGroupWiseChart">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Group wise Task Completion</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(stackBarChart, 'Group Wise Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(groupWiseChart.chart, 'Group Wise Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart #groupWiseChart type="bar" [data]="stackBarChart" [options]="stackBarChartOptions"
+                        class="w-100" style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row for Two Charts (Yearly Report + Task Distribution) -->
+    <div class="row">
+        <!-- Yearly Task Report -->
+        <div class="col-md-6" *ngIf="showYearlyReport">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Yearly Task Report</span>
+                      </h3>
+                    <!-- <p class="title-class text-white">Yearly Task Report</p> -->
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(yearWise, 'Annual Task Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(yearWiseData.chart, 'Annual Task Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart #yearWiseData type="bar" [data]="yearWise" [options]="yearWiseOption" class="w-100"
+                        style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Distribution (Pie Chart) -->
+        <div class="col-md-6" *ngIf="showTaskDistribution">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Task Distribution</span>
+                      </h3>
+                    
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(pieChart, 'Task Distribution Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(pieChart.chart, 'Task Distribution Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart #pieChart type="pie" [data]="pieChartData" [options]="pieChartDataOption" class="w-100"
+                        style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row for Two Charts (Extended Deadlines + Overdue Tasks) -->
+    <div class="row">
+        <!-- Extended Deadlines Chart -->
+        <div class="col-md-6" *ngIf="showExtendedDeadlines">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Extended Deadlines</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart #extDate type="bar" [data]="extData" [options]="extDataOptions" class="w-100"
+                        style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Tasks Chart -->
+        <div class="col-md-6" *ngIf="showOverdueTasks">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Overdue Tasks</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart #overDueChart type="bar" [data]="OverDueData" [options]="overDueOptions" class="w-100"
+                        style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

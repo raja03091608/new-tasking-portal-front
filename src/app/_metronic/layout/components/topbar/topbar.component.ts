@@ -89,7 +89,6 @@ export class TopbarComponent implements OnInit {
     if(this.data.process_id==1){
       return;
     }
-
     this.isNotificationSeen=false;
     this.api.postAPI(environment.API_URL + "notification/notification-seen",{}).subscribe((res) => {});
 

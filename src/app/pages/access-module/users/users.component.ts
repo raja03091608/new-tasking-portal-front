@@ -116,10 +116,7 @@ export class UsersComponent implements OnInit {
 			Validators.required,
 			Validators.pattern("[a-zA-Z ]+"),
 		]),
-		last_name: new FormControl("", [
-			Validators.required,
-			Validators.pattern("[a-zA-Z ]+"),
-		]),
+		last_name: new FormControl(""),
 		loginname: new FormControl('', Validators.required),
 		email: new FormControl("", [Validators.required]),
 		password: new FormControl(""),
