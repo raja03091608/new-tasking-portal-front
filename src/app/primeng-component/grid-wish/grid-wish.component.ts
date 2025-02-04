@@ -15,6 +15,7 @@ import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-grid-wish',
@@ -355,23 +356,14 @@ getPriorityData(priority: number): { label: string; class: string } {
     }
 }
 
+statusOptions = [
+    { value: 'open', label: 'Open' },
+    { value: 'resolved', label: 'Resolved' },
+    { value: 'closed', label: 'Closed' },
+    { value: 'reopened', label: 'Reopened' },
+    { value: 'duplicate', label: 'Duplicate' }
+];
 
-// getStatusName2(status: string): string {
-//     switch (status) {
-//         case 'open':
-//             return 'Open';
-//         case 'in_progress':
-//             return 'In Progress';
-//         case 'resolved':
-//             return 'Resolved';
-//         case 'closed':
-//             return 'Closed';
-//         case 'reopened':
-//             return 'Reopened';
-//         default:
-//             return 'Unknown';
-//     }
-// }
 getStatusName2(status: string): { label: string; class: string } {
     switch (status) {
         case 'open':
@@ -389,51 +381,32 @@ getStatusName2(status: string): { label: string; class: string } {
     }
 }
 
+old_status:any;
+onStatusChange(rowData: any) {
+    const apiUrl =environment.API_URL+ 'ticket/api/ticket-status-changes/';
+    
+    console.log('Status changed to:', rowData.status);
 
+    
+    let payload = {
+        ticket: rowData.id,
+        changed_by: 1,  // Update with actual user ID dynamically
+        old_status: this.old_status,
+        new_status: rowData.status,
+    };
 
-// statusList = [
-//     { value: 'status1', name: 'Status 1' },
-//     { value: 'status2', name: 'Status 2' },
-//     // ... more statuses
-//   ];
-// onStatusChange(rowData: any) {
-//     if (!rowData || !rowData.id) {
-//       console.error('Invalid row data:', rowData);
-//       return;
-//     }
-  
-//     // Mark the row as non-editable after status change
-//     rowData.editable = false;
-  
-//     // Fetch the user ID from local storage
-//     const userId = localStorage.getItem('user_id');
-//     if (!userId) {
-//       this.toastr.error('User not authenticated!', 'Error');
-//       return;
-//     }
-  
-//     // Prepare data for the API call
-//     const data = {
-//       ticket: rowData.id,
-//       changed_by: userId,
-//       old_status: this.oldStatus || rowData.status, // Fallback to rowData.status if oldStatus is undefined
-//       new_status: rowData.status,
-//     };
-  
-//     // API call to change status
-//     this.api.postAPI('environment.API_URL' +'Ticket/api/ticket-status-changes/', data).subscribe({
-//       next: (res) => {
-//         this.gridData = res.data;
-//         this.toastr.success('Status changed successfully!', 'Success');
-//         this.ref.markForCheck(); // More efficient than detectChanges()
-//       },
-//       error: (err) => {
-//         const errorMessage = err.error?.message || 'Failed to change status. Please try again.';
-//         this.toastr.error(errorMessage, 'Error');
-//         console.error('Error changing status:', err);
-//       },
-//     });
-//   }
+    // Example API call using HttpClient
+    this.api.postAPI(apiUrl, payload).subscribe(
+        response => {
+            this.statusEventAdd.emit({status:'Status updated successfully:' ,code:1})
+            
+        },
+        error => {
+            this.statusEventAdd.emit({status:'Error updating status:',code:2})
+        }
+    );
+}
+
 
 
 }

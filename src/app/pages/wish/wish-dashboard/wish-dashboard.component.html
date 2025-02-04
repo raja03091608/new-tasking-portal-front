@@ -160,6 +160,7 @@
     [isEditable]="true"
     (editEvent)="onEdit($event,'4')"
     (deleteEvent)="onDelete($event,ticketId)" 
+    (statusEventAdd)="statusUpadetd($event)"
     [isDeletable]="true"
     [isAction]="true"
     [isCommentTask]="true"

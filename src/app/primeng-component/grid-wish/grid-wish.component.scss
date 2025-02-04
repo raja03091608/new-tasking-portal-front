@@ -19,8 +19,9 @@
     border-radius: 6px;
 }
 .status{
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 700;
+    padding: 4px;
     padding: 0.25rem 0.4rem;
     border-radius: 6px;
     font-family: "Inter var", sans-serif !important;
@@ -75,4 +76,16 @@
     width: fit-content;
     margin: auto;
     color: #8E24AA;
+}
+
+.status-dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #333;
+    font-size: 14px;
 }

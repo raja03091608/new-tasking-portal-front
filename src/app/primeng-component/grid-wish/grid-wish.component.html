@@ -64,10 +64,21 @@
                         </span>
                     </ng-container>
                     <ng-container *ngIf="col.header === 'Status'">
-                        <div class="status" [ngClass]="getStatusName2(rowData.status).class">
-                            <span>{{ getStatusName2(rowData.status).label }}</span>
-                        </div>
+                        <ng-container *ngIf="col.header === 'Status' && rowData.editable; else statusText">
+                            <select [(ngModel)]="rowData.status" class="status-dropdown" (change)="onStatusChange(rowData) ; rowData.editable=false">
+                                <option *ngFor="let status of statusOptions" [value]="status.value">
+                                    {{ status.label }}
+                                </option>
+                            </select>
+                        </ng-container>
+                        
+                        <ng-template #statusText>
+                            <span class="status" [ngClass]="getStatusName2(rowData.status).class">
+                                {{ getStatusName2(rowData.status).label }}
+                            </span><i (click)="rowData.editable=true ;old_status=rowData.status" class=" ml-3 fa-solid fa-caret-down"></i>
+                        </ng-template>
                     </ng-container>
+                    
                     
                     <ng-container *ngIf="col.header === 'Priority'">
                         <span [ngClass]="getPriorityData(rowData.priority).class">
@@ -110,133 +121,3 @@
         </ng-template>
     </p-table>
 </div>  
- <!-- <div class="card">
-    <p-table #dataTable [columns]="gridColumns" [value]="filteredData"
-             [paginator]="true" [scrollable]="true"
-             styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
-             resizableColumns="true" columnResizeMode="expand"
-             [rows]="10" [globalFilterFields]="gridColumns" dataKey="id"
-             (onPage)="paginationEvent.emit($event)">
-        
-        <ng-template pTemplate="caption">
-            <div class="d-flex align-items-center justify-content-between">
-                <button class="btn btn-primary my-4" (click)="clear(dataTable)">
-                    <i class="pi pi-filter-slash"></i> Clear
-                </button>
-
-                <div class="input-group ms-auto w-25">
-                    <span class="btn btn-primary">
-                        <i class="pi pi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" [(ngModel)]="searchValue"
-                           (input)="dataTable.filterGlobal(onSearchInput(searchValue), 'contains')" 
-                           placeholder="Search keyword"/>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th class="headercolor" [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn>
-                    {{ col.header }}
-                    <p-columnFilter class="text-light pb-1 pe-2 rounded" *ngIf="col?.filter"
-                                    type="text" [field]="col.field" display="menu">
-                        <ng-template pTemplate="filter">
-                            <input type="text" #filterInput pInputText
-                                   (input)="onFilterChange(filterInput.value, col.field, 'contains')">
-                            <button pButton type="button" class="custom-clear-button mt-3 text-center"
-                                    (click)="onCustomClear()">Clear</button>
-                        </ng-template>
-                    </p-columnFilter>
-                </th>
-                <th class="headercolor" *ngIf="isAction">Action</th>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-rowData>
-            <tr>
-                <td *ngFor="let col of gridColumns" class="wrappable">
-                    <ng-container *ngIf="col.header !== 'Status' && col.header !== 'Priority'">
-                        <span *ngIf="col.header === 'Time Frame for Completion'">
-                            {{ resolveNestedField(rowData, col.field) }} Month's
-                        </span>
-                        <span *ngIf="col.header !== 'Time Frame for Completion' && col.header !== 'Approved on'">
-                            {{ resolveNestedField(rowData, col.field) }}
-                        </span>
-                        <span *ngIf="col.header === 'Approved on'">
-                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field) }}
-                        </span>
-                    </ng-container>
-
-                    <ng-container *ngIf="col.header === 'Priority'">
-                        <span [ngClass]="getPriorityData(rowData.priority).class">
-                            {{ getPriorityData(rowData.priority).label }}
-                        </span>
-                    </ng-container>
-                    <ng-container *ngIf="!rowData.editable">
-                        <span *ngIf="!rowData.editable" [ngClass]="getSeverityClass(rowData.status)">
-                            {{ rowData.status | uppercase }}
-                        </span>
-                        <span *ngIf="!rowData.editable" pTooltip="Change Status">
-                            <i (click)="rowData.editable = true; oldStatus = rowData.status" class="fa-solid fa-chevron-down"></i>
-                        </span>
-                    </ng-container> 
-                   
-                      <ng-container *ngIf="rowData.editable">
-                        <mat-form-field>
-                          <mat-select [(value)]="rowData.status" (selectionChange)="onStatusChange(rowData)">
-                            <mat-option *ngFor="let status of statusList" [ngValue]="status.value">{{ status.name }}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <i (click)="rowData.editable = false" class="fa-solid fa-check"></i>
-                      
-                      
-                    <div *ngIf="rowData.editable">
-                        <mat-form-field appearance="outline" class="status-dropdown">
-                            <mat-label>Select Status</mat-label>
-                            <mat-select [(value)]="rowData.status" (selectionChange)="onStatusChange(rowData)">
-                                <mat-option *ngFor="let status of statusList" [value]="status.value">
-                                    {{ status.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                </ng-container> 
-                    
-                      
-                </td>
-
-                <td *ngIf="isAction" class="text-center">
-                    <button mat-button [matMenuTriggerFor]="actionsMenu" class="btn btn-primary px-2">
-                        <small>Actions</small>
-                    </button>
-                    <mat-menu #actionsMenu="matMenu">
-                        <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item>
-                            <small class="btn btn-outline-success btn-sm"><span class="bi bi-pencil"></span></small>&nbsp;<small>Edit</small>
-                        </button>
-                        <button (click)="deleteEvent.emit(rowData)" *ngIf="isDeletable" mat-menu-item>
-                            <small class="btn btn-outline-danger btn-sm"><span class="bi bi-trash"></span></small>&nbsp;<small>Delete</small>
-                        </button>
-                        <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item>
-                            <small class="btn btn-outline-success btn-sm"><span class="fas fa-info-circle"></span>&nbsp;<span class="fa-solid fa-plus"></span></small>&nbsp;<small>Add Status</small>
-                        </button>
-                        <button (click)="archivetaskEvent.emit(rowData)" *ngIf="isArchiveTask" mat-menu-item>
-                            <small class="btn btn-outline-success btn-sm"><span class="fa-solid fa-box-archive"></span>&nbsp;<span class="fa-solid fa-plus"></span></small>&nbsp;<small>Archive Task</small>
-                        </button>
-                    </mat-menu>
-                </td>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="emptyMessage">
-            <tr>
-                <td [attr.colspan]="gridColumns.length + 1">
-                    <h5 class="btn btn-warning mx-auto d-block">
-                        No records available. Please add data from the above options to view in the table!
-                    </h5>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>  -->

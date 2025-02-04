@@ -363,18 +363,15 @@ onCommentPopup() {
 
 
 
-// // Handling the "Add Comment" action
-// addComment() {
-//   if (this.new) {
-//     // Assuming you want to add the comment to the list and reset the input
-//     const comment = {
-//       user: 'User Name',  // You can replace this with actual user data
-//       timestamp: new Date(),
-//       text: this.new
-//     };
-//     this.comments.push(comment);
-//     this.new = '';  // Reset the comment input
-//   }
-// }
+statusUpadetd(str){
+  if(str.code === 1){
+    this.toastr.success(str.status, 'Success');
+    this.ticketData=[]
+    this.loadTickets()
+  }
+  else
+  this.toastr.error(str.status, 'Error');
+
+}
 
 }
