@@ -6,11 +6,12 @@ import { WishDashboardComponent } from './wish-dashboard/wish-dashboard.componen
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { CKEditorModule } from 'ckeditor4-angular';
 import { DataTablesModule } from 'angular-datatables';
 import { MaterialModule } from '../../material/material.module';
 import { TicketsComponent } from './tickets/tickets.component';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { DialogModule } from 'primeng/dialog';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -22,13 +23,15 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
       TicketsComponent
   ],
   imports: [
+    
+    ToastrModule,
+    DialogModule,
     CommonModule,
     PringeComponentModule,
     WishRoutingModule,
 	CommonModule,
     ReactiveFormsModule,
     NgbModule,
-    CKEditorModule,
     DataTablesModule,
     MaterialModule,
     RouterModule.forChild([

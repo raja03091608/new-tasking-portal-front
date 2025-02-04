@@ -7,12 +7,14 @@ import {
   EventEmitter,
   OnInit,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FilterService } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-grid-wish',
@@ -21,7 +23,7 @@ import { ApiService } from '../../service/api.service';
   styleUrl: './grid-wish.component.scss'
 })
 export class GridWishComponent implements OnInit {
-
+    // dropdownVisible: boolean = false
   
     @Input() isRestore: boolean;
   @Input() gridColumns: any[];
@@ -29,6 +31,7 @@ export class GridWishComponent implements OnInit {
   @Input() isEditable: boolean;
   @Input() isStatusAdd: boolean;
   @Input() isArchiveTask: boolean;
+  @Input() isCommentTask: boolean;
   @Input() isAction: boolean;
   @Input() isDeletable: boolean;
   @Input() isView: boolean;
@@ -41,6 +44,8 @@ export class GridWishComponent implements OnInit {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
+  @Output() commenttaskEvent = new EventEmitter<any>();
+
   token_detail:any
 
   newRowData: any = {}; // Object to store data for a new row
@@ -50,6 +55,9 @@ export class GridWishComponent implements OnInit {
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
   searchValue: string;
+
+    // projectList: any;
+    // oldStatus: any;
   
 
 
@@ -168,7 +176,7 @@ export class GridWishComponent implements OnInit {
       
   }
 
-  constructor(private filterService: FilterService, private api:ApiService) { }
+  constructor(private filterService: FilterService, private api:ApiService,private ref: ChangeDetectorRef,private toastr: ToastrService) { }
 
 
   getFilterValue(field: string): any {
@@ -316,5 +324,118 @@ export class GridWishComponent implements OnInit {
 }
 
 
+getSeverityClass(status: string): string {
+    switch (status) {
+        case 'open':
+            return 'info';
+        case 'in_progress':
+            return 'warning';
+        case 'resolved':
+            return 'success';
+        case 'closed':
+            return 'danger';
+        case 'reopened':
+            return 'primary';
+        default:
+            return 'neutral';
+    }
 }
+
+
+getPriorityData(priority: number): { label: string; class: string } {
+    switch (priority) {
+        case 1:
+            return { label: 'Low', class: 'low-priority' };
+        case 2:
+            return { label: 'Medium', class: 'medium-priority' };
+        case 3:
+            return { label: 'High', class: 'high-priority' };
+        default:
+            return { label: 'Unknown', class: 'unknown-priority' };
+    }
+}
+
+
+// getStatusName2(status: string): string {
+//     switch (status) {
+//         case 'open':
+//             return 'Open';
+//         case 'in_progress':
+//             return 'In Progress';
+//         case 'resolved':
+//             return 'Resolved';
+//         case 'closed':
+//             return 'Closed';
+//         case 'reopened':
+//             return 'Reopened';
+//         default:
+//             return 'Unknown';
+//     }
+// }
+getStatusName2(status: string): { label: string; class: string } {
+    switch (status) {
+        case 'open':
+            return { label: 'Open', class: 'status-open' };
+        case 'in_progress':
+            return { label: 'In Progress', class: 'status-in-progress' };
+        case 'resolved':
+            return { label: 'Resolved', class: 'status-resolved' };
+        case 'closed':
+            return { label: 'Closed', class: 'status-closed' };
+        case 'reopened':
+            return { label: 'Reopened', class: 'status-reopened' };
+        default:
+            return { label: 'Unknown', class: 'status-neutral' };
+    }
+}
+
+
+
+// statusList = [
+//     { value: 'status1', name: 'Status 1' },
+//     { value: 'status2', name: 'Status 2' },
+//     // ... more statuses
+//   ];
+// onStatusChange(rowData: any) {
+//     if (!rowData || !rowData.id) {
+//       console.error('Invalid row data:', rowData);
+//       return;
+//     }
+  
+//     // Mark the row as non-editable after status change
+//     rowData.editable = false;
+  
+//     // Fetch the user ID from local storage
+//     const userId = localStorage.getItem('user_id');
+//     if (!userId) {
+//       this.toastr.error('User not authenticated!', 'Error');
+//       return;
+//     }
+  
+//     // Prepare data for the API call
+//     const data = {
+//       ticket: rowData.id,
+//       changed_by: userId,
+//       old_status: this.oldStatus || rowData.status, // Fallback to rowData.status if oldStatus is undefined
+//       new_status: rowData.status,
+//     };
+  
+//     // API call to change status
+//     this.api.postAPI('environment.API_URL' +'Ticket/api/ticket-status-changes/', data).subscribe({
+//       next: (res) => {
+//         this.gridData = res.data;
+//         this.toastr.success('Status changed successfully!', 'Success');
+//         this.ref.markForCheck(); // More efficient than detectChanges()
+//       },
+//       error: (err) => {
+//         const errorMessage = err.error?.message || 'Failed to change status. Please try again.';
+//         this.toastr.error(errorMessage, 'Error');
+//         console.error('Error changing status:', err);
+//       },
+//     });
+//   }
+
+
+}
+
 

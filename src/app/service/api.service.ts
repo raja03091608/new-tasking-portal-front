@@ -154,6 +154,81 @@ export class ApiService {
       });
     });
   }
+
+
+  putAPI(url: any, data: any, headerOptions = {}): Observable<any> {
+    this.userid = this.decryptData(localStorage.getItem('token-detail'));
+    let tmsHeader = {};
+    if (this.tmsToken != '') {
+      tmsHeader = { 'X-Api-Key': this.tmsToken };
+    }
+    return new Observable((observer) => {
+      let headers = {
+        'Authorization': `Bearer ` + this.token,
+        'timeout': '6000',
+        'authorized-role': (this.userid.role_code ? this.userid.role_code : ''),
+        'authorized-by': (this.userid.role_id ? (this.userid.role_id).toString() : '')
+      };
+      headers = {
+        ...headers,
+        ...headerOptions,
+        ...tmsHeader
+      };
+      let httpOptions = {
+        headers: new HttpHeaders(headers)
+      };
+      this.http.put(url, data, httpOptions).subscribe((res) => {
+        observer.next(res);
+      }, (error) => {
+        if (error.status == 401) {
+          this.getToken(userDetail.loginname, userDetail.password).subscribe((res) => {
+            this.putAPI(url, data, headerOptions).subscribe((res) => {
+              observer.next(res);
+            });
+          });
+        } else {
+          observer.next(error);
+        }
+      });
+    });
+  }
+
+  deleteAPI(url: any, headerOptions = {}): Observable<any> {
+    this.userid = this.decryptData(localStorage.getItem('token-detail'));
+    let tmsHeader = {};
+    if (this.tmsToken != '') {
+      tmsHeader = { 'X-Api-Key': this.tmsToken };
+    }
+    return new Observable((observer) => {
+      let headers = {
+        'Authorization': `Bearer ` + this.token,
+        'timeout': '6000',
+        'authorized-role': (this.userid.role_code ? this.userid.role_code : ''),
+        'authorized-by': (this.userid.role_id ? (this.userid.role_id).toString() : '')
+      };
+      headers = {
+        ...headers,
+        ...headerOptions,
+        ...tmsHeader
+      };
+      let httpOptions = {
+        headers: new HttpHeaders(headers)
+      };
+      this.http.delete(url, httpOptions).subscribe((res) => {
+        observer.next(res);
+      }, (error) => {
+        if (error.status == 401) {
+          this.getToken(userDetail.loginname, userDetail.password).subscribe((res) => {
+            this.deleteAPI(url, headerOptions).subscribe((res) => {
+              observer.next(res);
+            });
+          });
+        } else {
+          observer.next(error);
+        }
+      });
+    });
+  }
   getAccessJson(){
     let data = localStorage.getItem('token-detail');
     let access = this.decryptData(data);

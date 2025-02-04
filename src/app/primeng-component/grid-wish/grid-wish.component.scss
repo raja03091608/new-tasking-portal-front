@@ -1,0 +1,53 @@
+.low-priority {
+    background-color: green;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.medium-priority {
+    background-color: orange;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.high-priority {
+    background-color: rgb(248, 143, 143);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    min-width: 100px;
+}
+
+.status-open {
+    background-color: #007bff; /* Light Blue */
+}
+
+.status-in-progress {
+    background-color: #ffc107; /* Yellow */
+}
+
+.status-resolved {
+    background-color: #28a745; /* Green */
+}
+
+.status-closed {
+    background-color: #dc3545; /* Red */
+}
+
+.status-reopened {
+    background-color: #17a2b8; /* Blue */
+}
+
+.status-neutral {
+    background-color: #6c757d; /* Gray */
+}
