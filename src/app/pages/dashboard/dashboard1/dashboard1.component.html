@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 
 <div class="row g-5 g-xl-8 justify-content-center">
-  <ng-container *ngIf="(api?.userid?.role_center[0]?.user_role?.code=='Initiator'|| api?.userid?.role_center[0]?.user_role?.code=='Recommender' || token_detail?.process_id==3) && permission.santC">
+  <ng-container *ngIf=" permission.santC">
     <div class="col-md-3 card-container-c">
       <!--begin::Statistics Widget 5-->
       <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">

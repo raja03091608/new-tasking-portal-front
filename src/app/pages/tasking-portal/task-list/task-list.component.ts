@@ -538,7 +538,8 @@ export class TaskListComponent implements OnInit {
 
 
   disableWesee(): boolean {
-    if (this.role === 4 && this.taskListRoot.comment_status != 4) {
+   
+    if (this.role === 4 && this.taskListRoot.comment_status != 4 && (this.listDelapso==3 || this.listDelapso==1 )) {
       return false;
     }
     return true;
@@ -644,7 +645,7 @@ export class TaskListComponent implements OnInit {
     }
     else {
       this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" + this.param + "&limit_start=" + limit_start + "&limit_end=" + limit_end)
+        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" )
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             this.dataSource = new MatTableDataSource(res.data);
@@ -1025,6 +1026,10 @@ export class TaskListComponent implements OnInit {
   //     });
   // }
   onSubmit() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     this.currentDate = new Date();
     //this.taskForm.value.id=this.id;
@@ -1446,13 +1451,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1494,13 +1499,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1558,13 +1563,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1596,13 +1601,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 3000);
+            }, 300);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1634,13 +1639,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 200);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1879,8 +1884,15 @@ export class TaskListComponent implements OnInit {
     this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
       // this.userRoleListFrom= res.data
       // this.userRoleListTo= res.data
-      this.userRoleListFrom = res.data.filter(role => role.id !== 18);
-      this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      if(this.listDelapso===3){
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18 && role.id !== 14);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3  && role.id !== 14);
+
+      }else{
+
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      }
 
     })
 
@@ -2103,10 +2115,15 @@ export class TaskListComponent implements OnInit {
   usersList=[]
   getTaskingUser(event){
     console.log(event,"Console not work ing please chaeck ")
-    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event?.value}`).subscribe(res => {
         this.usersList=res.data
     })
   }
+  hasHTML(text: string): boolean {
+    const regex = /<\/?[a-z][\s\S]*>/i;  
+    return regex.test(text);
+}
+
   
 }
 

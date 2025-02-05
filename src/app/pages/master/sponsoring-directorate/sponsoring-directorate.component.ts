@@ -67,7 +67,8 @@ export class SponsoringDirectorateComponent implements OnInit {
     created_by: new FormControl(""),
     created_ip: new FormControl(""),
     modified_by: new FormControl(""),
-    sequence : new FormControl("", [Validators.pattern("^[0-9]*$")]),
+   
+    
     status: new FormControl("", [Validators.required]),
     skip_apso: new FormControl(""),
 
@@ -76,6 +77,7 @@ export class SponsoringDirectorateComponent implements OnInit {
 
   populate(data){
     this.editForm.patchValue(data);
+    
   }
 
   initForm() {
@@ -91,6 +93,7 @@ export class SponsoringDirectorateComponent implements OnInit {
   ngOnInit(): void {
     this.getInititator();
     this.getAccess();
+    this.getUser()
   }
 
   create(){
@@ -152,8 +155,19 @@ export class SponsoringDirectorateComponent implements OnInit {
 
     openModal('#crud-countries');
   }
+userList=[]
+  getUser() {
+    this.userList=[]
+    this.api
+      .getAPI(environment.API_URL + "master/department")
+      .subscribe((res) => {
+      this.userList=res?.data;
+        
+      });
+  }
 
   getInititator() {
+    this.sponSoringData=[]
     this.api
       .getAPI(environment.API_URL + "master/sponsoring_directorate")
       .subscribe((res) => {

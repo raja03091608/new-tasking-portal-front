@@ -361,5 +361,25 @@ export class GridTableComponent implements OnInit {
     return `${day}-${month}-${year}`;
 }
 
+
+getButtonClass(status: number): string {
+    const statusClasses = {
+        7: 'bg-info-subtle text-primary', // Commented
+        8: 'bg-warning-subtle text-warning', // Pending
+        9: 'bg-warning-light text-warning-dark', // Uploaded
+        10: 'bg-orange-subtle text-orange', // Returned
+        11: 'bg-danger-subtle text-danger', // Redrafted
+        12: 'bg-purple-subtle text-purple', // Reuploaded
+        13: 'bg-indigo-subtle text-indigo', // Draft
+        14: 'bg-teal-subtle text-teal', // Initiated
+        15: 'bg-blue-subtle text-blue', // Concurrence
+        16: 'bg-yellow-subtle text-yellow' // Initiation Started
+    };
+
+    return statusClasses[status] || 'bg-light text-dark'; // Default class
+}
+
+
+
 }
 

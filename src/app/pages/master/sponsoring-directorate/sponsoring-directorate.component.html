@@ -1,86 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/eqeqeq -->
-  <!-- <section class="body-card">
-    <div class="container-fluid">
-       <div class="row">
-          <div class="col-md-12">
-             <div class="card">
-                <div class="card-header card-header2">
-                   <div class="row">
-                      <div class="col-md-6">
-                         <h3 style="color: white;">Sponsoring Directorate</h3>
-                      </div>
-                      <div class="col-md-6">
-                         <div class="text-end">
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-                <div class="container table-options">
-                   <div class="row">
-                      <div class="col-md-6">
-                         <mat-paginator [length]="100" [pageSize]="10"  [pageSizeOptions]="[10,20,30,50,100]" aria-label="Select page" >
-                         </mat-paginator>
-                      </div>
-                      <div class="col-md-6">
-						<mat-form-field appearance="outline">
-							<mat-label>Search your text here</mat-label>
-							<input matInput (keyup)="applyFilter($event)" class="search-mat-table" #input >
-						</mat-form-field>
-                      </div>
-                   </div>
-                </div>
-                <table mat-table [dataSource]="dataSource" class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
-                   <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef><b> Name </b></th>
-                      <td mat-cell *matCellDef="let initator"> {{initator.name}} </td>
-                   </ng-container>
-                   <ng-container matColumnDef="description">
-                      <th mat-header-cell *matHeaderCellDef><b> Description </b></th>
-                      <td mat-cell *matCellDef="let initator"> {{initator.description}} </td>
-                   </ng-container>
-                   <ng-container matColumnDef="skip_apso">
-                     <th mat-header-cell *matHeaderCellDef><b> Skip APSO </b></th>
-                     <td mat-cell *matCellDef="let initator">
-                        <div class="select-all">
-                           <mat-checkbox disabled=true checked="{{initator.skip_apso==1?true:false}}"></mat-checkbox>
-                          </div>
-                  </ng-container>
-                   <ng-container matColumnDef="status">
-                      <th mat-header-cell *matHeaderCellDef><b> Status </b></th>
-                      <td mat-cell *matCellDef="let initator"> <a href="javascript:void(0)" class="status-field {{initator.status=='1'?'text-success':'text-danger'}}" >{{initator.status=='1'?'Active':'Inactive'}}</a>  </td>
-                   </ng-container>
-                   <ng-container matColumnDef="view" >
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.view==true" ><b>View</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let initator">
-                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" *ngIf="permission.view==true" (click)="onView(initator)" placement="end" tooltipClass="dark-theme" ngbTooltip=View  ><span class="bi bi-eye"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="edit" >
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.edit==true" ><b>Edit</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let initator">
-                         <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" class="edit-icon text-primary" (click)="editOption(initator)" *ngIf="permission.edit==true" placement="end" tooltipClass="dark-theme" ngbTooltip=Edit  ><span class="bi bi-pencil"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="delete">
-                      <th class="text-center" mat-header-cell *matHeaderCellDef ><ng-container *ngIf="permission.delete==true"><b>Delete</b></ng-container></th>
-                      <td class="text-center" mat-cell *matCellDef="let initator"><a href="javascript:void(0)" class="edit-icon text-danger" *ngIf="permission.delete==true" (click)="onDelete(initator.id)" placement="end" tooltipClass="dark-theme" ngbTooltip=Delete ><span class="bi bi-trash"></span></a></td>
-                   </ng-container>
-                   <ng-container matColumnDef="noData">
-                      <th mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" class="norecord">
-                          No Records Found!
-                      </th >
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="dataSource && dataSource.data.length > 0"></tr>
-                    <tr class="mat-row" *matNoDataRow>
-                      <td *ngIf='filterValue' class="norecord"  colspan="4"><b>No data matching with "{{input.value}}"</b></td>
-                   </tr>
-                </table>
-             </div>
-          </div>
-       </div>
-    </div>
- </section>    -->
 
 
  <section class="body-card">
@@ -88,18 +5,19 @@
       <div class="row">
          <div class="col-md-12">
             <div class="card">
-               <div class="card-header card-header2">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <h3 style="color: white;">Sponsoring Directorate</h3>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="text-end">
-                           <!-- <a href="javascript:void(0)" data-toggle="modal" data-target="#crud-countries" (click)="create()" class="btn btn-light btn-round-sm"  *ngIf="permission.add==true" >Create</a> -->
-                        </div>
-                     </div>
+               <div class="card-header d-flex justify-content-between align-items-center">
+                  <h3 class="card-title align-items-start flex-column pt-5">
+                      <span class="fw-bold mb-3">SKIP APSO</span>
+                    </h3>
+                  <div class="d-flex gap-2">
+                      
+                      <a (click)="create()" 
+                         class="btn btn-warning btn-sm text-decoration-none" 
+                         data-bs-toggle="tooltip" title="Download PNG">
+                         <i class="fa-solid fa-plus"></i> Add
+                      </a>
                   </div>
-               </div>
+              </div>
                
                 <ng-container *ngIf="sponSoringData.length != 0">
                  <app-grid-table [gridColumns]="gridColumns" 
@@ -142,17 +60,20 @@
              <form [formGroup]="this.editForm" (ngSubmit)="onSubmit()" >
              <div class="row">
 
-                <div class="col-md-12">
-                   <div class="matt-group">
-                      <mat-label>Name <b class="star">*</b></mat-label>
-
-                         <input type="text" class="form-control form-control-lg" formControlName="name" autocomplete="off">
-
-                         <mat-error *ngIf="Error('name','required') && showError ">Enter name</mat-error>
-                         <mat-error *ngIf="Error('name','pattern') && showError ">Alphabets characters only</mat-error>
-
-                   </div>
-                </div>
+               <div class="col-md-12">
+                  <mat-label>Select Unit  <b class="star">*</b></mat-label>
+                  <mat-form-field appearance="outline" class="w-100">
+                     <mat-select formControlName="name"
+                        placeholder="Select User"
+                        >
+                        <mat-option [value]="">Unit </mat-option>
+                        <mat-option *ngFor="let user of userList"
+                           [value]="user.name">
+                           {{ user?.name }}
+                        </mat-option>
+                     </mat-select>
+                  </mat-form-field>
+               </div>
                 <div class="col-md-12">
                    <div class="matt-group">
                       <mat-label>Descriptions </mat-label>
@@ -175,14 +96,14 @@
                       </mat-form-field>
                    </div>
                 </div>
-                <div class="col-md-12">
+              
+                <!-- <div class="col-md-12">
                    <div class="matt-group">
                       <mat-label>Sequence </mat-label>
-                         <!-- <input matInput placeholder="" formControlName="sequence" maxlength="3" > -->
                          <input type="text" class="form-control" formControlName="sequence">
                          <mat-error *ngIf="Error('sequence','pattern')">Accept numeric values only</mat-error>
                    </div>
-                </div>
+                </div> -->
                 <div class="col-md-6">
                   <div class="form-group form-check">
                      <input type="checkbox" class="form-check-input" id="exampleCheck2" formControlName="skip_apso" >

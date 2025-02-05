@@ -65,7 +65,7 @@ export class AllocateTasksComponent implements OnInit {
       this.allocateForm = new FormGroup({
         id: new FormControl(""),
           tasking_group: new FormControl(""),
-        tasking: new FormControl(""),
+          tasking_user: new FormControl(""),
         created_by:new FormControl(""),
         created_role : new FormControl(this.token_detail.role_id),
         });
@@ -107,25 +107,29 @@ export class AllocateTasksComponent implements OnInit {
   }
   created_list:any;
   creList:any;
-  // getcreatedid() {
-  //   this.api
-  //     .getAPI(environment.API_URL + "transaction/allocate/status")
-  //     .subscribe((res) => {
-  //       if(res.status==environment.SUCCESS_CODE){
-  //         this.dataSource = new MatTableDataSource(res.data);
-  //         this.created_list = res.data;
-  //         this.dataSource.paginator = this.pagination;
-  //         this.logger.log('countryds', this.created_list[0].created_by.id)
-  //         this.creList=this.created_list[0].created_by.id
-  //         // console.log'fdfd',this.creList)
-  //         this.getTasking();
+//   task_number_dee
+// 
+// cost_implication
+// sponsoring_directorate
+// time_frame_for_completion_month
+gridColumns=[
+  { field: 'task_name', header: ' Task Name', filter: true, filterMatchMode: 'contains' },
 
-  //       }
+    { field: 'task_number_dee', header: ' Task Number', filter: true, filterMatchMode: 'contains' },
+    { field: 'task_description', header: ' Task Description', filter: true, filterMatchMode: 'contains' },
+    { field: 'cost_implication', header: ' Cost Implication', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate', header: ' Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains' },
 
-  //     });
-  // }
-
+  ]
+  usersList=[]
+  getTaskingUser(event){
+    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event?.value}`).subscribe(res => {
+        this.usersList=res.data
+    })
+  }
   getTasking() {
+    this.country=[]
     if(this.token_detail.role_id==3){
       this.api
       .getAPI(environment.API_URL + "transaction/allocate/status?created_by="+this.token_detail.user_id)
@@ -181,18 +185,19 @@ export class AllocateTasksComponent implements OnInit {
     this.crudName = "Save";
     this.isReadonly = false;
     this.allocateForm.enable();
-    this.populate(country);
-
+    // this.populate(country);
+    
     this.task_name = country.task_number_dee;
     this.task_Desc = country.task_description;
     setTimeout(()=>{
-      this.allocateForm.patchValue({tasking_group:country.assigned_tasking_group?country.assigned_tasking_group.tasking_group_id:''});
+      this.allocateForm.patchValue({tasking_group:country.assigned_tasking_group?country.assigned_tasking_group.tasking_group?.id:'',
+        tasking_user:country.assigned_tasking_group?country.assigned_tasking_group.tasking_user:''
+      });
     },500);
     this.id = country.id;
-    let reset = this.formGroupDirective.resetForm();
-    if (reset !== null) {
-      this.initForm();
-    }
+    if(country.assigned_tasking_group)
+        this.getTaskingUser({value:country.assigned_tasking_group.tasking_group?.id})
+
 	openModal('#crud-allocate');
   }
 
@@ -249,7 +254,7 @@ export class AllocateTasksComponent implements OnInit {
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = false;
-            }, 2000);
+            }, 200);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
