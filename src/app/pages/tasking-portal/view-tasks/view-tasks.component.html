@@ -22,7 +22,6 @@
 
 					<div class="card mt-5">
 						<ng-container *ngIf="countryList.length != 0">
-
 							<app-grid-table [gridColumns]="gridColumns"
 							 	[gridData]="countryList"
 								[ispaniNater]="true"
@@ -57,12 +56,10 @@
 
 <p-dialog header="APPROVED TASKING HISTORY" [modal]="true" [(visible)]="isStatusOpen" [style]="{ width: '40vw' }">
 	<div class="card flex justify-content-center">
-
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th colspan="2">TASK NAME ({{ statusData?.task_number_dee }})</th>
-					
 				</tr>
 			</thead>
 			<tbody>
@@ -164,8 +161,6 @@
 											</mat-form-field>
 										</div>
 									</div>
-
-
 									<!--begin::Col-->
 									<div class="col-md-12 ">
 										<div class="matt-group matselect">
@@ -180,9 +175,6 @@
 												<mat-datepicker #picker_date></mat-datepicker>
 											</mat-form-field>
 										</div>
-
-
-
 										<div class="col-md-12 ">
 											<div class="matt-group matselect">
 												<mat-label>End Date</mat-label>
@@ -217,20 +209,10 @@
 								<div class="form-group">
 									<div class="matt-group">
 										<mat-label>Summary</mat-label>
-										<!-- <mat-form-field class="example-full-width" appearance="outline"> -->
 										<textarea class="form-control" rows="3"
 											formControlName="status_summary"></textarea>
-										<!-- <mat-error *ngIf="ErrorApproval('comments','required') && showError">Enter comments</mat-error> -->
-										<!-- </mat-form-field> -->
 									</div>
 								</div>
-
-								<!-- <div class="row mb-5">
-									<div class="col-md-12 fv-row">
-										<mat-label>Description</mat-label>
-										<textarea class="form-control" rows="3" formControlName="status_description"></textarea>
-									</div>
-								</div> -->
 								<div class="d-flex flex-column w-100 me-2">
 									<div class="matt-group">
 										<button type="button" (click)="extension()" class="btn btn-success" data-bs-toggle="modal"
@@ -239,7 +221,6 @@
 										</button>
 									</div>
 								</div>
-
 								<br>
 								<button (click)="onSubmit()" type="submit" id="kt_sign_in_submit"
 									class="btn btn-success" style="float:right;">
@@ -247,8 +228,6 @@
 								</button>
 								<button type="button" style="float:right;" class="btn btn-outline-primary" #closebutton
 									data-dismiss="modal" (click)="cancelmodal()">Cancel</button>
-
-
 							</form>
 						</div>
 						<div class="col-md-9">
@@ -266,20 +245,15 @@
 								  [isDeletable]="true">
 								</app-grid-table>
 							  </ng-container>
-							  
 							  <!-- Define 'noRecords' template -->
 							  <ng-template #noRecords>
 								<div class="body-card">No records found</div>
 							  </ng-template>
-							  
-							
 						</div>
 					</div>
 				</div>
 
 			</div>
-
-
 		</div>
 	</div>
 </div>
@@ -386,9 +360,6 @@
 						aria-label="Close">
 						<span aria-hidden="false">&times;</span>
 					</button>
-					<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button> -->
 				</div>
 
 				<div class="modal-body " style="padding-top:10px; padding-bottom:0%">
@@ -408,8 +379,6 @@
 										[plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis"
 										[xaxis]="chartOptions.xaxis"></apx-chart>
 								</div>
-								<!-- <div id="chart" style="width: 100%; height: 365px"></div> -->
-								<!-- <p>Expected Completion Date:- 30-01-2023</p> -->
 							</div>
 						</div>
 						<div class="col-xl-6 mb-xl-10">
@@ -418,7 +387,6 @@
 									<table class="table table-bordered table-style4"
 										*ngIf="commentslist?commentslist.length!=0:'' ;else nocomments">
 										<tr>
-											<!-- <pre>hg{{comments?commentslist.length}}</pre> -->
 											<th>Name</th>
 											<th width="50%">Comments</th>
 											<th width="30%">Date</th>
@@ -453,20 +421,12 @@
 
 								<form [formGroup]="this.commentForm">
 									<div class="card-footer pt-4 p-2">
-										<!--begin::Input-->
-										<!-- <textarea class="form-control mb-3" rows="1"  ></textarea> -->
 										<textarea class="form-control" rows="1" formControlName="comments"
 											placeholder="Type a Comment"></textarea>
 										<mat-error *ngIf="Errorcomment('comments','required') && showcomments">Enter
 											comments</mat-error>
-										<!--end::Input-->
-										<!--begin:Toolbar-->
 										<br>
 										<div class="d-flex" style="float:right;">
-											<!--begin::Actions-->
-
-											<!--end::Actions-->
-											<!--begin::Send-->
 											<button class="btn btn-primary mb-1" type="button"
 												(click)="saveviewstatus()">Add Comment</button>
 											<!--end::Send-->
@@ -508,7 +468,6 @@
 
 									<input type="text" class="form-control form-control-lg"
 										formControlName="completed_comments" autocomplete="off">
-									<!-- <mat-error *ngIf="Errorcompleted('comments','required') && showcomments">Enter comments</mat-error> -->
 
 								</div>
 							</div>
@@ -575,10 +534,6 @@
 										formControlName="authority_permission" autocomplete="off">
 									<mat-error *ngIf="Errorarchive('authority_permission','required')">Enter Authority
 										permission</mat-error>
-
-									<!-- <mat-error *ngIf="Error('name','required') && showError ">Enter name</mat-error>
-									  <mat-error *ngIf="Error('name','pattern') && showError ">Alphabets characters only</mat-error> -->
-
 								</div>
 							</div>
 						</div>
@@ -625,7 +580,6 @@
 
 									<textarea class="form-control" rows="1" formControlName="comments"
 										placeholder="Type a Comment"></textarea>
-									<!-- <mat-error *ngIf="Errorarchive('comments','required') && showcomments">Enter Reason</mat-error> -->
 
 								</div>
 							</div>
@@ -742,9 +696,6 @@
 									data-dismiss="modal" (click)="cancelmodal()">Cancel</button>
 							</div>
 						</div>
-
-
-
 					</div>
 				</form>
 
@@ -752,11 +703,8 @@
 		</div>
 	</div>
 </div>
-
-
 <p-dialog header="Preview Sheet" [modal]="true" [(visible)]="visible" [style]="{ width: '90vw' }">
 	<ng-container *ngIf="!isFormHide" class="row ">
-
 		<form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
 			<div class="row my-5">
 				<div class="col-md-12">
@@ -769,7 +717,6 @@
 						</mat-select>
 					</mat-form-field>
 				</div>
-
 				<div class="col-md-12">
 					<mat-form-field appearance="outline" hintLabel="Max 10 characters">
 						<mat-label>Enter File Name</mat-label>
@@ -778,18 +725,12 @@
 						<mat-hint align="end">{{value().length}}/10</mat-hint>
 					</mat-form-field>
 				</div>
-
 			</div>
-
-
 			<div class="row">
 
 				<button class="btn btn-primary btn-lg btn-block" type="submit"
 					[disabled]="!xlxsForm.valid">Submit</button>
-
 			</div>
-
-
 		</form>
 	</ng-container>
 
@@ -800,18 +741,12 @@
 		</div>
 
 	</div>
-
-
-
 	<ng-container *ngIf=" isFormHide">
 		<app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData" [ispaniNater]="false"
 			[isAction]="false">
 		</app-grid-table>
 	</ng-container>
-
-
 </p-dialog>
-
 <p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '40vw' }">
 <div class="card flex justify-content-center">
 <p-fileUpload class="mt-4" name="file[]" customUpload="true" (uploadHandler)="onFileUpload($event)" [multiple]="false" maxFileSize="1000000">

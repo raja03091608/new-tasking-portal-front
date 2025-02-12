@@ -4,85 +4,23 @@
         <div class="card-body">
     <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
       <div class="row">
-        <!--begin::Input group-->
-		<!-- <mat-label style="text-align:center;"><b style="font-size:large;" >SPONSORING DIRECTORATE</b></mat-label> -->
 		&nbsp;
 		<div formGroupName="sdForm">
-		
-
         <div class="alert alert-dismissible bg-light-danger border border-danger p-5 mb-10">
-
-			<!-- <div class="mb-5 ">
-				<div class="matt-group matselect mat-box">
-					<mat-label style="font-size:large;"><b>Sponsoring Directorate</b> <b class="star">*</b></mat-label>
-					<mat-form-field appearance="outline">
-						<mat-select #select formControlName="sponsoring_directorate"
-					placeholder="Select Initiator" >
-							<mat-option [value]="">Select Initiator</mat-option>
-							<mat-option  (click)="optionClick(init.name)" *ngFor="let init of initatorList " [value]="init.name">{{init.name}}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-					<br>
-
-
-			 	</div>
-        	</div> -->
 		<div class="mb-5 ">
 
 
 			<mat-label style="font-size:large;"><b>Task Name</b></mat-label>
-
-
-			   <!-- <mat-error *ngIf="weseeError('cost_implication','required')">Enter cost_implication</mat-error> -->
-
 			<input type="text" class="form-control" formControlName="task_name"/>
-			<!-- <mat-error *ngIf="taskForm.get('sdForm.task_name')?.errors?.required && showError">Required</mat-error> -->
   		</div>
-		<!-- <div class="mb-5 ">
-
-
-			<mat-label style="font-size:large;"><b>Details of hardware</b></mat-label>
-			<input type="text" class="form-control" formControlName="details_hardware"/>
-  		</div>
-		<div class="mb-5 ">
-
-
-			<mat-label style="font-size:large;"><b>Details of software</b></mat-label>
-			<input type="text" class="form-control" formControlName="details_software"/>
-  		</div>
-		<div class="mb-5 ">
-
-
-			<mat-label style="font-size:large;"><b>Details of systems to be modified through present tasking</b></mat-label>
-			<input type="text" class="form-control" formControlName="details_systems_present"/>
-  		</div>
-		<div class="mb-5 ">
-
-
-			<mat-label style="font-size:large;"><b>Ships / systems likely to be affected</b></mat-label>
-			<input type="text" class="form-control" formControlName="ships_or_systems_affected"/>
-  		</div>   -->
 
         <div class="mb-5">
 			<mat-label style="font-size:large;"><b>Task Description (Maximum 500 words)</b><b class="star">*</b></mat-label>
-
-
-            <!-- <ckeditor formControlName="task_description" maxlength="200"></ckeditor> -->
 			<angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
-			<!-- <mat-error *ngIf="sdError('task_description','required') && showError">Enter Task Description</mat-error> -->
-			<!-- <mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.maxlength && showError">
-				Name must be at least 200 characters long.
-		   	</mat-error>  -->
 			   <div class="limit">
                 Words : {{ remainingCharacters }}
               </div>
-			   <!-- <mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
-				Word limit exceeded! Maximum 200 words allowed.
-			  </mat-error> -->
             <mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter task_description</mat-error>
-
-
         </div>
 		<div class="mb-5">
 			<div class="matt-group">
@@ -93,65 +31,49 @@
 				<div class="col-md-6">
 					<input #fileInput formControlName="file" id="file"type="file"  class="form-control" (change)="onImageHandler($event)" accept="image/jpeg,image/jpg,application/pdf" >
 					<mat-error *ngIf="taskForm.get('sdForm.file')?.errors?.['required'] && showError">Select File</mat-error>
-
 				</div>
 				<div class="col-md-6">
 					<button type="button" id="fileupload" (click)="div1Function()" mat-fab color="primary"><mat-icon><span class="fileupload1">+</span></mat-icon></button>
-
 			  </div>
-
 			  </div>
-
 			  <div class="row" id="addmore1" *ngIf="div2" >
-
 				<div class="col-md-6">
 					<input #fileInput formControlName="file1" id="file1" type="file"  class="form-control" (change)="onImageHandler2($event)" accept="image/jpeg,image/jpg,application/pdf" >
 					<mat-error *ngIf="taskForm.get('sdForm.file1')?.errors?.['required'] && showError">Select File</mat-error>
-
 				</div>
 				<div class="col-md-6">
 					<button type="button" id="fileupload" (click)="div2Function()" mat-fab color="primary"><span class="fileupload1">+</span></button>
 					<button type="button" id="fileupload" class="warn" (click)="div6Function()" mat-fab color="warn"><span class="fileupload1">-</span></button>
-
 			  </div>
 			  </div>
 			  <div class="row" id="addmore2" *ngIf="div3">
-
 				<div class="col-md-6">
 					<input #fileInput formControlName="file2" id="file2"type="file"  class="form-control" (change)="onImageHandler3($event)" accept="image/jpeg,image/jpg,application/pdf" >
 					<mat-error *ngIf="taskForm.get('sdForm.file2')?.errors?.['required'] && showError">Select File</mat-error>
-
 				</div>
 				<div class="col-md-6">
 					<button type="button" id="fileupload" (click)="div3Function()" mat-fab color="primary"><span class="fileupload1">+</span></button>
 					<button type="button" id="fileupload" class="warn" (click)="div7Function()" mat-fab color="warn"><span class="fileupload1">-</span></button>
-
 			  </div>
 			  </div>
 			  <div class="row" id="addmore3" *ngIf="div4">
-
 				<div class="col-md-6">
 					<input #fileInput formControlName="file3" id="file3" type="file"  class="form-control" (change)="onImageHandler4($event)" accept="image/jpeg,image/jpg,application/pdf" >
 					<mat-error *ngIf="taskForm.get('sdForm.file3')?.errors?.['required'] && showError">Select File</mat-error>
-
 				</div>
 				<div class="col-md-6">
 					<button type="button" id="fileupload" (click)="div4Function()" mat-fab color="primary"><mat-icon><span class="fileupload1">+</span></mat-icon></button>
 					<button type="button" id="fileupload" class="warn" (click)="div8Function()" mat-fab color="warn"><span class="fileupload1">-</span></button>
-
 			  </div>
 			  </div>
 			  <div class="row" id="addmore4" *ngIf="div5">
-
 				<div class="col-md-6">
 					<input #fileInput formControlName="file4" id="file4"type="file"  class="form-control" (change)="onImageHandler5($event)" accept="image/jpeg,image/jpg,application/pdf" >
 					<mat-error *ngIf="taskForm.get('sdForm.file4')?.errors?.['required'] && showError">Select File</mat-error>
-
 				</div>
 				<div class="col-md-6">
 					<button type="button" id="fileupload" (click)="div5Function()" mat-fab color="primary"><span class="fileupload1">+</span></button>
 					<button type="button" id="fileupload" class="warn" (click)="div9Function()" mat-fab color="warn"><span class="fileupload1">-</span></button>
-
 			  </div>
 			  </div>
 
@@ -159,32 +81,14 @@
 			  <mat-error *ngIf="submitted && taskForm.hasError('atLeastOneRequired', 'sdForm') && showError">
 				Choose  any one file
 			  </mat-error>
-			<!-- <mat-error *ngIf="submitted && sdForm.file.hasError('atLeastOneRequired')">
-				Select File.
-			</mat-error> -->
-
 			</div>
 		</div>
         </div>
 		<button type="submit" class="btn btn-primary" >Initiate</button>
-			
-	
-		<!-- <ng-container *ngIf="token_detail.process_id==3">
-			<div class="card-footer text-end">
-				<div class="col-md-12">
-					<button type="submit" class="btn btn-primary" *ngIf="token_detail.tasking_id==''" >Initiate</button>
-				</div>
-			</div>
-		</ng-container> -->
-	<!-- </ng-container> -->
 	</div>
 
 	</div>
 </form>
-<!-- <div class="card-footer text-end">
-    <button type="button" class="btn btn-primary" >
-        Save</button>
-</div> -->
 </div>
 </div>
 </div>

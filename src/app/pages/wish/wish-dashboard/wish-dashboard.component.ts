@@ -1,11 +1,10 @@
 import { Component, OnInit} from "@angular/core";
 import { ApiService } from "../../../service/api.service";
 import { environment } from "../../../../environments/environment";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
-
-
-
+import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { HttpHeaders } from "@angular/common/http";
 @Component({
   selector: 'app-wish-dashboard',
   templateUrl: './wish-dashboard.component.html',
@@ -13,19 +12,46 @@ import { ToastrService } from "ngx-toastr";
 })
 export class WishDashboardComponent implements OnInit {
 
-  duplicate:number=0;
+  taskingGroups: any[] = [];
+  usersList: any[] = [];
+  listDelapso: number;
+  token_detail: any = {};
+  crudName: string;
+  isEditMode: boolean = false; 
+  tickets: any[] = [];
+  ticket_id:any;
+  userOptions: any[] = [];
+  displayPopup: boolean = false;
   closed: number = 0;
   resolved:number=0;
   reopened:number=0;
   open:number=0;
-  createdTicket: any[] = [];
-    closeTicket: any[] = [];
     detailsForm: FormGroup;
-    selectedFilterIndex: number = 0; 
     file: File | null = null;
-    selectedCardName: string = 'Open Ticket';
+    selectedCardName: string = 'open';
+    editorVisible = false; // Control visibility of the editor modal
+    htmlContent = ''; // The content to bind with Angular Editor
+    ticketId:any; 
+    ticketData: any;
+    showGrid: boolean;
+    commentPopup: boolean = false;  // To control popup visibility
+    comments = []; 
+    editorContent = new FormControl();
+    currentTicketId: string;
+    
 
-
+    editorConfig: AngularEditorConfig = {
+      editable: true,
+      spellcheck: true,
+      height: '300px',
+      minHeight: '100px',
+      placeholder: 'Enter text here...',
+      translate: 'no',
+      defaultFontName: 'Arial',
+      toolbarHiddenButtons: [['bold', 'italic'], ['fontSize']],
+      sanitize: false, // Disable sanitization to avoid automatic HTML encoding
+      defaultParagraphSeparator: 'p' // Default paragraph separator to <p>
+    };
     
   gridColumns = [
     { field: 'id', header: 'Ticket No.', filter: true, filterMatchMode: 'contains' },
@@ -33,95 +59,68 @@ export class WishDashboardComponent implements OnInit {
     { field: 'priority', header: 'Priority', filter: true, filterMatchMode: 'contains' },
     { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_to.first_name', header: 'Assigned To', filter: true, filterMatchMode: 'contains' },
-    { field: 'submitter_email', header: 'Submitter', filter: true, filterMatchMode: 'contains' },
-    { field: 'resolution', header: 'Resolution', filter: true, filterMatchMode: 'contains' },
-    { field: 'view', header: 'View', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: ' Description', filter: true, filterMatchMode: 'contains' },
   ]
-
-  displayPopup: boolean = false;
-  
-  ticketData: any;
-  showGrid: boolean;
-  currentRowData: any;
-  commentPopup: boolean = false;  // To control popup visibility
-  comments = []; // Your comment data
-  new: string = ''; // New com
-
   constructor(private api: ApiService, private fb: FormBuilder,private toastr: ToastrService) {
-
+    this.editorContent.setValue('<p><strong></strong></p>');
+    this.api.getAPI(`${environment.API_URL}master/taskinggroups`).subscribe(
+      (res) => {
+        this.taskingGroups = res.data;
+      },
+      (error) => {
+        console.error('API कॉल में त्रुटि:', error);
+      }
+    );
     
   }
-
-  
+priorityOptions = [
+  { id: 1, value: 'high', label: 'High' },
+  { id: 2, value: 'medium', label: 'Medium' },
+  { id: 3, value: 'low', label: 'Low' },
+];
   ngOnInit(): void {
-    this.loadTickets();
-    this. getTicketCounts();
+    this.handleCardClick('open', 'Open Tickets');
+   this. getTicketCounts();
+   this.initializeForm();
+    this.getTaskingGroups();
+
     this.detailsForm = this.fb.group({
       title: ['', Validators.required], 
       description: ['', Validators.required], 
-      submitter_email: ['', [Validators.required, Validators.email]], // Ensuring email format
-      assigned_to: ['', Validators.required], 
+      submitter_email: [null], 
+      assigned_to: [null], 
       on_hold: [null], 
-      priority: [null, Validators.required], 
+      priority: [''], 
       due_date: [null], 
-      merged_to: [''], 
-      followup_set: ['']
+      status:['']
     });
     
   }
-
- 
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
     }
   }
-
-
-
-
-
-
 addTicket() {
-  
-  console.log('addTicket()');
   this.displayPopup = true;
 }
-
-ticketId:any; 
-
-onDelete(event: any, ticketId: string) {
-  console.log('Delete event:', event);
-  console.log('Ticket ID:', ticketId);
-  
-  this.api.deleteAPI(`${environment.API_URL}/ticket/api/tickets/${ticketId}/`, event).subscribe({
+Delete(event: any, ticketId: string) {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+  const options = { headers: headers };
+  this.api.deleteAPI(`${environment.API_URL}/ticket/api/tickets/${event.id}/`).subscribe({
     next: (response) => {
-      console.log('Response:', response);
+      this.toastr.success('Ticket deleted successfully');
+      this.handleCardClick('open', 'Open Tickets');
     },
-    error: (error) => {
-      console.error('Error:', error);
-    }
   });
 }
-
-
-
-
-onView($event){
-
-}
-
-
-
 submitForm() {
+  this.isEditMode = false; // Ensure edit mode is off
+  this.currentTicketId = ''; //
   this.detailsForm.get('status')?.enable();
-
-  console.log("Form Validation Status:", this.detailsForm.valid);
-  console.log("Form Values:", this.detailsForm.value);
-
   if (!this.detailsForm.valid) {
-    console.error("Form is invalid:");
     Object.keys(this.detailsForm.controls).forEach(key => {
       const controlErrors = this.detailsForm.get(key)?.errors;
       if (controlErrors) {
@@ -131,247 +130,209 @@ submitForm() {
     this.toastr.error('Please fill all required fields', 'Error');
     return;
   }
+  this.detailsForm.get('status')?.disable(); // Disable status field in add mode
 
   const formData = new FormData();
   if (this.file) formData.append('attachment', this.file);
-
-  // Append each form field value to FormData
   formData.append('title', this.detailsForm.get('title')?.value || '');
   formData.append('description', this.detailsForm.get('description')?.value || '');
-  formData.append('submitter_email', this.detailsForm.get('submitter_email')?.value || '');
-  formData.append('assigned_to', this.detailsForm.get('assigned_to')?.value || '');
-  // formData.append('status', this.detailsForm.get('status')?.value || '');
+  // formData.append('submitter_email', this.detailsForm.get('submitter_email')?.value || null);
+  formData.append('status', this.detailsForm.get('status')?.value || '');
+  formData.append('assigned_to', this.detailsForm.get('assigned_to')?.value || null);
   formData.append('on_hold', this.detailsForm.get('on_hold')?.value ? '1' : '0');
   formData.append('priority', this.detailsForm.get('priority')?.value || '');
-  formData.append('due_date', this.detailsForm.get('due_date')?.value || null);
-  formData.append('merged_to', this.detailsForm.get('merged_to')?.value || '');
-  // formData.append('attachment',this.file || null);
-  formData.append('followup_set', this.detailsForm.get('followup_set')?.value || '');
+  formData.append('due_date', this.detailsForm.get('due_date')?.value || '');
 
-  this.api.postAPI(environment.API_URL + `ticket/api/tickets/`, formData).subscribe(
-        res => {
-          this.toastr.success('Form submitted successfully', 'Success');
-          this.displayPopup = false;
-        },
-        error => {
-          this.toastr.error('Failed to submit Ticket', 'Error');
-        }
-      );
- 
+  if (this.currentTicketId) {
+    this.api.putAPI(`${environment.API_URL}ticket/api/tickets/${this.currentTicketId}/`, formData).subscribe(
+      res => {
+        this.toastr.success('Ticket updated successfully', 'Success');
+        this.displayPopup = false;
+        this.handleCardClick('open', 'Open Tickets');
+        this.detailsForm.reset();
+      },
+      error => {
+        this.toastr.error('Failed to update ticket', 'Error');
+      }
+    );
+  } else {
+    this.api.postAPI(`${environment.API_URL}ticket/api/tickets/`, formData).subscribe(
+      res => {
+        this.toastr.success('Ticket created successfully', 'Success');
+        this.displayPopup = false;
+        this.handleCardClick('open', 'Open Tickets');
+        this.detailsForm.reset();
+
+      },
+      error => {
+        this.toastr.error('Failed to create ticket', 'Error');
+      }
+    );
+  }
 }
-
-
-
-
-
 // card counts api
   getTicketCounts(): void {
     this.api.getAPI(environment.API_URL +'ticket/dashboard')  // Replace with your actual API URL
       .subscribe(
         (response) => {
-          console.log('API response:', response);  // Log the response to the console
-          
-          // Directly accessing the properties from the response object
           this.open = response.open_tickets || 0;
           this.reopened = response.reopen_tickets || 0;
           this.resolved = response.resolved_tickets || 0;
           this.closed = response.closed_tickets || 0;
-          this.duplicate = response.duplicate || 0;
-  
-          // Optional: Log total_tickets if needed
-          console.log('Total tickets:', response.total_tickets);
         },
-        (error) => {
-          console.error('API error:', error);  // Log the error if the API request fails
-        }
       );
   }
+handleCardClick(status: string, cardName: string): void {
+  this.selectedCardName = cardName;
+  this.showGrid = false; // Hide the table first
+  const url = `${environment.API_URL}ticket/api/tickets/?status=${status}`;
+  this.api.getAPI(url).subscribe({
+    next: (response) => {
 
-  
- 
-  handleCardClick(cardName: string): void {
-    this.selectedCardName = cardName; 
-    this.showGrid = false; // Hide the table first
-    this.loadTickets(); // Load the tickets again
-  }
-
-  loadTickets(): void {
-    
-    const url = environment.API_URL + 'ticket/api/tickets/?status=open';
-    console.log('Fetching tickets from URL:', url);
-
-    this.api.getAPI(url).subscribe({
-      next: (response) => {
-        console.log('Full API response:', response);
-        this.ticketData = response; // Store API response in table data
-        this.showGrid = true;  // Show the table again
-        console.log('Ticket data loaded:', this.ticketData);
-      },
-      error: (error) => {
-        console.error('Error fetching tickets:', error);
-      }
-    });
-  }
-  
-  handleCardClick2() {
-    this.selectedCardName = 'Reopen Tickets';
-    this.showGrid = false; // Pehle table ko hide kar do
-
-    const url = environment.API_URL + 'ticket/api/tickets/?status=reopened';
-    console.log('Fetching tickets from URL:', url);
-  
-    this.api.getAPI(url).subscribe({
-      next: (response) => {
-        console.log('Full API response:', response);
-  
-        // Assuming the response itself is the data array
-        this.ticketData = response;
-        this.showGrid = true;  // Show the grid after data is loaded
-        console.log('Ticket data loaded:', this.ticketData);
-      },
-      error: (error) => {
-        console.error('Error fetching tickets:', error);
-        console.error('Error details:', error.message);
-        
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          console.error('Client-side error:', error.error.message);
-        } else {
-          // Server-side error
-          console.error(`Server-side error: ${error.status} ${error.statusText}`);
-          console.error('Error response body:', error.error);
-        }
-      }
-    });
-  }
-
-  handleCardClick3() {
-    this.selectedCardName = 'Reolved Tickets';
-
-    this.showGrid = false; // Pehle table ko hide kar do
-
-    const url = environment.API_URL + 'ticket/api/tickets/?status=resolved';
-    console.log('Fetching tickets from URL:', url);
-  
-    this.api.getAPI(url).subscribe({
-      next: (response) => {
-        console.log('Full API response:', response);
-  
-        // Assuming the response itself is the data array
-        this.ticketData = response;
-        this.showGrid = true;  // Show the grid after data is loaded
-        console.log('Ticket data loaded:', this.ticketData);
-      },
-      error: (error) => {
-        console.error('Error fetching tickets:', error);
-        console.error('Error details:', error.message);
-        
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          console.error('Client-side error:', error.error.message);
-        } else {
-          // Server-side error
-          console.error(`Server-side error: ${error.status} ${error.statusText}`);
-          console.error('Error response body:', error.error);
-        }
-      }
-    });
-  }
-  
-  handleCardClick4() {
-    this.selectedCardName = 'Closed Tickets';
-
-    this.showGrid = false; // Pehle table ko hide kar do
-
-    const url = environment.API_URL + 'ticket/api/tickets/?status=closed';
-    console.log('Fetching tickets from URL:', url);
-  
-    this.api.getAPI(url).subscribe({
-      next: (response) => {
-        console.log('Full API response:', response);
-  
-        // Assuming the response itself is the data array
-        this.ticketData = response;
-        this.showGrid = true;  // Show the grid after data is loaded
-        console.log('Ticket data loaded:', this.ticketData);
-      },
-      error: (error) => {
-        console.error('Error fetching tickets:', error);
-        console.error('Error details:', error.message);
-        
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          console.error('Client-side error:', error.error.message);
-        } else {
-          // Server-side error
-          console.error(`Server-side error: ${error.status} ${error.statusText}`);
-          console.error('Error response body:', error.error);
-        }
-      }
-    });
-  }
-  
-  
- 
-
-  
- 
-
-  onEdit(event: any, ticketId: string) {
-    console.log("Ticket ID:", ticketId);  
-    this.detailsForm.get('status')?.enable();
-  
-    console.log("Form Validation Status:", this.detailsForm.valid);
-    console.log("Form Values:", this.detailsForm.value);
-  
-    let formData = new FormData();
-  
-    formData.append('title', this.detailsForm.get('title')?.value || null);
-    formData.append('description', this.detailsForm.get('description')?.value || null);
-    // formData.append('submitter_email', this.detailsForm.get('submitter_email')?.value || '');
-    formData.append('assigned_to', this.detailsForm.get('assigned_to')?.value || '');
-    formData.append('status', this.detailsForm.get('status')?.value || '');
-    formData.append('priority', this.detailsForm.get('priority')?.value || '');
-    formData.append('due_date', this.detailsForm.get('due_date')?.value || null);
-  
-    this.api.putAPI(`${environment.API_URL}ticket/api/tickets/${ticketId}/`, formData).subscribe(
-      res => {
-        this.displayPopup = false;
-      },
-      error => {
-        this.toastr.error('Failed to submit Ticket', 'Error');
-      }
-    );
-  }
-  
-
-
-onCommentPopup() {
-  this.commentPopup = true;
-  this.api.getAPI(`${environment.API_URL}ticket/comments/`)
-  .subscribe(
-    (response) => {
-      // Update comments array with the response data
-      this.comments = response;
+      this.ticketData = response;
+      this.showGrid = true; // Show the grid after data is loaded
     },
-    (error) => {
-      console.error('Error fetching comments:', error);  // Log error if the API call fails
-    }
-  );
+   
+  });
 }
-
-
-
-
 statusUpadetd(str){
   if(str.code === 1){
     this.toastr.success(str.status, 'Success');
     this.ticketData=[]
-    this.loadTickets()
   }
   else
   this.toastr.error(str.status, 'Error');
 
 }
+statusOptions = [
+  { value: 'open', label: 'Open' },
+  { value: 'resolved', label: 'Resolved' },
+  { value: 'closed', label: 'Closed' },
+  { value: 'reopened', label: 'Reopened' },
+  { value: 'duplicate', label: 'Duplicate' }
+];
+  cancel() {
+  }
+  assignUpadetd(str:any) {
+    if (str.code === 1) {
+      this.toastr.success(str.status, 'Success');
+      this.ticketData = [];
+    } else {
+      this.toastr.error(str.status, 'Error');
+    }
+  }
+  isView: boolean = false;
+  onUsersFetched(userOptions: any[]): void {
+    this.userOptions = userOptions;  // Assign the fetched users to the dropdown options
+}
+onEdit(event: any, ticketId: string){
+  this.isEditMode = true;
+  this.currentTicketId=ticketId
+  this.detailsForm.patchValue({
+        title: event.title,
+    description: event.description,
+    assigned_to: event.assigned_to,
+    status: event.status,
+    priority: event.priority,
+    due_date: event.due_date,
+    submitter_email: event.submitter_email,
+    on_hold: event.on_hold,
+      });
+   this.displayPopup = true;
+   this.handleCardClick('open', 'Open Tickets');
 
 }
+onCommentPopup(event: any) {
+  this.ticket_id = event.id;
+    this.commentPopup = true;
+    this.api.getAPI(`${environment.API_URL}ticket/comments/`)
+    .subscribe(
+      (response) => {
+        this.comments = response;
+      },
+    );
+    this.editorVisible = true;
+  }
+  addComment() {
+    const commentText = this.editorContent.value.trim();
+    if (!commentText) return; // Prevent empty comments
+    const userId = localStorage.getItem('user_id');
+    if (!userId) return;
+    const payload = {
+      ticket: this.ticket_id,
+      user: Number(userId),
+      comment_text: commentText,
+    };
+    this.api.postAPI(`${environment.API_URL}ticket/comments/`, payload).subscribe({
+      next: () => {
+        this.toastr.success('Comment added successfully!', 'Success');
+        this.editorContent.reset(); // Clear input field
+        this.refreshComments(); // Refresh comments after adding
+      },
+      error: () => {
+        this.toastr.error('Failed to add comment. Please try again.', 'Error');
+      }
+    });
+  }
+  
+  
+
+  refreshComments() {
+    this.api.getAPI(`${environment.API_URL}ticket/comments/`).subscribe({
+      next: (response) => {
+        this.comments = response;
+      },
+      error: () => {
+        this.toastr.error('Failed to load comments', 'Error');
+      }
+    });
+  }
+  
+  
+  
+  
+
+
+  initializeForm(): void {
+    this.detailsForm = this.fb.group({
+      tasking_group: ['', Validators.required],
+      assigned_to: [null]
+    });
+  }
+
+  getTaskingGroups(): void {
+    this.api.getAPI(`${environment.API_URL}master/taskinggroups`).subscribe(
+      (res) => {
+        this.taskingGroups = res.data;
+      },
+      (error) => {
+        console.error('Error fetching tasking groups:', error);
+      }
+    );
+  }
+
+  onTaskingGroupChange(event: any): void {
+    const selectedTaskingGroupId = event.value;
+    if (selectedTaskingGroupId) {
+      this.getTaskingUser(selectedTaskingGroupId);
+    } else {
+      this.usersList = []; // Clear the users list if no tasking group is selected
+    }
+  }
+  getTaskingUser(taskingGroupId: string): void {
+    this.api.getAPI(`${environment.API_URL}api/auth/users?tasking_id=${taskingGroupId}`).subscribe(
+      (res) => {
+        this.usersList = res.data;
+        console.log('Fetched users:', this.usersList);
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
+  
+  disableWesee(): boolean {
+    return false;
+  }
+  
+}  

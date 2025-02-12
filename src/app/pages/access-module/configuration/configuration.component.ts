@@ -11,7 +11,6 @@ import { language } from "../../../../environments/language";
 import { Router } from '@angular/router';
 import { ConsoleService } from "../../../service/console.service";
 import { of } from 'rxjs';
-
 declare function closeModal(selector):any;
 declare function openModal(selector):any;
 
@@ -21,7 +20,6 @@ declare function openModal(selector):any;
   styleUrls: ['./configuration.component.scss']
 })
 export class ConfigurationComponent implements OnInit {
-
   displayedColumns: string[] = [
     "user_role",
     "department",
@@ -31,7 +29,7 @@ export class ConfigurationComponent implements OnInit {
     "edit",
     "delete",
 
-  ];
+  ];;
 
 
   dataSource: MatTableDataSource<any>;
@@ -39,7 +37,6 @@ export class ConfigurationComponent implements OnInit {
   country: any;
   public crudName = "Add";
   public countryList = [];
-  // filterValue:any;
   isReadonly=false;
   moduleAccess:any;
   ErrorMsg:any;
@@ -91,53 +88,54 @@ export class ConfigurationComponent implements OnInit {
   };
 
   ngOnInit(): void {
-     this.getApproval();
-     this.getUserGroups();
-     this.getUserRoles();
+     this.getApproval(this.currentPage);
+     this.getUserGroups(this.currentPage);
+     this.getUserRoles(this.currentPage);
      this.getAccess();
   }
   userRoles:any;
-  getUserRoles() {
+  getUserRoles(page:number=1) {
     this.api
-      .getAPI(environment.API_URL + "access/access_user_roles?status=1")
+      .getAPI(environment.API_URL + "access/access_user_roles?status=1&page=${page}")
       .subscribe((res) => {
         this.userRoles = res.data;
+        this.totalCounts = res.count;
       });
   }
 
   UserGroups:any;
-  getUserGroups() {
+  totalCounts:number=0;
+  currentPage: number;
+
+  getUserGroups(page: number = 1) {
     this.api
-      .getAPI(environment.API_URL + "master/department?status=1")
+      .getAPI(`${environment.API_URL}master/department?status=1&page=${page}`)
       .subscribe((res) => {
         this.UserGroups = res.data;
+        this.totalCounts = res.count;
       });
   }
-
-  getApproval() {
+  getApproval(page: number = 1) {
     this.api
-      .getAPI(environment.API_URL + "configuration/approvals")
+      .getAPI(`${environment.API_URL}configuration/approvals&page=${page}`)
       .subscribe((res) => {
-        this.dataSource = new MatTableDataSource(res.data);
-        this.configurationData=res.data;
-        this.countryList = res.data;
+        this.dataSource = new MatTableDataSource(res.results.data);
+        this.configurationData = res.results.data;
+        this.countryList = res.results.data;
         this.dataSource.paginator = this.pagination;
-
-      });
-  }
-
-  create() {
-    this.crudName = "Add";
-    this.isReadonly=false;
-    this.editForm.enable();
-    let reset = this.formGroupDirective.resetForm();
-    if(reset!==null) {
-      this.initForm();
-    }
-    var element = <HTMLInputElement>document.getElementById("exampleCheck1");
-    element.checked = true;
-    openModal('#configuration');
-  }
+      });}
+      create() {
+        this.crudName = "Add";
+        this.isReadonly=false;
+        this.editForm.enable();
+        let reset = this.formGroupDirective.resetForm();
+        if(reset!==null) {
+          this.initForm();
+        }
+        var element = <HTMLInputElement>document.getElementById("exampleCheck1");
+        element.checked = true;
+        openModal('#configuration');
+      }
 
   editOption(country) {
     this.isReadonly=false;
@@ -195,14 +193,12 @@ export class ConfigurationComponent implements OnInit {
   onSubmit() {
      if (this.editForm.valid) {
       this.editForm.value.created_by = this.api.userid.user_id;
-      //this.editForm.value.status = this.editForm.value.status==true ? 1 : 2;
       this.api
         .postAPI(
           environment.API_URL + "configuration/approvals/crud",
           this.editForm.value
         )
         .subscribe((res) => {
-          //this.error= res.status;
           if(res.status==environment.SUCCESS_CODE){
             this.notification.success(res.message);
             this.getApproval();
@@ -248,10 +244,7 @@ applyFilter(event: Event) {
     this.getApproval();
   }
 }
-// applyFilter(event: Event) {
-//   const filterValue = (event.target as HTMLInputElement).value;
-//   this.dataSource.filter = filterValue.trim().toUpperCase();
-// }
+
 
 
 
@@ -262,40 +255,22 @@ applyFilter(event: Event) {
     gridColumns=[
       { field: 'user_role.name', header: ' USer Role', filter: true, filterMatchMode: 'contains' },
       { field: 'department.name', header: 'User Group', filter: true, filterMatchMode: 'contains' },
-      // { field: 'level', header: 'Level', filter: true, filterMatchMode: 'contains' },
-      // { field: 'department.status', header: 'Status', filter: true, filterMatchMode: 'contains' },
-      // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
       ]
-      exportData:any;
       filterData:any;
       handleFilter(filterValue: any) {
       
       this.filterData = filterValue;
-      // console.log'Filter triggered with value:', filterValue);
       }
       handlePagination(pageEvent: any) {
-      // console.log'Pagination triggered with event:', pageEvent);
+        this.getUserGroups(pageEvent.page + 1);
+        this.getUserRoles(pageEvent.page + 1);
+        this. getApproval(pageEvent.page + 1);
+        
+        this.currentPage = pageEvent.page + 1;
+
+
       }
-    
-      openCurrentStatus(country){
-      // this.id=country.id;
-      //   // console.log'tasking country',country)
-      //   this.taskname = country.task_name;
-      //   this.tasknumber = country.task_number_dee;
-      //   // this.selectedTrial=tasking;
-      //   openModal('#trial-status-modal');
-      // this.getComments();
-      }
-    
-      UploadReceipt(country) {
-        // this.id=country.id;
-        // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
-      }
-      
-      completedtask(country) {
-        // this.id=country.id;
-        // openModal('#completedTask-modal');
-      }
+
       taskid:any;
       opentask(country:any){
         // console.log'countyryry',country);
@@ -304,10 +279,6 @@ applyFilter(event: Event) {
         openModal('#export');
         this.taskid = country.id;
       
-      }
+      }        
     
-    
-    
-  
-
 }

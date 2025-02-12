@@ -3,31 +3,10 @@
     display: flex;
     flex-wrap: wrap;
 }
-
-.col-md-6 {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 /* Ensuring the input field takes full width inside the column */
 .form-control {
     width: 100%;
 }
-
-/* Add some space between rows */
-.mt-4 {
-    margin-top: 1.5rem;
-}
-
-/* Style the label to ensure proper spacing and alignment */
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
 .custom-submit-btn {
     background-color:#14182b !important; /* Change button color */
     color: white !important; /* Text color */
@@ -79,3 +58,263 @@ label {
 .ticket-button:hover {
     background-color:#170047;
 }
+
+  /* Style for Add Comment button */
+button[pButton] {
+    background-color: #052b53;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  button[pButton]:hover {
+    background-color: #073e79;
+  }
+  
+  /* Style for the Comments section */
+  .comments-section {
+    margin-top: 20px;
+  }
+  
+  .comments-section p {
+    background-color: #bfdfe9;
+    border: 2px solid #dcdcdc;
+    padding: 17px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+  }
+  .status-dropdown {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .status-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .status-dropdown option {
+    padding: 8px;
+  }
+  
+  label[for="status"] {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+  }
+  
+  .col-md-6 {
+    display: flex;
+    flex-direction: column;
+  }
+  .status-dropdown {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .status-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .status-dropdown option {
+    padding: 8px;
+  }
+  
+  label[for="priority"] {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+    font-size: 14px; 
+    color: #333; 
+  }
+  
+  .col-md-6 {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  
+
+  
+
+
+
+  p-dropdown {
+    width: 100% !important; /* Ensures full width */
+    display: block !important; /* Forces block display */
+  }
+  
+  ::ng-deep .p-dropdown {
+   
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 2px solid #007bff;
+    padding: 3px 12px;
+    background-color: #fff;
+    transition: border-color 0.3s ease-in-out;
+    margin-top: 2px; 
+
+  }
+  
+  ::ng-deep .p-dropdown:hover {
+    border-color: #007bff;
+  }
+  
+  ::ng-deep .p-dropdown.p-disabled {
+    background-color: #f5f5f5;
+    color: #999;
+  }
+  
+  label[for="assigned_to"] {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+   
+  }
+  
+  .col-md-6 {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+  
+
+
+//   for editor
+.small-editor {
+    min-height: 150px; /* Reduce the height */
+    max-height: 200px; /* Set a max height */
+    font-size: 14px; /* Reduce font size */
+  }
+  
+  ::ng-deep .angular-editor-textarea {
+    min-height: 120px !important; /* Adjust the text area height */
+    max-height: 180px !important;
+    font-size: 14px !important;
+  }
+  
+  .editor-container label {
+    font-size: 14px; /* Adjust label font size */
+    margin-bottom: 5px;
+  }
+//    on hold checkbo
+.custom-checkbox {
+    width: 30px;
+    gap:4px;
+    margin-right: 30px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .form-check-label {
+    margin-right: 80px;
+    padding-top: 20px;
+    font-size: 14px;
+    margin-right: 10px;
+    border: none solid #007bff ;
+  }
+  .on-hold-checkbox:checked {
+    background-color: #007bff; /* Change to primary color when checked */
+    border-color: #007bff;
+  }
+  .form-control[_ngcontent-ng-c65809272] {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px;
+}
+mat-mdc-text-field-wrapper {
+    width: 100%;
+    height: 30px;
+    z-index: 0;
+    margin-top: 13px;
+    margin-bottom: -3px;
+    padding: -3px;
+}
+.custom-height .mat-form-field-wrapper {
+    height: 8px; /* Adjust this height as needed */
+    padding-bottom: 0;
+  }
+  
+  .custom-height .mat-select {
+    height: 8px; /* Match this height */
+    line-height: 38px;
+  }
+  
+  .status-dropdown{
+    margin-top: -3px;
+  }
+ 
+  .status-group{
+    margin-top: 4px!important;
+
+  }
+  .due-date-input{
+    margin-top: 4px!important;
+
+  }
+  .attachment-input{
+    margin-top: -1px!important;
+
+  }
+  
+  .small-editor {
+    margin-top: 9px!important;
+   
+
+
+  }
+  .d-flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .mr-2 {
+    margin-right: 8px; /* Adjust as needed */
+  }
+
+  .custom-checkbox {
+    margin-left: 10px;
+  }
+
+  .form-check-label {
+    margin-right: 10px;}
+    .checkbox-container label {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* Minor space between checkbox and text */
+      font-size: 18px; /* Increase text size */
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+
+  }
+  
+  .checkbox-container input[type="checkbox"] {
+      width: 20px; /* Increase checkbox size */
+      height: 20px;
+  }
+  

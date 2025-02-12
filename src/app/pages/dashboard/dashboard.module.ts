@@ -33,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatButtonModule } from '@angular/material/button';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
+import { PaginatorModule } from 'primeng/paginator';
 
 
 
@@ -40,6 +41,7 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [DashboardComponent, TaskListComponent, ApprovedTaskComponent, PendingTaskComponent, TaskBlockComponent, Dashboard1Component],
   imports: [
+    PaginatorModule,
     ButtonModule,
     CommonModule,
     PringeComponentModule,
@@ -69,12 +71,7 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
         path: 'view-task',
         component: DashboardComponent,
       },
-      // {
-      //   path: '',
-      //   component: TaskListComponent,
-      //   data: {some_data: 'Sponsoring Directorate'}
-
-      // },
+     
       {
         path: 'dashboard1',
         component: Dashboard1Component,

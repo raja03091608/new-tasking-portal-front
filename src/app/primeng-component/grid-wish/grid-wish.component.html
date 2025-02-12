@@ -78,8 +78,27 @@
                             </span><i (click)="rowData.editable=true ;old_status=rowData.status" class=" ml-3 fa-solid fa-caret-down"></i>
                         </ng-template>
                     </ng-container>
-                    
-                    
+                      <ng-container *ngIf="col.header === 'Assigned To'">
+                        <ng-container *ngIf="selectedRow === rowData; else assignedToText">
+                          <select [(ngModel)]="rowData.assigned_to.first_name" 
+                                  class="assigned-to-dropdown" 
+                                  (change)="onAssignedToChange(rowData); selectedRow = null">
+                            <option *ngFor="let user of userOptions" [value]="user.first_name">
+                              {{ user?.loginname }}
+                            </option>
+                          </select>
+                        </ng-container>
+                      
+                        <ng-template #assignedToText>
+                          <span class="assigned-to">
+                            {{ rowData.assigned_to?.loginname }}
+                            {{ rowData.assigned_to?.rankCode }}
+                            {{ rowData.assigned_to?.first_name }}
+                            {{ rowData.assigned_to?.last_name }}
+                          </span>
+                          <i (click)="getUser(rowData)" class="ml-3 fa-solid fa-caret-down"></i>
+                        </ng-template>
+                      </ng-container>
                     <ng-container *ngIf="col.header === 'Priority'">
                         <span [ngClass]="getPriorityData(rowData.priority).class">
                             {{ getPriorityData(rowData.priority).label }}

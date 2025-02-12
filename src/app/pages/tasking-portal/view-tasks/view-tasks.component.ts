@@ -57,7 +57,6 @@ export type ChartOptions = {
 
 type Tabs = "TaskWaiting" | "TaskApproved";
 declare function closeModal(selector:any):any;
-//declare function closeAllActiveModals(selector):any;
 declare function openModal(selector:any):any;
 declare function triggerClick(selector:any):any;
 declare var moment:any;
@@ -150,14 +149,11 @@ export class ViewTasksComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   login_id:any;
-
-
   constructor(@Inject(LOCALE_ID) public locale: string,public api: ApiService, private notification: NotificationService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService,private modalService: NgbModal,private fb:FormBuilder,public datepipe:DatePipe)
     {
 
        this.login_id = this.api.userid.user_id
-       // console.log'login_id',this.api.userid.user_id);
       this.dataSource = new MatTableDataSource();
       this.dataSourcelist = new MatTableDataSource();
       this.dataSourceStatus = new MatTableDataSource();
@@ -167,7 +163,6 @@ export class ViewTasksComponent implements OnInit {
         status : new FormControl(""),
         created_by: new FormControl(""),
         comments: new FormControl("", [Validators.required]),
-
       });
       this.xlxsForm = new FormGroup({
         header: new FormControl([]),
@@ -204,8 +199,6 @@ export class ViewTasksComponent implements OnInit {
     tasking: new FormControl(""),
 	  mile: new FormControl(""),
   });
-
-
   this.approvalForm = new FormGroup({
     id: new FormControl(""),
     tasking:new FormControl(""),
@@ -213,7 +206,6 @@ export class ViewTasksComponent implements OnInit {
     comments: new FormControl("",[Validators.required]),
     status: new FormControl(""),
     approved_role_id: new FormControl(''),
-    //pendingAt:new FormControl(""),
 
   });
 
@@ -311,20 +303,13 @@ export class ViewTasksComponent implements OnInit {
       }, 1000);
 
   }
-
-
-
-
-
   img_link1=0;
-  //status = this.editForm.value.status;
   populate(data:any) {
     this.approvalForm.patchValue(data);
     this.taskingForm.patchValue(data);
     this.commentForm.patchValue(data);
     this.completedForm.patchValue(data);
     this.archiveForm.patchValue(data);
-    // this.taskingForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
     this.taskingForm.patchValue({status_summary:data.status_summary,secTitle:data.secondary_title })
     if (data ? data.file : "") {
       var img_link = data.file;
@@ -336,20 +321,15 @@ export class ViewTasksComponent implements OnInit {
         this.ImgUrl ="";
       }
 
-    // this.logger.info(data.status)
-    // // console.log'data',this.data)
   }
 
   initForm() {
-
     this.approvalForm.patchValue({
       status: "1",
     })
     this.taskingForm.patchValue({
       status: "1",
       });
-
-
   }
 
   Errorcomment = (controlName: string, errorName: string) => {
@@ -372,27 +352,21 @@ export class ViewTasksComponent implements OnInit {
     return this.taskingForm.controls[controlName].hasError(errorName);
   };
 
-  // valueType=[];
   pending:any=[];
   name:any=[];
   completed:any=[];
   mapped:any=[];
   getstatus(tasking_id:any) {
-	// this.series.data.setAll('')
     this.api
       .getAPI(environment.API_URL + "transaction/tasking-status?tasking_id="+tasking_id)
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
         this.statuslist = res.data;
         this.dataSource.paginator = this.pagination;
-
         for(let i=0;i<this.statuslist.length;i++){
-
           const val =100-this.statuslist[i].project_progress;
           this.pending.push([val]);
           this.completed.push('-'+[this.statuslist[i].project_progress])
-
-          // this.completed.push([this.statuslist[i].project_progress])
           this.name.push([this.statuslist[i].tasking.task_number_dee])
 
         }
@@ -410,102 +384,11 @@ export class ViewTasksComponent implements OnInit {
     this.getAccess();
     this.gettitlelist();
     this.isStatusAdd= (this.token_detail.process_id == 3 || this.token_detail.process_id == 1) ? true : false
-    // this.getstatus;
-    // this.getViewStatus();
-
-
-
-
-
-    // this.getviewstatuscomment();
-
-
-
-    // let root = am5.Root.new("chartdiv");
-
-
-
-
-    // // Set themes
-    // // https://www.amcharts.com/docs/v5/concepts/themes/
-    // root.setThemes([
-    //   am5themes_Animated.new(root)
-    // ]);
-
-
-    // // Create chart
-    // // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-    // let chart = root.container.children.push(am5percent.PieChart.new(root, {
-    //   layout: root.verticalLayout,
-    //   innerRadius: am5.percent(50)
-    // }));
-
-
-    // // Create series
-    // // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-    // this.series = chart.series.push(am5percent.PieSeries.new(root, {
-    //   valueField: "value",
-    //   categoryField: "category",
-    //   alignLabels: false
-    // }));
-
-
-    // this.series.labels.template.setAll({
-    //   textType: "circular",
-    //   centerX: 0,
-    //   centerY: 0
-    // });
-
-
-    // // Set data
-    // // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-    // //
-    //   this.series.data.setAll(
-    //    this.mapped
-
-    //  );
-    //  // console.log'serire',)
-    //   // series.data.setAll(
-    //   //   { value: 10, category: "Sep" },
-    //   //   { value: 9, category: "Oct" },
-    //   //   { value: 6, category: "Nov" },
-    //   //   { value: 5, category: "Dec" },
-
-    //   // );
-
-
-
-    // // Create legend
-    // // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
-    // let legend = chart.children.push(am5.Legend.new(root, {
-    //   centerX: am5.percent(50),
-    //   x: am5.percent(50),
-    //   marginTop: 15,
-    //   marginBottom: 15,
-    // }));
-
-    // // legend.data.setAll(series.dataItems);
-
-
-    // // Play initial series animation
-    // // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-    // this.series.appear(1000, 100);
-
-
-
-
-
-
   }
 onFilterChange(filterInput,item?,item2?){
-
 }
 onCustomClear(item){
-
 }
-
-
-
   data_list:any;
   add(country:any) {
     this.showError=false;
@@ -515,28 +398,20 @@ onCustomClear(item){
     this.data_list=country;
     let reset = this.formGroupDirective.resetForm();
     this.getViewStatus(country.id)
-    // if(reset!==null) {
-    //   this.initForm();
-    // }
     var element = <HTMLInputElement>document.getElementById("exampleCheck1");
-    // element.checked = true;
     openModal('#tasking-modal');
 
   }
 
   showSecTitle : boolean = false;
   secondaryTitle
-
-
   onSelectionChange(event){
-    // // console.logevent,"==============<<<<<<<<<<<<>>>>>>")
     if(event){
       if(event !== 'Task Closed'){
         let url  = `master/lookup?type__code=${event == 'Work In Progress'? 'PRO_SEC': 'PRO_TER'}`
         this.api
       .getAPI(environment.API_URL + url)
       .subscribe((res) => {
-        // // console.logres,"============>>>>>>>>>>>>>")
         this.secondaryTitle = res.data;
         this.showSecTitle = true;
       });
@@ -550,12 +425,8 @@ onCustomClear(item){
     }
 
   }
-
-
-
   onSubmit() {
     this.showError=true;
-    // this.taskingForm.value.status == "1";
     this.taskingForm.patchValue({start_date:this.datepipe.transform(this.start_date,'yyyy-MM-dd')});
     this.taskingForm.patchValue({end_date:this.datepipe.transform(this.end_date,'yyyy-MM-dd')});
     if(this.taskingForm.value.status){
@@ -566,7 +437,6 @@ onCustomClear(item){
       this.taskingForm.value.status="2"
     }
     const formData = new FormData();
-    // formData.append('file',this.imgToUpload);
     formData.append('status_description', this.taskingForm.value.status_description);
     formData.append('start_date', this.taskingForm.value.start_date);
     formData.append('title', this.taskingForm.value.title);
@@ -577,36 +447,24 @@ onCustomClear(item){
     formData.append('created_by', this.api.userid.user_id);
     formData.append('status_summary', this.taskingForm.value.status_summary);
     formData.append('status', this.taskingForm.value.status);
-    // formData.append('file', this.imgToUpload)
     formData.append('secondary_title', this.taskingForm.value.secTitle)
-
-
-    // if(this.imgToUpload !=null){
-    //   formData.append('file', this.imgToUpload)
-    // }
      if (this.taskingForm.valid) {
 
 
       this.taskingForm.value.created_by = this.api.userid.user_id;
-      // this.editForm.value.status = this.editForm.value.status==true ? "1" : "2";
       this.api
         .postAPI(
           environment.API_URL + "transaction/tasking-status/crud",
           formData,
-          // this.taskingForm.value
-
         )
         .subscribe((res) => {
-          //this.error= res.status;
           if(res.status==environment.SUCCESS_CODE){
             this.notification.success(res.message);
             this.getViewStatus( this.data_list.id);
-            // this.closebutton.nativeElement.click();
             let reset = this.formGroupDirective.resetForm();
             if(reset!==null) {
               this.initForm();
             }
-            // this.showError=false;
           } else if(res.status==environment.ERROR_CODE) {
             this.error_msg=false;
             this.ErrorMsg=res.message;
@@ -620,12 +478,8 @@ onCustomClear(item){
 
         });
     }
-    // closeModal('#tasking-modal');
   }
-
-
   onImageHandler(event:any) {
-    //// console.logevent,event.target.files[0])
     if (event.target.files.length > 0) {
       this.imgToUpload= event.target.files[0];
      };
@@ -635,8 +489,6 @@ onCustomClear(item){
       this.id=event.id;
       this.isfileUpload=true;
     }
-
-
   taskingGroups: any;
   getTaskingGroups() {
     this.api
@@ -645,13 +497,10 @@ onCustomClear(item){
         this.taskingGroups = res.data;
       });
   }
-
   id: any;
   task_name: any;
   task_Desc: any;
   tasking_group: any;
-
-
   getAccess() {
    this.moduleAccess = this.api.getPageAction();
     if (this.moduleAccess) {
@@ -667,9 +516,6 @@ onCustomClear(item){
     }
 
   }
-
-  
-
   selectedTrial:any;
   taskname:any;
   tasknumber:any
@@ -696,61 +542,38 @@ onCustomClear(item){
 
   UploadReceipt(country) {
     this.id=country.id;
-    // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
     window.open(country.legacy_attachment)
   }
-
   completedtask(country) {
     this.id=country.id;
     openModal('#completedTask-modal');
   }
-
   archivetask(country){
     this.id=country.id;
-    // // console.log'this.id0',this.id)
     openModal('#archive-modal')
   }
   commentModal(comment){
     openModal('#comment-modal')
     this.commentForm.patchValue(comment)
   }
-
   taskid:any;
   opentask(country:any){
-	  // // console.log'countyryry',country);
     this.resetexportform();
-    // this.exportform.reset();
     openModal('#export');
 	  this.taskid = country.id;
 
   }
-
-
   data:any;
   approvalData:any;
   pendingAt:any;
   openApproveDialog(countryList) {
-    // this.id=tasking.id;
-    // if(reset !==null)
 
     this.id=countryList.id;
     this.approvalData = countryList;
-    // this.id=data.id
-    // this.candidateName=data.name
     this.approvalForm.patchValue({id:this.id,tasking:this.id,approved_level:countryList.approved_level,approved_role_id:this.token_detail.role_center[0].user});
 
-    // openModal('#approval-modal');
-    // this.approveForm=this.fb.group({
-
-    //  remark:[''],
-    //  pendingAt:['']
-    // });
 
     this.dialogRef = this.modalService.open(this.approve);
-    // let reset = this.formGroupDirective.resetForm();
-    // if (reset !== null) {
-    //   this.initForm();
-    // }
 
   }
   approvalType='Recommendation';
@@ -771,24 +594,17 @@ onCustomClear(item){
   {
    this.showError=true;
    this.approvalForm.value.id=this.approvalData.id;
-    // this.approvalForm.value.trail_id=this.trail_id=2;
-    //this.approvalForm.value.trail_id=this.id;
-  //  this.approvalForm.value.approved_level=this.approved_level;
     this.approvalForm.value.status = this.approvalData.status;
     this.approvalForm.value.approved_role_id = this.token_detail.role_center[0].user;
-
-    // this.approvalForm.value.status==true ? 1 : 2
       if (this.approvalForm.valid) {
         this.api.postAPI(environment.API_URL + "transaction/trials/approval",this.approvalForm.value).subscribe((res) => {
 
             this.approvalForm.patchValue({comments:''});
            if(res.status==environment.SUCCESS_CODE){
               this.notification.success(res.message);
-              // closeModal('#approval-modal');
               this.showError=false;
               this.dialogRef = this.modalService.dismissAll(this.approve);
              this.getTasking();
-            //  this.localForm.submitted=false;
             } else if(res.status==environment.ERROR_CODE) {
               this.error_msg=true;
               this.ErrorMsg=res.message;
@@ -796,7 +612,6 @@ onCustomClear(item){
                 this.error_msg = false;
              }, 2000);
 
-            //  this.notification.displayMessage(res.message);
             } else {
              this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
             }
@@ -828,26 +643,20 @@ onCustomClear(item){
   setActiveTab(tab: Tabs) {
     this.activeTab = tab;
   }
-
-  // tasking_id:any;
   getTasking() {
     this.countryList=[]
-    // if(this.token_detail.role_id==3 ){
       if(this.token_detail.process_id==3 ){
       this.api
       .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
       .subscribe((res) => {
         if(res.status==environment.SUCCESS_CODE){
           this.countryList = res.data
-          
-          
         this.dataSourcelist = new MatTableDataSource(this.countryList);
   
         this.dataSourcelist
         .paginator = this.pagination;
         
         
-        // this.logger.log('country', this.countryList)
         }
 
       });
@@ -862,7 +671,6 @@ onCustomClear(item){
         this.countryList = res.data;
         this.dataSourcelist
         .paginator = this.pagination;
-        // this.logger.log('codduntry', this.countryList)
         }
 
       });
@@ -870,16 +678,7 @@ onCustomClear(item){
     }
 
   }
-
-
-
   approvalID:any;
-  // openStatusDialog(id){
-  //   // console.logthis.approvalID)
-  //   this.approvalID=id;
-  //   this.statusRef= this.modalService.open(ViewStatusComponent,{ size: 'xl' });
-
-  // }
   viewlist:any;
   viewStatusDialog(data){
     this.commentForm.get('comments').setValue(null);
@@ -887,14 +686,9 @@ onCustomClear(item){
     this.viewlist=data
     openModal('#viewTasking-modal');
      this.getstatus(data.id);
-    // // console.log'datadata',data);
     this.taskname = data.task_name
     this.tasknumber = data.task_number_dee
-
     setTimeout(()=> {
-      // this.getviewstatuscomment(this.viewlist.id);
-
-
       this.chartOptions = {
         series: [
           {
@@ -936,7 +730,6 @@ onCustomClear(item){
           min: -100,
           max: 100,
           title: {
-            // text: 'Age',
           }
         },
         tooltip: {
@@ -965,32 +758,19 @@ onCustomClear(item){
         }
       };
 
-	//   setTimeout(() => {
-    //     updateChart
-    //   }, 1000);
    }, 500);
-
-
   }
 
   commentslist:any;
-
-
   showcomments=false;
   closeviewlistmodal(){
 
-    // this.series.data.setAll('');
     this.completed=[];
     this.pending=[];
     this.name=[];
     this.showcomments=false;
-
-
     closeModal('#viewTasking-modal');
-
     this.getTasking();
-
-
   }
 
   closecompletedmodal(){
@@ -1003,33 +783,22 @@ onCustomClear(item){
 
   saveviewstatus() {
     this.showcomments=true;
-    // // console.log'commentform',this.commentForm);
     if(this.commentForm.value.created_by!=null && this.commentForm.value.tasking!=null){
     this.commentForm.value.created_by = this.api.userid.user_id;
     this.commentForm.value.tasking = this.viewlist.id;
     this.commentForm.value.status = '1';
     }
-    // const formData = new FormData();
-    // formData.append('tasking', this.viewlist.id);
-    // formData.append('id',this.commentForm.value.id);
 
      if (this.commentForm.valid) {
       this.api
         .postAPI(
           environment.API_URL + "transaction/comments/crud",
           this.commentForm.value,
-          // formData,
 
         )
         .subscribe((res) => {
-          // this.logger.log('response',res);
-          //this.error= res.status;
           if(res.status==environment.SUCCESS_CODE){
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
-            // this.getviewstatuscomment(this.viewlist.id);
-            // this.commentForm.reset();
-
             this.closebutton.nativeElement.click();
             this.showcomments=false;
             this.commentclose()
@@ -1045,13 +814,9 @@ onCustomClear(item){
 
         });
     }
-    // closeModal('#viewTasking-modal');
   }
 
   submitExten(){
-    // `transaction/extended/details/?tasking_id=102`
- 
-
     let data = {
       id: '',
       "tasking": this.data_list.id,
@@ -1071,8 +836,6 @@ onCustomClear(item){
 
     )
     .subscribe((res) => {
-      // this.logger.log('response',res);
-      //this.error= res.status;
       if(res.status==environment.SUCCESS_CODE)
          this.notification.success(res.message);
         this.extensionForm.reset();
@@ -1128,29 +891,18 @@ onCustomClear(item){
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-    // this.commentForm.patchValue(country);
-    // this.commentForm.patchValue({status:'3',comments:''});
         this.api
         .postAPI(
           environment.API_URL + "transaction/comments/crud",
           {status:'3',comments:'',id:country.id},
-          // formData,
-
         )
         .subscribe((res) => {
           if(res.status === 1){
             this.notification.success(res.message);
-
-            // this.getviewstatuscomment(this.viewlist.id);
-
           }
           else{
             this.notification.success(res.message);
-          // this.getviewstatuscomment(this.viewlist.id);
           }
-          // this.commentForm.reset();
-
-
         })
       }
         dialogRef=null;
@@ -1158,27 +910,13 @@ onCustomClear(item){
       });
     }
 
-  // getviewstatuscomment(id:any){
-
-	// 	this.api
-	// 	  .getAPI(environment.API_URL + "transaction/comments?tasking_id="+id)
-	// 	  .subscribe((res) => {
-	// 		this.dataSourcelist = new MatTableDataSource(res.data);
-	// 		this.commentslist = res.data;
-			
-	// 	  });
-	//   }
-
     addStatusdata=[];
   getViewStatus(id) {
     this.addStatusdata=[]
     this.api
       .getAPI(environment.API_URL + "transaction/tasking-status?tasking_id="+id)
       .subscribe((res) => {
-        // this.dataSourceStatus = new MatTableDataSource(res.data);
         this.addStatusdata = res.data;
-       
-
       });
 
   }
@@ -1196,7 +934,6 @@ onCustomClear(item){
     this.crudName = "Edit";
     this.populate(view);
     var element = <HTMLInputElement> document.getElementById("exampleCheck1");
-
     openModal('#tasking-modal');
 
 
@@ -1228,8 +965,6 @@ onCustomClear(item){
   taskingID:any;
   close(){
     this.taskingID='';
-    // let data=[];
-    // this.dataSourceStatus= new MatTableDataSource(data);
     closeModal('#tasking-modal');
   }
   archiveclose(){
@@ -1245,7 +980,6 @@ onCustomClear(item){
     this.showcomments=true;
     this.completedForm.value.completed_status = "1";
     this.completedForm.value.tasking=this.id;
-    // // console.log'completedForm', this.countryList[this.completedForm.value.tasking])
      if (this.completedForm.valid) {
       this.api
         .postAPI(
@@ -1255,7 +989,6 @@ onCustomClear(item){
         )
         .subscribe((res) => {
           if(res.status==environment.SUCCESS_CODE){
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.completedForm.reset();
             this.closebutton.nativeElement.click();
@@ -1279,7 +1012,6 @@ onCustomClear(item){
 
   savearchive() {
     this.showcomments=true;
-    // this.completedForm.value.reason = "1";
     this.archiveForm.value.tasking=this.id;
      if (this.archiveForm.valid) {
       this.api
@@ -1290,7 +1022,6 @@ onCustomClear(item){
         )
         .subscribe((res) => {
           if(res.status==environment.SUCCESS_CODE){
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.archiveForm.reset();
 			closeModal('#archive-modal')
@@ -1311,8 +1042,6 @@ onCustomClear(item){
     }
   ;
   }
-
-
   approvedDelete(id) {
     let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -1325,11 +1054,8 @@ onCustomClear(item){
           status: 3,
         }).subscribe((res)=>{
           if(res.status==environment.SUCCESS_CODE) {
-			// // console.log'asdasdasd',res);
-
             this.notification.warn('Approved Task '+language[environment.DEFAULT_LANG].deleteMsg);
             this.getTasking();
-            // this.getViewStatus(this.data_list.id);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableDelete);
           }
@@ -1338,8 +1064,6 @@ onCustomClear(item){
       dialogRef=null;
     });
   }
-
-
   processview = [];
   gettitlelist() {
     this.api
@@ -1348,21 +1072,16 @@ onCustomClear(item){
         this.processview = res.data;
       });
   }
-
-
   exports:any
     saveform(taskid:any){
-      // // console.log'export form',this.exportform.value);
       this.id=taskid;
       this.exportform.value.id = taskid
-
       window.open(environment.API_URL+"transaction/approved_all_task_excel/"+taskid+"/?initiator="+this.exportform.value.initiator+"&apso="+this.exportform.value.apso+"&wesee="+this.exportform.value.wesee+"&dg_wesee="+this.exportform.value.dg_wesee+"&dee="+this.exportform.value.dee+"&acom="+this.exportform.value.acom+"&com="+this.exportform.value.com+"&tasking="+this.exportform.value.tasking+"&mile="+this.exportform.value.mile)
       closeModal('#export');
       this.resetexportform();
   }
 
   resetexportform(){
-    //this.exportform.patchValue({initiator:"false",apso:"false",wesee:"false",dg_wesee:"false",dee:"false",acom:"false",com:"false",tasking:"false",mile:"false"});
     this.exportform.reset();
   }
 
@@ -1370,8 +1089,8 @@ gridColumns=[
   { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
   { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
   { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
-  {     field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
-  {  field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+  { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
+  { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
   {
     field: 'modified_on',
     header: 'Approved on',
@@ -1390,13 +1109,9 @@ filterData:any;
 handleFilter(filterValue: any) {
   
   this.filterData = filterValue;
-  // // console.log'Filter triggered with value:', filterValue);
 }
 handlePagination(pageEvent: any) {
-  // // console.log'Pagination triggered with event:', pageEvent);
 }
-
-
 expDataHeader=[
   { field: 'task_number_dee', header: 'Task Number (DEE)' },
   { field: 'task_name', header: 'Task Name' },
@@ -1421,16 +1136,9 @@ downloadexcel() {
     return;
   }
 
-  // Create a worksheet from the table
   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
-
-  // Create a new workbook
   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-
-  // Append the worksheet to the workbook
   XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
-
-  // Write the workbook to a file with .xlsx extension
   XLSX.writeFile(wb, this.fileName);
   this.exportData=this.dataSourcelist.data
   this.visible=false;
@@ -1446,11 +1154,9 @@ fileName:string;
 isFormHide=false
 submitHeaderForm() {
   this.isFormHide=true
-    // Extract form values
     this.selectedHeader = this.xlxsForm.get('header')?.value || [];
     this.fileName = this.xlxsForm.get('fileName')?.value+".xlsx" || 'sheet.xlsx';
     this.xlxsForm.reset()
-    // // console.logthis.selectedHeader);
   }
   selectAll() {
     const allHeaders = this.expDataHeader.map(option => option);
@@ -1468,7 +1174,6 @@ submitHeaderForm() {
     }
   }
   handleUpload(rowData: any) {
-    // // console.log'Uploaded row data:', rowData);
     }
 
     onUpload(event) {
@@ -1486,7 +1191,6 @@ onFileUpload(event) {
        formData.append('legacy_attachment', file);
        formData.append('id',this.id);
   }
-
   this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(res=>{
     if (res.status === 1) {
       this.notification.success(res.message);

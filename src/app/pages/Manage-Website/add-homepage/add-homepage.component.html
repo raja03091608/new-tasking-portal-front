@@ -3,20 +3,15 @@
         id="kt_careers_form">
 
         <div class="card">
-            <!--begin::Body-->
             <div class="card-header">
                 <h2 class="card-title fw-bolder">Website Section</h2>
             </div>
             <div class="card-body p-lg-17">
                 <div class="d-flex flex-column flex-lg-row">
-                    <!--begin::Content-->
                     <div class="flex-lg-row-fluid me-0">
-                        <!--begin::Form-->
 
                         <div class="row mb-5">
-                            <!--begin::Col-->
                             <div class="col-md-6 fv-row">
-                                <!--begin::Label-->
                                 <label class="required fs-5 fw-bold mb-2">Featured Logo</label>
                                 <input type="file" class="form-control form-control-solid"
                                     formControlName="website_logo" (change)="selectLogoFile($event)"
@@ -29,17 +24,12 @@
                                     <img src="{{websitePage?.website_logo}}" alt="" height="200px" width="200px">
                                 </div>
 
-                                <!--end::Label-->
                             </div>
-                            <!--begin::Input-->
                             <div class="col-md-6 fv-row">
-                                <!--begin::Label-->
                                 <label class="required fs-5 fw-bold mb-2">Featured Image</label>
                                 <input type="file" class="form-control form-control-solid"
                                     formControlName="website_logo_white" (change)="onselectImage($event)"
                                     accept="image/png, image/gif, image/jpeg">
-                                <!-- <input type="file" class="form-control form-control-solid"
-                                    FormControlName="website_logo_white" (change)="onselectImage($event)"> -->
                                 <div *ngIf="submitted && f['website_logo_white'].errors" class="text-danger">
                                     <div *ngIf="f['website_logo_white'].errors['required']">Please Select image file
                                     </div>
@@ -47,59 +37,37 @@
                                 <div *ngIf="showimage">
                                     <img src="{{websitePage?.website_logo_white}}" alt="" height="200px" width="200px">
                                 </div>
-                                <!--end::Label-->
                             </div>
-                            <!--end::Input-->
-
-                            <!--end::Col-->
 
                         </div>
 
                         <div class="row mb-5">
-                            <!--begin::Col-->
                             <div class="col-md-12 fv-row">
-                                <!--begin::Label-->
                                 <label class="required fs-5 fw-bold mb-2">About Website</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!-- add editor here -->
                                 <angular-editor formControlName="website_about" [config]="editorConfig" ></angular-editor>
-                                <!-- <ckeditor formControlName="website_about"></ckeditor> -->
                                 <div *ngIf="submitted && f['website_about'].errors" class="text-danger">
                                     <div *ngIf="f['website_about'].errors['required']">Website description required
                                     </div>
                                 </div>
 
-                                <!--end::Input-->
                             </div>
-                            <!--end::Col-->
                         </div>
-
-
-
-                        <!--end::Content-->
-
                     </div>
                 </div>
             </div>
         </div>
         <div class="card mt-8">
-            <!--begin::Body-->
             <div class="card-header">
                 <h2 class="card-title fw-bolder">Footer Section</h2>
             </div>
             <div class="card-body p-lg-17">
                 <div class="d-flex flex-column flex-lg-row ">
-                    <!--begin::Content-->
                     <div class="flex-lg-row-fluid me-0">
-                        <!--begin::Form-->
 
 							<div class="row mb-5">
                             <div class="col-md-6 fv-row">
 
                                 <label class="required fs-5 fw-bold mb-2">Address</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
                                 <input type="text" class="form-control form-control-solid" placeholder="Address"
                                     formControlName="address" />
                                 <div *ngIf="submitted && f['address'].errors" class="text-danger">
@@ -111,16 +79,11 @@
                             <div class="col-md-6 fv-row">
 
                                 <label class="required fs-5 fw-bold mb-2">Contact</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
                                 <input type="text"
                                     class="form-control form-control-solid" placeholder="0-9" formControlName="contact"
                                      />
 									 <div *ngIf="submitted && f['contact'].errors" class="text-danger">
 										<div *ngIf="f['contact'].errors['required']">Contact is required</div>
-										<!-- <div *ngIf="f['contact'].errors['pattern']">
-											Please enter valid number
-										</div> -->
 										</div>
                             </div>
 						</div>
@@ -128,8 +91,6 @@
                             <div class="col-md-6 fv-row">
 
                                 <label class="required fs-5 fw-bold mb-2">Email </label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
                                 <input type="email" class="form-control form-control-solid" placeholder="Email"
                                     formControlName="email" />
                                 <div *ngIf="submitted && f['email'].errors" class="text-danger">

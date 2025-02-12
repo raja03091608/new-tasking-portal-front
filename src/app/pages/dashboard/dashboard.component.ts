@@ -5,7 +5,6 @@ import { MatPaginator } from "@angular/material/paginator";
 import { environment } from "../../../environments/environment";
 import * as am5percent from '@amcharts/amcharts5/percent';
 import { ConsoleService } from "../../service/console.service";
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators, FormGroupDirective } from "@angular/forms";
 import { NotificationService } from "../../service/notification.service";
@@ -28,28 +27,6 @@ import { ApexAxisChartSeries, ApexChart, ApexFill,ApexLegend, ApexDataLabels, Ap
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
-export type ChartOptions1 = {
-	series: ApexAxisChartSeries;
-	chart: ApexChart;
-	fill: ApexFill;
-	legend: ApexLegend;
-	xaxis: ApexXAxis;
-	plotOptions: ApexPlotOptions;
-  };
-
-  export type ChartOptions = {
-    series: ApexAxisChartSeries;
-    chart: ApexChart;
-    stroke: ApexStroke;
-    dataLabels: ApexDataLabels;
-    plotOptions: ApexPlotOptions;
-    yaxis: ApexYAxis;
-    xaxis: ApexXAxis;
-    grid: ApexGrid;
-    colors: string[];
-    tooltip: ApexTooltip;
-    title: ApexTitleSubtitle;
-  };
 
   declare function openModal(selector):any;
   declare function closeModal(selector):any;
@@ -72,17 +49,13 @@ export class DashboardComponent implements OnInit {
   login_id:any;
   dataSourcelist: MatTableDataSource<any>;
   public countryList1 = [];
-  public chartOptions1: Partial<ChartOptions1> |any;
-  @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
   token_detail:any;
+  currentPage: any;
   constructor(public api: ApiService ,private dialog: MatDialog,private logger: ConsoleService,private route: ActivatedRoute, private notification: NotificationService,) {
 
     this.route.queryParams.subscribe(params => {
        this.id = atob(params['tasking_id']);
-       // console.log'iddd',this.id);
        this.login_id = this.api.userid.user_id
-     // Print the parameter to the console.
   });
 
 
@@ -93,136 +66,8 @@ export class DashboardComponent implements OnInit {
     .subscribe((v:any) => {
     this.username= v.some_data});
 
-    var updateChart1 = this.chartOptions1 = {
-      series:
-        this.milstonechartData,
-      chart: {
-        redrawOnWindowResize: true,
-        height: 450,
-        type: "rangeBar",
-		toolbar: {
-			show: false
-		  },
-		  zoom: {
-			enabled:false,
-		  },
+    
 
-      },
-      responsive: true,
-      maintainAspectRatio: true,
-      dataLabels: {
-        enabled: false,
-      },
-      animations: {
-        enabled: true,
-      },
-      plotOptions: {
-        bar: {
-        horizontal: true,
-        barHeight: "20%",
-
-        }
-      },
-      xaxis: {
-        type: "datetime",
-
-
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-        shade: "light",
-        type: "vertical",
-        shadeIntensity: 0.25,
-        gradientToColors: undefined,
-        inverseColors: true,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [50, 0, 100, 100]
-        }
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "left"
-      }
-
-      };
-
-      var updateChart = this.chartOptions = {
-        series: [
-          {
-            name: "Completed",
-            data: this.completed
-
-          },
-          {
-            name: "Pending",
-            data: this.pending
-          }
-        ],
-        chart: {
-          type: "bar",
-          height: 400,
-          stacked: true
-        },
-        colors: ["#008FFB" ,"#FF4560"],
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            barHeight: "20%"
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: 1,
-          colors: ["#fff"]
-        },
-
-        grid: {
-          xaxis: {
-            lines: {
-              show: false
-            }
-          }
-        },
-        yaxis: {
-          min: -100,
-          max: 100,
-          title: {
-            // text: 'Age',
-          }
-        },
-        tooltip: {
-          shared: false,
-          x: {
-            formatter: function(val) {
-              return val.toString();
-            }
-          },
-          y: {
-            formatter: function(val) {
-              return Math.abs(val) + "%";
-            }
-          }
-        },
-        xaxis: {
-          categories: this.name,
-          title: {
-            text: "Percent"
-          },
-          labels: {
-            formatter: function(val) {
-              return Math.abs(Math.round(parseInt(val, 10))) + "%";
-            }
-          }
-        }
-      };
-  setTimeout(() => {
-      updateChart1
-      updateChart
-  }, 1000);
 
 
 
@@ -259,8 +104,6 @@ export class DashboardComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   generateConfig(): Config {
     const iterations = 400;
-    // GENERATE SOME ROWS
-
     const rows:any = {};
     for (let i = 0; i < iterations; i++) {
       const withParent = i > 0 && i % 2 === 0;
@@ -272,9 +115,6 @@ export class DashboardComponent implements OnInit {
         expanded: false,
       };
     }
-
-    // GENERATE SOME ROW -> ITEMS
-
     let start = GSTC.api.date().startOf('day').subtract(30, 'day');
     const items:any = {};
     for (let i = 0; i < iterations; i++) {
@@ -290,9 +130,6 @@ export class DashboardComponent implements OnInit {
         rowId: id,
       };
     }
-
-    // LEFT SIDE LIST COLUMNS
-
     const columns = {
       percent: 100,
       resizer: {
@@ -348,7 +185,6 @@ export class DashboardComponent implements OnInit {
   name=[];
   completed=[];
   getStatusTasking() {
-    // if(this.token_detail.role_id==3 ){
     if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
       this.api
     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
@@ -367,19 +203,6 @@ export class DashboardComponent implements OnInit {
       this.dataSource = new MatTableDataSource(res.data);
       this.statusTasking = res.data;
       this.dataSource.paginator = this.pagination;
-      // this.logger.log('ytyty', this.statusTasking)
-      // for(let i=0;i<this.statusTasking.length;i++){
-      //   if(this.statusTasking[i].project_status && this.statusTasking[i].task_number_dee){
-      //     if(this.statusTasking[i].project_status.project_progress!='' && this.statusTasking[i].task_number_dee!=''){
-      //       this.pending.push([100-this.statusTasking[i].project_status.project_progress])
-      //       this.completed.push('-'+[this.statusTasking[i].project_status.project_progress])
-      //       this.name.push([this.statusTasking[i].task_number_dee])
-
-      //     }
-
-
-      //   }
-      // }
 
       });
 
@@ -414,29 +237,23 @@ export class DashboardComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-    // this.commentForm.patchValue(country);
-    // this.commentForm.patchValue({status:'3',comments:''});
         this.api
         .postAPI(
           environment.API_URL + "transaction/comments/crud",
           {status:'3',comments:'',id:country.id},
-          // formData,
 
         )
         .subscribe((res) => {
           if(res.status === 1){
             this.notification.success(res.message);
 
-            this.getviewstatuscomment();
+            this.getViewstatusComment();
 
           }
           else{
             this.notification.success(res.message);
-          this.getviewstatuscomment();
+          this.getViewstatusComment();
           }
-          // this.commentForm.reset();
-
-
         })
       }
         dialogRef=null;
@@ -453,16 +270,12 @@ export class DashboardComponent implements OnInit {
       this.taskname=this.viewstatus[0]?this.viewstatus[0].tasking.task_name:''
       this.tasknumber=this.viewstatus[0]?this.viewstatus[0].tasking.task_number_dee:''
       for(let i=0;i<this.viewstatus.length;i++){
-        // if(this.viewstatus[i].taskingtask_number_dee){
           if(this.viewstatus[i].project_progress!='' && this.viewstatus[i].tasking.task_number_dee!=''){
             this.pending.push([100-this.viewstatus[i].project_progress])
             this.completed.push('-'+[this.viewstatus[i].project_progress])
             this.name.push([this.viewstatus[i].tasking.task_number_dee])
 
           }
-
-
-        // }
       }
 
 		  });
@@ -475,7 +288,6 @@ export class DashboardComponent implements OnInit {
 		  .getAPI(environment.API_URL + "transaction/trials_status?tasking="+this.id)
 		  .subscribe((res) => {
 			this.countryList1 = res.data;
-			// console.log'List',this.countryList1);
 
 		  });
 
@@ -513,9 +325,6 @@ getChart(){
 });
 
 }
-
-
-
 manpowercount:any;
 taskname:any;
 tasknumber:any;
@@ -526,137 +335,8 @@ tasknumber:any;
   this.getViewstatus();
   this.getChart();
   this.getComments();
-  this.getviewstatuscomment();
-	// this.getTaskingGroups();
-    setTimeout(() => {
-    this.chartOptions1 = {
-      series:
-        this.milstonechartData,
-      chart: {
-        redrawOnWindowResize: true,
-        height: 450,
-        type: "rangeBar",
-        toolbar: {
-          show: false
-        },
-        zoom: {
-          enabled:false,
-        },
-      },
-      responsive: true,
-      maintainAspectRatio: true,
-      dataLabels: {
-        enabled: false,
-      },
-      animations: {
-        enabled: true,
-      },
-      plotOptions: {
-        bar: {
-        horizontal: true,
-        barHeight: "20%",
-
-        }
-      },
-      xaxis: {
-        type: "datetime",
-
-
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-        shade: "light",
-        type: "vertical",
-        shadeIntensity: 0.25,
-        gradientToColors: undefined,
-        inverseColors: true,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [50, 0, 100, 100]
-        }
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "left"
-      }
-
-      };
-
-      this.chartOptions = {
-        series: [
-          {
-            name: "Completed",
-            data: this.completed
-
-          },
-          {
-            name: "Pending",
-            data: this.pending
-          }
-        ],
-        chart: {
-          type: "bar",
-          height: 400,
-          stacked: true
-        },
-        colors: ["#008FFB" ,"#FF4560"],
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            barHeight: "20%"
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: 1,
-          colors: ["#fff"]
-        },
-
-        grid: {
-          xaxis: {
-            lines: {
-              show: false
-            }
-          }
-        },
-        yaxis: {
-          min: -100,
-          max: 100,
-          title: {
-            // text: 'Age',
-          }
-        },
-        tooltip: {
-          shared: false,
-          x: {
-            formatter: function(val) {
-              return val.toString();
-            }
-          },
-          y: {
-            formatter: function(val) {
-              return Math.abs(val) + "%";
-            }
-          }
-        },
-        xaxis: {
-          categories: this.name,
-          title: {
-            text: "Percent"
-          },
-          labels: {
-            formatter: function(val) {
-              return Math.abs(Math.round(parseInt(val, 10))) + "%";
-            }
-          }
-        }
-      };
-    }, 1000);
-
-
+  this.getViewstatusComment(this.currentPage);
+    
   }
 
 
@@ -696,7 +376,6 @@ tasknumber:any;
   showcomments=false;
   saveviewstatus() {
     this.showcomments=true;
-    // console.log'commentform',this.commentForm);
     if(this.commentForm.value.created_by!=null && this.commentForm.value.tasking!=null){
     this.commentForm.value.created_by = this.api.userid.user_id;
     this.commentForm.value.tasking = this.id;
@@ -712,11 +391,9 @@ tasknumber:any;
         .subscribe((res) => {
           if(res.status==environment.SUCCESS_CODE){
             this.notification.success(res.message);
-            this.getviewstatuscomment();
-            // this.commentForm.reset();
+            this.getViewstatusComment(this.currentPage);
             this.showcomments=false;
             this.commentclose()
-            // this.closebutton.nativeElement.click();
             this.showError=false;
           } else if(res.status==environment.ERROR_CODE) {
             this.error_msg=false;
@@ -730,31 +407,23 @@ tasknumber:any;
 
         });
     }
-    // closeModal('#viewTasking-modal');
   }
-  getviewstatuscomment(){
 
-    	this.api
-    	  .getAPI(environment.API_URL + "transaction/comments?tasking_id="+this.id)
-    	  .subscribe((res) => {
-    		this.dataSourcelist = new MatTableDataSource(res.data);
-    		this.commentslist = res.data;
-    	  });
-      }
+  getViewstatusComment(page: number = 1) {
+    this.api
+      .getAPI(environment.API_URL + `transaction/comments?tasking_id=${this.id}&page=${page}`)
+      .subscribe((res) => {
+        this.dataSourcelist = new MatTableDataSource(res.results.data);
+        this.commentslist = res.results.data;
+      });
+  }
+  
 
+  // onChangePages(event:any){
+  //   this.getViewstatusComment(event.page + 1);
+  //   this.currentPage = event.page + 1;
+  // }
 
-
-	//   taskingGroups:any;
-	//   getTaskingGroups() {
-	// 	this.api
-	// 	  .getAPI(environment.API_URL + "master/taskinggroups")
-	// 	  .subscribe((res) => {
-	// 		this.taskingGroups = res.data;
-	// 		// console.log'Tasking Group',this.taskingGroups);
-
-	// 		//// console.log'taskingGroups0',this.taskingGroups)
-	// 	  });
-	//   }
   }
 
 

@@ -17,27 +17,6 @@
                     </div>
                  </div>
               </div>
-
-             <!-- <ng-container *ngIf="archivetask.length != 0">
-            
-              <app-grid-table 
-                [gridColumns]="gridColumns" 
-                [gridData]="archivetask"
-                [ispaniNater]="true" 
-                [isAction]="true" 
-                (filterEvent)="handleFilter($event)"
-                (paginationEvent)="handlePagination($event)" 
-                (deleteEvent)="approvedDelete($event.tasking.id)" 
-                (restoreEvent)="restoreDelete($event.tasking.id) "
-                [isDeletable]="true" 
-                [isRestore]="true" 
-                
-                >
-                
-              </app-grid-table>
-
-            </ng-container> -->
-            
             <ng-container *ngIf="archivetask.length > 0; else noRecordsTemplate">
               <app-grid-table 
                 [gridColumns]="gridColumns" 

@@ -71,8 +71,6 @@
 					  <mat-label>HRCDF Designation <b class="star"></b></mat-label>
 
 						<input type="text" class="form-control form-control-lg" formControlName="hrcdf_designation" autocomplete="off">
-						<!-- <input matInput placeholder="" formControlName="loginname" maxlength="20"> -->
-						<!-- <mat-error *ngIf="Error('hrcdf_designation','required') && showcomments">Please enter designation code</mat-error> -->
 
 					</div>
 				  </div>
@@ -87,7 +85,6 @@
 	
 						<input type="text" class="form-control form-control-lg" formControlName="rank_code" autocomplete="off">
 	
-						<!-- <input matInput placeholder="" formControlName="first_name" maxlength="100"> -->
 						<mat-error *ngIf="Error('first_name','required') && showcomments">Please enter First name</mat-error>
 						<mat-error *ngIf="Error('first_name','pattern') && showcomments">Alphabets characters only</mat-error>
 	
@@ -99,7 +96,6 @@
 
                     <input type="text" class="form-control form-control-lg" formControlName="first_name" autocomplete="off">
 
-					<!-- <input matInput placeholder="" formControlName="first_name" maxlength="100"> -->
 					<mat-error *ngIf="Error('first_name','required') && showcomments">Please enter First name</mat-error>
 					<mat-error *ngIf="Error('first_name','pattern') && showcomments">Alphabets characters only</mat-error>
 
@@ -110,7 +106,6 @@
 				  <mat-label>Last Name <b class="star">*</b></mat-label>
 
 					<input type="text" class="form-control form-control-lg" formControlName="last_name" autocomplete="off">
-					<!-- <input matInput placeholder="" formControlName="last_name" maxlength="100"> -->
 					<mat-error *ngIf="Error('last_name','required') && showcomments">Please enter Last name</mat-error>
 					<mat-error *ngIf="Error('last_name','pattern') && showcomments">Alphabets characters only</mat-error>
 
@@ -122,8 +117,6 @@
 				  <mat-label>Email <b class="star">*</b></mat-label>
 
 					<input type="email" class="form-control form-control-lg" formControlName="email" autocomplete="off" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-					<!-- <input matInput placeholder="" formControlName="email" maxlength="50"
-					  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"> -->
 					<mat-error *ngIf="Error('email','required') && showcomments">Please enter email</mat-error>
 					<mat-error *ngIf="editForm.get('email').errors && editForm.get('email').errors?.['pattern']">Please enter
 					  valid email</mat-error>
@@ -148,7 +141,6 @@
 				<div class="matt-group">
 				  <mat-label>Password <b class="star">*</b></mat-label>
 
-					<!-- <input matInput placeholder="" formControlName="password" maxlength="20"> -->
 					<input type="text" class="form-control form-control-lg" formControlName="password" autocomplete="off">
 					<mat-error *ngIf="Error('password','required') && showcomments">Please enter password</mat-error>
 					<mat-error *ngIf="Error('password','pattern') && showcomments">Alpha-numeric characters only</mat-error>
@@ -186,10 +178,7 @@
 				  <mat-label>User role <b class="star">*</b></mat-label>
 				  <mat-form-field appearance="outline">
 					<mat-select #select  formControlName="user_role_id" placeholder="Select User Role">
-					  <!-- <div class="select-all">
-						<mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
-						  (change)="toggleAllSelection()">Select All</mat-checkbox>
-					  </div> -->
+					 
 					  <mat-option  *ngFor="let user of UserList" [value]="user.id">
 						{{user.name}}
 					  </mat-option>
@@ -211,26 +200,7 @@
 				  </mat-form-field>
 				</div>
 			  </div>
-			  <!-- <div class="col-md-12">
-				<div class="matt-group matselect" *ngIf="UserGroup">
-					<mat-label>User Group <b class="star">*</b></mat-label>
-					<mat-form-field appearance="outline">
-					  <mat-select #select formControlName="department" placeholder="Select Department">
-						<mat-option [value]="">Select User Group</mat-option>
-						<mat-option *ngFor="let user of departmentList" [value]="user.id">{{user.name}}</mat-option>
-					  </mat-select>
-					  <mat-error *ngIf="Error('department','required')">Please select user group</mat-error>
-					</mat-form-field>
-				  </div>
-			  </div> -->
-			  <!-- <div class="col-md-4">
-				<div class="matt-group">
-				  <mat-label>Signature</mat-label>
-
-				  <input #fileInput formControlName="signature" id="file"type="file"  class="form-control" (change)="onImageHandler1($event)" accept="image/jpeg,image/jpg,application/pdf" >
-
-				</div>
-			  </div> -->
+		
 
 
 

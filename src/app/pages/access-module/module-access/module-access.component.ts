@@ -32,14 +32,7 @@ export class ModuleAccessComponent implements OnInit {
   process:any;
   user_role:any;
   permission_id='';
-
-  @ViewChild("closebutton") closebutton;
-  @ViewChild('select') select: MatSelect;
-  @ViewChild(MatPaginator) pagination: MatPaginator;
-  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
-
-
-
+  
   displayedColumns: string[] = [
     "module",
     "module_components",
@@ -49,12 +42,9 @@ export class ModuleAccessComponent implements OnInit {
     "edit",
     "delete",
   ];
-  dataSource: MatTableDataSource<any>;
-
   ngOnInit(): void {
     this.getProcess();
 
-    //this.performJquery();
   }
   processChange(process_id)
   {
@@ -100,7 +90,6 @@ export class ModuleAccessComponent implements OnInit {
       .getAPI(environment.API_URL + "access/allmodules?process_id="+process_id)
       .subscribe((res) => {
         this.modules=this.formatStatus(res.data);
-        // console.log'this.modules',this.modules)
       });
   }
 
@@ -118,7 +107,6 @@ export class ModuleAccessComponent implements OnInit {
           if(permissions.length>0)
           {
             this.updatePermissions(permissions);
-            //this.modules=permissions;
           }
           else
           {
@@ -149,7 +137,6 @@ export class ModuleAccessComponent implements OnInit {
             return p_module.status;
           }
         });
-        /* Component Status */
         (module.components).filter(function(component){
           let componentStatus=(permissions).filter(function(p_module){
             if(p_module.id==module.id)
@@ -186,7 +173,6 @@ export class ModuleAccessComponent implements OnInit {
           });
         });
 
-        /* Module Action status */
         (module.action).filter(function(module_action){
           let moduleActionStatus=(permissions).filter(function(p_module){
             if(p_module.id==module.id)
@@ -200,11 +186,8 @@ export class ModuleAccessComponent implements OnInit {
               });
             }
           });
-          //// console.log'moduleActionStatus',moduleActionStatus);
-         // module_action.status=moduleActionStatus.length==0?false:moduleActionStatus;
         });
 
-        /* Component Action Status */
         (module.components).filter(function(component){
           let componentActionStatus=(permissions).filter(function(p_module){
             if(p_module.id==module.id)
@@ -227,7 +210,6 @@ export class ModuleAccessComponent implements OnInit {
             }
           });
 
-          // Attribute Action Status
           (component.attributes).filter(function(attribute){
             let componentActionStatus=(permissions).filter(function(p_module){
               if(p_module.id==module.id)
@@ -256,7 +238,6 @@ export class ModuleAccessComponent implements OnInit {
 
         });
 
-        //module.status=moduleStatus.length==0?false:moduleStatus;
       });
     }
   }
@@ -411,9 +392,6 @@ export class ModuleAccessComponent implements OnInit {
     let selectedComponents=(modules.components).filter(function(component){
       return component.status==true;
     });
-    /*(component.attributes).filter(function(attribute){
-      attribute.status=status;
-    })*/
     modules.status=selectedComponents.length>0?true:false;
   }
   child2Toggle(modules, component,attribute,status) {

@@ -23,9 +23,7 @@ import { environment } from '../../../environments/environment.prod';
   templateUrl: './grid-wish.component.html',
   styleUrl: './grid-wish.component.scss'
 })
-export class GridWishComponent implements OnInit {
-    // dropdownVisible: boolean = false
-  
+export class GridWishComponent implements OnInit {  
     @Input() isRestore: boolean;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
@@ -42,26 +40,21 @@ export class GridWishComponent implements OnInit {
   @Output() deleteEvent = new EventEmitter<any>();
   @Output() viewEvent = new EventEmitter<any>();
   @Output() statusEventAdd = new EventEmitter<any>();
+  @Output() assignedEventAdd = new EventEmitter<any>();
+  @Output() usersFetched: EventEmitter<any> = new EventEmitter();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
   @Output() commenttaskEvent = new EventEmitter<any>();
-
+  @Output() usersLoaded = new EventEmitter<any[]>();
   token_detail:any
-
   newRowData: any = {}; // Object to store data for a new row
   currentPage: number = 1;
   rowsPerPage: number = 10;
   filteredData: any[];  // New property to store filtered data
-  // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
   searchValue: string;
-
-    // projectList: any;
-    // oldStatus: any;
-  
-
-
+    selectedRow: any;
   resolveNestedField(obj: any, path: string): any {
       const parts = path.split('.');
       let value = obj;
@@ -78,12 +71,9 @@ export class GridWishComponent implements OnInit {
                   value = value[part];
               }
           } else {
-              // Break the loop if value becomes null or undefined
               break;
           }
       }
-
-      // Check if the resolved value is a date and format it
       if (
           value &&
           typeof value === 'string' &&
@@ -93,21 +83,13 @@ export class GridWishComponent implements OnInit {
           const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
           return formattedDate;
       }
-
       return value;
   }
-
   resolveField(item: any, field: string): any {
       return this.resolveNestedField(item, field);
   }
-
-
-
-
-
   createEmptyRowData(): any {
       const emptyRowData: any = {};
-      // Iterate through the columns to set initial values for each field
       this.gridColumns.forEach(column => {
           emptyRowData[column.field] = null; // Set initial value as null, you can customize this if needed
       });
@@ -117,15 +99,10 @@ export class GridWishComponent implements OnInit {
   onPagination(event: any) {
       this.paginationEvent.emit(event);
   }
-
-
-
-
    applyChanges(originalData: any, updatedData: any): void {
       for (const key in updatedData) {
           if (updatedData.hasOwnProperty(key)) {
               const value = updatedData[key];
-              // Check if the key contains square brackets indicating an array index
               const isArrayIndex = key.includes('[') && key.includes(']');
               if (isArrayIndex) {
                   const parts = key.split('[');
@@ -133,44 +110,28 @@ export class GridWishComponent implements OnInit {
                   const arrayIndex = parseInt(parts[1].split(']')[0], 10);
                   if (Array.isArray(originalData[arrayKey])) {
                       if (arrayIndex >= 0 && arrayIndex < originalData[arrayKey].length) {
-                          // Recursively apply changes for nested properties within arrays
                           this.applyChanges(originalData[arrayKey][arrayIndex], { [parts[1].split(']')[1].slice(1)]: value });
                       }
                   }
               } else if (key in originalData) {
-                  // If the key exists in the original data object, update its value
                   originalData[key] = value;
               } else {
-                  // Handle nested properties dynamically
                   let nestedKeys = key.split('.');
                   let nestedObject = originalData;
                   for (let nestedKey of nestedKeys) {
                       if (nestedKey in nestedObject) {
                           nestedObject = nestedObject[nestedKey];
                       } else {
-                          // If the nested key does not exist, break the loop
                           break;
                       }
                   }
-                  // Update the value of the deepest nested property
                   nestedObject[nestedKeys.pop()] = value;
               }
           }
       }
   }
-
-
-  
-
- 
-
-  
- 
-
   ngOnInit(): void {
-    // this.isRestore = true;
-
-    
+   this.getUser(null);
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     
       this.filteredData = this.gridData;
@@ -178,14 +139,9 @@ export class GridWishComponent implements OnInit {
   }
 
   constructor(private filterService: FilterService, private api:ApiService,private ref: ChangeDetectorRef,private toastr: ToastrService) { }
-
-
   getFilterValue(field: string): any {
       return this.filters[field]?.value;
   }
-
-
-
   onCustomClear() {
     this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
     this.searchValue = ''; 
@@ -193,16 +149,10 @@ export class GridWishComponent implements OnInit {
   onSearchInput(val):string {
     return val.trimStart(); // Remove leading spaces
 }
-
-
- 
-
   onFilterChange(filterValue: string, field: string, condition: string) {
       if (filterValue && filterValue.trim()) {
           // Update the specific filter for the given field
           this.filters[field] = { value: filterValue.trim(), condition: condition };
-
-          // Apply filtering logic here
           this.applyFilters();
       } else {
           // Clear the filter for the field
@@ -214,10 +164,7 @@ export class GridWishComponent implements OnInit {
   }
 
   applyFilters() {
-      // Copy original data
       this.filteredData = [...this.gridData];
-
-      // Apply filtering logic for each field
       for (const field in this.filters) {
           if (this.filters.hasOwnProperty(field)) {
               const filter = this.filters[field];
@@ -238,15 +185,12 @@ export class GridWishComponent implements OnInit {
 
   applyFilter(row: any, field: string, filterValue: any, condition: string): boolean {
       const resolvedValue = this.resolveNestedField(row, field);
-
-      // Check if the resolved value is an object (indicating nested data)
       if (typeof resolvedValue === 'object' && resolvedValue !== null) {
-          // If the resolved value is an object, recursively apply the filter to its properties
           for (const key in resolvedValue) {
               if (resolvedValue.hasOwnProperty(key)) {
                   const nestedValue = resolvedValue[key];
                   if (this.applyFilter({ [key]: nestedValue }, key, filterValue, condition)) {
-                      return true; // Return true if any nested property matches the filter
+                      return true; 
                   }
               }
           }
@@ -316,15 +260,11 @@ export class GridWishComponent implements OnInit {
       default: return 'unknown-status';
     }
   }
-    
-  
   clear(table: Table) {
     table.clear();
     table.filterGlobal('', 'contains');
     this.searchValue = ''
 }
-
-
 getSeverityClass(status: string): string {
     switch (status) {
         case 'open':
@@ -341,8 +281,6 @@ getSeverityClass(status: string): string {
             return 'neutral';
     }
 }
-
-
 getPriorityData(priority: number): { label: string; class: string } {
     switch (priority) {
         case 1:
@@ -363,7 +301,6 @@ statusOptions = [
     { value: 'reopened', label: 'Reopened' },
     { value: 'duplicate', label: 'Duplicate' }
 ];
-
 getStatusName2(status: string): { label: string; class: string } {
     switch (status) {
         case 'open':
@@ -380,35 +317,55 @@ getStatusName2(status: string): { label: string; class: string } {
             return { label: 'Unknown', class: 'status-neutral' };
     }
 }
-
 old_status:any;
 onStatusChange(rowData: any) {
     const apiUrl =environment.API_URL+ 'ticket/api/ticket-status-changes/';
-    
-    console.log('Status changed to:', rowData.status);
-
-    
     let payload = {
         ticket: rowData.id,
         changed_by: 1,  // Update with actual user ID dynamically
         old_status: this.old_status,
         new_status: rowData.status,
     };
-
-    // Example API call using HttpClient
     this.api.postAPI(apiUrl, payload).subscribe(
         response => {
             this.statusEventAdd.emit({status:'Status updated successfully:' ,code:1})
-            
         },
         error => {
             this.statusEventAdd.emit({status:'Error updating status:',code:2})
         }
     );
 }
-
+userOptions:any[]=[];
+onAssignedToChange(rowData: any) {
+    const apiUrl = environment.API_URL + 'ticket/assign-change/';
+    let payload = {
+        ticket: rowData.id,
+        changed_by: 1,  // Update with actual user ID dynamically
+        changed_to: rowData.assigned_to.id,  // Ensure this ID exists in the database
+    };
+    const updatedRowData = { ...rowData, assigned_to: rowData.assigned_to };
+    this.api.postAPI(apiUrl, payload).subscribe(
+        response => {
+            this.assignedEventAdd.emit({status:'Assigned To updated successfully:', code:1})
+        },
+        error => {
+            this.assignedEventAdd.emit({status:'Error updating Assigned To:', code:2})
+        }
+    );
+}
+getUser(rowData){
+    this.api.getAPI(environment.API_URL+ 'api/auth/users?process_id=3').subscribe(
+        (response: any) => {
+          this.userOptions =response.data
+          this.usersFetched.emit(this.userOptions);
+          const userOptions = response.data.map(user => ({
+                          label: user.loginname,
+                          value: user.id
+                        }));
+    })
+    this.selectedRow = this.selectedRow === rowData ? null : rowData;
 
 
 }
 
-
+}

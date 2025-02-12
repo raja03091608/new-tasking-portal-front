@@ -107,24 +107,12 @@
 								<label>{{step?.current?.department?.name }}</label>
 							</li>
 							<li *ngFor="let step of routeList; let i = index"
-								[ngClass]="{'active': i < taskListRoot.level-1}">
+								[ngClass]="{'active': i <taskListRoot.level-1}">
 								<label>{{ timelineStepName(step) }}</label> <br>
 								<label>{{ timelineStepDirect(step) }}</label>
 							</li>
 						</ul>
 					</div>
-					<!-- <div class="card">
-						<p-timeline [value]="routeList" layout="horizontal">
-							<ng-template pTemplate="content" let-event>
-								<small class="p-text-secondary">{{ event?.next_user?.department?.name }}</small>
-								
-							</ng-template>
-							<ng-template pTemplate="opposite" let-event >
-								{{ event?.next_user?.roles[0]?.user_role?.name }}
-							</ng-template>
-							
-						</p-timeline>
-					</div> -->
 				</div>
 				<div class="row ">
 
@@ -159,8 +147,6 @@
 								*ngIf="releDetaile?.detail == 'Passed'">
 								<div class="mb-5 alert alert-dismissible alert-bg">
 									<mat-label style="font-size:large;"><b>Comment</b></mat-label>
-									<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
-									<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 									<angular-editor formControlName="comment" style="min-height: 100px;"
 										[config]="commentEditor"></angular-editor>
 								</div>
@@ -177,7 +163,6 @@
 							<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
 								<div class="row">
 									<div formGroupName="sdForm">
-										<!-- <ng-container *ngIf="list && list.SD_initiater==1&& list && list.WESEE_recommender==1"> -->
 										<div class="alert alert-dismissible alert-bg">
 											<div class="mb-5">
 												<div class="row">
@@ -212,8 +197,6 @@
 												<div class="mb-5">
 													<mat-label style="font-size:large;"><b>Task Description (Maximum 500
 															words)</b><b class="star">*</b></mat-label>
-													<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
-													<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 													<angular-editor formControlName="task_description"
 														[config]="editorConfig"></angular-editor>
 												</div>
@@ -250,7 +233,6 @@
 														task_description</mat-error>
 												</div>
 											</ng-container>
-											<!-- <a href="{{ImageUrl}}">{{ImageUrl}}</a> -->
 											<div class="mb-5">
 
 												<div class="matt-group">
@@ -474,7 +456,7 @@
 																		</mat-select>
 																	</ng-container>
 
-																	<ng-container *ngIf="listDelapso!=3">
+																	 <ng-container *ngIf="listDelapso!=3">
 																		<mat-select formControlName="tasking_group"
 																			placeholder="Select Tasking Groups"
 																			[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && disableWesee()"
@@ -487,7 +469,7 @@
 																				{{ taskingGroup.name }}
 																			</mat-option>
 																		</mat-select>
-																	</ng-container>
+																	</ng-container> 
 																</mat-form-field>
 															</div>
 
@@ -634,15 +616,10 @@
 																	Electronics Systems Engineering
 																	Establishment)</b></mat-label>
 														</div>
-
 													</div>
-
-
 												</div>
 											</div>
-
 											<div class="mb-5 ">
-
 												<mat-label style="font-size:large;"><b>Comments From DG WESEE</b><b
 														class="star">*</b></mat-label>
 												<ng-container>
@@ -663,25 +640,19 @@
 																type="file" class="form-control"
 																(change)="onImageHandler5($event)"
 																accept="image/jpeg,image/jpg,application/pdf">
-
 														</div>
 														<div class="col-md-6">
 															<button type="button" id="fileupload"
 																(click)="div1Function()" mat-fab
 																color="primary"><mat-icon>+</mat-icon></button>
-
 														</div>
-
 													</div>
-
 													<div class="row" id="addmore" *ngIf="div2">
-
 														<div class="col-md-6">
 															<input #fileInput formControlName="file6" id="file6"
 																type="file" class="form-control"
 																(change)="onImageHandler6($event)"
 																accept="image/jpeg,image/jpg,application/pdf">
-
 														</div>
 														<div class="col-md-6">
 															<button type="button" id="fileupload"
@@ -690,9 +661,7 @@
 															<button type="button" id="fileupload"
 																(click)="div3Function()" mat-fab
 																color="warn"><mat-icon>-</mat-icon></button>
-
 														</div>
-
 													</div>
 												</ng-container>
 											</div><br>
@@ -751,7 +720,6 @@
 													</div>
 												</ng-container>
 											</div>
-
 											<div *ngIf="signeture(countryList1,'WESEE_recommender' )">
 												<span class="float-end">
 													<i class="font-normal"> Electronically Signed by:</i>
@@ -770,15 +738,11 @@
 													HH:mm:ss') : 'N/A' }}
 												</span>
 											</div>
-
-
 											<div class="card-footer  mt-2"
 												*ngIf="!disableWesee2() && this.api.userid.process_id !==3">
 												<button type="button" class="btn btn-success"
 													(click)="Recommened()">Recommend</button>
 											</div>
-
-
 										</div>
 									</div>
 									<div formGroupName="deeForm">
@@ -790,10 +754,8 @@
 											<div class="mb-5 ">
 												<mat-label style="font-size:large;"><b>Task Number</b><b
 														class="star">*</b></mat-label>
-												<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" max_length="10"/> -->
 												<ng-container *ngIf="crudName=='View' || listdee==1 || listdee==2 ">
 													<div class="task-text-group">
-														<!-- <input type="text" class="form-control" formControlName="task_number_dee" value="WESEE/001/2022/01" [readonly]="listwesee!=1"/> -->
 													</div>
 												</ng-container>
 												<ng-container>
@@ -810,7 +772,6 @@
 														<input type="number" [readonly]="disableDee()" maxlength="5"
 															class="form-control" formControlName="task_number_dee2"
 															value="WESEE/001/2022/01" />
-														<!-- <p>{{currentDate1 | date:'dd'}}</p> -->
 													</div>
 												</ng-container>
 											</div>
@@ -949,17 +910,12 @@
 										</div>
 									</div>
 									<div formGroupName="acomForm">
-										<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='ACOM'"> -->
-
 										<div class="alert alert-dismissible alert-bg">
-
 											<div class="sub-heading" style="text-align:center;">
 												<mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S)
 														&nbsp;(Asst.Chief of Materiel(Information Technology &
 														Sys))</b></mat-label>
 											</div>
-
-
 											<div class="mb-5 ">
 												<mat-label style="font-size:large;"><b>Comments</b><b
 														class="star">*</b></mat-label>
@@ -989,7 +945,6 @@
 													'N/A' }}
 												</span>
 											</div>
-
 											<div class="card-footer  mb-4">
 												<div class="col-md-12">
 
@@ -1005,15 +960,11 @@
 										</div>
 									</div>
 									<div formGroupName="comForm">
-
-
 										<div class="alert alert-dismissible alert-bg">
-
 											<div class="sub-heading" style="text-align:center;">
 												<mat-label class="subheading3"><b style="font-size:large;">COM
 														&nbsp;(Chief of Materiel)</b></mat-label>
 											</div>
-
 											<div class="mb-1">
 												<mat-label style="font-size:large;"><b>Comments</b><b
 														class="star">*</b></mat-label>
@@ -1042,8 +993,6 @@
 													}}
 												</span>
 											</div>
-
-
 											<div class="card-footer  mt-4">
 												<div class="col-md-12">
 													<ng-container *ngIf="!disableCom()">
@@ -1103,11 +1052,7 @@
 						</mat-error>
 					</mat-form-field>
 				</div>
-
-
 				<h3>Select From User</h3>
-
-
 				<div class="form-group mt-4 col-4">
 					<mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
 						<mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User
@@ -1115,7 +1060,6 @@
 						<mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
 					</mat-radio-group>
 				</div>
-
 				<!-- User Type Dropdown (Visible only if Main User is selected) -->
 				<div class="form-group mt-4 col-4" *ngIf="isMainUser">
 					<mat-form-field appearance="outline">
@@ -1203,21 +1147,8 @@
 				<button mat-raised-button color="primary" type="submit">Save</button>
 			</div>
 		</form>
-
-
-
-		<!-- <ng-container *ngIf="routeList.length != 0">
-				<app-grid-table [gridColumns]="gridColum" [gridData]="routeList" [ispaniNater]="true"
-				  [isAction]="true" (editEvent)="handleEdit($event)" (deleteEvent)="handleDelete($event)"
-				  [isEditable]="this.permission.edit" [isDeletable]="this.permission.delete">
-				</app-grid-table>
-			  </ng-container> -->
-
-
 	</div>
 </ng-template>
-
-
 <p-toast position="center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
 	<ng-template let-message pTemplate="message">
 		<div class="d-flex flex-column " style="flex: 1">
@@ -1231,7 +1162,6 @@
 					<button type="button" (click)="openBackDropCustomClass(content)"
 						class="btn btn-success btn-lg">Procced</button>
 				</div>
-
 			</div>
 		</div>
 	</ng-template>
