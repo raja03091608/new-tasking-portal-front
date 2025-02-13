@@ -56,11 +56,10 @@ export class GridTableComponent implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
   token_detail:any
-
-  newRowData: any = {}; // Object to store data for a new row
-  currentPage: number = 1;
-  rowsPerPage: number = 10;
-  filteredData: any[];  // New property to store filtered data
+  @Output() totalRecords:any
+  newRowData: any = {}; 
+ 
+  filteredData: any[];  
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
     searchValue: string;

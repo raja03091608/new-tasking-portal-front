@@ -27,6 +27,7 @@ export class GridWishComponent implements OnInit {
     // dropdownVisible: boolean = false
   
     @Input() isRestore: boolean;
+    @Input() totalRecords:any;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
