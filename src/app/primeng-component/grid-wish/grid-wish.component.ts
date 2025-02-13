@@ -7,62 +7,59 @@ import {
   EventEmitter,
   OnInit,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FilterService } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
-  selector: 'app-grid-table',
-  templateUrl: './grid-table.component.html',
-  styleUrl: './grid-table.component.scss'
-})
-export class GridTableComponent implements OnInit {
+  selector: 'app-grid-wish',
 
-    @Input() isupload:boolean;
-    @Input() isPermanentDelete: boolean;
+  templateUrl: './grid-wish.component.html',
+  styleUrl: './grid-wish.component.scss'
+})
+export class GridWishComponent implements OnInit {
+    // dropdownVisible: boolean = false
+  
     @Input() isRestore: boolean;
+    @Input() totalRecords:any;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;
   @Input() isStatusAdd: boolean;
   @Input() isArchiveTask: boolean;
+  @Input() isCommentTask: boolean;
   @Input() isAction: boolean;
-  @Input() isFormEditable: boolean;
   @Input() isDeletable: boolean;
-  @Input() ispaniNater: boolean;
   @Input() isView: boolean;
-  @Input() isCheckBox: boolean;
-  @Input() isStatus: boolean;
-  @Input() isCompleted: boolean;
-  @Input() isExport: boolean;
-  @Input() isDownload: boolean;
   @Output() filterEvent = new EventEmitter<any>();
   @Output() paginationEvent = new EventEmitter<any>();
   @Output() editEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();
   @Output() viewEvent = new EventEmitter<any>();
-  @Output() exportEvent = new EventEmitter<any>();
-  @Output() downloadEvent = new EventEmitter<any>();
-  @Output() statusEvent = new EventEmitter<any>();
   @Output() statusEventAdd = new EventEmitter<any>();
-  @Output() completedEvent = new EventEmitter<any>();
-  @Output() restoreEvent = new EventEmitter<any>();
-  @Output() permanentDeleteEvent = new EventEmitter<any>();
-  @Output() uploadEvent = new EventEmitter<any>();
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
+  @Output() commenttaskEvent = new EventEmitter<any>();
+
   token_detail:any
-  @Output() totalRecords:any
-  newRowData: any = {}; 
- 
-  filteredData: any[];  
+
+  newRowData: any = {}; // Object to store data for a new row
+  currentPage: number = 1;
+  rowsPerPage: number = 10;
+  filteredData: any[];  // New property to store filtered data
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
-    searchValue: string;
+  searchValue: string;
+
+    // projectList: any;
+    // oldStatus: any;
   
 
 
@@ -105,11 +102,7 @@ export class GridTableComponent implements OnInit {
       return this.resolveNestedField(item, field);
   }
 
-  clear(dataTable: any) {
-    dataTable.clear(); // Clears all filters applied to the table
-    this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
-    this.searchValue = ''; // Clear the search box value
-}
+
 
 
 
@@ -182,11 +175,10 @@ export class GridTableComponent implements OnInit {
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     
       this.filteredData = this.gridData;
-      // console.logthis.gridData);
-      // console.logthis.gridColumns);
+      
   }
 
-  constructor(private filterService: FilterService, private api:ApiService) { }
+  constructor(private filterService: FilterService, private api:ApiService,private ref: ChangeDetectorRef,private toastr: ToastrService) { }
 
 
   getFilterValue(field: string): any {
@@ -327,58 +319,97 @@ export class GridTableComponent implements OnInit {
   }
     
   
-  deleteTask(item: any) {
-    this.deleteEvent.emit(item);
-  }
-
-  restoreTask(item: any) {
-    this.restoreEvent.emit(item);
-  }
-  onRestore(rowData: any): void {
-    // Handle the restore action here
-    // console.log'Restoring:', rowData);
-  }
-  uploadData(rowData:any):boolean {
-    if(!rowData?.legacy_attachment && rowData?.legacy_data =='Yes' && this.token_detail.process_id==1 )
-        return true
-
-
-    return false
-  }
-  downloadData(rowData:any):boolean {
-    if(rowData?.legacy_attachment && rowData?.legacy_data =='Yes')
-        { return true} return false
-    
-
-  }
-  formatApprovedDate(dateString: string): string {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+  clear(table: Table) {
+    table.clear();
+    table.filterGlobal('', 'contains');
+    this.searchValue = ''
 }
 
 
-getButtonClass(status: number): string {
-    const statusClasses = {
-        7: 'bg-info-subtle text-primary', // Commented
-        8: 'bg-warning-subtle text-warning', // Pending
-        9: 'bg-warning-light text-warning-dark', // Uploaded
-        10: 'bg-orange-subtle text-orange', // Returned
-        11: 'bg-danger-subtle text-danger', // Redrafted
-        12: 'bg-purple-subtle text-purple', // Reuploaded
-        13: 'bg-indigo-subtle text-indigo', // Draft
-        14: 'bg-teal-subtle text-teal', // Initiated
-        15: 'bg-blue-subtle text-blue', // Concurrence
-        16: 'bg-yellow-subtle text-yellow' // Initiation Started
+getSeverityClass(status: string): string {
+    switch (status) {
+        case 'open':
+            return 'info';
+        case 'in_progress':
+            return 'warning';
+        case 'resolved':
+            return 'success';
+        case 'closed':
+            return 'danger';
+        case 'reopened':
+            return 'primary';
+        default:
+            return 'neutral';
+    }
+}
+
+
+getPriorityData(priority: number): { label: string; class: string } {
+    switch (priority) {
+        case 1:
+            return { label: 'Low', class: 'low-priority' };
+        case 2:
+            return { label: 'Medium', class: 'medium-priority' };
+        case 3:
+            return { label: 'High', class: 'high-priority' };
+        default:
+            return { label: 'Unknown', class: 'unknown-priority' };
+    }
+}
+
+statusOptions = [
+    { value: 'open', label: 'Open' },
+    { value: 'resolved', label: 'Resolved' },
+    { value: 'closed', label: 'Closed' },
+    { value: 'reopened', label: 'Reopened' },
+    { value: 'duplicate', label: 'Duplicate' }
+];
+
+getStatusName2(status: string): { label: string; class: string } {
+    switch (status) {
+        case 'open':
+            return { label: 'Open', class: 'status-open' };
+        case 'in_progress':
+            return { label: 'In Progress', class: 'status-in-progress' };
+        case 'resolved':
+            return { label: 'Resolved', class: 'status-resolved' };
+        case 'closed':
+            return { label: 'Closed', class: 'status-closed' };
+        case 'reopened':
+            return { label: 'Reopened', class: 'status-reopened' };
+        default:
+            return { label: 'Unknown', class: 'status-neutral' };
+    }
+}
+
+old_status:any;
+onStatusChange(rowData: any) {
+    const apiUrl =environment.API_URL+ 'ticket/api/ticket-status-changes/';
+    
+    console.log('Status changed to:', rowData.status);
+
+    
+    let payload = {
+        ticket: rowData.id,
+        changed_by: 1,  // Update with actual user ID dynamically
+        old_status: this.old_status,
+        new_status: rowData.status,
     };
 
-    return statusClasses[status] || 'bg-light text-dark'; // Default class
+    // Example API call using HttpClient
+    this.api.postAPI(apiUrl, payload).subscribe(
+        response => {
+            this.statusEventAdd.emit({status:'Status updated successfully:' ,code:1})
+            
+        },
+        error => {
+            this.statusEventAdd.emit({status:'Error updating status:',code:2})
+        }
+    );
 }
 
 
 
 }
+
 

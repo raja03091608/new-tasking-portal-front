@@ -1,37 +1,48 @@
 <div class="card">
-    <p-table #dataTable  [columns]="gridColumns" 
-    [value]="filteredData" 
-    [paginator]="ispaniNater" 
-    [scrollable]="true"
-    
-    styleClass=" auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
-    resizableColumns="true" 
-    columnResizeMode="expand" 
-    [rows]="10"
-    dataKey="id"
-    (onPage)="paginationEvent.emit($event)" >
+    <p-table #dataTable [columns]="gridColumns" [value]="filteredData" [scrollable]="true"
+        styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
+        resizableColumns="true" columnResizeMode="expand" 
+        dataKey="id"
+        >
         <!-- Dynamic Column Headers -->
+        <ng-template pTemplate="caption">
+            <div class="d-flex align-items-between">
+                <!-- Clear Button -->
+                <button class="btn btn-primary my-4 " (click)="clear(dataTable)">
+                    <i class="pi pi-filter-slash "></i>Clear
+                </button>
+
+                <!-- Search Input -->
+                <div class="input-group ms-auto w-25 ">
+                    <span class=" btn btn-primary">
+                        <i class="pi pi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" [(ngModel)]="searchValue"
+                        (input)="dataTable.filterGlobal(onSearchInput(searchValue), 'contains')"
+                        placeholder="Search keyword" />
+                </div>
+            </div>
+        </ng-template>
+
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th class="headercolor" *ngIf="isCheckBox" class="text-center" >
+                <th class="headercolor" *ngIf="isCheckBox" class="text-center">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th class="headercolor "  [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn
-                    
-                   >
+                <th class="headercolor " [pSortableColumn]="col.field" *ngFor="let col of columns" pResizableColumn>
                     {{ col.header }}
-                    
-                <!-- <p-sortIcon *ngIf="col?.filter" class="text-light pb-1 pe-2 rounded" [field]="col.field"></p-sortIcon> -->
-                    <p-columnFilter class="text-light pb-1 pe-2 rounded" *ngIf="col?.filter" type="text" [field]="col.field" display="menu">
+
+                    <p-columnFilter class="text-light pb-1 pe-2 rounded" *ngIf="col?.filter" type="text"
+                        [field]="col.field" display="menu">
                         <ng-template pTemplate="filter">
                             <input type="text" #filterInput pInputText
                                 (input)="onFilterChange(filterInput.value, col.field, 'contains')">
                             <button pButton type="button" class="custom-clear-button mt-3 text-center"
-                                (click)="onCustomClear(col.field)">Clear</button>
+                                (click)="onCustomClear()">Clear</button>
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th class="headercolor" *ngIf="isAction" >
+                <th class="headercolor" *ngIf="isAction">
                     Action
                 </th>
 
@@ -46,18 +57,16 @@
                 <td *ngFor="let col of gridColumns" class="wrappable">
 
                     <ng-container *ngIf="col.header != 'Status' ">
-                        <span *ngIf="col.header == 'Time Frame for Completion'" >{{ resolveNestedField(rowData, col.field)  }} Month's</span>
+                        <span *ngIf="col.header == 'Time Frame for Completion'">{{ resolveNestedField(rowData,
+                            col.field) }} Month's</span>
                         <span *ngIf="col.header != 'Time Frame for Completion' && col.header != 'Approved on'">
                             {{ resolveNestedField(rowData, col.field) }}
                         </span>
                         <span *ngIf="col.header == 'Approved on'">
-                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field) }}
+                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
+                            }}
                         </span>
-                        
-
-
                     </ng-container>
-                    
 
                     <ng-container *ngIf="col.header === 'Status'">
                         <div class="status" [ngClass]="getStatusClass(resolveNestedField(rowData, col.field))"
@@ -68,37 +77,70 @@
                 </td>
 
                 <td *ngIf="isAction" class="text-center">
-                    <button mat-button [matMenuTriggerFor]="actionsMenu" class="btn btn-primary px-2"><small>Actions</small></button>
+                    <button mat-button [matMenuTriggerFor]="actionsMenu" class="btn btn-primary px-2">
+                        <small>Actions</small>
+                    </button>
                     <mat-menu #actionsMenu="matMenu">
-                      <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item><small class="btn btn-outline-info btn-sm"><span class="bi bi-eye"></span></small>&nbsp;<small>View</small></button>
-                      <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="bi bi-pencil"></span></small>&nbsp;<small>Edit</small></button>
-                      <button (click)="deleteEvent.emit(rowData)" *ngIf="isDeletable" mat-menu-item><small class="btn btn-outline-danger btn-sm"><span class="bi bi-trash"></span></small>&nbsp;<small>Delete</small></button>
-                      <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="fas fa-info-circle"></span></small>&nbsp;<small>Status</small></button>
-                      <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="fas fa-info-circle"></span>&nbsp;<span class="fa-solid fa-plus"></span></small>&nbsp;<small>Add Status</small></button>
-                      <button (click)="archivetaskEvent.emit(rowData)" *ngIf="isArchiveTask" mat-menu-item><small class="btn btn-outline-success btn-sm"><span class="fa-solid fa-box-archive"></span>&nbsp;<span class="fa-solid fa-plus"></span></small>&nbsp;<small>ArchiveTask</small></button>
-                      
-                      <button (click)="exportEvent.emit(rowData)" *ngIf="isExport" mat-menu-item><small class="btn btn-outline-info btn-sm"><i class="bi bi-upload"></i></small>&nbsp;<small>Export</small></button>
-                      <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload && downloadData(rowData)" mat-menu-item><small class="btn btn-outline-warning btn-sm"><i class="bi bi-file-pdf"></i></small>&nbsp;<small>Download</small></button>
-                      <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Completed</small></button>
-                      <button (click)="restoreEvent.emit(rowData)" *ngIf="isRestore" mat-menu-item>
-                        <small class="btn btn-outline-warning btn-sm"><span class="bi bi-arrow-clockwise"></span></small>&nbsp;<small>Restore</small>
-                      </button>
-                      <button (click)="permanentDeleteEvent.emit(rowData)" *ngIf="isPermanentDelete" mat-menu-item><small class="btn btn-outline-primary btn-sm"><i class="bi bi-card-checklist"></i></small>&nbsp;<small>Permanent Delete</small></button>
-                      <!-- <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-upload"></i>&nbsp;<small>Upload</small>
-                      </button> -->
-                      <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item><small class="btn btn-outline-info btn-sm"><i class="bi bi-upload"></i></small>&nbsp;<small>Upload</small></button>
-
-                      <!-- <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item>
-                        <small class="btn btn-outline-primary btn-sm">
-                          <i class="bi bi-card-checklist"></i>
-                        </small>&nbsp;<small>Upload</small>
-                      </button> -->
-                      
+                        <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item [ngClass]="getButtonClass(7)">
+                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View</small>
+                        </button>
+                
+                        <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item [ngClass]="getButtonClass(8)">
+                            <i class="fa-solid fa-pen"></i>&nbsp;<small>Edit</small>
+                        </button>
+                
+                        <button (click)="deleteEvent.emit(rowData)" *ngIf="isDeletable" mat-menu-item [ngClass]="getButtonClass(11)">
+                            <i class="fa-solid fa-trash"></i>&nbsp;<small>Delete</small>
+                        </button>
+                
+                        <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item [ngClass]="getButtonClass(14)">
+                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>Status</small>
+                        </button>
+                
+                        <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item [ngClass]="getButtonClass(15)">
+                            <i class="fa-solid fa-plus-circle"></i>&nbsp;<small>Add Status</small>
+                        </button>
+                
+                        <button (click)="archivetaskEvent.emit(rowData)" *ngIf="isArchiveTask" mat-menu-item [ngClass]="getButtonClass(10)">
+                            <i class="fa-solid fa-box-archive"></i>&nbsp;<small>Archive Task</small>
+                        </button>
+                
+                        <button (click)="exportEvent.emit(rowData)" *ngIf="isExport" mat-menu-item [ngClass]="getButtonClass(9)">
+                            <i class="fa-solid fa-file-export"></i>&nbsp;<small>Export</small>
+                        </button>
+                
+                        <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload && downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(12)">
+                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>Download</small>
+                        </button>
+                
+                        <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item [ngClass]="getButtonClass(16)">
+                            <i class="fa-solid fa-check-circle"></i>&nbsp;<small>Completed</small>
+                        </button>
+                
+                        <button (click)="restoreEvent.emit(rowData)" *ngIf="isRestore" mat-menu-item [ngClass]="getButtonClass(13)">
+                            <i class="fa-solid fa-rotate-left"></i>&nbsp;<small>Restore</small>
+                        </button>
+                
+                        <button (click)="permanentDeleteEvent.emit(rowData)" *ngIf="isPermanentDelete" mat-menu-item [ngClass]="getButtonClass(11)">
+                            <i class="fa-solid fa-trash-can"></i>&nbsp;<small>Permanent Delete</small>
+                        </button>
+                
+                        <button (click)="uploadEvent.emit(rowData)" *ngIf="isupload && uploadData(rowData)" mat-menu-item [ngClass]="getButtonClass(9)">
+                            <i class="fa-solid fa-upload"></i>&nbsp;<small>Upload</small>
+                        </button>
                     </mat-menu>
-                  </td>
-                  
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptyMessage">
+            <tr>
+                <td [attr.colspan]=" gridColumns.length + 1 ">
+                    <h5 class="btn btn-warning mx-auto d-block">
+                        No records available. Please add data from the above options to view in the table!
+                    </h5>
+                </td>
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator [rows]="10" [totalRecords]="totalRecords" (onPageChange)="paginationEvent.emit($event)"></p-paginator>
 </div>

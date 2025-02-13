@@ -126,41 +126,46 @@
 						</p-timeline>
 					</div> -->
 				</div>
-				<div class="row">
+				<div class="row ">
 
 					<div class="col-4 pe-4 bg-light border-start border-secondary ">
 						<h3 class="bg-primary py-2 text-light rounded text-center">Comment Sheet</h3>
-						<div class="scrollTable" style="height: 100vh;">
+						<div class="scrollTable height-Task">
 
 							<ng-container *ngIf="minitingList && minitingList?.length > 0">
 								<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-								  <div class="p-3 mb-2" style="background-color: #ffffff;" [innerHTML]="data.comments"></div>
-								  <div class="alert-footer">
-									<span class="float-end">
-									  <b>Rank:</b>&nbsp;
-									  <i style="color: black; font-weight: 600;">{{data?.created_by?.rankCode}}</i>
-									</span>
-									<br>
-									<span class="float-end">
-									  <b>Created By:</b>&nbsp; {{data?.created_by?.first_name}} {{data.created_by?.last_name}}
-									</span>
-									<br>
-									<span class="float-end">{{data?.created_on ? (data.created_on | date: 'dd-MM-yyyy hh:mm') : 'N/A'}}</span>
-									<br />
-								  </div>
-								</div>
-							  </ng-container>
-							  
+									<div *ngIf="hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
+									<div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div>
+									<div>
+										<span class="float-end">
+											<i class="font-normal"> Electronically Signed by:</i>
+										</span>
+										<br>
+										<span class="float-end">
+											{{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
+											data?.created_by?.last_name }}
+										</span>
+										<br>
+										<span class="float-end">
+											{{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
+											(data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
+										</span>
+									</div>
 
-							<form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()"  *ngIf="releDetaile?.detail == 'Passed'"	>
-								<div  class="mb-5 alert alert-dismissible alert-bg">
+								</div>
+							</ng-container>
+
+
+							<form [formGroup]="this.minitingForm" (ngSubmit)="saveMiniting()"
+								*ngIf="releDetaile?.detail == 'Passed'">
+								<div class="mb-5 alert alert-dismissible alert-bg">
 									<mat-label style="font-size:large;"><b>Comment</b></mat-label>
 									<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
 									<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 									<angular-editor formControlName="comment" style="min-height: 100px;"
 										[config]="commentEditor"></angular-editor>
 								</div>
-								<button type="submit"  class="btn btn-primary me-2">
+								<button type="submit" class="btn btn-primary me-2">
 									save
 								</button>
 							</form>
@@ -169,7 +174,7 @@
 					<div class="col-8 ps-4 bg-secondery bg-light border-end border-secondary ">
 						<h3 class="bg-primary py-2 text-light rounded text-center">Tasking Form</h3>
 
-						<div class="scrollTable" style="height: 100vh;">
+						<div class="scrollTable height-Task">
 							<form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
 								<div class="row">
 									<div formGroupName="sdForm">
@@ -206,8 +211,8 @@
 
 											<ng-container *ngIf="api.userid.role_center[0].user_role.code!='Initiator'">
 												<div class="mb-5">
-													<mat-label style="font-size:large;"><b>Task Description (Maximum 500
-															words)</b><b class="star">*</b></mat-label>
+													<!-- <mat-label style="font-size:large;"><b>Task Description (Maximum 500
+															words)</b><b class="star">*</b></mat-label> -->
 													<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
 													<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 													<angular-editor formControlName="task_description"
@@ -237,10 +242,10 @@
 													<div class="limit">
 														Words remaining: {{ remainingCharacters }}
 													</div>
-													<mat-error
+													<!-- <mat-error
 														*ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
 														Word limit exceeded! Maximum 500 words allowed.
-													</mat-error>
+													</mat-error> -->
 													<mat-error
 														*ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter
 														task_description</mat-error>
@@ -259,17 +264,26 @@
 															accept="image/jpeg,image/jpg,application/pdf">
 													</ng-container>
 
-													<div class="remove"><a href="{{ImageUrl}}" target=_blank
-															*ngIf="ImageUrl!='' && file1url"
-															class="edit-icon text-primary"><span
-																class="material-icons-outlined"><span
-																	class="bi bi-journal-check"
-																	style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+													<div class="remove">
+														<a href="{{ ImageUrl }}" target="_blank"
+															*ngIf="ImageUrl !== '' && file1url"
+															class="edit-icon text-primary">
+															<span class="material-icons-outlined">
+																<span class="bi bi-journal-check file-icon"
+																	style="font-size:2rem; margin:0px 5px; color: #4caf50;">
+																</span>
+															</span>
+														</a>
+														<span class="text-dark fw-bold ml-1 me-4 mb-2">
+															{{ getFileNameFromUrl(ImageUrl) || '' }}
+														</span>
 														<span
-															*ngIf="ImageUrl!='' && file1url && api.userid.role_center[0].user_role.code=='Initiator'"><a
-																href="javascript:void(0)" class="btn btn-danger btn-sm"
-																(click)="remove_file1()">Remove</a></span>
+															*ngIf="ImageUrl !== '' && file1url && api.userid.role_center[0].user_role.code === 'Initiator'">
+															<a href="javascript:void(0)" class="btn btn-danger btn-sm"
+																(click)="remove_file1()">Remove</a>
+														</span>
 													</div>
+
 													<ng-container
 														*ngIf="api.userid.role_center[0].user_role.code=='Initiator' 	 && ((imgToUpload1==''||null)||(ImageUrl1==''||null)) ">
 														<input #fileInput formControlName="file1" id="file1" type="file"
@@ -281,8 +295,11 @@
 															*ngIf="ImageUrl1!='' && file2url"
 															class="edit-icon text-primary"><span
 																class="material-icons-outlined"><span
-																	class="bi bi-journal-check"
+																	class="bi bi-journal-check file-icon"
 																	style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+														<span class="text-dark fw-bold ml-1 me-4 mb-2">
+															{{ getFileNameFromUrl(ImageUrl1) || '' }}
+														</span>
 														<span
 															*ngIf="ImageUrl1!='' && file2url && api.userid.role_center[0].user_role.code=='Initiator'"><a
 																href="javascript:void(0)" class="btn btn-danger btn-sm"
@@ -299,8 +316,11 @@
 															*ngIf="ImageUrl2!='' && file3url"
 															class="edit-icon text-primary"><span
 																class="material-icons-outlined"><span
-																	class="bi bi-journal-check"
+																	class="bi bi-journal-check file-icon"
 																	style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+														<span class="text-dark fw-bold ml-1 me-4 mb-2">
+															{{ getFileNameFromUrl(ImageUrl2) || '' }}
+														</span>
 														<span
 															*ngIf="ImageUrl2!='' && file3url && api.userid.role_center[0].user_role.code=='Initiator'"><a
 																href="javascript:void(0)" class="btn btn-danger btn-sm"
@@ -318,8 +338,11 @@
 															*ngIf="ImageUrl3!='' && file4url"
 															class="edit-icon text-primary"><span
 																class="material-icons-outlined"><span
-																	class="bi bi-journal-check"
+																	class="bi bi-journal-check file-icon "
 																	style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+														<span class="text-dark fw-bold ml-1 me-4 mb-2">
+															{{ getFileNameFromUrl(ImageUrl3) || '' }}
+														</span>
 														<span
 															*ngIf="ImageUrl3!='' && file4url && api.userid.role_center[0].user_role.code=='Initiator'"><a
 																href="javascript:void(0)" class="btn btn-danger btn-sm"
@@ -336,8 +359,11 @@
 															*ngIf="ImageUrl4!='' && file5url"
 															class="edit-icon text-primary"><span
 																class="material-icons-outlined"><span
-																	class="bi bi-journal-check"
+																	class="bi bi-journal-check file-icon"
 																	style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+														<span class="text-dark fw-bold ml-1 me-4 mb-2">
+															{{ getFileNameFromUrl(ImageUrl4) || '' }}
+														</span>
 														<span
 															*ngIf="ImageUrl4!='' && file5url && api.userid.role_center[0].user_role.code=='Initiator'"><a
 																href="javascript:void(0)" class="btn btn-danger btn-sm"
@@ -345,16 +371,29 @@
 													</div>
 												</div>
 											</div>
+											<div class="mb-3" *ngIf="signeture(countryList1,'SD_initiater' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDataIni?.created_by?.rankCode }} {{
+													signatureDataIni?.created_by?.first_name }}
+													{{ signatureDataIni?.created_by?.last_name }}
+												</span>
+												<br>
+												<span class="float-end">
+													{{signatureDataIni?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDataIni?.created_on ?
+													(signatureDataIni.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+													}}
+												</span>
+											</div>
 											<button type="submit"
 												*ngIf="taskListRoot?.level== null || taskListRoot?.level === 1 && (api.userid.role_center[0].user_role.code=='Initiator' || api.userid.role_center[0].user_role.code=='Recommender')"
 												class="btn btn-primary me-2">Initiate</button>
-
-
 										</div>
 
-
-
-										<!-- </ng-container> -->
 									</div>
 									<div formGroupName="apsoForm" *ngIf="is_sponsoring_directorate">
 
@@ -373,37 +412,25 @@
 													*ngIf="taskForm.get('apsoForm.comments_of_apso')?.errors?.['required'] && showError">Enter
 													Comments</mat-error>
 											</div>
-											<!-- <div class="alert-footer" *ngIf="list && list.APSO_recommender === 1" >
-												<span class="float-end"> <b>Rank:</b>&nbsp;<i
-														style="color: black; font-weight: 600;">{{list1?.created_by.rankCode}}</i>
+
+											<div *ngIf="signeture(countryList1,'APSO_recommender' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
 												</span>
 												<br>
-												<span class="float-end"><b>Created By:</b>&nbsp; {{list1?.created_by.first_name}}
-													{{list?.created_by.last_name}}</span>
+												<span class="float-end">
+													{{ signatureDataApso?.created_by?.rankCode }} {{
+													signatureDataApso?.created_by?.first_name
+													}} {{ signatureDataApso?.created_by?.last_name }}
+												</span>
 												<br>
-												<span class="float-end">{{list1.created_on | date:'dd-MM-yyyy hh:mm '}}</span>
-												<br />
-		
-											</div> -->
-											<table *ngIf="list && list.SD_initiater==1">
-
-												<tr>
-													<th width="20%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-
-												<tr>
-
-													<td>{{list && list.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-													<td>{{list && list.SD_initiater==1?'Initiated':'Not Initiated'}}
-													</td>
-
-													<td>{{list && list.created_by.first_name}}</td>
-												</tr>
-												<!-- </ng-template> -->
-											</table>
+												<span class="float-end">
+													{{signatureDataApso?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDataApso?.created_on
+													? (signatureDataApso.created_on | date: 'dd MMM yy HH:mm:ss') :
+													'N/A' }}
+												</span>
+											</div>
 											<div class="card-footer mt-3 ">
 
 												<button type="button" class="btn btn-success" *ngIf="!disableApso()"
@@ -414,59 +441,183 @@
 									<div formGroupName="weseeForm">
 
 
-										<ng-container
-											*ngIf="(api.userid.role_center[0].user_role.code=='WESEE' || token_detail.process_id==1 || token_detail.process_id==3)">
-											<form [formGroup]="this.allocateForm" (ngSubmit)="onallocateSubmit()">
-												<div class="col-md-12">
-													<div class="alert alert-dismissible alert-bg">
-														<div class="sub-heading" style="text-align:center;">
-															<mat-label class="subheading3"><b
-																	style="font-size:large;">DG WESEE &nbsp;(Weapons and
-																	Electronics Systems Engineering
-																	Establishment)</b></mat-label>
-														</div>
-														<div class="matt-group matselect1">
-															<mat-label>Select Tasking Groups <b
-																	class="star">*</b></mat-label>
-															<mat-form-field appearance="outline">
-																<ng-container *ngIf="listDelapso==3">
-																	<mat-select formControlName="tasking_group"
-																		placeholder="Select Tasking Groups"
-																		[disabled]="token_detail.process_id==1 || token_detail.process_id==3 && crudName=='View' && disableWesee()">
-																		<mat-option [value]="">Select Tasking
-																			Groups</mat-option>
-																		<mat-option
-																			*ngFor="let taskingGroup of taskingGroups"
-																			[value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+										<ng-container>
+
+											<div class="col-md-12">
+												<div class="alert alert-dismissible alert-bg">
+													<div class="sub-heading" style="text-align:center;">
+														<mat-label class="subheading3"><b style="font-size:large;">DG
+																WESEE &nbsp;(Weapons
+																and
+																Electronics Systems Engineering
+																Establishment)</b></mat-label>
+													</div>
+													<form [formGroup]="this.allocateForm"
+														(ngSubmit)="onallocateSubmit()">
+														<div class="row">
+															<!-- Tasking Groups Dropdown -->
+															<div class="col-md-6">
+																<mat-label>Select Tasking Groups <b
+																		class="star">*</b></mat-label>
+																<mat-form-field appearance="outline" class="w-100">
+																	<ng-container *ngIf="listDelapso==3">
+																		<mat-select formControlName="tasking_group"
+																			placeholder="Select Tasking Groups"
+																			[disabled]="token_detail.process_id==1 || token_detail.process_id==3 && crudName=='View' && disableWesee()"
+																			(selectionChange)="getTaskingUser($event)">
+																			<mat-option [value]="">Select Tasking
+																				Groups</mat-option>
+																			<mat-option
+																				*ngFor="let taskingGroup of taskingGroups"
+																				[value]="taskingGroup.id">
+																				{{ taskingGroup.name }}
+																			</mat-option>
+																		</mat-select>
+																	</ng-container>
+
+																	<ng-container *ngIf="listDelapso!=3">
+																		<mat-select formControlName="tasking_group"
+																			placeholder="Select Tasking Groups"
+																			[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && disableWesee()"
+																			(selectionChange)="getTaskingUser($event)">
+																			<mat-option [value]="">Select Tasking
+																				Groups</mat-option>
+																			<mat-option
+																				*ngFor="let taskingGroup of taskingGroups"
+																				[value]="taskingGroup.id">
+																				{{ taskingGroup.name }}
+																			</mat-option>
+																		</mat-select>
+																	</ng-container>
+																</mat-form-field>
+															</div>
+
+															<!-- Select User Dropdown -->
+															<div class="col-md-6">
+																<mat-label>Select User <b class="star">*</b></mat-label>
+																<mat-form-field appearance="outline" class="w-100">
+																	<mat-select formControlName="tasking_user"
+																		placeholder="Select User"
+																		[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">
+																		<mat-option [value]="">Select User</mat-option>
+																		<mat-option *ngFor="let user of usersList"
+																			[value]="user.id">
+																			{{ user.loginname }}- <b>{{ user.rankCode	}}-{{ user.first_name	}}-{{ user.last_name}}</b>
+																		</mat-option>
 																	</mat-select>
+																</mat-form-field>
+															</div>
 
-																</ng-container>
-																<ng-container *ngIf="listDelapso!=3">
-																	<mat-select formControlName="tasking_group"
-																		placeholder="Select Tasking Groups"
-																		[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && disableWesee()">
-
-																		<mat-option [value]="">Select Tasking
-																			Groups</mat-option>
-																		<mat-option
-																			*ngFor="let taskingGroup of taskingGroups"
-																			[value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
-																	</mat-select>
-																</ng-container>
-															</mat-form-field>
-
-															<!-- <button type="submit" class="btn btn-primary" [disabled]="token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View' && !disableWesee()">Submit</button> -->
-															<div class="col-md-4" *ngIf="!disableWesee()">
+															<!-- Submit Button -->
+															<div class="col-md-4 mt-3" *ngIf="!disableWesee()">
 																<button type="submit" class="btn btn-primary"
-																	[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">Submit</button>
+																	[disabled]=" token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">
+																	Submit
+																</button>
+															</div>
+														</div>
+													</form>
+
+													<div *ngIf="signeture(countryList1,'WESEE_recommender' )">
+														<span class="float-end">
+															<i class="font-normal"> Electronically Signed
+																by:</i>
+														</span>
+														<br>
+														<span class="float-end">
+															{{ signatureDatawesee?.created_by?.rankCode }} {{
+															signatureDatawesee?.created_by?.first_name }} {{
+															signatureDatawesee?.created_by?.last_name }}
+														</span>
+														<br>
+														<span class="float-end">
+															{{signatureDatawesee?.created_by?.department?.name}}
+															,&nbsp;{{
+															signatureDatawesee?.created_on ?
+															(signatureDatawesee.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
+														</span>
+													</div>
+
+													<div>
+														<div class="row">
+															<!-- Cost Implication -->
+															<div class="col-md-4">
+																<mat-label style="font-size:large;"><b>Cost Implication
+																		(Approx)</b></mat-label>
+																<div class="task-text-group">
+																	<p>Rs&nbsp;&nbsp;</p>
+																	<input (keypress)="numberOnly($event)" type="text"
+																		class="form-control"
+																		formControlName="cost_implication"
+																		[disabled]="disableWesee2()">
+																</div>
+																<mat-error
+																	*ngIf="taskForm.get('weseeForm.cost_implication')?.errors?.['required'] && showError">
+																	Enter Cost Implication
+																</mat-error>
+															</div>
+
+															<!-- Time Frame For Completion -->
+															<div class="col-md-4">
+																<mat-label style="font-size:large;">
+																	<b>Time Frame For Completion</b><b
+																		class="star">*</b>
+																</mat-label>
+																<div class="task-text-group">
+																	<p>Months&nbsp;&nbsp;</p>
+																	<input type="text" class="form-control"
+																		formControlName="time_frame_for_completion_month"
+																		maxLength="10" [disabled]="disableWesee2()">
+
+																</div>
+															</div>
+														</div>
+
+														<mat-label style="font-size:large;"><b>Comments From Tasking
+																Group</b><b class="star">*</b></mat-label>
+														<ng-container>
+															<textarea rows="4" class="form-control"
+																formControlName="comments_of_tasking_group"
+																value="Test comments"
+																[readonly]="disableWesee2()"></textarea>
+															<mat-error
+																*ngIf="taskForm.get('weseeForm.comments_of_tasking_group')?.errors?.['required'] && showError">Enter
+																Comments</mat-error>
+														</ng-container>
+														<div *ngIf="signeture(countryList1, 'TS_recommender')"
+															class="alert-footer">
+															<span class="float-end">
+																<i class="font-normal"> Electronically Signed
+																	by:</i>
+															</span>
+															<br>
+															<span class="float-end">
+																{{ signatureDataTs?.created_by?.rankCode }} {{
+																signatureDataTs?.created_by?.first_name }} {{
+																signatureDataTs?.created_by?.last_name }}
+															</span>
+															<br>
+															<span class="float-end">
+																{{signatureDataTs?.created_by?.department?.name}}
+																,&nbsp;{{
+																signatureDataTs?.created_on ?
+																(signatureDataTs.created_on | date: 'dd MMM yy																HH:mm:ss') : 'N/A' }}
+															</span>
+														</div>
+														<div class="card-footer mt-4 mb-5">
+															<div class="col-md-12" *ngIf="!disableWesee2()">
+																<button type="button" class="btn btn-success"
+																	*ngIf="this.api.userid.process_id=='3'"
+																	(click)="OnTaskingSubmit()">Submit </button>
 															</div>
 														</div>
 													</div>
-
-
-
 												</div>
-											</form>
+
+
+
+											</div>
+
 										</ng-container>
 
 										&nbsp;
@@ -477,112 +628,23 @@
 													<div class="col-md-4">
 														<div class="sub-heading" style="text-align:center;">
 															<mat-label class="subheading3"><b
-																	style="font-size:large;">DG WESEE &nbsp;(Weapons and
+																	style="font-size:large;">DG WESEE &nbsp;(Weapons
+																	and
 																	Electronics Systems Engineering
 																	Establishment)</b></mat-label>
 														</div>
-														<div class="matt-group">
-															<mat-label style="font-size:large;"><b>Cost Implication
-																	(Approx)</b></mat-label>
-															<div class="task-text-group">
-																<p>Rs&nbsp;&nbsp;</p>
-																<ng-container *ngIf="listDelapso==3">
-																	<input (keypress)="numberOnly($event)" type="text"
-																		class="form-control"
-																		formControlName="cost_implication" value="50000"
-																		[readonly]="disableWesee2()">
-																</ng-container>
-																<ng-container *ngIf="listDelapso!=3">
-																	<input (keypress)="numberOnly($event)" type="text"
-																		class="form-control"
-																		formControlName="cost_implication" value="50000"
-																		[readonly]="disableWesee2() ">
-																</ng-container>
-															</div>
-															<!-- <input (keypress)="numberOnly($event)" type="text" class="form-control" formControlName="cost_implication" value="50000"/> -->
-															<mat-error
-																*ngIf="taskForm.get('weseeForm.cost_implication')?.errors?.['required'] && showError">Enter
-																Cost Implication</mat-error>
-														</div>
-													</div>
-													<div class="col-md-4">
-														<div class="matt-group">
-															<mat-label style="font-size:large;"><b>Time Frame For
-																	Completion</b><b class="star">*</b></mat-label>
-															<ng-container *ngIf="listDelapso==3">
-																<div class="task-text-group">
-																	<p>Months&nbsp;&nbsp;</p>
-																	<input type="text" class="form-control"
-																		formControlName="time_frame_for_completion_month"
-																		value="10000" max_length="10"
-																		[readonly]="disableWesee2()" />
 
-																	<p>Days&nbsp;&nbsp;</p>
-
-																	<input type="text" class="form-control"
-																		formControlName="time_frame_for_completion_days"
-																		value="10000" max_length="10"
-																		[readonly]="disableWesee2()" />
-																	&nbsp;&nbsp;
-																</div>
-															</ng-container>
-															<ng-container *ngIf="listDelapso!=3">
-																<div class="task-text-group">
-																	<p>Months&nbsp;&nbsp;</p>
-																	<input type="text" class="form-control"
-																		formControlName="time_frame_for_completion_month"
-																		value="10000" max_length="10"
-																		[readonly]="disableWesee2()" />
-																</div>
-															</ng-container>
-														</div>
 													</div>
+
 
 												</div>
 											</div>
 
 											<div class="mb-5 ">
-												<mat-label style="font-size:large;"><b>Comments From Tasking Group</b><b
-														class="star">*</b></mat-label>
-												<ng-container >
-													<textarea rows="4" class="form-control"
-														formControlName="comments_of_tasking_group" value="Test comments"
-														[readonly]="disableWesee2()"></textarea>
-													<mat-error
-														*ngIf="taskForm.get('weseeForm.comments_of_tasking_group')?.errors?.['required'] && showError">Enter
-														Comments</mat-error>
-												</ng-container>
-												<div class="alert-footer "
-												*ngIf="signeture(countryList1, 'TS_recommender')">
 
-												<span class="float-end">
-													<b>Rank:</b>&nbsp;<i style="color: black; font-weight: 600;">
-														{{ signatureDataTs?.created_by?.rankCode }}
-													</i>
-												</span>
-												<br>
-												<span class="float-end">
-													<b>Created By:</b>&nbsp; {{
-														signatureDataTs?.created_by?.first_name }} {{
-														signatureDataTs?.created_by?.last_name }}
-												</span>
-												<br>
-												<span class="float-end">
-													Created on: {{ signatureDataTs?.created_on | date: 'dd-MM-yyyy
-													hh:mm' }}
-												</span>
-												<br />
-											</div>
-											<div class="card-footer mb-5 ">
-												<div class="col-md-12" *ngIf="!disableWesee2()">
-													<button type="button" class="btn btn-success"
-														*ngIf="this.api.userid.process_id=='3'"
-														(click)="OnTaskingSubmit()">Submit</button>
-												</div>
-											</div>
-											<mat-label style="font-size:large;"><b>Comments From DG WESEE</b><b
-												class="star">*</b></mat-label>
-												<ng-container >
+												<mat-label style="font-size:large;"><b>Comments From DG WESEE</b><b
+														class="star">*</b></mat-label>
+												<ng-container>
 													<textarea rows="4" class="form-control"
 														formControlName="comments_of_wesee" value="Test comments"
 														[readonly]="disableWesee2()"></textarea>
@@ -634,8 +696,7 @@
 												</ng-container>
 											</div><br>
 											<div>
-												<ng-container
-													*ngIf="(list && list.comments_of_wesee!='')">
+												<ng-container *ngIf="(list && list.comments_of_wesee!='')">
 													<div class="mb-5">
 
 														<div class="matt-group">
@@ -651,8 +712,11 @@
 																	*ngIf="ImageUrl5&& file6url"
 																	class="edit-icon text-primary"><span
 																		class="material-icons-outlined"><span
-																			class="bi bi-journal-check"
+																			class="bi bi-journal-check file-icon"
 																			style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+																<span class="text-dark fw-bold ml-1 me-4 mb-2">
+																	{{ getFileNameFromUrl(ImageUrl5) || '' }}
+																</span>
 																<span
 																	*ngIf="ImageUrl5!='' && file6url && api.userid.role_center[0].user_role.code=='WESEE'"><a
 																		href="javascript:void(0)"
@@ -671,8 +735,11 @@
 																	*ngIf="ImageUrl6!='' && file7url"
 																	class="edit-icon text-primary"><span
 																		class="material-icons-outlined"><span
-																			class="bi bi-journal-check"
-																			style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+																			class="bi bi-journal-check file-icon"
+																			style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a><span
+																	class="text-dark fw-bold ml-1 me-4 mb-2">
+																	{{ getFileNameFromUrl(ImageUrl6) || '' }}
+																</span>
 																<span
 																	*ngIf="ImageUrl6!='' && file7url && api.userid.role_center[0].user_role.code=='WESEE'"><a
 																		href="javascript:void(0)"
@@ -683,50 +750,31 @@
 													</div>
 												</ng-container>
 											</div>
-											
 
-
-
-											<table
-												*ngIf="list && list.APSO_recommender==1||list && list.APSO_recommender==2">
-
-												<tr>
-													<th width="20%">Date</th>
-													<th width="20%">Status</th>
-													<th width="20%">Comments</th>
-													<th width="20%">Created By</th>
-													<th width="20%">Tasking group Comments</th>
-												</tr>
-
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="(list1.APSO_recommender==1||list1.APSO_recommender==2)">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-														<td>{{list1&& list1.comments}}</td>
-														<td>{{list1 && list1.created_by.first_name}}</td>
-														<td>-</td>
-													</ng-container>
-													<ng-container *ngIf="list1.WESEE_recommender==4">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.APSO_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-														<td>-</td>
-														<td>{{list1 && list1.created_by.first_name}}</td>
-														<td>{{list1&& list1.comments}}</td>
-													</ng-container>
-												</tr>
-
-
-												<!-- </ng-template> -->
-											</table>
+											<div *ngIf="signeture(countryList1,'WESEE_recommender' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDatawesee?.created_by?.rankCode }} {{
+													signatureDatawesee?.created_by?.first_name
+													}} {{ signatureDatawesee?.created_by?.last_name }}
+												</span>
+												<br>
+												<span class="float-end">
+													{{signatureDatawesee?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDatawesee?.created_on ? (signatureDatawesee.created_on |
+													date: 'dd MMM yy
+													HH:mm:ss') : 'N/A' }}
+												</span>
+											</div>
 
 
 											<div class="card-footer  mt-2"
 												*ngIf="!disableWesee2() && this.api.userid.process_id !==3">
 												<button type="button" class="btn btn-success"
-													(click)="Recommened()">Recommend</button> 
+													(click)="Recommened()">Recommend</button>
 											</div>
 
 
@@ -775,25 +823,24 @@
 												</div>
 											</ng-container>
 
-											<table
-												*ngIf="list && list.WESEE_recommender==1||list && list.WESEE_recommender==2">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1&& list1.WESEE_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'DEE_recommender' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDataDee?.created_by?.rankCode }} {{
+													signatureDataDee?.created_by?.first_name }}
+													{{ signatureDataDee?.created_by?.last_name }}
+												</span>
+												<br>
+												<span class="float-end">
+													{{signatureDataDee?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDataDee?.created_on ?
+													(signatureDataDee.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+													}}
+												</span>
+											</div>
 											<ng-container
 												*ngIf=" (list && list.WESEE_recommender==1) && (api.userid.role_center[0].user_role.code=='DEE') && (list && list.comments_of_dee=='' || list && list.comments_of_dee==null)">
 												<div class="row" id="addmore" *ngIf="div3">
@@ -845,8 +892,11 @@
 																*ngIf="ImageUrl7!='' && file8url"
 																class="edit-icon text-primary"><span
 																	class="material-icons-outlined"><span
-																		class="bi bi-journal-check"
+																		class="bi bi-journal-check file-icon"
 																		style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+															<span class="text-dark fw-bold ml-1 me-4 mb-2">
+																{{ getFileNameFromUrl(ImageUrl7) || '' }}
+															</span>
 															<span
 																*ngIf="ImageUrl7!='' && file8url && api.userid.role_center[0].user_role.code=='DEE' "><a
 																	href="javascript:void(0)"
@@ -866,8 +916,11 @@
 															<a href="{{ImageUrl8}}" *ngIf="ImageUrl8!='' && file9url"
 																class="edit-icon text-primary"><span
 																	class="material-icons-outlined"><span
-																		class="bi bi-journal-check"
+																		class="bi bi-journal-check file-icon"
 																		style="font-size:2rem;margin:0px 5px;color: #4caf50;"></span></span></a>
+															<span class="text-dark fw-bold ml-1 me-4 mb-2">
+																{{ getFileNameFromUrl(ImageUrl8) || '' }}
+															</span>
 															<span
 																*ngIf="ImageUrl8!='' && file9url && api.userid.role_center[0].user_role.code=='DEE'"><a
 																	href="javascript:void(0)"
@@ -877,11 +930,6 @@
 													</div>
 												</div>
 											</ng-container>
-
-
-
-
-
 											<div class="card-footer  mb-2" *ngIf="!disableDee()">
 												<div class="col-md-12">
 													<ng-container *ngIf="list &&list.WESEE_recommender==1">
@@ -890,14 +938,13 @@
 															;>
 															<button type="button" class="btn btn-success"
 																(click)="deeRecommened()">Recommend</button>
-															<!-- &nbsp;
-															<button type="button" class="btn btn-danger"
-																(click)="deenotRecommended()">Not Recommend</button> -->
+
 														</ng-container>
 													</ng-container>
 
 												</div>
 											</div>
+
 										</div>
 									</div>
 									<div formGroupName="acomForm">
@@ -911,13 +958,6 @@
 														Sys))</b></mat-label>
 											</div>
 
-											<!-- <div class="mb-5 ">
-								<mat-label>Comments of Dwe<b class="star">*</b></mat-label>
-								<textarea rows="4"  class="form-control" formControlName="comments_of_dwe" value="Test comments"></textarea>
-								<mat-error *ngIf="Error('comments_of_dwe','required') && showError">Enter comments_of_dee</mat-error>-->
-											<!-- <input type="text" class="form-control" formControlName="comments_of_dwe" value="Test Comments"/> -->
-											<!-- </div> -->
-
 
 											<div class="mb-5 ">
 												<mat-label style="font-size:large;"><b>Comments</b><b
@@ -929,28 +969,25 @@
 												<mat-error
 													*ngIf="taskForm.get('acomForm.recommendation_of_acom_its')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
-												<!-- <input type="text" class="form-control" formControlName="recommendation_of_acom_its" value="Test"/> -->
-												<!-- <mat-error *ngIf="Error('recommendation_of_acom_its','required') && showError">Enter recommendation_of_acom_its</mat-error> -->
 											</div>
-											<table
-												*ngIf="list && list.DEE_recommender==1 && list && list.DEE_recommender==2 ">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1 && list1.DEE_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'ACOM_recommender' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDataAcom?.created_by?.rankCode }} {{
+													signatureDataAcom?.created_by?.first_name
+													}} {{ signatureDataAcom?.created_by?.last_name }}
+												</span>
+												<br>
+												<span class="float-end">
+													{{signatureDataAcom?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDataAcom?.created_on
+													? (signatureDataAcom.created_on | date: 'dd MMM yy HH:mm:ss') :
+													'N/A' }}
+												</span>
+											</div>
 
 											<div class="card-footer  mb-4">
 												<div class="col-md-12">
@@ -960,9 +997,6 @@
 														;>
 														<button type="button" class="btn btn-success"
 															(click)="acomRecommened()">Recommend</button>
-														<!-- &nbsp;
-														<button type="button" class="btn btn-danger"
-															(click)="acomnotRecommended()">Not Recommend</button> -->
 													</ng-container>
 
 												</div>
@@ -989,55 +1023,37 @@
 													*ngIf="taskForm.get('comForm.approval_of_com')?.errors?.['required'] && showError">Enter
 													comments</mat-error>
 											</div>
-											<table
-												*ngIf="list && list.ACOM_recommender==1 && list && list.ACOM_recommender==2">
-												<tr>
-													<th width="30%">Date</th>
-													<th width="20%">Status</th>
-
-													<th width="20%">Created By</th>
-												</tr>
-												<tr *ngFor="let list1 of countryList1; let i= index;">
-													<ng-container
-														*ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
-														<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-														<td>{{list1 && list1.ACOM_recommender==1?'Recommended':'Not
-															Recommended'}}</td>
-
-														<td>{{list1 && list1.created_by.first_name}}</td>
-													</ng-container>
-												</tr>
-											</table>
+											<div *ngIf="signeture(countryList1,'COM_approver' )">
+												<span class="float-end">
+													<i class="font-normal"> Electronically Signed by:</i>
+												</span>
+												<br>
+												<span class="float-end">
+													{{ signatureDatacom?.created_by?.rankCode }} {{
+													signatureDatacom?.created_by?.first_name }}
+													{{ signatureDatacom?.created_by?.last_name }}
+												</span>
+												<br>
+												<span class="float-end">
+													{{signatureDatacom?.created_by?.department?.name}} ,&nbsp;{{
+													signatureDatacom?.created_on ?
+													(signatureDatacom.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+													}}
+												</span>
+											</div>
 
 
 											<div class="card-footer  mt-4">
 												<div class="col-md-12">
 													<ng-container *ngIf="!disableCom()">
-														<!-- <button type="button" class="btn btn-success" *ngIf="api.userid.role_center[0].user_role.code=='APP'" (click)="comRecommened()">Approve</button> -->
-														<!-- <button type="button" class="btn btn-danger"
-															*ngIf="api.userid.role_center[0].user_role.code=='APP'"
-															(click)="comnotRecommended()">Not Approve</button>
-														&nbsp; -->
 														<button type="button" class="btn btn-success"
 															*ngIf="api.userid.role_center[0].user_role.code=='APP'"
 															(click)="comRecommened()">Approve</button>
 														&nbsp;
-
-														<!-- tton t <buype="submit" class="btn btn-danger" *ngIf="api.userid.role_center[0].user_role.code=='APP'">Not Recommended</button> -->
 													</ng-container>
 												</div>
 											</div>
 										</div>
-
-
-
-
-										<!-- <div class="card-footer text-end">
-						   <div class="col-md-12">
-						   <button type="submit" class="btn btn-primary" *ngIf="!isReadonly" >{{crudName}}</button>
-	
-							</div>
-						 </div> -->
 									</div>
 								</div>
 							</form>
@@ -1055,20 +1071,20 @@
 <ng-template #content let-modal>
 	<div class="modal-header">
 		<h4 class="modal-title">Edit Route Config</h4>
-		<button type="button" (click)="modal.dismiss('Cross click')" class="btn-close" data-dismiss="modal" aria-label="Close">
+		<button type="button" (click)="modal.dismiss('Cross click')" class="btn-close" data-dismiss="modal"
+			aria-label="Close">
 			<span aria-hidden="false">&times;</span>
 		</button>
 	</div>
 	<div class="modal-body">
-		<div  class="timeline-cover text-center">
+		<div class="timeline-cover text-center">
 			<ul class="timeline">
 
 				<li *ngFor="let step of roles" class="active">
 					<label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
 					<label>{{step?.current?.department?.name }}</label>
 				</li>
-				<li *ngFor="let step of routeList; let i = index"
-					[ngClass]="{'active': i < taskListRoot.level-1}">
+				<li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < taskListRoot.level-1}">
 					<label>{{ timelineStepName(step) }}</label> <br>
 					<label>{{ timelineStepDirect(step) }}</label>
 				</li>
@@ -1076,112 +1092,120 @@
 		</div>
 		<form [formGroup]="formGroup" (ngSubmit)="onSubmitRoute()" class="my-form">
 			<div class="row">
-			  <!-- Task Selection -->
-			  <div class="form-group mt-4 col-4">
-				<mat-form-field appearance="outline">
-				  <mat-label>Task</mat-label>
-				  <input matInput type="text" id="taskId" formControlName="taskId">
-				  <mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
-					Name is required
-				  </mat-error>
-				</mat-form-field>
-			  </div>
-		  
-			  
-			  <h3>Select From User</h3>
-		  
-			  
-			  <div class="form-group mt-4 col-4">
-				<mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
-				  <mat-radio-button value="main" class="mr-4" color="primary" >Tasking Form User </mat-radio-button>
-				  <mat-radio-button value="normal" color="primary" >Commenter</mat-radio-button>
-				</mat-radio-group>
-			  </div>
-		  
-			  <!-- User Type Dropdown (Visible only if Main User is selected) -->
-			  <div class="form-group mt-4 col-4" *ngIf="isMainUser">
-				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
-				  <mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
-					
-					<mat-option *ngFor="let option of userRoleListFrom" [value]="option.id">{{option.name}}</mat-option>
-				  </mat-select>
-				</mat-form-field>
-			  </div>
-			  <div class="form-group mt-4 col-4" *ngIf="!isMainUser">
-				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
-				  <mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
-					
-					<mat-option *ngFor="let option of directList" [value]="option.id">{{option.name}}</mat-option>
-				  </mat-select>
-				</mat-form-field>
-			  </div>
-		  
-			  <!-- Fetch Users from API when Normal User is selected -->
-			  <div class="form-group mt-4 col-4" >
-				<mat-form-field appearance="outline">
-				  <mat-label>Select User</mat-label>
-				  <mat-select id="current_user_id" formControlName="current_id">
-					<mat-option [value]="null">Select From User</mat-option>
-					<mat-option *ngFor="let option of userList" [value]="option.id">{{option.loginname}}</mat-option>
-				  </mat-select>
-				  <mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
-					User is required
-				  </mat-error>
-				</mat-form-field>
-			  </div>
-		  
-			  <!-- Select To User Section -->
-			  <h3>Select To User</h3>
-			  <div class="form-group mt-4 col-4">
-				<mat-radio-group formControlName="userTypeTo" (change)="onUserTypeChangeTo($event)">
-				  <mat-radio-button value="main" class="mr-4" color="primary" >Tasking Form User</mat-radio-button>
-				  <mat-radio-button value="normal" color="primary" >Commenter</mat-radio-button>
-				</mat-radio-group>
-			  </div>
-			  <div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
-				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
-				  <mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
-					<mat-option [value]="null">Select User Type</mat-option>
-					<mat-option *ngFor="let option of userRoleListTo" [value]="option.id">{{option.name}}</mat-option>
-				  </mat-select>
-				</mat-form-field>
-			  </div>
-		  
-			  <!-- Conditional Directorate Selection -->
-			  <div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
-				<mat-form-field appearance="outline">
-				  <mat-label>Directorate</mat-label>
-				  <mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
-					<mat-option [value]="null">Select Directorate</mat-option>
-					<mat-option *ngFor="let option of directList" [value]="option.id">{{option.name}}</mat-option>
-				  </mat-select>
-				</mat-form-field>
-			  </div>
-		  
-			  <div class="form-group mt-4 col-4">
-				<mat-form-field appearance="outline">
-				  <mat-label>Select User</mat-label>
-				  <mat-select id="next_user_id_2" formControlName="next_user_id">
-					<mat-option [value]="null">Select User</mat-option>
-					<mat-option *ngFor="let option of userListTo" [value]="option.id">{{option.loginname}}</mat-option>
-				  </mat-select>
-				</mat-form-field>
-			  </div>
+				<!-- Task Selection -->
+				<div class="form-group mt-4 col-4">
+					<mat-form-field appearance="outline">
+						<mat-label>Task</mat-label>
+						<input matInput type="text" id="taskId" formControlName="taskId">
+						<mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
+							Name is required
+						</mat-error>
+					</mat-form-field>
+				</div>
+
+
+				<h3>Select From User</h3>
+
+
+				<div class="form-group mt-4 col-4">
+					<mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
+						<mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User
+						</mat-radio-button>
+						<mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+					</mat-radio-group>
+				</div>
+
+				<!-- User Type Dropdown (Visible only if Main User is selected) -->
+				<div class="form-group mt-4 col-4" *ngIf="isMainUser">
+					<mat-form-field appearance="outline">
+						<mat-label>Directorate/User Role</mat-label>
+						<mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
+
+							<mat-option *ngFor="let option of userRoleListFrom"
+								[value]="option.id">{{option.name}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="form-group mt-4 col-4" *ngIf="!isMainUser">
+					<mat-form-field appearance="outline">
+						<mat-label>Directorate/User Role</mat-label>
+						<mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
+
+							<mat-option *ngFor="let option of directList"
+								[value]="option.id">{{option.name}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<!-- Fetch Users from API when Normal User is selected -->
+				<div class="form-group mt-4 col-4">
+					<mat-form-field appearance="outline">
+						<mat-label>Select User</mat-label>
+						<mat-select id="current_user_id" formControlName="current_id">
+							<mat-option [value]="null">Select From User</mat-option>
+							<mat-option *ngFor="let option of userList"
+								[value]="option.id">{{option.loginname}}-<b>{{option?.rankCode}}-{{option.first_name}}-{{option.last_name}}</b></mat-option>
+						</mat-select>
+						<mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
+							User is required
+						</mat-error>
+					</mat-form-field>
+				</div>
+
+				<!-- Select To User Section -->
+				<h3>Select To User</h3>
+				<div class="form-group mt-4 col-4">
+					<mat-radio-group formControlName="userTypeTo" (change)="onUserTypeChangeTo($event)">
+						<mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
+						<mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
+					<mat-form-field appearance="outline">
+						<mat-label>Directorate/User Role</mat-label>
+						<mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
+							<mat-option [value]="null">Select User Type</mat-option>
+							<mat-option *ngFor="let option of userRoleListTo"
+								[value]="option.id">{{option.name}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<!-- Conditional Directorate Selection -->
+				<div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
+					<mat-form-field appearance="outline">
+						<mat-label>Directorate/User Role</mat-label>
+						<mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
+							<mat-option [value]="null">Select Directorate/User Role</mat-option>
+							<mat-option *ngFor="let option of directList"
+								[value]="option.id">{{option.name}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="form-group mt-4 col-4">
+					<mat-form-field appearance="outline">
+						<mat-label>Select User</mat-label>
+						<mat-select id="next_user_id_2" formControlName="next_user_id">
+							<mat-option [value]="null">Select User</mat-option>
+							<mat-option *ngFor="let option of userListTo"
+								[value]="option.id">{{option.loginname}}-<b>{{option?.rankCode}}-{{option.first_name}}-{{option.last_name}}</b></mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
 			</div>
-		  
+
 			<!-- Submit Button -->
 			<div class="modal-footer">
-			  <button mat-button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Close</button>
-			  <button mat-raised-button color="primary" type="submit">Save</button>
+				<button mat-button type="button" class="btn btn-secondary"
+					(click)="modal.dismiss('Close click')">Close</button>
+				<button mat-raised-button color="primary" type="submit">Save</button>
 			</div>
-		  </form>
-		  
-	
+		</form>
 
-			<!-- <ng-container *ngIf="routeList.length != 0">
+
+
+		<!-- <ng-container *ngIf="routeList.length != 0">
 				<app-grid-table [gridColumns]="gridColum" [gridData]="routeList" [ispaniNater]="true"
 				  [isAction]="true" (editEvent)="handleEdit($event)" (deleteEvent)="handleDelete($event)"
 				  [isEditable]="this.permission.edit" [isDeletable]="this.permission.delete">
@@ -1211,3 +1235,7 @@
 		</div>
 	</ng-template>
 </p-toast>
+
+
+
+

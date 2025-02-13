@@ -21,6 +21,8 @@ import { Subscription, Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
 	@ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+	selectedTab: string = 'tasking'; // Default selected tab
+	signinDisable: boolean = false;
 	constructor(public api: ApiService, private notification : NotificationService,private dialog:MatDialog,
 	  private router: Router, private logger : ConsoleService) { }
 	public loginForm = new FormGroup({
@@ -31,7 +33,6 @@ export class LoginComponent implements OnInit {
 	  remember: new FormControl("")
 	});
 	public loginButton='Sign in';
-	public signinDisable=false;
 	isLoading$: Observable<boolean>;
 	showError=false;
 	showPassword=false;
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit {
 			//this.loginForm.value.email,
 			this.loginForm.value.username,
 			this.api.encrypt(this.loginForm.value.password,environment.SECRET_KEY)
-		  )
+		  ,this.selectedTab)
 		  .subscribe((res) => {
 				this.showError=false;
 
@@ -97,11 +98,11 @@ export class LoginComponent implements OnInit {
 
 					//this.router.navigateByUrl('/dashboard/dashboard1');
 
-				  if(res.role_center.length==0)
+				  if(res.role_center?.length==0)
 	        {
 	          this.notification.displayMessage("It seems no previlleges has been set for this account. Please contact administrator");
 	        }else{
-	          if(res.role_center.length>1) {
+	          if(res.role_center?.length>1) {
 	              this.router.navigateByUrl('/authenticate/role-selection');
 	          } else {
 	            //// console.logres.role_center[0].user_role.id)
@@ -128,7 +129,10 @@ export class LoginComponent implements OnInit {
 	                      }
 	                    } else if(res2.authentication.twofactor){
 	                      this.router.navigateByUrl('/authenticate/twofactor');
-	                    } else {
+	                    }else if(res1?.data[0]?.process === 4) {
+	                      this.router.navigateByUrl('/wish/wish-dashboard');
+	                    }
+						else {
 	                      this.router.navigateByUrl('/dashboard/dashboard1');
 	                    }
 	                  });

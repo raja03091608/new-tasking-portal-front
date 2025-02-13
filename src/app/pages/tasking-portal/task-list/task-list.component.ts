@@ -120,6 +120,7 @@ export class TaskListComponent implements OnInit {
     this.allocateForm = new FormGroup({
       id: new FormControl(""),
       tasking_group: new FormControl(""),
+      tasking_user: new FormControl(""),
       tasking: new FormControl(""),
       created_by: new FormControl(""),
       created_role: new FormControl(this.token_detail.role_id),
@@ -320,9 +321,10 @@ export class TaskListComponent implements OnInit {
     this.taskForm.patchValue({ sdForm: { sponsoring_directorate: data.sponsoring_directorate, task_name: data.task_name, task_description: data.task_description } })
 
     this.allocateForm.patchValue({
-      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : ''
-    });
-    // // console.log'data.task_number_dee', data.task_number_dee);
+      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : '',
+      tasking_user:data?.assigned_tasking_group?.tasking_user
+     });
+    // console.log('data.task_number_dee', data);
 
     if (data.task_number_dee != null) {
       let split_task_number_dee = data.task_number_dee.split("/");
@@ -420,7 +422,7 @@ export class TaskListComponent implements OnInit {
 
 
         if (data.assigned_tasking_group[0] != null) {
-          this.allocateForm.patchValue({ tasking_group: data.assigned_tasking_group[0].tasking_group.id });
+          this.allocateForm.patchValue({ tasking_group: data.assigned_tasking_group[0].tasking_group.id ,tasking_user:data.assigned_tasking_group[0].tasking_group.id });
         }
       }
     }, 500);
@@ -536,18 +538,20 @@ export class TaskListComponent implements OnInit {
 
 
   disableWesee(): boolean {
-    if (this.role === 4 && this.taskListRoot.comment_status != 4) {
+   
+    if (this.role === 4 && this.taskListRoot.comment_status != 4 && (this.listDelapso==3 || this.listDelapso==1 )) {
       return false;
     }
     return true;
   }
   disableWesee2(): boolean {
-    if (this.api.userid.process_id === 3) {
+    if (this.api.userid.process_id === 3 && this.pass=== 'Passed') {
       return false;
     }
     if (this.role === 4 && this.taskListRoot.comment_status == 4) {
       return false;
     }
+    
     return true;
   }
 
@@ -565,6 +569,7 @@ export class TaskListComponent implements OnInit {
   }
   role: any;
   releDetaile:any
+  pass:string;
   onEditRole(rowData) {
 
     this.taskForm.get('sdForm')?.disable();
@@ -578,7 +583,7 @@ export class TaskListComponent implements OnInit {
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
       this.releDetaile=res
       this.role = res.role;
-
+      this.pass=res.detail;
 
     })
 
@@ -640,7 +645,7 @@ export class TaskListComponent implements OnInit {
     }
     else {
       this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" + this.param + "&limit_start=" + limit_start + "&limit_end=" + limit_end)
+        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" )
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             this.dataSource = new MatTableDataSource(res.data);
@@ -822,6 +827,10 @@ export class TaskListComponent implements OnInit {
   rowId
 
   editOption(country) {
+    const taskingGroupId = country?.assigned_tasking_group?.tasking_group?.id;
+    if (typeof taskingGroupId !== 'undefined' && taskingGroupId !== null) {
+        this.getTaskingUser({ value: taskingGroupId });
+    }
     this.onEditRole(country);
     this.commentEditor.editable = true;
     // // console.logcountry, "==================>>>>>>>>>>>>")
@@ -929,6 +938,9 @@ export class TaskListComponent implements OnInit {
     openModal('#crud-countries');
 
   }
+  getFileNameFromUrl(url: string): string {
+    return url ? url.substring(url.lastIndexOf('/') + 1) : '';
+}
 
   onView(country) {
     // this.commentEditor.editable=false;
@@ -1014,6 +1026,10 @@ export class TaskListComponent implements OnInit {
   //     });
   // }
   onSubmit() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     this.currentDate = new Date();
     //this.taskForm.value.id=this.id;
@@ -1435,13 +1451,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1483,13 +1499,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1547,13 +1563,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1585,13 +1601,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 3000);
+            }, 300);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1623,13 +1639,13 @@ export class TaskListComponent implements OnInit {
             // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 200);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1868,8 +1884,15 @@ export class TaskListComponent implements OnInit {
     this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
       // this.userRoleListFrom= res.data
       // this.userRoleListTo= res.data
-      this.userRoleListFrom = res.data.filter(role => role.id !== 18);
-      this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      if(this.listDelapso===3){
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18 && role.id !== 14);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3  && role.id !== 14);
+
+      }else{
+
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      }
 
     })
 
@@ -2062,7 +2085,7 @@ export class TaskListComponent implements OnInit {
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
-    // // console.log'Edit triggered for row:', rowData);
+    
   }
   handleDelete(rowData: any) {
     this.onDelete(rowData.id)
@@ -2072,7 +2095,7 @@ export class TaskListComponent implements OnInit {
 
   handleView(rowData: any) {
     this.onView(rowData)
-    // // console.log'View triggered for row:', rowData);
+    console.log('Edit triggered for row:', rowData);
   }
 
 
@@ -2089,6 +2112,20 @@ export class TaskListComponent implements OnInit {
     this.messageService.clear();
     this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Configure Route', detail: 'Please configure route before submitting your response' });
   }
+  usersList=[]
+  getTaskingUser(event){
+    console.log(event,"Console not work ing please chaeck ")
+    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event?.value}`).subscribe(res => {
+        this.usersList=res.data
+    })
+  }
+  hasHTML(text: string): boolean {
+    const regex = /<\/?[a-z][\s\S]*>/i;  
+    return regex.test(text);
 }
+
+  
+}
+
 
 

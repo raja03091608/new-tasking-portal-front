@@ -117,7 +117,6 @@ export class ViewTasksComponent implements OnInit {
   image: any;
   public crudName = "Add";
   public countryList = [];
-  public countryList1 = [];
   public statuslist:any = [];
   imgToUpload: any = null;
   filterValue: any;
@@ -632,7 +631,10 @@ onCustomClear(item){
      };
 
     }
-
+    fileUpload(event:any) {
+      this.id=event.id;
+      this.isfileUpload=true;
+    }
 
 
   taskingGroups: any;
@@ -666,35 +668,165 @@ onCustomClear(item){
 
   }
 
-  // applyFilter(event: Event) {
-  //   this.filterValue = (event.target as HTMLInputElement).value;
-  //   if (this.filterValue) {
-  //     this.dataSourcelist.filter = this.filterValue.trim().toLowerCase();
-  //   } else {
-  //     this.getTasking();
-  //   }
-  // }
+  
 
   selectedTrial:any;
   taskname:any;
   tasknumber:any
-  openCurrentStatus(country){
-	this.id=country.id;
-    // // console.log'tasking country',country)
-    this.taskname = country.task_name;
-    this.tasknumber = country.task_number_dee;
-    // this.selectedTrial=tasking;
-    openModal('#trial-status-modal');
-	this.getComments();
+  isStatusOpen=false;
+  statusData:any;
+  statusDataMainUser:object
+  signatureData: any = {};
+  openCurrentStatus(eventRow){
+    this.statusData=eventRow;
+    this.isStatusOpen=true
+    console.log('tasking country',eventRow)
+   
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking="+eventRow.id)
+    .subscribe((res) => {
+      const keys = [
+        'SD_initiater', 'APSO_recommender', , 
+        'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver'
+    ];
+
+    keys.forEach(key => {
+        const match = res.data.find(country => country[key] === 1 ||( country[key] === 3 && key === 'COM_approver'));
+        this.signatureData[key] = match || null; // Store the full object or null if no match
+    });
+      // this.statusDataMainUser = res.data;
+
+    });
+
   }
-  printReceipt(country) {
-    this.id=country.id;
-    window.open(environment.API_URL+"transaction/approved_task/"+ this.id)
+
+  getRemarkTitle(key: string): string {
+    const titles: any = {
+        'SD_initiater': 'Initiator Remarks',
+        'APSO_recommender': 'APSO Remarks',
+        'WESEE_recommender': 'DG WESEE Remarks',
+        'DEE_recommender': 'DEE Remarks',
+        'ACOM_recommender': 'ACOM IT&S Remarks',
+        'COM_approver': 'COM Remarks'
+    };
+    return titles[key] || 'Remarks';
+}
+
+@ViewChild('tableContent', { static: false }) tableContent!: ElementRef;
+
+  printPDF(): void {
+    const content = this.tableContent.nativeElement.innerHTML;
+    const printWindow = window.open('', '', 'width=794,height=1123'); // A4 size
+
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(`
+          <html>
+              <head>
+                  <title>Approved Tasking History</title>
+                  <style>
+                      @page {
+                          
+                          margin: 20mm 15mm 20mm 15mm; /* Top, Right, Bottom, Left */
+                      }
+
+                    body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 30px;
+}
+
+
+                      .text-center {
+                          text-align: center;
+                      }
+
+                     .label-text{font-size: 16px;}
+
+.p-datatable .wrap-text {
+    max-width: 300px;    /* Limit the maximum width */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
   }
+
+  /* General Table Styling */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    margin-top: 20px;
+}
+
+/* Table Header Styling */
+.table-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 10px;
+    // border: 1px solid black;
+}
+
+/* Table Labels (Left Column) */
+.table-label {
+    font-weight: bold;
+    padding: 12px;
+    width: 60%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+    margin:0px !important;
+}
+
+/* Table Data (Right Column) */
+.table-data {
+margin:0px !important;
+    padding: 12px;
+    width: 40%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+}
+
+/* Remark Comments Styling */
+.remark-comment {
+    font-weight: normal;
+    font-style: italic;
+    
+}
+
+
+.title-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin:20px
+}
+                      /* Prevent table breaks across pages */
+                      table, tr, td, th {
+                          page-break-inside: avoid;
+                      }
+                  </style>
+              </head>
+              <body>
+                  ${content}
+                  <script>
+                      window.onload = function() { window.print(); window.close(); }
+                  </script>
+              </body>
+          </html>
+      `);
+      printWindow.document.close();
+    }
+  }
+
+  hasHTML(text: string): boolean {
+    const regex = /<\/?[a-z][\s\S]*>/i;  // Regex to check for HTML tags
+    return regex.test(text);
+}
+
 
   UploadReceipt(country) {
     this.id=country.id;
-    window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
+    window.open(country.legacy_attachment)
   }
 
   completedtask(country) {
@@ -828,6 +960,7 @@ onCustomClear(item){
 
   // tasking_id:any;
   getTasking() {
+    this.countryList=[]
     // if(this.token_detail.role_id==3 ){
       if(this.token_detail.process_id==3 ){
       this.api
@@ -867,16 +1000,7 @@ onCustomClear(item){
 
   }
 
-  getComments() {
 
-    this.api
-      .getAPI(environment.API_URL + "transaction/trials_status?tasking="+this.id)
-      .subscribe((res) => {
-        this.countryList1 = res.data;
-
-      });
-
-  }
 
   approvalID:any;
   // openStatusDialog(id){
@@ -1495,7 +1619,8 @@ onFileUpload(event) {
   this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(res=>{
     if (res.status === 1) {
       this.notification.success(res.message);
-
+      this.isfileUpload=false;
+      this.getTasking()
     }
     else {
       this.notification.success(res.message);

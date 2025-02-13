@@ -7,7 +7,7 @@
                <div class="card-header card-header2">
                   <div class="row">
                      <div class="col-md-6">
-                        <h3 style="color: white;">User Groups</h3>
+                        <h3 style="color: white;">Units</h3>
                      </div>
                      <div class="col-md-6">
                         <div class="text-end">
@@ -25,7 +25,7 @@
                     (paginationEvent)="handlePagination($event)" 
                     (viewEvent)="onView($event)" 
                     [isView]="true"
-                    (deleteEvent)=" onDelete($event)" 
+                    (deleteEvent)=" onDelete($event.id)" 
                     [isDeletable]="true"
                     (editEvent)="editOption($event)" 
    
@@ -46,7 +46,7 @@
     <div class="modal-dialog">
        <div class="modal-content">
           <div class="modal-header">
-             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} User Group</h5>
+             <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Unit</h5>
              <button type="button" class="btn-close" (click)="cancelmodal()" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="false">&times;</span>
                </button>

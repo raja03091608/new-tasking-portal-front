@@ -21,24 +21,28 @@
 					</div>
 
 					<div class="card mt-5">
-						<ng-container *ngIf="dataSourcelist.data.length != 0">
+						<ng-container *ngIf="countryList.length != 0">
 
 							<app-grid-table [gridColumns]="gridColumns"
-							 [gridData]="dataSourcelist.data"
+							 	[gridData]="countryList"
 								[ispaniNater]="true"
 								 [isAction]="true" 
 								 (filterEvent)="handleFilter($event)"
 								(paginationEvent)="handlePagination($event)" 
 								(statusEvent)="openCurrentStatus($event)"
-								(statusEventAdd)="add($event)" [isStatusAdd]="isStatusAdd"(archivetaskEvent)="archivetask($event)" [isArchiveTask]="permission.archive"
+								(statusEventAdd)="add($event)"
+								 [isStatusAdd]="isStatusAdd"
+								 (archivetaskEvent)="archivetask($event)" 
+								 [isArchiveTask]="permission.archive"
 								(exportEvent)="opentask($event)" 
 								(downloadEvent)="UploadReceipt($event)"
 								(completedEvent)="completedtask($event)"
-								(uploadEvent)="isfileUpload=true"
+								(uploadEvent)="fileUpload($event)"
 								[isupload]="true"
 								 [isExport]="true"
 								  [isStatus]="true"
-								[isDownload]="true" [isCompleted]="true">
+								[isDownload]="true" 
+								[isCompleted]="true">
 							</app-grid-table>
 						</ng-container>
 					</div>
@@ -51,199 +55,88 @@
 
 <!-- modal -->
 
-<div class="modal fade master-modal-style" id="trial-status-modal" data-bs-keyboard="false" data-bs-backdrop="static"
-	tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="card-title align-items-start flex-column pt-5">
-					<span class="fw-bold mb-3">Task Approval History</span>
-				</h3>
-				<button type="button" class="btn-close" (click)="closestatusmodal()" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="false">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body form-style-md form-style-font linux">
-				<h4>
-					<div><b>Task Name -</b> {{taskname}} ({{tasknumber}})</div>
-				</h4>
-				<div class="form-row">
-					<div class="col-md-12">
-						<h3>APSO</h3>
-						<table class="table table-bordered table-style4">
-							<tr>
-								<th width="30%">Date</th>
-								<th width="20%">Status</th>
-								<th width="50%">Comments</th>
-								<th width="50%">Created_by</th>
-
-							</tr>
-
-							<tr *ngFor="let list1 of countryList1; let i= index;">
-								<ng-container *ngIf="list1.APSO_recommender==1||list1.APSO_recommender==2">
-									<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-									<td>{{(list1&& list1.APSO_recommender==1)?'Recommeneded':'Not Recommeneded'}}</td>
-									<td>{{list1&& list1.comments}}</td>
-									<!-- <td>{{list1&& list1.created_by.first_name?list1&& list1.created_by.first_name:''}}</td> -->
-									<td>
-										<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by &&
-											list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
-										<span *ngIf="list1 && list1.created_by ==''">-</span>
-									</td>
-								</ng-container>
-
-							</tr>
-
-						</table>
-
-						&nbsp;
-
-						<h3>WESEE</h3>
-						<table class="table table-bordered table-style4">
-							<tr>
-								<th width="30%">Date</th>
-								<th width="20%">Status</th>
-								<th width="50%">Comments</th>
-								<th width="50%">Created_by</th>
-
-							</tr>
-
-							<tr *ngFor="let list1 of countryList1; let i= index;">
-								<ng-container *ngIf="list1.WESEE_recommender==1||list1.WESEE_recommender==2">
-									<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-									<td>{{(list1&& list1.WESEE_recommender==1)?'Recommeneded':'Not Recommeneded'}}</td>
-									<td>{{list1&& list1.comments}}</td>
-									<td>
-										<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by &&
-											list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
-										<span *ngIf="list1 && list1.created_by ==''">-</span>
-									</td>
-								</ng-container>
-
-							</tr>
-
-						</table>
-
-						&nbsp;
-
-						<h3>DEE</h3>
-						<table class="table table-bordered table-style4">
-							<tr>
-								<th width="30%">Date</th>
-								<th width="20%">Status</th>
-								<th width="50%">Comments</th>
-								<th width="50%">Created_by</th>
-
-							</tr>
-							<tr *ngFor="let list1 of countryList1; let i= index;">
-								<ng-container *ngIf="list1.DEE_recommender==1||list1.DEE_recommender==2">
-									<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-									<td>{{(list1&& list1.DEE_recommender==1)?'DEE Recommeneded':'Not Recommeneded'}}
-									</td>
-									<td>{{list1&& list1.comments}}</td>
-									<td>
-										<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by &&
-											list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
-										<span *ngIf="list1 && list1.created_by ==''">-</span>
-									</td>
-								</ng-container>
-
-							</tr>
-
-						</table>
-
-						&nbsp;
-
-
-						<h3>ACOM(IT&S)</h3>
-						<table class="table table-bordered table-style4">
-							<tr>
-								<th width="30%">Date</th>
-								<th width="20%">Status</th>
-								<th width="50%">Comments</th>
-								<th width="50%">Created_by</th>
-
-							</tr>
-							<tr *ngFor="let list1 of countryList1; let i= index;">
-								<ng-container *ngIf="list1.ACOM_recommender==1||list1.ACOM_recommender==2">
-									<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-									<td>{{(list1&& list1.ACOM_recommender==1)?'Recommeneded':'Not Recommeneded'}}</td>
-									<td>{{list1&& list1.comments}}</td>
-									<td>
-										<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by &&
-											list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
-										<span *ngIf="list1 && list1.created_by ==''">-</span>
-									</td>
-								</ng-container>
-
-							</tr>
-
-						</table>
-						<h3>COM</h3>
-						<table class="table table-bordered table-style4">
-							<tr>
-								<th width="30%">Date</th>
-								<th width="20%">Status</th>
-								<th width="50%">Comments</th>
-								<th width="50%">Created_by</th>
-
-							</tr>
-
-							<tr *ngFor="let list1 of countryList1; let i= index;">
-								<ng-container *ngIf="list1.COM_approver==1 || list1.COM_approver==3">
-									<td>{{list1 && list1.created_on| date:'dd-MM-yyyy hh:mm '}}</td>
-									<td>{{(list1&& list1.COM_approver==1 || list1.COM_approver==3)?'Approved':'Not
-										Approved'}}</td>
-									<td>{{list1&& list1.comments}}</td>
-									<td>
-										<span *ngIf="list1 && list1.created_by != ''">{{list1&& list1.created_by &&
-											list1.created_by.first_name?list1.created_by.first_name:'-'}}</span>
-										<span *ngIf="list1 && list1.created_by ==''">-</span>
-									</td>
-								</ng-container>
-
-							</tr>
-
-						</table>
-
-
-						<!-- <div class="row d-flex justify-content-center mt-4 mb-70 timeline" *ngIf="selectedTrial && selectedTrial.history && selectedTrial.history.length>0">
-							<div class="col-md-12">
-							   <div class="main-card mb-3 card">
-								   <div class="card-body">
-									   <h5 class="card-title">Trials Log</h5>
-									   <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
-										   <ng-container *ngFor="let history of selectedTrial.history">
-											  <div class="vertical-timeline-item vertical-timeline-element">
-												  <div>
-													  <span class="vertical-timeline-element-icon bounce-in" *ngIf="history.status==1">
-														  <i class="badge badge-success"><span class="bi bi-hand-thumbs-up">thumb_up</span></i>
-													  </span>
-													  <span class="vertical-timeline-element-icon bounce-in" *ngIf="history.status==2">
-														  <i class="badge badge-danger"><span class="material-icons-outlined" >thumb_down</span></i>
-													  </span>
-													  <div class="vertical-timeline-element-content bounce-in">
-														  <h4 class="timeline-title">{{(history.approved_by.first_name+' '+history.approved_by.last_name) +' ('+history.approved_role.name+' from '+history.approved_by.process.name+' )' }}</h4>
-														  <p>{{ history.comments }}</p>
-														  <span class="vertical-timeline-element-date">{{moment(history.approved_on).format('DD-MM-YYYY hh:mm A')}}</span>
-													  </div>
-												  </div>
-											  </div>
-										   </ng-container>
-									   </div>
-								   </div>
-							   </div>
-							</div>
-						 </div> -->
-					</div>
-				</div>
-
-
-			</div>
-		</div>
+<p-dialog header="APPROVED TASKING HISTORY" [modal]="true" [(visible)]="isStatusOpen" [style]="{ width: '50vw' }">
+	
+	<div>
+	<div  #tableContent class="container m-4">
+		
+		<!-- <h3 class="text-center mb-4 title-header"><u>APPROVED TASKING HISTORY</u></h3> -->
+		<table class="custom-table" >
+			<thead>
+				<tr>
+					<th colspan="2" class=" text-center title-header">
+						<u>APPROVED TASKING HISTORY</u>
+					</th>
+				</tr>
+				<tr>
+					<th colspan="2" class="table-title">
+						<span [innerHTML]="statusData?.task_name "></span>-<u>({{ statusData?.task_number_dee }})</u>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="table-label">Sponsoring Directorate</td>
+					<td class="table-data">{{ statusData?.sponsoring_directorate }}</td>
+				</tr>
+				<tr>
+					<td class="table-label">Task Number</td>
+					<td class="table-data">{{ statusData?.task_number_dee }}</td>
+				</tr>
+				<tr>
+					<td class="table-label">Task Name</td>
+					<td class="table-data" [innerHTML]="statusData?.task_name"></td>
+				</tr>
+				<tr>
+					<td class="table-label">Cost Implication</td>
+					<td class="table-data">Rs {{ statusData?.cost_implication }}</td>
+				</tr>
+				<tr>
+					<td class="table-label">Time Frame for Completion</td>
+					<td class="table-data">{{ statusData?.time_frame_for_completion_month }} Months</td>
+				</tr>
+	
+				<!-- Dynamic Remarks Sections -->
+				<tr *ngFor="let key of ['SD_initiater', 'APSO_recommender', 'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver']">
+					<td class="table-label">
+						{{ getRemarkTitle(key) }} -
+						<span class="remark-comment" *ngIf="hasHTML(signatureData?.[key]?.comments)"  [innerHTML]="signatureData?.[key]?.comments"></span>
+						<span class="remark-comment" *ngIf="!hasHTML(signatureData?.[key]?.comments)"  [innerText]="signatureData?.[key]?.comments"></span>
+									
+					</td>
+					<td class="table-data">
+						<div >
+							<span><i>Electronically Signed by:</i></span><br>
+							
+								{{ signatureData?.[key]?.created_by?.rankCode }} 
+								{{ signatureData?.[key]?.created_by?.first_name }} 
+								{{ signatureData?.[key]?.created_by?.last_name }}
+							
+							<br>
+							<span>
+								{{ signatureData?.[key]?.created_by?.department?.name }}, 
+								{{
+									signatureData?.[key]?.created_on ? 
+									(signatureData?.[key]?.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+								}}
+							</span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-</div>
+	</div>
+	<div class="row">
+
+		<a class="btn btn-primary my-3 mx-2 " (click)="printPDF()">
+			<i class="fa fa-download"></i> Download PDF
+		</a>
+	</div>
+   
+	
+	
+</p-dialog>
 
 <div class="modal fade master-modal-style" id="tasking-modal" data-bs-keyboard="false" data-bs-backdrop="static"
 	tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -664,13 +557,15 @@
 
 </div>
 
+
+
 <div class="modal fade bd-example-modal-lg" id="archive-modal" data-bs-keyboard="false" data-bs-backdrop="static"
 	tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div style="height: 550px; ">
 				<div class="modal-header">
-					<h4 class="modal-title"></h4>
+					<h4 class="modal-title">Archive Task</h4>
 					<button type="button" class="btn-close" (click)="archiveclose()" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="false">&times;</span>
@@ -921,7 +816,7 @@
 	</ng-container>
 
 	<div class="row my-5">
-		<div class="col-4 float-end">
+		<div class="col-4 ">
 			<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="downloadexcel()"><i
 					class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
 		</div>
@@ -938,7 +833,8 @@
 
 
 </p-dialog>
-<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '90vw' }">
+
+<p-dialog header="LegacyDataUpload" [modal]="true" [(visible)]="isfileUpload" [style]="{ width: '40vw' }">
 <div class="card flex justify-content-center">
 <p-fileUpload class="mt-4" name="file[]" customUpload="true" (uploadHandler)="onFileUpload($event)" [multiple]="false" maxFileSize="1000000">
 </p-fileUpload>

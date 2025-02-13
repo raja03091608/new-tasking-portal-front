@@ -1,0 +1,81 @@
+/* Style the row to ensure two inputs appear in each row */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-6 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Ensuring the input field takes full width inside the column */
+.form-control {
+    width: 100%;
+}
+
+/* Add some space between rows */
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+/* Style the label to ensure proper spacing and alignment */
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.custom-submit-btn {
+    background-color:#14182b !important; /* Change button color */
+    color: white !important; /* Text color */
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background 0.3s ease-in-out;
+}
+
+.custom-submit-btn:hover {
+    background-color: #0056b3 !important; /* Darker blue on hover */
+}
+
+
+
+.ticket-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-container h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #343a40;
+    margin-right: auto; /* Align heading to the left */
+}
+
+.ticket-button {
+    background-color:#170047;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-left: auto; /* Align button to the right */
+}
+
+.ticket-button:hover {
+    background-color:#170047;
+}

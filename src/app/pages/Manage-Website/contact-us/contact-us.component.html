@@ -170,7 +170,7 @@
                     (paginationEvent)="handlePagination($event)" 
                     (viewEvent)="onView($event)" 
                     [isView]="true"
-                    (deleteEvent)=" onDelete($event)" 
+                    (deleteEvent)=" onDelete($event.id)" 
                     [isDeletable]="true"
                    >
                  </app-grid-table>

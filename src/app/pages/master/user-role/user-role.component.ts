@@ -156,6 +156,7 @@ export class UserRoleComponent implements OnInit {
   }
 
   getDepartment() {
+    this.userRole=[]
     this.api
       .getAPI(environment.API_URL + "access/access_user_roles")
       .subscribe((res) => {

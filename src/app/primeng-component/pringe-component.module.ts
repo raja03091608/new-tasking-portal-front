@@ -16,12 +16,18 @@ import { TooltipModule } from 'primeng/tooltip';
 // import { FilterService } from 'primeng/api';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import {MatMenuModule} from '@angular/material/menu';
+import { GridWishComponent } from './grid-wish/grid-wish.component';
+import { ChartModule } from 'primeng/chart';
+import { ChartComponent } from './chart/chart.component';
 @NgModule({
   declarations: [
     GridTableComponent,
+    GridWishComponent,
+    ChartComponent,
   ],
   imports: [
     CommonModule,
+    ChartModule,
     MatMenuModule,
     FormsModule ,
     InputNumberModule,
@@ -39,7 +45,9 @@ import {MatMenuModule} from '@angular/material/menu';
     RippleModule
   ],
   exports: [
-    GridTableComponent
+    GridTableComponent,
+    GridWishComponent,
+    ChartComponent
   ]
 })
 export class PringeComponentModule { }

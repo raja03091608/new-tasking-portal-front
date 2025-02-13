@@ -1,0 +1,91 @@
+.low-priority {
+    background-color: green;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.medium-priority {
+    background-color: orange;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.high-priority {
+    background-color: rgb(248, 143, 143);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+.status{
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 4px;
+    padding: 0.25rem 0.4rem;
+    border-radius: 6px;
+    font-family: "Inter var", sans-serif !important;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+
+
+.status-open {
+    background-color: #FFECB3; /* Light Amber */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FFA000;
+}
+
+.status-in-progress {
+    background-color: #FFFDE7; /* Light Yellow */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FBC02D;
+}
+
+.status-resolved {
+    background-color: #FFF9C4; /* Light Gold */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FDD835;
+}
+
+.status-closed {
+    background-color: #FFE0B2; /* Light Orange */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #FB8C00;
+}
+
+.status-reopened {
+    background-color: #FFCCBC; /* Light Red */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #F4511E;
+}
+
+.status-neutral {
+    background-color: #F3E5F5; /* Light Purple */
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #8E24AA;
+}
+
+.status-dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    color: #333;
+    font-size: 14px;
+}
