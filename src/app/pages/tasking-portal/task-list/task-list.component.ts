@@ -609,7 +609,7 @@ export class TaskListComponent implements OnInit {
       .getAPI(environment.API_URL + "master/taskinggroups")
       .subscribe((res) => {
         this.taskingGroups = res.data;
-        // // console.log'TTTTT', this.taskingGroups);
+       
 
       });
   }
@@ -632,8 +632,8 @@ export class TaskListComponent implements OnInit {
         .subscribe((res) => {
           this.api.displayLoading(false)
           if (res.status == environment.SUCCESS_CODE) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.countryList = res.data;
+            this.dataSource = new MatTableDataSource(res.results);
+            this.countryList = res.results;
             this.totalLength = res.total_length
             //   this.dataSource.paginator = this.pagination;
             var Img = environment.MEDIA_URL;
@@ -645,16 +645,16 @@ export class TaskListComponent implements OnInit {
     }
     else {
       this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" )
+        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc&page=4" )
         .subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.countryList = res.data;
-            this.totalLength = res.total_length
+          // if (res.status == environment.SUCCESS_CODE) {
+            this.dataSource = new MatTableDataSource(res.results);
+            this.countryList = res.results;
+            this.totalLength = res.counts
             //   this.dataSource.paginator = this.pagination;
             var Img = environment.MEDIA_URL;
             this.ImgUrl = Img.substring(0, Img.length - 1);
-          }
+          // }
 
         });
 
@@ -664,10 +664,7 @@ export class TaskListComponent implements OnInit {
   }
   is_sponsoring_directorate = false;
   getComments() {
-
-    this.api
-      .getAPI(environment.API_URL + "transaction/trials_status?tasking=" + this.id)
-      .subscribe((res) => {
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.id).subscribe((res) => {
         this.countryList1 = res.data;
         // // console.log'comments', res);
 
@@ -1874,9 +1871,9 @@ export class TaskListComponent implements OnInit {
     })
 
   }
-
-  openBackDropCustomClass(content: TemplateRef<any>) {
-    this.modalService.open(content, { size: 'xl' });
+  displayModal=false
+  openBackDropCustomClass() {
+   this.displayModal=true
     this.messageService.clear('c');
   }
 
@@ -1990,7 +1987,6 @@ export class TaskListComponent implements OnInit {
       next_user_id: this.formGroup.get('next_user_id').value, //loginname
     };
     this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
-
       this.getStatusTimeline()
       this.modalService.dismissAll("Close")
     })
@@ -2029,13 +2025,21 @@ export class TaskListComponent implements OnInit {
     const directorate = step?.next_user?.department?.name;
     return `${directorate}`;
   }
+  timelineStepNameCurrent(step: any): string {
+    const roleName = step?.current?.roles[0]?.user_role?.name;
+    return ` (${roleName})`;
+  }
+  timelineStepDirectCurrent(step: any): string {
+    const directorate = step?.current?.department?.name;
+    return `${directorate}`;
+  }
 
 
   getMiniting() {
     this.minitingList=[]
     this.api.getAPI(environment.API_URL + `transaction/comments?tasking_id=${this.id}`).subscribe(res => {
       this.minitingList = res.data;
-      // // console.logres, "miniting sheet");
+      
     })
   }
 
@@ -2081,7 +2085,7 @@ export class TaskListComponent implements OnInit {
   }
 
   handlePagination(pageEvent: any) {
-    // // console.log'Pagination triggered with event:', pageEvent);
+    console.log('Pagination triggered with event:', pageEvent);
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
@@ -2108,7 +2112,6 @@ export class TaskListComponent implements OnInit {
   }
 
   showConfirm() {
-
     this.messageService.clear();
     this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Configure Route', detail: 'Please configure route before submitting your response' });
   }

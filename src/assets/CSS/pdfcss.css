@@ -1,0 +1,82 @@
+
+
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 30px;
+}
+
+
+.text-center {
+    text-align: center;
+}
+
+.label-text {
+    font-size: 16px;
+}
+
+.p-datatable .wrap-text {
+    max-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    margin-top: 20px;
+}
+
+
+.table-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 10px;
+
+}
+
+
+.table-label {
+    font-weight: bold;
+    padding: 12px;
+    width: 60%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+    margin: 0px !important;
+}
+
+/* Table Data (Right Column) */
+.table-data {
+    margin: 0px !important;
+    padding: 12px;
+    width: 40%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+}
+
+/* Remark Comments Styling */
+.remark-comment {
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+
+.title-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px
+}
+
+/* Prevent table breaks across pages */
+table,
+tr,
+td,
+th {
+    page-break-inside: avoid;
+}

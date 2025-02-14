@@ -56,86 +56,89 @@
 <!-- modal -->
 
 <p-dialog header="APPROVED TASKING HISTORY" [modal]="true" [(visible)]="isStatusOpen" [style]="{ width: '50vw' }">
-	
-	<div>
-	<div  #tableContent class="container m-4">
-		
-		<!-- <h3 class="text-center mb-4 title-header"><u>APPROVED TASKING HISTORY</u></h3> -->
-		<table class="custom-table" >
-			<thead>
-				<tr>
-					<th colspan="2" class=" text-center title-header">
-						<u>APPROVED TASKING HISTORY</u>
-					</th>
-				</tr>
-				<tr>
-					<th colspan="2" class="table-title">
-						<span [innerHTML]="statusData?.task_name "></span>-<u>({{ statusData?.task_number_dee }})</u>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="table-label">Sponsoring Directorate</td>
-					<td class="table-data">{{ statusData?.sponsoring_directorate }}</td>
-				</tr>
-				<tr>
-					<td class="table-label">Task Number</td>
-					<td class="table-data">{{ statusData?.task_number_dee }}</td>
-				</tr>
-				<tr>
-					<td class="table-label">Task Name</td>
-					<td class="table-data" [innerHTML]="statusData?.task_name"></td>
-				</tr>
-				<tr>
-					<td class="table-label">Cost Implication</td>
-					<td class="table-data">Rs {{ statusData?.cost_implication }}</td>
-				</tr>
-				<tr>
-					<td class="table-label">Time Frame for Completion</td>
-					<td class="table-data">{{ statusData?.time_frame_for_completion_month }} Months</td>
-				</tr>
-	
-				<!-- Dynamic Remarks Sections -->
-				<tr *ngFor="let key of ['SD_initiater', 'APSO_recommender', 'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver']">
-					<td class="table-label">
-						{{ getRemarkTitle(key) }} -
-						<span class="remark-comment" *ngIf="hasHTML(signatureData?.[key]?.comments)"  [innerHTML]="signatureData?.[key]?.comments"></span>
-						<span class="remark-comment" *ngIf="!hasHTML(signatureData?.[key]?.comments)"  [innerText]="signatureData?.[key]?.comments"></span>
-									
-					</td>
-					<td class="table-data">
-						<div >
-							<span><i>Electronically Signed by:</i></span><br>
-							
-								{{ signatureData?.[key]?.created_by?.rankCode }} 
-								{{ signatureData?.[key]?.created_by?.first_name }} 
-								{{ signatureData?.[key]?.created_by?.last_name }}
-							
-							<br>
-							<span>
-								{{ signatureData?.[key]?.created_by?.department?.name }}, 
-								{{
-									signatureData?.[key]?.created_on ? 
-									(signatureData?.[key]?.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
-								}}
-							</span>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	</div>
-	<div class="row">
 
-		<a class="btn btn-primary my-3 mx-2 " (click)="printPDF()">
-			<i class="fa fa-download"></i> Download PDF
-		</a>
+	<div>
+		<div nonce="CSP_NONCE_PLACEHOLDER" id=tableContent class="container m-4">
+
+			<!-- <h3 class="text-center mb-4 title-header"><u>APPROVED TASKING HISTORY</u></h3> -->
+			<table class="custom-table">
+				<thead>
+					<tr>
+						<th colspan="2" class=" text-center title-header">
+							<u>APPROVED TASKING HISTORY</u>
+						</th>
+					</tr>
+					<tr>
+						<th colspan="2" class="table-title">
+							<u><span [innerHTML]="statusData?.task_name "></span>-({{ statusData?.task_number_dee
+								}})</u>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="table-label">Sponsoring Directorate</td>
+						<td class="table-data">{{ statusData?.sponsoring_directorate }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">Task Number</td>
+						<td class="table-data">{{ statusData?.task_number_dee }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">Task Name</td>
+						<td class="table-data" [innerHTML]="statusData?.task_name"></td>
+					</tr>
+					<tr>
+						<td class="table-label">Cost Implication</td>
+						<td class="table-data">Rs {{ statusData?.cost_implication }}</td>
+					</tr>
+					<tr>
+						<td class="table-label">Time Frame for Completion</td>
+						<td class="table-data">{{ statusData?.time_frame_for_completion_month }} Months</td>
+					</tr>
+
+					<!-- Dynamic Remarks Sections -->
+					<tr
+						*ngFor="let key of ['SD_initiater', 'APSO_recommender', 'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver']">
+						<td class="table-label">
+							{{ getRemarkTitle(key) }} -
+							<span class="remark-comment" *ngIf="hasHTML(signatureData?.[key]?.comments)"
+								[innerHTML]="signatureData?.[key]?.comments"></span>
+							<span class="remark-comment" *ngIf="!hasHTML(signatureData?.[key]?.comments)"
+								[innerText]="signatureData?.[key]?.comments"></span>
+
+						</td>
+						<td class="table-data">
+							<div>
+								<span><i>Electronically Signed by:</i></span><br>
+
+								{{ signatureData?.[key]?.created_by?.rankCode }}
+								{{ signatureData?.[key]?.created_by?.first_name }}
+								{{ signatureData?.[key]?.created_by?.last_name }}
+
+								<br>
+								<span>
+									{{ signatureData?.[key]?.created_by?.department?.name }}
+									{{
+									signatureData?.[key]?.created_on ?
+									','+(signatureData?.[key]?.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+									}}
+								</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-   
-	
-	
+	<div class="row m-4 ">
+		<button class="btn btn-primary m-4 " nonce="CSP_NONCE_PLACEHOLDER" styleSheetFile="assets/CSS/pdfcss.css" printSectionId="tableContent"
+			[openNewTab]="true" ngxPrint><i class="fa fa-download"></i> Download PDF</button>
+
+	</div>
+
+
+
 </p-dialog>
 
 <div class="modal fade master-modal-style" id="tasking-modal" data-bs-keyboard="false" data-bs-backdrop="static"

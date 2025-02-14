@@ -96,7 +96,7 @@
 					*ngIf="error_msg==true">{{ErrorMsg}}
 				</div>
 				<div class="row">
-					<button type="button" class="btn btn-primary me-2" (click)="openBackDropCustomClass(content)">
+					<button type="button" class="btn btn-primary me-2" (click)="displayModal=true">
 						Edit Route Config
 					</button>
 					<div class="timeline-cover text-center">
@@ -1067,154 +1067,158 @@
 </div>
 
 
-<!-- Modal for Root config -->
-<ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title">Edit Route Config</h4>
-		<button type="button" (click)="modal.dismiss('Cross click')" class="btn-close" data-dismiss="modal"
-			aria-label="Close">
-			<span aria-hidden="false">&times;</span>
-		</button>
-	</div>
-	<div class="modal-body">
-		<div class="timeline-cover text-center">
-			<ul class="timeline">
 
-				<li *ngFor="let step of roles" class="active">
-					<label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
-					<label>{{step?.current?.department?.name }}</label>
-				</li>
-				<li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < taskListRoot.level-1}">
-					<label>{{ timelineStepName(step) }}</label> <br>
-					<label>{{ timelineStepDirect(step) }}</label>
-				</li>
-			</ul>
-		</div>
-		<form [formGroup]="formGroup" (ngSubmit)="onSubmitRoute()" class="my-form">
-			<div class="row">
-				<!-- Task Selection -->
-				<div class="form-group mt-4 col-4">
-					<mat-form-field appearance="outline">
-						<mat-label>Task</mat-label>
-						<input matInput type="text" id="taskId" formControlName="taskId">
-						<mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
-							Name is required
-						</mat-error>
-					</mat-form-field>
-				</div>
-
-
-				<h3>Select From User</h3>
-
-
-				<div class="form-group mt-4 col-4">
-					<mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
-						<mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User
-						</mat-radio-button>
-						<mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
-					</mat-radio-group>
-				</div>
-
-				<!-- User Type Dropdown (Visible only if Main User is selected) -->
-				<div class="form-group mt-4 col-4" *ngIf="isMainUser">
-					<mat-form-field appearance="outline">
-						<mat-label>Directorate/User Role</mat-label>
-						<mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
-
-							<mat-option *ngFor="let option of userRoleListFrom"
-								[value]="option.id">{{option.name}}</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="form-group mt-4 col-4" *ngIf="!isMainUser">
-					<mat-form-field appearance="outline">
-						<mat-label>Directorate/User Role</mat-label>
-						<mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
-
-							<mat-option *ngFor="let option of directList"
-								[value]="option.id">{{option.name}}</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-
-				<!-- Fetch Users from API when Normal User is selected -->
-				<div class="form-group mt-4 col-4">
-					<mat-form-field appearance="outline">
-						<mat-label>Select User</mat-label>
-						<mat-select id="current_user_id" formControlName="current_id">
-							<mat-option [value]="null">Select From User</mat-option>
-							<mat-option *ngFor="let option of userList"
-								[value]="option.id">{{option.loginname}}-<b>{{option?.rankCode}}-{{option.first_name}}-{{option.last_name}}</b></mat-option>
-						</mat-select>
-						<mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
-							User is required
-						</mat-error>
-					</mat-form-field>
-				</div>
-
-				<!-- Select To User Section -->
-				<h3>Select To User</h3>
-				<div class="form-group mt-4 col-4">
-					<mat-radio-group formControlName="userTypeTo" (change)="onUserTypeChangeTo($event)">
-						<mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
-						<mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
-					</mat-radio-group>
-				</div>
-				<div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
-					<mat-form-field appearance="outline">
-						<mat-label>Directorate/User Role</mat-label>
-						<mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
-							<mat-option [value]="null">Select User Type</mat-option>
-							<mat-option *ngFor="let option of userRoleListTo"
-								[value]="option.id">{{option.name}}</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-
-				<!-- Conditional Directorate Selection -->
-				<div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
-					<mat-form-field appearance="outline">
-						<mat-label>Directorate/User Role</mat-label>
-						<mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
-							<mat-option [value]="null">Select Directorate/User Role</mat-option>
-							<mat-option *ngFor="let option of directList"
-								[value]="option.id">{{option.name}}</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-
-				<div class="form-group mt-4 col-4">
-					<mat-form-field appearance="outline">
-						<mat-label>Select User</mat-label>
-						<mat-select id="next_user_id_2" formControlName="next_user_id">
-							<mat-option [value]="null">Select User</mat-option>
-							<mat-option *ngFor="let option of userListTo"
-								[value]="option.id">{{option.loginname}}-<b>{{option?.rankCode}}-{{option.first_name}}-{{option.last_name}}</b></mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-			</div>
-
-			<!-- Submit Button -->
-			<div class="modal-footer">
-				<button mat-button type="button" class="btn btn-secondary"
-					(click)="modal.dismiss('Close click')">Close</button>
-				<button mat-raised-button color="primary" type="submit">Save</button>
-			</div>
-		</form>
+<p-dialog header="Edit Route Config" [position]="'top'" [(visible)]="displayModal" [modal]="true" [style]="{width: '80vw'}">
+  <div class="timeline-cover text-center">
+    <ul class="timeline">
+      <li *ngFor="let step of roles" class="active">
+        <label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
+        <label>{{step?.current?.department?.name }}</label>
+      </li>
+      <li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < taskListRoot.level-1}">
+        <label>{{ timelineStepName(step) }}</label> <br>
+        <label>{{ timelineStepDirect(step) }}</label>
+      </li>
+    </ul>
+  </div>
 
 
 
-		<!-- <ng-container *ngIf="routeList.length != 0">
-				<app-grid-table [gridColumns]="gridColum" [gridData]="routeList" [ispaniNater]="true"
-				  [isAction]="true" (editEvent)="handleEdit($event)" (deleteEvent)="handleDelete($event)"
-				  [isEditable]="this.permission.edit" [isDeletable]="this.permission.delete">
-				</app-grid-table>
-			  </ng-container> -->
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmitRoute()" class="my-form">
+    <div class="row">
+      <!-- Task Selection -->
+      <div class="form-group mt-4 col-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Task</mat-label>
+          <input matInput type="text" id="taskId" formControlName="taskId">
+          <mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
 
 
-	</div>
-</ng-template>
+      <h3>Select From User</h3>
+
+
+      <div class="form-group mt-4 col-4">
+        <mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
+          <mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
+          <mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group mt-4 col-4" *ngIf="isMainUser">
+        <mat-form-field appearance="outline">
+          <mat-label>Directorate/User Role</mat-label>
+          <mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
+            <mat-option *ngFor="let option of userRoleListFrom" [value]="option.id">{{ option.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group mt-4 col-4" *ngIf="!isMainUser">
+        <mat-form-field appearance="outline">
+          <mat-label>Directorate/User Role</mat-label>
+          <mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
+            <mat-option *ngFor="let option of directList" [value]="option.id">{{ option.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group mt-4 col-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Select User</mat-label>
+          <mat-select id="current_user_id" formControlName="current_id">
+            <mat-option [value]="null">Select From User</mat-option>
+            <mat-option *ngFor="let option of userList" [value]="option.id">
+              {{ option.loginname }} - <b>{{ option?.rankCode }} - {{ option.first_name }} - {{ option.last_name }}</b>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
+            User is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <h3>Select To User</h3>
+      <div class="form-group mt-4 col-4">
+        <mat-radio-group formControlName="userTypeTo" (change)="onUserTypeChangeTo($event)">
+          <mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
+          <mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
+        <mat-form-field appearance="outline">
+          <mat-label>Directorate/User Role</mat-label>
+          <mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
+            <mat-option [value]="null">Select User Type</mat-option>
+            <mat-option *ngFor="let option of userRoleListTo" [value]="option.id">{{ option.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Directorate/User Role</mat-label>
+          <mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
+            <mat-option [value]="null">Select Directorate/User Role</mat-option>
+            <mat-option *ngFor="let option of directList" [value]="option.id">{{ option.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group mt-4 col-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Select User</mat-label>
+          <mat-select id="next_user_id_2" formControlName="next_user_id">
+            <mat-option [value]="null">Select User</mat-option>
+            <mat-option *ngFor="let option of userListTo" [value]="option.id">
+              {{ option.loginname }} - <b>{{ option?.rankCode }} - {{ option.first_name }} - {{ option.last_name }}</b>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="modal-footer">
+      <button pButton type="button" class="btn btn-secondary mx-2" (click)="displayModal = false">Close</button>
+      <button pButton type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+
+  <ng-container *ngIf="routeList && routeList.length > 0">
+    <p-table [value]="routeList" responsiveLayout="scroll" class="mt-4"
+	styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
+
+	>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Sender User</th>
+          <th>Receiver User</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-i="index">
+        <tr>
+          <td>{{ i === 0 ? item.current?.roles[0]?.user_role?.name : timelineStepNameCurrent(item) }} <br>
+            {{ i === 0 ? item?.current?.department?.name : timelineStepDirectCurrent(item) }}
+          </td>
+          <td>{{ timelineStepName(item) }} <br> {{ timelineStepDirect(item) }}</td>
+          <td>
+            <button pButton type="button"  class="rounded p-button-primary mx-2"
+              (click)="handleEdit(item)"><i class=" text-white fa-solid fa-pen"></i>&nbsp;<small>Edit</small></button>
+            <button pButton type="button"  class="rounded p-button-danger"
+              (click)="handleDelete(item)"> <i class=" text-white fa-solid fa-trash"></i>&nbsp;<small>Delete</small></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+</p-dialog>
+
 
 
 <p-toast position="center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
@@ -1227,7 +1231,7 @@
 			</div>
 			<div class="d-flex ">
 				<div class="col-12 text-center">
-					<button type="button" (click)="openBackDropCustomClass(content)"
+					<button type="button" (click)="openBackDropCustomClass()"
 						class="btn btn-success btn-lg">Procced</button>
 				</div>
 
