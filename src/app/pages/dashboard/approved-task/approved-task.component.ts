@@ -16,15 +16,10 @@ export class ApprovedTaskComponent implements OnInit {
   ngOnInit(): void {
     let root = am5.Root.new("chartdiv");
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root.setThemes([
   am5themes_Animated.new(root)
 ]);
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-// start and end angle must be set both for chart and series
 let chart = root.container.children.push(am5percent.PieChart.new(root, {
   startAngle: 180,
   endAngle: 360,
@@ -32,9 +27,6 @@ let chart = root.container.children.push(am5percent.PieChart.new(root, {
   innerRadius: am5.percent(50)
 }));
 
-// Create series
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-// start and end angle must be set both for chart and series
 let series = chart.series.push(am5percent.PieSeries.new(root, {
   startAngle: 180,
   endAngle: 360,
@@ -56,8 +48,6 @@ series.ticks.template.setAll({
   forceHidden: true
 });
 
-// Set data
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
 series.data.setAll([
   { value: 10, category: "One" },
   { value: 9, category: "Two" },
@@ -77,15 +67,11 @@ series.appear(1000, 100);
     let root = am5.Root.new("chartdiv1");
 
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root.setThemes([
   am5themes_Animated.new(root)
 ]);
 
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
 let chart = root.container.children.push(am5xy.XYChart.new(root, {
   panX: false,
   panY: false,
@@ -134,14 +120,11 @@ function prepareParetoData() {
   for (var i = 0; i < data.length; i++) {
     let value = data[i].visits;
     sum += value;
-    //data[i].pareto = sum / total * 100;
   }
 }
 
 
 
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
 let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
   categoryField: "country",
   renderer: am5xy.AxisRendererX.new(root, {
@@ -171,8 +154,6 @@ paretoAxisRenderer.grid.template.set("forceHidden", true);
 paretoAxis.set("numberFormat", "#'%");
 
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
 let series = chart.series.push(am5xy.ColumnSeries.new(root, {
   xAxis: xAxis,
   yAxis: yAxis,
@@ -188,12 +169,6 @@ series.columns.template.setAll({
   cornerRadiusTR: 6
 });
 
-// series.columns.template.adapters.add("fill", function(fill, target) {
-//   return chart.get("colors").getIndex(series.dataItems.indexOf(target.dataItem));
-// })
-
-
-// pareto series
 let paretoSeries = chart.series.push(am5xy.LineSeries.new(root, {
   xAxis: xAxis,
   yAxis: paretoAxis,
@@ -217,24 +192,17 @@ paretoSeries.bullets.push(function() {
 series.data.setAll(data);
 paretoSeries.data.setAll(data);
 
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
 series.appear();
 chart.appear(1000, 100);
 
-//chart 3
 let root1 = am5.Root.new("chartdiv2");
 
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root1.setThemes([
   am5themes_Animated.new(root1)
 ]);
 
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
 let chart1 = root1.container.children.push(am5xy.XYChart.new(root1, {
   panX: false,
   panY: false,
@@ -244,49 +212,38 @@ let chart1 = root1.container.children.push(am5xy.XYChart.new(root1, {
 }));
 
 
-// Data
-// let colors1 = chart.get("colors");
 
 let data1 = [{
   country: "Feb",
   visits: 50,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/united-states.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Mar",
   visits: 70,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/united-kingdom.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Apr",
   visits: 20,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/china.svg",
- // columnSettings: { fill: colors.next() }
 }, {
   country: "May",
   visits: 40,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/japan.svg",
- // columnSettings: { fill: colors.next() }
 }, {
   country: "Jun",
   visits: 10,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/germany.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Jul",
   visits: 30,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/france.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Aug",
   visits: 60,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/india.svg",
-  //columnSettings: { fill: colors.next() }
 }, ];
 
 
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
 let xAxis1 = chart1.xAxes.push(am5xy.CategoryAxis.new(root1, {
   categoryField: "country",
   renderer: am5xy.AxisRendererX.new(root1, {
@@ -300,7 +257,6 @@ let xAxis1 = chart1.xAxes.push(am5xy.CategoryAxis.new(root1, {
         height: 24,
         centerY: am5.p50,
         centerX: am5.p50,
-        // src: dataItem.dataContext.icon,
       })
     });
   }
@@ -317,8 +273,6 @@ let yAxis1 = chart1.yAxes.push(am5xy.ValueAxis.new(root1, {
 }));
 
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
 let series3 = chart1.series.push(am5xy.ColumnSeries.new(root1, {
   xAxis: xAxis1,
   yAxis: yAxis1,
@@ -336,8 +290,6 @@ series3.columns.template.setAll({
 series3.data.setAll(data1);
 
 
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
 series3.appear();
 chart1.appear(1000, 100);
      

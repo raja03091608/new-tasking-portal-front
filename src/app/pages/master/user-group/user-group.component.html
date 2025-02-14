@@ -25,6 +25,7 @@
                     (paginationEvent)="handlePagination($event)" 
                     (viewEvent)="onView($event)" 
                     [isView]="true"
+                    [totalRecords]="totalCounts"
                     (deleteEvent)=" onDelete($event.id)" 
                     [isDeletable]="true"
                     (editEvent)="editOption($event)" 

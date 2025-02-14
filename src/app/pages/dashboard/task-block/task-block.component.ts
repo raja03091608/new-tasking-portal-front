@@ -25,8 +25,6 @@ export class TaskBlockComponent implements OnInit {
 	dataSource: MatTableDataSource<any>;
 	@ViewChild(MatPaginator) pagination: MatPaginator;
 	@Input() modelData:any;
-  //taskForm: FormGroup;
-  //dataSource: MatTableDataSource<any>;
 
   country: any;
   image: any;
@@ -37,7 +35,6 @@ export class TaskBlockComponent implements OnInit {
   moduleAccess:any;
   ErrorMsg:any;
   error_msg=false;
-  //moment=moment;
   showError=false;
   ImageUrl: string;
 
@@ -80,20 +77,14 @@ status = this.taskForm.value.status;
 
   populate(data) {
     this.taskForm.get('sdForm').patchValue(data);
-	//// console.log'sdform',this.taskForm.get('sdForm').patchValue(data));
 	this.taskForm.get('weseeForm').patchValue(data);
 	this.taskForm.get('deeForm').patchValue(data);
 	this.taskForm.get('acomForm').patchValue(data);
 	this.taskForm.get('comForm').patchValue(data);
-	//// console.log'data',data);
-	//// console.log'data',data.file);
 	if (data ? data.file : "") {
 		var img_link = data.file;
-		//var trim_img = img_link.substring(1)
 		this.ImageUrl = img_link;
 	  }
-
-    // this.logger.info(data.status)
   }
 
   initForm() {
@@ -106,19 +97,8 @@ status = this.taskForm.value.status;
   Error = (controlName: string, errorName: string) => {
     return this.taskForm.controls[controlName].hasError(errorName);
   };
-
-
-
-
   ngOnInit(): void {
 	this.getTasking();
-	//this.getAccess();
-
-    //// console.logthis.modelData.data);
-
-    // if(this.modelData.data == 'view'){
-    //   this.taskForm.disable();
-    // }
   }
   id:any;
   list:any;
@@ -127,34 +107,21 @@ status = this.taskForm.value.status;
     this.taskForm.enable();
     this.crudName = "Edit";
 	this.id=country.id;
-    // this.logger.info(country);
     this.populate(country);
     this.list=country;
-	//// console.log'list',this.list.recommendation_of_acom_its);
-
-
-
-	//if(this.api.userid.role_center[0].user_role.code!='Initiator')this.taskForm.get('sdForm').disable();
 	if(this.api.userid.role_center[0].user_role.code!='Initiator')this.taskForm.get('sdForm').disable();
 	if(this.api.userid.role_center[0].user_role.code!='WESEE')this.taskForm.get('weseeForm').disable();
 	if(this.api.userid.role_center[0].user_role.code!='DEE')this.taskForm.get('deeForm').disable();
 	if(this.api.userid.role_center[0].user_role.code!='ACOM')this.taskForm.get('acomForm').disable();
 	if(this.api.userid.role_center[0].user_role.code!='APP')this.taskForm.get('comForm').disable();
-   // openModal('#crud-countries');
-
-
   }
-
-
   getTasking() {
-
     this.api
       .getAPI(environment.API_URL + "transaction/tasking")
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
         this.countryList = res.data;
         this.dataSource.paginator = this.pagination;
-        // this.logger.log('country',this.countryList)
 
       });
   }

@@ -16,10 +16,10 @@
 			  [gridData]="countryList"
 				 [ispaniNater]="true" [isAction]="true" 
 				 (editEvent)="updateallocate($event)" 
+				 [totalRecords]="totalCounts"
 				 [isEditable]="true"
 				 >
 			  </app-grid-table>
-
 		   </ng-container> 
 		<ng-container *ngIf="countryList.length === 0">
 			<div class="alert text-center alert-warning" role="alert">

@@ -1,4 +1,3 @@
-
 import { NgIf } from '@angular/common';
 import {
   Component,
@@ -7,20 +6,32 @@ import {
   EventEmitter,
   OnInit,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FilterService } from 'primeng/api';
-import { Paginator } from 'primeng/paginator';
+import { Paginator, PaginatorState } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
+
+interface PageEvent {
+    first?: number;
+    rows?: number;
+    page?: number;
+    pageCount?: number;
+}
 
 @Component({
   selector: 'app-grid-table',
   templateUrl: './grid-table.component.html',
   styleUrl: './grid-table.component.scss'
 })
-export class GridTableComponent implements OnInit {
-
+export class GridTableComponent implements OnInit, OnChanges {
+    @Input() first: number = 0;
+    @Input() rows: number = 10;
+    @Input() totalRecords: number = 0;
+    @Input() currentPage: number = 0;
     @Input() isupload:boolean;
     @Input() isPermanentDelete: boolean;
     @Input() isRestore: boolean;
@@ -56,7 +67,6 @@ export class GridTableComponent implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
   token_detail:any
-  @Output() totalRecords:any
   newRowData: any = {}; 
  
   filteredData: any[];  
@@ -64,7 +74,7 @@ export class GridTableComponent implements OnInit {
   filters: { [field: string]: { value?: any; condition?: string } } = {};
     searchValue: string;
   
-
+  rowsPerPageOptions: number[] = [10, 25, 50];
 
   resolveNestedField(obj: any, path: string): any {
       const parts = path.split('.');
@@ -82,12 +92,10 @@ export class GridTableComponent implements OnInit {
                   value = value[part];
               }
           } else {
-              // Break the loop if value becomes null or undefined
               break;
           }
       }
 
-      // Check if the resolved value is a date and format it
       if (
           value &&
           typeof value === 'string' &&
@@ -176,25 +184,21 @@ export class GridTableComponent implements OnInit {
  
 
   ngOnInit(): void {
-    // this.isRestore = true;
-
-    
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
-    
       this.filteredData = this.gridData;
-      // console.logthis.gridData);
-      // console.logthis.gridColumns);
+      this.first = this.currentPage * this.rows;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+      if (changes['currentPage']) {
+          this.first = this.currentPage * this.rows;
+      }
   }
 
   constructor(private filterService: FilterService, private api:ApiService) { }
-
-
   getFilterValue(field: string): any {
       return this.filters[field]?.value;
   }
-
-
-
   onCustomClear() {
     this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
     this.searchValue = ''; 
@@ -202,31 +206,21 @@ export class GridTableComponent implements OnInit {
   onSearchInput(val):string {
     return val.trimStart(); // Remove leading spaces
 }
-
-
- 
-
   onFilterChange(filterValue: string, field: string, condition: string) {
       if (filterValue && filterValue.trim()) {
-          // Update the specific filter for the given field
           this.filters[field] = { value: filterValue.trim(), condition: condition };
 
-          // Apply filtering logic here
           this.applyFilters();
       } else {
-          // Clear the filter for the field
           delete this.filters[field];
 
-          // Apply filtering logic here
           this.applyFilters();
       }
   }
 
   applyFilters() {
-      // Copy original data
       this.filteredData = [...this.gridData];
 
-      // Apply filtering logic for each field
       for (const field in this.filters) {
           if (this.filters.hasOwnProperty(field)) {
               const filter = this.filters[field];
@@ -248,9 +242,7 @@ export class GridTableComponent implements OnInit {
   applyFilter(row: any, field: string, filterValue: any, condition: string): boolean {
       const resolvedValue = this.resolveNestedField(row, field);
 
-      // Check if the resolved value is an object (indicating nested data)
       if (typeof resolvedValue === 'object' && resolvedValue !== null) {
-          // If the resolved value is an object, recursively apply the filter to its properties
           for (const key in resolvedValue) {
               if (resolvedValue.hasOwnProperty(key)) {
                   const nestedValue = resolvedValue[key];
@@ -261,7 +253,6 @@ export class GridTableComponent implements OnInit {
           }
           return false; // If no nested property matches the filter, return false
       } else {
-          // If the resolved value is not an object, apply the filter directly
           if (resolvedValue !== undefined && resolvedValue !== null) {
               const formattedValue = resolvedValue.toString().toLowerCase();
               const formattedFilterValue = filterValue.toString().toLowerCase();
@@ -378,7 +369,19 @@ getButtonClass(status: number): string {
     return statusClasses[status] || 'bg-light text-dark'; // Default class
 }
 
-
-
+onPageChange(event: PaginatorState) {
+    if (event.first !== undefined && event.rows !== undefined) {
+        const currentPage = Math.floor(event.first / event.rows);
+        this.first = event.first;
+        this.rows = event.rows;
+        
+        this.paginationEvent.emit({
+            first: event.first,
+            rows: event.rows,
+            page: currentPage,
+            pageCount: Math.ceil(this.totalRecords / event.rows)
+        });
+    }
+}
 }
 

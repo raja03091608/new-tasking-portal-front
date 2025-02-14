@@ -25,7 +25,7 @@
                     [ispaniNater]="true" [isAction]="true" 
                     (filterEvent)="handleFilter($event)"
                     (paginationEvent)="handlePagination($event)" 
-                   
+                   [totalRecords]="totalCounts"
                     (viewEvent)="onView($event)" 
                     [isView]="true"
                     (deleteEvent)=" onDelete($event.id)" 

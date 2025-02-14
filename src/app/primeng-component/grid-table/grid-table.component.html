@@ -142,5 +142,20 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator [rows]="10" [totalRecords]="totalRecords" (onPageChange)="paginationEvent.emit($event)"></p-paginator>
+    <div class="card" *ngIf="ispaniNater && totalRecords > 0">
+        <p-paginator 
+            (onPageChange)="onPageChange($event)" 
+            [first]="first" 
+            [rows]="rows" 
+            [totalRecords]="totalRecords"
+            
+            [showCurrentPageReport]="true"
+            [showJumpToPageDropdown]="true"
+            [showPageLinks]="true"
+            [showFirstLastIcon]="true"
+            currentPageReportTemplate="{first} - {last} of {totalRecords}"
+            styleClass="p-paginator-bottom"
+        >
+        </p-paginator>
+    </div>
 </div>

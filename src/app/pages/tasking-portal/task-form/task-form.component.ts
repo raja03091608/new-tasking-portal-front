@@ -58,7 +58,7 @@ export class TaskFormComponent implements OnInit {
     { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, }
   ]
   SubmitAccess={
-    formPermission1:true,
+    formPermission1:false,
     formPermission2:false,
     formPermissionTasking:false,
     formPermission3:false,
@@ -119,7 +119,7 @@ export class TaskFormComponent implements OnInit {
   taskingGroups=[];
   rowDataStatus=[]
   taskList=[]
-  // rowData:any;
+  rowData:any;
   processList: any
   userRoleListFrom: any
   userRoleListTo: any
@@ -127,6 +127,7 @@ export class TaskFormComponent implements OnInit {
   userList: any;
   moduleAccess: any;
   token_detail: any;
+  totaleRecords:any;
   constructor(private fb: FormBuilder, private api: ApiService,private messageService: MessageService,private conFdialog: MatDialog,) { 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
   }
@@ -138,14 +139,26 @@ export class TaskFormComponent implements OnInit {
     this.getTasking()
     
   }
-  getTasking(){
-    this.taskList=[];
-    let url=environment.API_URL+"transaction/tasking?order_type=desc&page=4";
-    if(this.token_detail.process_id == 2 && this.token_detail.role_id == 3)
-         url+=`&created_by_id=${this.token_detail.user_id}`
+  page = 1;
+  currentPage = 0;
+  pageSize = 10;
+  
+  getTasking() {
+    this.taskList = [];
+    let url = environment.API_URL + "transaction/tasking?order_type=desc&page=" + this.page;
+    if (this.token_detail.process_id == 2 && this.token_detail.role_id == 3) {
+      url += `&created_by_id=${this.token_detail.user_id}`;
+    }
 
-    this.api.getAPI(url).subscribe(res=>{
-      this.taskList=res.results;
+    this.api.getAPI(url).subscribe({
+      next: (res) => {
+        this.taskList = res.results;
+        this.totaleRecords = res.count;
+        this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
+      },
+      error: (error) => {
+        console.error('Error fetching tasks:', error);
+      }
     });
   }
   
@@ -158,7 +171,7 @@ export class TaskFormComponent implements OnInit {
   }
 
   onEditRow(rowData){
-    // this.rowData=rowData
+    this.rowData=rowData
     this.onEditRole(rowData);
     this.apiCall();
     this.getTaskingGroups()
@@ -173,10 +186,19 @@ export class TaskFormComponent implements OnInit {
     this.showModal()
   }
   onViewRow(rowData){
+    this.rowData=rowData
+    this.onEditRole(rowData);
+    this.apiCall();
+    this.getTaskingGroups()
+    this.getMiniting();
+    this.getStatusTimeline();
     this.setFormData()
     this.getSignatureData()
+    this.editorConfig.editable=false;
     if(this.rowData && this.rowData.assigned_tasking_group &&this.rowData.assigned_tasking_group?.tasking_group)
         this.getTaskingUser({value:this.rowData.assigned_tasking_group?.tasking_group})
+    // this.disableAllForms()
+    this.showModal() 
     this.editorConfig.editable=false;
     this.disableAllForms()
 
@@ -306,8 +328,11 @@ export class TaskFormComponent implements OnInit {
   getTaskingGroups() { this.api.getAPI(environment.API_URL + "master/taskinggroups").subscribe((res) => {  this.taskingGroups = res.data;  }); }
   
 
-  handlePagination(pageEvent: any) {
-    console.log('Pagination triggered with event:', pageEvent);
+  handlePagination(event: any) {
+    this.page = event.page + 1; // Convert 0-based to 1-based for API
+    this.pageSize = event.rows;
+    this.currentPage = event.page;
+    this.getTasking();
   }
 
 
@@ -637,215 +662,12 @@ export class TaskFormComponent implements OnInit {
     this.acomForm.patchValue({ recommendation_of_acom_its: this.rowData?.recommendation_of_acom_its || '' });
     this.comForm.patchValue({ approval_of_com: this.rowData?.approval_of_com || '' });
   }
-  rowData={
-    "id": 185,
-    "created_by": {
-        "id": 118,
-        "process": 2,
-        "department": 1,
-        "loginname": "SPONSOR",
-        "first_name": "sponsoring",
-        "last_name": "directeroate",
-        "email": "sd@gmail.com"
-    },
-    "sponsoring_directorate": "DSR",
-    "task_description": "TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121TaskToday12121",
-    "file": null,
-    "file1": null,
-    "file2": null,
-    "file3": null,
-    "file4": null,
-    "file5": null,
-    "file6": null,
-    "file7": null,
-    "file8": null,
-    "cost_implication": "12345643",
-    "time_frame_for_completion_days": "null",
-    "comments_of_wesee": "sefd&UIB Eeifu ase97fduhqw 8aesiufhayiguskjfd",
-    "task_number_dee": "WESEE/qwert/12345/12345",
-    "comments_of_dee": "sefdca esifbaisKBciheskFc",
-    "comments_of_tasking_group": "gjutgyrhfxyrfx",
-    "recommendation_of_acom_its": null,
-    "approval_of_com": "",
-    "SD_initiater": 1,
-    "WESEE_recommender": 1,
-    "DEE_recommender": 1,
-    "TS_recommender": 1,
-    "DWE_recommender": null,
-    "ACOM_recommender": null,
-    "COM_approver": null,
-    "approved_level": 2,
-    "status": 1,
-    "comment_status": 1,
-    "level": 4,
-    "legacy_attachment": null,
-    "created_on": "2025-01-31T15:30:26.321029+05:30",
-    "created_ip": "103.83.149.59",
-    "modified_on": "2025-01-31T16:15:42.552730+05:30",
-    "modified_by": "118",
-    "modified_ip": null,
-    "tasking_status": "DEE Recommended",
-    "APSO_recommender": 1,
-    "comments_of_apso": "ahsbihYIKE UIWAE FUH WUEFHWQUE IUWH IUHOUG",
-    "task_name": "TaskToday12121",
-    "time_frame_for_completion_month": "22",
-    "details_hardware": "",
-    "details_software": "",
-    "details_systems_present": "",
-    "ships_or_systems_affected": "",
-    "legacy_data": "No",
-    "completed_status": null,
-    "completed_comments": null,
-    "SD_comments": "",
-    "history": [
-        {
-            "id": 45,
-            "approved_role": {
-                "id": 3,
-                "from_ad": null,
-                "name": "Initiator",
-                "code": "Initiator",
-                "is_biometric": false,
-                "modified_on": "2022-09-19T18:44:04.752709+05:30",
-                "modified_by": null,
-                "modified_ip": null,
-                "status": 1,
-                "process": 2
-            },
-            "approved_by": {
-                "id": 118,
-                "process": {
-                    "id": 2,
-                    "name": "User Groups",
-                    "sequence": 2
-                },
-                "department": {
-                    "id": 1,
-                    "name": "DSR",
-                    "description": "DSR",
-                    "code": "DSR",
-                    "sequence": 1,
-                    "status": 1,
-                    "created_on": "2022-09-19T18:25:06.257071+05:30",
-                    "created_by": "4",
-                    "created_ip": "182.65.77.40",
-                    "modified_on": "2023-03-15T18:04:57.461409+05:30",
-                    "modified_by": "4",
-                    "modified_ip": "182.65.77.40"
-                },
-                "password": "pbkdf2_sha256$320000$l3JVNbWXq1CqzMYdecQ1fJ$xZnakEpnRo0JecJnjzA1BfMsTHrA4uG8fP5IqA8QEqE=",
-                "last_login": null,
-                "loginname": "SPONSOR",
-                "email": "sd@gmail.com",
-                "first_name": "sponsoring",
-                "last_name": "directeroate",
-                "is_active": true,
-                "staff": false,
-                "admin": false,
-                "fpdata": null,
-                "verification_code": null,
-                "status": 1,
-                "ad_user": false,
-                "hrcdf_designation": null,
-                "rankCode": null,
-                "tasking": null
-            },
-            "comments": "Initiated",
-            "type": -1,
-            "status": 1,
-            "approved_level": 1,
-            "approved_on": "2025-01-31T15:31:10.720247+05:30",
-            "approved_ip": "103.83.149.59",
-            "tasking": 185
-        },
-        {
-            "id": 46,
-            "approved_role": {
-                "id": 15,
-                "from_ad": null,
-                "name": "COMBAT SYSTEMS INTEGRATION",
-                "code": "CSI",
-                "is_biometric": false,
-                "modified_on": "2022-09-19T18:46:28.745730+05:30",
-                "modified_by": null,
-                "modified_ip": null,
-                "status": 1,
-                "process": 3
-            },
-            "approved_by": {
-                "id": 166,
-                "process": {
-                    "id": 3,
-                    "name": "Tasking Groups",
-                    "sequence": 3
-                },
-                "department": {
-                    "id": 2,
-                    "name": "WESEE",
-                    "description": "DNA",
-                    "code": "WESEE",
-                    "sequence": 2,
-                    "status": 1,
-                    "created_on": "2022-09-19T18:34:17.220684+05:30",
-                    "created_by": "4",
-                    "created_ip": "182.65.77.40",
-                    "modified_on": "2023-03-15T18:05:07.908325+05:30",
-                    "modified_by": "4",
-                    "modified_ip": "182.65.77.40"
-                },
-                "password": "pbkdf2_sha256$320000$GO3etdnqlytz4OQQjbJ1t3$+MXsfPdoLLVoR1voLA+8kqTwT4KCTWUzDxQWngyY9sA=",
-                "last_login": null,
-                "loginname": "CSI",
-                "email": "csi@gmail.com",
-                "first_name": "csi",
-                "last_name": "task group",
-                "is_active": true,
-                "staff": false,
-                "admin": false,
-                "fpdata": null,
-                "verification_code": null,
-                "status": 1,
-                "ad_user": false,
-                "hrcdf_designation": null,
-                "rankCode": "Cdr",
-                "tasking": 6
-            },
-            "comments": "gjutgyrhfxyrfx",
-            "type": -1,
-            "status": 1,
-            "approved_level": 1,
-            "approved_on": "2025-01-31T15:53:45.798091+05:30",
-            "approved_ip": "103.83.149.59",
-            "tasking": 185
-        }
-    ],
-    "assigned_tasking_group": {
-        "id": 176,
-        "tasking_group": 6,
-        "tasking_user": 199,
-        "created_by": 119,
-        "created_role": 4
-    },
-    "project_status": [],
-    "trial_status": {
-        "id": 1083,
-        "created_by_id": 193
-    }
-}
-
-
-
-
- 
-
   roles: any = [];
   routeList: any = [];
   lastStatusData:any;
   minitingList=[]
   getStatusTimeline() {
-    this.roles = [];
-    this.routeList = [];
-    let temp = [];
+    this.roles = [];    this.routeList = [];    let temp = [];
     this.api.getAPI(environment.API_URL + `transaction/process-flows/details/?tasking_id=${this.rowData.id}`).subscribe({
       next: (res) => {
         temp = res;
@@ -891,10 +713,11 @@ export class TaskFormComponent implements OnInit {
     this.messageService.clear();
     this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Configure Route', detail: 'Please configure route before submitting your response' });
   }
-  releDetaile:any
+  roleDetaile:any
 onEditRole(rowData) {
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
-      this.releDetaile=res })
+      this.roleDetaile=res
+     })
   }
   displayModal=false
   openBackDropCustomClass() {
@@ -957,7 +780,7 @@ onEditRole(rowData) {
   onSelectChangeRole(event: any) {
 
     this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=${event.value}`).subscribe(res => {
-      this.userList = res.data;
+      this.userList = res;
     })
   }
   userListTo: any;
@@ -966,7 +789,7 @@ onEditRole(rowData) {
     const selectedUserRole = event.value;
     
       this.api.getAPI(environment.API_URL + `api/auth/users?process_id=2&userrolemapping__user_role=${selectedUserRole}`).subscribe(res => {
-        this.userListTo = res.data;
+        this.userListTo = res;
 
       })
     

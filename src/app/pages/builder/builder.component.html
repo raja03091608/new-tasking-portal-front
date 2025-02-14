@@ -1,6 +1,5 @@
 <div class="card mb-10">
   <div class="card-body d-flex align-items-center py-8">
-    <!-- begin::Icon -->
     <div
       class="d-flex h-80px w-80px flex-shrink-0 flex-center position-relative"
     >
@@ -14,9 +13,6 @@
         class="svg-icon svg-icon-3x svg-icon-primary position-absolute"
       ></span>
     </div>
-    <!-- end::Icon  -->
-
-    <!-- begin::Description  -->
     <div class="ms-6">
       <p class="list-unstyled text-gray-600 fw-bold fs-6 p-0 m-0">
         The layout builder is to assist your set and configure your preferred
@@ -27,12 +23,10 @@
         Layout builder changes don't affect pages with layout wrappers.
       </p>
     </div>
-    <!-- end::Description  -->
   </div>
 </div>
 
 <div class="card card-custom">
-  <!-- begin::Header -->
   <div class="card-header card-header-stretch overflow-auto">
     <ul
       class="
@@ -95,13 +89,9 @@
       </li>
     </ul>
   </div>
-  <!-- end::Header -->
-  <!-- begin::Form -->
   <form class="form" novalidate #form="ngForm" (ngSubmit)="submitPreview()">
-    <!-- begin::Body -->
     <div class="card-body">
       <div class="tab-content pt-3">
-        <!-- begin::Header -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Header' }">
           <div class="row mb-10">
             <label class="col-lg-3 col-form-label text-lg-end"
@@ -155,9 +145,6 @@
             </div>
           </div>
         </div>
-        <!-- end::Header -->
-
-        <!-- begin::Page Title -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'PageTitle' }">
           <div class="row mb-10">
             <label class="col-lg-3 col-form-label text-lg-end">Display:</label>
@@ -200,9 +187,6 @@
             </div>
           </div>
         </div>
-        <!-- end::Page Title -->
-
-        <!-- begin::Content -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Content' }">
           <div class="row mb-10">
             <label class="col-lg-3 col-form-label text-lg-end">Width:</label>
@@ -219,9 +203,6 @@
             </div>
           </div>
         </div>
-        <!-- end::Content -->
-
-        <!-- begin::Aside -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Aside' }">
           <div class="row mb-10">
             <label class="col-lg-3 col-form-label text-lg-end">Fixed:</label>
@@ -245,9 +226,6 @@
             </div>
           </div>
         </div>
-        <!-- end::Aside -->
-
-        <!-- begin::Footer -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Footer' }">
           <div class="row mb-10">
             <label class="col-lg-3 col-form-label text-lg-end">Width:</label>
@@ -264,12 +242,8 @@
             </div>
           </div>
         </div>
-        <!-- end::Footer -->
       </div>
     </div>
-    <!-- end::Body -->
-
-    <!-- begin::Footer -->
     <div class="card-footer py-6">
       <div class="row">
         <div class="col-lg-3"></div>
@@ -318,7 +292,5 @@
       </div>
     </div>
 
-    <!-- end::Footer -->
   </form>
-  <!-- end::Form -->
 </div>

@@ -17,6 +17,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
+import { PaginatorModule } from 'primeng/paginator';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { ButtonModule } from 'primeng/button';
 	],
 	imports: [
 	  CommonModule,
-
+	  PaginatorModule,
 	  CommonModule,
 	  ReactiveFormsModule,
 	  NgbModule,

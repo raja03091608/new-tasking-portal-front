@@ -25,21 +25,16 @@ export class PendingTaskComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // Chart code goes in here
     this.browserOnly(() => {
 
       let root = am5.Root.new("chartdiv");
 
 
-      // Set themes
-      // https://www.amcharts.com/docs/v5/concepts/themes/
       root.setThemes([
         am5themes_Animated.new(root)
       ]);
       
       
-      // Create chart
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/
       let chart = root.container.children.push(am5xy.XYChart.new(root, {
         panX: true,
         panY: true,
@@ -48,17 +43,10 @@ export class PendingTaskComponent implements OnInit {
         pinchZoomX:true
       }));
       
-      //chart.get("colors").set("step", 3);
-      
-      
-      // Add cursor
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
       let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
       cursor.lineY.set("visible", false);
       
       
-      // Create axes
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
       let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
         maxDeviation: 0.3,
         baseInterval: {
@@ -75,8 +63,6 @@ export class PendingTaskComponent implements OnInit {
       }));
       
       
-      // Add series
-      // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
       let series = chart.series.push(am5xy.LineSeries.new(root, {
         name: "Series 1",
         xAxis: xAxis,
@@ -92,7 +78,6 @@ export class PendingTaskComponent implements OnInit {
         strokeWidth: 2
       });
       
-      //series.get("tooltip").get("background").set("fillOpacity", 0.5);
       
       let series2 = chart.series.push(am5xy.LineSeries.new(root, {
         name: "Series 2",
@@ -106,15 +91,12 @@ export class PendingTaskComponent implements OnInit {
         strokeWidth: 2
       });
       
-      // Set date fields
-      // https://www.amcharts.com/docs/v5/concepts/data/#Parsing_dates
       root.dateFormatter.setAll({
         dateFormat: "yyyy-MM-dd",
         dateFields: ["valueX"]
       });
       
       
-      // Set data
       let data = [{
         date: new Date(2019, 5, 12).getTime(),
         value1: 50,
@@ -156,26 +138,19 @@ export class PendingTaskComponent implements OnInit {
       series2.data.setAll(data);
       
       
-      // Make stuff animate on load
-      // https://www.amcharts.com/docs/v5/concepts/animations/
       series.appear(1000);
       series2.appear(1000);
       chart.appear(1000, 100);
       
-//chart2 
 
 let root1 = am5.Root.new("chartdiv1");
 
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root1.setThemes([
   am5themes_Animated.new(root1)
 ]);
 
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
 let chart1 = root1.container.children.push(am5xy.XYChart.new(root1, {
   panX: false,
   panY: false,
@@ -185,49 +160,39 @@ let chart1 = root1.container.children.push(am5xy.XYChart.new(root1, {
 }));
 
 
-// Data
 let colors = chart.get("colors");
 
 let data1 = [{
   country: "Feb",
   visits: 50,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/united-states.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Mar",
   visits: 70,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/united-kingdom.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Apr",
   visits: 20,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/china.svg",
- // columnSettings: { fill: colors.next() }
 }, {
   country: "May",
   visits: 40,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/japan.svg",
- // columnSettings: { fill: colors.next() }
 }, {
   country: "Jun",
   visits: 10,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/germany.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Jul",
   visits: 30,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/france.svg",
-  //columnSettings: { fill: colors.next() }
 }, {
   country: "Aug",
   visits: 60,
   icon: "https://www.amcharts.com/wp-content/uploads/flags/india.svg",
-  //columnSettings: { fill: colors.next() }
 }, ];
 
 
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
 let xAxis1 = chart1.xAxes.push(am5xy.CategoryAxis.new(root1, {
   categoryField: "country",
   renderer: am5xy.AxisRendererX.new(root1, {
@@ -241,7 +206,6 @@ let xAxis1 = chart1.xAxes.push(am5xy.CategoryAxis.new(root1, {
         height: 24,
         centerY: am5.p50,
         centerX: am5.p50,
-        // src: dataItem.dataContext.icon,
       })
     });
   }
@@ -258,8 +222,6 @@ let yAxis1 = chart1.yAxes.push(am5xy.ValueAxis.new(root1, {
 }));
 
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
 let series3 = chart1.series.push(am5xy.ColumnSeries.new(root1, {
   xAxis: xAxis1,
   yAxis: yAxis1,
@@ -277,8 +239,6 @@ series3.columns.template.setAll({
 series3.data.setAll(data1);
 
 
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
 series3.appear();
 chart1.appear(1000, 100);
      
@@ -289,14 +249,10 @@ chart1.appear(1000, 100);
   ngOnInit(): void {
     let root = am5.Root.new("chartdiv3");
 
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([
       am5themes_Animated.new(root)
     ]);
     
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/radar-chart/
     let chart = root.container.children.push(am5radar.RadarChart.new(root, {
       panX: false,
       panY: false,
@@ -308,49 +264,39 @@ chart1.appear(1000, 100);
     }));
     
     
-    // Data
     let data = [{
       category: "Research",
       value: 80,
       full: 100,
       columnSettings: {
-        // fill: chart.get("colors").getIndex(0)
       }
     }, {
       category: "Marketing",
       value: 35,
       full: 100,
       columnSettings: {
-        // fill: chart.get("colors").getIndex(1)
       }
     }, {
       category: "Distribution",
       value: 92,
       full: 100,
       columnSettings: {
-        // fill: chart.get("colors").getIndex(2)
       }
     }, {
       category: "Human Resources",
       value: 68,
       full: 100,
       columnSettings: {
-        // fill: chart.get("colors").getIndex(3)
       }
     }];
     
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/radar-chart/#Cursor
     let cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
       behavior: "zoomX"
     }));
     
     cursor.lineY.set("visible", false);
     
-    // Create axes and their renderers
-    // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_axes
     let xRenderer = am5radar.AxisRendererCircular.new(root, {
-      //minGridDistance: 50
     });
     
     xRenderer.labels.template.setAll({
@@ -394,8 +340,6 @@ chart1.appear(1000, 100);
     yAxis.data.setAll(data);
     
     
-    // Create series
-    // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_series
     let series1 = chart.series.push(am5radar.RadarColumnSeries.new(root, {
       xAxis: xAxis,
       yAxis: yAxis,
@@ -433,8 +377,6 @@ chart1.appear(1000, 100);
     
     series2.data.setAll(data);
     
-    // Animate chart and series in
-    // https://www.amcharts.com/docs/v5/concepts/animations/#Initial_animation
     series1.appear(1000);
     series2.appear(1000);
     chart.appear(1000, 100);
