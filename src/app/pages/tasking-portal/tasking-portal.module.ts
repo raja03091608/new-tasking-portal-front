@@ -25,6 +25,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 import { FileUploadModule } from 'primeng/fileupload';
+import {NgxPrintModule} from 'ngx-print';
+import { TaskFormComponent } from './task-form/task-form.component';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -33,11 +35,12 @@ import { FileUploadModule } from 'primeng/fileupload';
     ViewStatusComponent,
     TaskListComponent,
     ArchiveTaskComponent,
-    
+    TaskFormComponent,
 
   ],
   imports: [
     TimelineModule,
+    NgxPrintModule,
     ConfirmDialogModule ,
     ToastModule,
     TableModule,
@@ -76,6 +79,10 @@ import { FileUploadModule } from 'primeng/fileupload';
       {
         path: 'archive-task',
         component: ArchiveTaskComponent,
+      },
+      {
+        path: 'taskForm',
+        component: TaskFormComponent,
       },
     ])
   ]

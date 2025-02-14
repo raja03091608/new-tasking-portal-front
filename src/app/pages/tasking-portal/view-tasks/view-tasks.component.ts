@@ -817,6 +817,7 @@ margin:0px !important;
     }
   }
 
+
   hasHTML(text: string): boolean {
     const regex = /<\/?[a-z][\s\S]*>/i;  // Regex to check for HTML tags
     return regex.test(text);

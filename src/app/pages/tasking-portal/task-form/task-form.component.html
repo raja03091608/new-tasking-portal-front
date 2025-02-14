@@ -1,0 +1,489 @@
+
+<section class="body-card">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header card-header2">
+						<div class="row">
+							<div class="col-md-6">
+								<h3 class="card-title">LIST OF TASKS Awaiting Approval</h3>
+							</div>
+							<div class="col-md-6">
+								<div class="text-end">
+									<ng-container *ngIf="token_detail.process_id==1">
+										<a href="javascript:void(0)" data-toggle="modal" data-target="#import"
+											class="btn btn-light btn-round-sm m-2">Import</a>
+									</ng-container>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="card mt-5">
+						<ng-container *ngIf="taskList.length != 0">
+
+							<app-grid-table [gridColumns]="gridColum" [gridData]="taskList" [ispaniNater]="true"
+								[isAction]="true" 
+								(paginationEvent)="handlePagination($event)" (editEvent)="onEditRow($event)"
+								(deleteEvent)="onDelete($event.id)" (viewEvent)="onViewRow($event)"
+								[isView]="this.permission.view" [isEditable]="this.permission.edit"
+								[isDeletable]="this.permission.delete">
+
+							</app-grid-table>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+<!-- Full Screen Modal -->
+<div class="modal fade" id="fullScreenModal" tabindex="-1" aria-labelledby="fullScreenModalLabel" aria-hidden="true" [ngClass]="{'show': visible}" [style.display]="visible ? 'block' : 'none'">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fullScreenModalLabel">Full Screen Modal</h5>
+        <button type="button" class="btn-close mr-4" (click)="hideModal()" aria-label="Close"></button>
+    </div>
+      <div class="modal-body">
+        <div class="row">
+            <button type="button" class="btn btn-primary me-2" (click)="displayModal=true">
+                Edit Route Config
+            </button>
+            <div class="timeline-cover text-center">
+                <ul class="timeline">
+
+                    <li *ngFor="let step of roles" class="active">
+                        <label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
+                        <label>{{step?.current?.department?.name }}</label>
+                    </li>
+                    <li *ngFor="let step of routeList; let i = index"
+                        [ngClass]="{'active': i < rowData.level-1}">
+                        <label>{{ timelineStepName(step) }}</label> <br>
+                        <label>{{ timelineStepDirect(step) }}</label>
+                    </li>
+                </ul>
+            </div>
+           
+        </div>
+       <div class="row">
+            <div class="col-3">
+                <h3 class="bg-primary py-2 text-light rounded text-center">Comment Sheet</h3>
+                <div class="scrollTable height-Task">
+
+                    <ng-container *ngIf="minitingList && minitingList?.length > 0">
+                        <div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
+                            <div  class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
+                            <!-- <div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div> -->
+                            <div>
+                                <span class="float-end">
+                                    <i class="font-normal"> Electronically Signed by:</i>
+                                </span>
+                                <br>
+                                <span class="float-end">
+                                    {{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
+                                    data?.created_by?.last_name }}
+                                </span>
+                                <br>
+                                <span class="float-end">
+                                    {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
+                                    (data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
+                                </span>
+                            </div>
+
+                        </div>
+                    </ng-container>
+
+
+                    <form [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
+                        *ngIf="releDetaile?.detail == 'Passed'">
+                        <div class="mb-5 alert alert-dismissible alert-bg">
+                            <mat-label style="font-size:large;"><b>Comment</b></mat-label>
+                            <!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
+                            <!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
+                            <angular-editor formControlName="comment" style="min-height: 100px;"
+                                [config]="editorConfig"></angular-editor>
+                        </div>
+                        <button type="submit" class="btn btn-primary me-2">
+                            save
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-9">
+                <h3 class="bg-primary py-2 text-light rounded text-center">Tasking Form</h3>
+                <div class="scrollTable height-Task">
+                    <form [formGroup]="sdForm" (ngSubmit)="onSubmitSD()">
+                        <div class="alert alert-dismissible alert-bg">
+                    
+                            <div class="row gap-3 mb-4">
+                                <div class="col-5">
+                                    <mat-label style="font-size:large;"><b>Sponsoring Directorate</b> <b class="star">*</b></mat-label>
+                                    <input type="text" class="form-control" formControlName="sponsoring_directorate" maxlength="100" />
+                                </div>
+                                <div class="col-5">
+                                    <mat-label style="font-size:large;"><b>Task Name</b> <b class="star">*</b></mat-label>
+                                    <input type="text" class="form-control" formControlName="task_name" />
+                                </div>
+                            </div>
+                            <angular-editor class="mb-3" formControlName="task_description"	[config]="{editable: SubmitAccess.formPermission1}"></angular-editor>
+                           <div *ngIf="rowData.file" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,1)" *ngIf="!rowData.file && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div  *ngIf="rowData.file1"class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file1}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file1) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file1')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,2)" *ngIf="!rowData.file1 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div *ngIf="rowData.file2" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file2}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file2) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file2')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,3)" *ngIf="!rowData.file2 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div *ngIf="rowData.file3" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file3}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file3) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file3')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,4)" *ngIf="!rowData.file3 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div *ngIf="rowData.file4" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file4}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file4) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file4')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,5)" *ngIf="!rowData.file4 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <button *ngIf="SubmitAccess.formPermission1" type="submit" class="btn btn-primary mt-3">Submit</button>
+                                 <div [innerHTML]="getSignatureHtml('SD_initiater')" *ngIf="getSignatureHtml('SD_initiater' )"> </div>
+                        </div>
+                    </form>
+                    
+                    <!-- APSO Form -->
+                    <form *ngIf="rowData.APSO_recommender !== 3" [formGroup]="apsoForm" (ngSubmit)="onSubmitAPSO()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label></div>
+                    
+                            <mat-label style="font-size:large;"><b>APSO Comments</b><b class="star">*</b></mat-label>
+                            <!-- <angular-editor formControlName="task_description"	[config]="{editable: false}"></angular-editor> -->
+                            <angular-editor class="mb-4" formControlName="comments_of_apso"	[config]="{editable: SubmitAccess.formPermission2}"></angular-editor>
+                            <!-- <textarea rows="4" class="form-control" formControlName="comments_of_apso"></textarea> -->
+                            <button *ngIf="SubmitAccess.formPermission2" type="submit" class="btn btn-success mt-4">Submit</button>
+                            <div [innerHTML]="getSignatureHtml('APSO_recommender')" *ngIf="getSignatureHtml('APSO_recommender' )"> {{getSignatureHtml('APSO_recommender') | json}} </div>
+                    
+                        </div>
+                    </form>
+                    
+                    <!-- WESEE Form -->
+                    <div class="alert alert-dismissible alert-bg">
+                        <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label></div>
+                        <form [formGroup]="allocateForm" (ngSubmit)="onallocateSubmit()">
+                            <div class="row">           
+                                <div class="col-md-6">
+                                    <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+                                    <mat-form-field  >
+                                        <mat-select formControlName="tasking_group"  placeholder="Select Tasking Groups" (selectionChange)="getTaskingUser($event)">
+                                                <mat-option  *ngFor="let taskingGroup of taskingGroups" [value]="taskingGroup.id"> {{ taskingGroup.name }} </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                        
+                                <!-- Select User Dropdown -->
+                                <div class="col-md-6">
+                                    <mat-label>Select User <b class="star">*</b></mat-label>
+                                    <mat-form-field >
+                                        <mat-select formControlName="tasking_user"  placeholder="Select User">
+                                            <mat-option  *ngFor="let user of usersList" [value]="user.id">{{ user.loginname }} - <b>{{ user.rankCode }} - {{ user.first_name }} - {{ user.last_name }}</b>  </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button *ngIf="SubmitAccess.formPermissionTasking" type="submit" class="btn btn-success mt-3">Submit </button>
+                        </form>
+                        
+                        <form [formGroup]="weseeForm" (ngSubmit)="onSubmitWESEE()">
+                            <div class="row gap-3 mt-4">
+                                <div class="col-5">
+                                    <mat-label style="font-size:large;"><b>Cost Implication (Approx)</b></mat-label>
+                                    <input type="number" class="form-control" formControlName="cost_implication" maxlength="100" />
+                                </div>
+                                <div class="col-5">
+                                    <mat-label style="font-size:large;"><b>Time Frame For Completion</b> <b class="star">*</b></mat-label>
+                                    <input type="number" class="form-control" formControlName="time_frame_for_completion_month" />
+                                </div>
+                            </div>
+                            <mat-label style="font-size:large;"><b>Comments For Tasking User</b><b class="star">*</b></mat-label>
+                            <angular-editor formControlName="comments_of_tasking_group"	[config]="{editable: SubmitAccess.formPermission3}"></angular-editor>
+                            <div *ngIf="rowData.file5" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file5}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file5) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file5')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,6)" *ngIf="!rowData.file5 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div *ngIf="rowData.file6" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file6}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file6) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file6')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,7)" *ngIf="!rowData.file6 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                          
+                            <button *ngIf="SubmitAccess.formPermission3" type="submit" class="btn btn-success mt-3">Submit </button>
+                        </form>
+                        <div [innerHTML]="getSignatureHtml('TS_recommender')" *ngIf="getSignatureHtml('TS_recommender' )"> </div>
+                    
+                        </div>
+                    <!--DG WESEE Form -->
+                    <form [formGroup]="dgweseeForm" (ngSubmit)="onSubmitDGWESEE()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label></div>
+                           
+                            <mat-label style="font-size:large;"><b>DG WESEE Comments</b><b class="star">*</b></mat-label>
+                            <angular-editor class="mb-4" formControlName="comments_of_wesee"	[config]="{editable: SubmitAccess.formPermission4}"></angular-editor>
+                            <!-- <textarea rows="4" class="form-control" formControlName="comments_of_wesee"></textarea> -->
+                            <button *ngIf="SubmitAccess.formPermission4" type="submit" class="btn btn-success mt-3">Submit</button>
+                        <div [innerHTML]="getSignatureHtml('WESEE_recommender')" *ngIf="getSignatureHtml('WESEE_recommender' )"> </div>
+                    
+                    
+                        </div>
+                    </form>
+                    
+                    <!-- DEE  Form -->
+                    <form [formGroup]="deeForm" (ngSubmit)="onSubmitDEE()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">DEE ADMIN &nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
+                           
+                            <mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
+                            <div class="row align-items-center">
+                                <div class="col-md-8 d-flex align-items-center gap-2">
+                                    <b class="me-2">WESEE</b>
+                                    <input type="text" class="form-control w-25" formControlName="task_number_dee0" />
+                                    <span>/</span>
+                                    <input type="number" class="form-control w-25" formControlName="task_number_dee1" />
+                                    <span>/</span>
+                                    <input type="number" class="form-control w-25" formControlName="task_number_dee2" />
+                                </div>
+                            </div>
+                            
+                            <mat-label style="font-size:large;"><b>DEE Comments</b><b class="star">*</b></mat-label>
+                            <angular-editor  class="mb-4" formControlName="comments_of_dee"	[config]="{editable: SubmitAccess.formPermission5}"></angular-editor>
+                            <!-- <textarea rows="4" class="form-control" formControlName="comments_of_dee"></textarea> -->
+                            <div *ngIf="rowData.file7" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file7}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file7) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file7')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,8)" *ngIf="!rowData.file7 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                            <div *ngIf="rowData.file8" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file8}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file8) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file8')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                            <input (change)="onFileSelected($event,9)" *ngIf="!rowData.file8 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
+                          
+                            <button *ngIf="SubmitAccess.formPermission5" type="submit" class="btn btn-success mt-3">Submit</button>
+                            <div [innerHTML]="getSignatureHtml('DEE_recommender')" *ngIf="getSignatureHtml('DEE_recommender' )"> </div>
+                    
+                        </div>
+                    </form>
+                    <!-- PD DEE Form -->
+                    <form [formGroup]="pdDeeForm" (ngSubmit)="onSubmitPdDEE()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">PD DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
+                             <!-- <textarea rows="4" class="form-control" formControlName="comments_of_pd_dee"></textarea> -->
+                             <angular-editor class="mb-4" formControlName="comments_of_pd_dee"	[config]="{editable: SubmitAccess.formPermission6}"></angular-editor>
+                            
+                            <button *ngIf="SubmitAccess.formPermission6" type="submit" class="btn btn-success mt-3">Submit</button>
+                            <div [innerHTML]="getSignatureHtml('COM_approver')" *ngIf="getSignatureHtml('COM_approver' )"> </div>
+                    
+                        </div>
+                    </form>
+                    
+                    <!-- ACOM Form -->
+                    <form [formGroup]="acomForm" (ngSubmit)="onSubmitACOM()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(IT & S)  (Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label> </div>
+                    
+                            <mat-label style="font-size:large;"><b>ACOM Comments</b><b class="star">*</b></mat-label>
+                            <angular-editor class="mb-4" formControlName="recommendation_of_acom_its"	[config]="{editable: SubmitAccess.formPermission7}"></angular-editor>
+                            <!-- <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"></textarea> -->
+                            <button *ngIf="SubmitAccess.formPermission7" type="submit" class="btn btn-success mt-3">Submit</button>
+                            <div [innerHTML]="getSignatureHtml('ACOM_recommender')" *ngIf="getSignatureHtml('ACOM_recommender' )"> </div>
+                    
+                        </div>
+                    </form>
+                    
+                    <!-- COM Form -->
+                    <form [formGroup]="comForm" (ngSubmit)="onSubmitCOM()">
+                        <div class="alert alert-dismissible alert-bg">
+                            <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(Chief of Materiel)</b></mat-label> </div>
+                            <mat-label style="font-size:large;"><b>COM Approval Comments</b><b class="star">*</b></mat-label>
+                            <angular-editor class="mb-4" formControlName="approval_of_com"	[config]="{editable: SubmitAccess.formPermission8}"></angular-editor>
+                            <!-- <textarea rows="4" class="form-control" formControlName="approval_of_com"></textarea> -->
+                            <button *ngIf="SubmitAccess.formPermission8" type="submit" class="btn btn-success mt-3">Approve</button>
+                            <div [innerHTML]="getSignatureHtml('COM_approver')" *ngIf="getSignatureHtml('COM_approver' )"> </div>
+                    
+                        </div>
+                    </form>
+                    
+                    </div>
+            </div>
+       </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Button to trigger modal -->
+<button type="button" class="btn btn-primary" (click)="onEditRow(rowData)">
+  Open Full Screen Modal
+</button>
+<p-toast position="center" key="c"  [baseZIndex]="5000">
+	<ng-template let-message pTemplate="message">
+		<div class="d-flex flex-column " style="flex: 1">
+			<div class="text-center">
+				<i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+				<h4>{{message.summary}}</h4>
+				<p>{{message.detail}}</p>
+			</div>
+			<div class="d-flex ">
+				<div class="col-12 text-center">
+					<button type="button" (click)="openBackDropCustomClass()"
+						class="btn btn-success btn-lg">Procced</button>
+				</div>
+
+			</div>
+		</div>
+	</ng-template>
+</p-toast>
+
+<p-dialog header="Edit Route Config" [position]="'top'" [(visible)]="displayModal" [modal]="true"
+    [style]="{width: '80vw'}">
+    <div class="timeline-cover text-center">
+        <ul class="timeline">
+            <li *ngFor="let step of roles" class="active">
+                <label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
+                <label>{{step?.current?.department?.name }}</label>
+            </li>
+            <li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < rowData.level-1}">
+                <label>{{ timelineStepName(step) }}</label> <br>
+                <label>{{ timelineStepDirect(step) }}</label>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmitRoute()" class="my-form">
+        <div class="row">
+            <!-- Task Selection -->
+            <div class="form-group mt-4 col-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Task</mat-label>
+                    <input matInput type="text" id="taskId" formControlName="taskId">
+                    <mat-error *ngIf="formGroup.get('taskId').invalid && formGroup.get('taskId').touched">
+                        Name is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+            <h3>Select From User</h3>
+
+
+            <div class="form-group mt-4 col-4">
+                <mat-radio-group formControlName="userTypeFrom" (change)="onUserTypeChange($event)">
+                    <mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
+                    <mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="form-group mt-4 col-4" *ngIf="isMainUser">
+                <mat-form-field appearance="outline">
+                    <mat-label>Directorate/User Role</mat-label>
+                    <mat-select id="current" (selectionChange)="onSelectChangeRole($event)">
+                        <mat-option *ngFor="let option of userRoleListFrom" [value]="option.id">{{ option.name
+                            }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group mt-4 col-4" *ngIf="!isMainUser">
+                <mat-form-field appearance="outline">
+                    <mat-label>Directorate/User Role</mat-label>
+                    <mat-select id="next_user" (selectionChange)="onSelectChangeRoleFrom($event)">
+                        <mat-option *ngFor="let option of directList" [value]="option.id">{{ option.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group mt-4 col-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select User</mat-label>
+                    <mat-select id="current_user_id" formControlName="current_id">
+                        <mat-option [value]="null">Select From User</mat-option>
+                        <mat-option *ngFor="let option of userList" [value]="option.id">
+                            {{ option.loginname }} - <b>{{ option?.rankCode }} - {{ option.first_name }} - {{
+                                option.last_name }}</b>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formGroup.get('current_id').invalid && formGroup.get('current_id').touched">
+                        User is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <h3>Select To User</h3>
+            <div class="form-group mt-4 col-4">
+                <mat-radio-group formControlName="userTypeTo" (change)="onUserTypeChangeTo($event)">
+                    <mat-radio-button value="main" class="mr-4" color="primary">Tasking Form User</mat-radio-button>
+                    <mat-radio-button value="normal" color="primary">Commenter</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="form-group mt-4 col-4" *ngIf="isMainUserTo">
+                <mat-form-field appearance="outline">
+                    <mat-label>Directorate/User Role</mat-label>
+                    <mat-select id="next_user" (selectionChange)="onSelectChangeRoleTo($event)">
+                        <mat-option [value]="null">Select User Type</mat-option>
+                        <mat-option *ngFor="let option of userRoleListTo" [value]="option.id">{{ option.name
+                            }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="!isMainUserTo" class="form-group mt-4 col-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Directorate/User Role</mat-label>
+                    <mat-select id="directrate" (selectionChange)="onSelectDirectrate($event)">
+                        <mat-option [value]="null">Select Directorate/User Role</mat-option>
+                        <mat-option *ngFor="let option of directList" [value]="option.id">{{ option.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group mt-4 col-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select User</mat-label>
+                    <mat-select id="next_user_id_2" formControlName="next_user_id">
+                        <mat-option [value]="null">Select User</mat-option>
+                        <mat-option *ngFor="let option of userListTo" [value]="option.id">
+                            {{ option.loginname }} - <b>{{ option?.rankCode }} - {{ option.first_name }} - {{
+                                option.last_name }}</b>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="modal-footer">
+            <button pButton type="button" class="btn btn-secondary mx-2" (click)="displayModal = false">Close</button>
+            <button pButton type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+
+    <ng-container *ngIf="routeList && routeList.length > 0">
+        <p-table [value]="routeList" responsiveLayout="scroll" class="mt-4"
+            styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Sender User</th>
+                    <th>Receiver User</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="index">
+                <tr>
+                    <td>{{ i === 0 ? item.current?.roles[0]?.user_role?.name : timelineStepNameCurrent(item) }} <br>
+                        {{ i === 0 ? item?.current?.department?.name : timelineStepDirectCurrent(item) }}
+                    </td>
+                    <td>{{ timelineStepName(item) }} <br> {{ timelineStepDirect(item) }}</td>
+                    <td>
+                        <button pButton type="button" class="rounded p-button-primary mx-2"
+                            (click)="handleEdit(item)"><i
+                                class=" text-white fa-solid fa-pen"></i>&nbsp;<small>Edit</small></button>
+                        <button pButton type="button" class="rounded p-button-danger" (click)="handleDelete(item)"> <i
+                                class=" text-white fa-solid fa-trash"></i>&nbsp;<small>Delete</small></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
+</p-dialog>
+
+<p-toast />
+
+<!-- <p-button type="button" pRipple (click)="showSuccess()" label="Success" severity="success" /> -->
