@@ -42,6 +42,7 @@ export class ArchiveTaskComponent implements OnInit {
   token_detail:any;
   archivetask=[] as any;
   currentPage: number;
+  totalCounts: any;
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService) {
 
@@ -49,13 +50,13 @@ export class ArchiveTaskComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getTasking(this.currentPage)
+    this.getTasking()
     this.getAccess();
   }
   // getTasking(page:number=1) {
   //   if(this.token_detail.process_id==1){
   //     this.api
-  //     .getAPI(environment.API_URL + "transaction/archive_list&page=${page}")
+  //     .getAPI(environment.API_URL + "transaction/archive_list")
   //     .subscribe((res) => {
   //       if(res.status==environment.SUCCESS_CODE){
   //         this.dataSource = new MatTableDataSource(res.data);
@@ -67,26 +68,25 @@ export class ArchiveTaskComponent implements OnInit {
   //     });
   //   }
   // }
-  getTasking(page: number = 1) {
+  page=1;
+  getTasking() {
+    this.archivetask=[];
     if (this.token_detail.process_id === 1) {
       this.api
-        .getAPI(`${environment.API_URL}transaction/archive_list?page=${page}`)
+        .getAPI(`${environment.API_URL}transaction/archive_list?page=${this.page}`)
         .subscribe((res) => {
           if (res?.status === environment.SUCCESS_CODE && res?.data) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.archivetask = res.data;
+            this.dataSource = new MatTableDataSource(res.results);
+            this.archivetask = res.results;
             this.archiveList = res.data;
             this.dataSource.paginator = this.pagination;
+            this.totalCounts=res.count;
           }
         });
     }
   }
   
 
-  onChangePages(event:any){
-    this.getTasking(event.page + 1);
-    this.currentPage = event.page + 1;
-  }
   
   filterValue:any;
   applyFilter(event: Event) {
@@ -157,6 +157,9 @@ export class ArchiveTaskComponent implements OnInit {
     this.filterData = filterValue;
   }
   handlePagination(pageEvent: any) {
+    this. getTasking();
+    this.page=pageEvent.page+1;
+
   }
   openCurrentStatus(country){
     }

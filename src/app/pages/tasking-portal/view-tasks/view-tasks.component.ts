@@ -1217,25 +1217,25 @@ margin:0px !important;
     this.exportform.reset();
   }
 
-gridColumns=[
-  { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
-  { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-  { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
-  { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
-  { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
-  {
-    field: 'modified_on',
-    header: 'Approved on',
-    filter: true,
-    filterMatchMode: 'contains',
-    valueFormatter: (data: any) => {
-      const datePipe = new DatePipe('en-US');
-      return datePipe.transform(data.modified_on, 'dd-MM-yyyy');
+  gridColumns=[
+    { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
+    { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+    {
+      field: 'modified_on',
+      header: 'Approved on',
+      filter: true,
+      filterMatchMode: 'contains',
+      valueFormatter: (data: any) => {
+        const datePipe = new DatePipe('en-US');
+        return datePipe.transform(data.modified_on, 'dd-MM-yyyy');
+      },
     },
-  },
-
-  { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
-]
+  
+    { field: 'legacy_data', header: 'Legacy Data', filter: true, filterMatchMode: 'contains' }
+  ]
 exportData:any;
 filterData:any;
 handleFilter(filterValue: any) {
