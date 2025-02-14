@@ -57,6 +57,8 @@ export class AllocateTasksComponent implements OnInit {
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
+  totolCounts: any;
+  totalCounts: any;
 
   constructor(public api: ApiService, private notification: NotificationService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
@@ -65,7 +67,7 @@ export class AllocateTasksComponent implements OnInit {
       this.allocateForm = new FormGroup({
         id: new FormControl(""),
           tasking_group: new FormControl(""),
-          tasking_user: new FormControl(""),
+        tasking_user: new FormControl(""),
         created_by:new FormControl(""),
         created_role : new FormControl(this.token_detail.role_id),
         });
@@ -74,14 +76,10 @@ export class AllocateTasksComponent implements OnInit {
 
 
   populate(data) {
-    //this.editForm.patchValue(data);
     this.allocateForm.patchValue(data);
   }
 
   initForm() {
-    // this.allocateForm.patchValue({
-    //   status: "1",
-    // });
   }
 
   Error = (controlName: string, errorName: string) => {
@@ -89,7 +87,6 @@ export class AllocateTasksComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // this.getcreatedid();
     this.getTasking();
     this.getTaskingGroups();
     this.getAccess();
@@ -107,11 +104,6 @@ export class AllocateTasksComponent implements OnInit {
   }
   created_list:any;
   creList:any;
-//   task_number_dee
-// 
-// cost_implication
-// sponsoring_directorate
-// time_frame_for_completion_month
 gridColumns=[
   { field: 'task_name', header: ' Task Name', filter: true, filterMatchMode: 'contains' },
 
@@ -128,45 +120,43 @@ gridColumns=[
         this.usersList=res.data
     })
   }
+  handlePagination(pageEvent: any) {
+    console.log('Pagination Event:', pageEvent);
+    this.page=pageEvent.page+1;
+   this.getTasking();
+    
+}
+  page=1;
   getTasking() {
-    this.country=[]
-    if(this.token_detail.role_id==3){
+    this.countryList = [];
+    if (this.token_detail.role_id == 3) {
       this.api
-      .getAPI(environment.API_URL + "transaction/allocate/status?created_by="+this.token_detail.user_id)
-      .subscribe((res) => {
-        if(res.status==environment.SUCCESS_CODE){
-          this.dataSourcelist = new MatTableDataSource(res.data);
-          this.countryList = res.data;
-          this.dataSourcelist.paginator = this.pagination;
-        }
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}&page=${this.page}`)
+        .subscribe((res) => {
+          this.countryList = res.results.data || []; // Handle undefined results safely
+          this.totalCounts = res.count; // Ensure count is defined
+          if (res.status == environment.SUCCESS_CODE) {
+            if (this.dataSourcelist) {
+              // this.dataSourcelist.data = this.countryList;
+              // this.dataSourcelist.paginator = this.pagination;
+            }
+          }
+        });
+    } else {
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?page=${this.page}`)
+  .subscribe((res) => {
+    if (res.results?.status === environment.SUCCESS_CODE) {
+      this.countryList = res.results?.data || []; // Ensure data is defined
 
-      });
+      if (this.dataSourcelist) {
+        this.dataSourcelist.data = this.countryList;
+        this.dataSourcelist.paginator = this.pagination;
+      }
     }
-    else{
-      this.api
-      .getAPI(environment.API_URL + "transaction/allocate/status")
-      .subscribe((res) => {
-        if(res.status==environment.SUCCESS_CODE){
-          this.dataSourcelist = new MatTableDataSource(res.data);
-          this.countryList = res.data;
-          this.dataSourcelist.paginator = this.pagination;
-        }
-
-      });
-
+  });
     }
-
   }
-  //   this.api
-  //     .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id})
-  //     .subscribe((res) => {
-  //       this.dataSource = new MatTableDataSource(res.data);
-  //       this.countryList = res.data;
-  //       this.dataSource.paginator = this.pagination;
-  //       this.logger.log('country', this.countryList)
-  //     });
-
-  // }
+  
   getTrials() {
     this.api
       .getAPI(environment.API_URL + "transaction/trials/approval")
@@ -185,7 +175,6 @@ gridColumns=[
     this.crudName = "Save";
     this.isReadonly = false;
     this.allocateForm.enable();
-    // this.populate(country);
     
     this.task_name = country.task_number_dee;
     this.task_Desc = country.task_description;
@@ -230,9 +219,6 @@ gridColumns=[
 
     if (this.allocateForm.valid) {
       this.allocateForm.value.created_by = this.api.userid.user_id;
-      // this.allocateForm.value.created_role = this.token_detail.tasking_id;
-
-      //this.allocateForm.value.status = this.allocateForm.value.status == true ? 1 : 2;
 
       this.api
         .postAPI(

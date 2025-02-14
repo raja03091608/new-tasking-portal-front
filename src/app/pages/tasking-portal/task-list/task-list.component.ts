@@ -664,6 +664,7 @@ export class TaskListComponent implements OnInit {
   }
   is_sponsoring_directorate = false;
   getComments() {
+
     this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.id).subscribe((res) => {
         this.countryList1 = res.data;
         // // console.log'comments', res);
@@ -1987,6 +1988,7 @@ export class TaskListComponent implements OnInit {
       next_user_id: this.formGroup.get('next_user_id').value, //loginname
     };
     this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
+
       this.getStatusTimeline()
       this.modalService.dismissAll("Close")
     })

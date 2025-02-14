@@ -143,4 +143,283 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <!-- Extended Deadlines Chart -->
+        <div class="col-md-6" *ngIf="showExtendedDeadlines">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Task Issued Since 2016</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="taskIssuedData" [options]="taskIssuedOptions" class="w-100"
+                        style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Tasks Chart -->
+        <div class="col-md-6" *ngIf="showOverdueTasks">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Ongoing Tasks by Year</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="ongoingTasksData" [options]="ongoingTasksOptions" class="w-100"
+                    style="height: 400px;"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Extended Deadlines Chart -->
+        <div class="col-md-12" *ngIf="showExtendedDeadlines">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Tasking by Sponsoring Directorate</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="directorateChartData" [options]="directorateChartOptions" class="w-100" style="height: 600px;"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Tasks Chart -->
+        <div class="col-md-12" *ngIf="showOverdueTasks">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title align-items-start flex-column pt-5">
+                        <span class="fw-bold mb-3">Distribution by Task Status</span>
+                      </h3>
+                    <div class="d-flex gap-2">
+                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
+                           class="btn btn-light btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download CSV">
+                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                        </a>
+                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none" 
+                           data-bs-toggle="tooltip" title="Download PNG">
+                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p-chart type="bar" [data]="distributionChartData" [options]="distributionChartOptions" class="w-100" style="height: 600px;"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Groupwise Summary Chart -->
+            <div class="col-md-12" *ngIf="showGroupwiseChart">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Groupwise Summary</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(groupwiseChartData, 'Groupwise Summary Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(groupWiseChart.chart, 'Groupwise Summary Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="groupwiseChartData" [options]="groupwiseChartOptions" class="w-100" style="height: 500px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Task Distribution Pie Chart -->
+            <div class="col-md-6" *ngIf="showTaskDistribution">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Task Distribution</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(pieChart1, 'Task Distribution Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(pieChart1.chart, 'Task Distribution Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p-chart #pieChart1 type="pie" [data]="pieChartData1" class="w-100" style="height: 300px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Overdue Tasks Pie Chart -->
+            <div class="col-md-6" *ngIf="showOverdueTasks">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Overdue Tasks</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="pie" [data]="pieChartData2" class="w-100" style="height: 300px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Overall Task Status -->
+            <div class="col-md-6" *ngIf="showTaskStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Overall Task Status</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(taskStatusChartData, 'Task Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(taskStatusChart.chart, 'Task Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p-chart  type="bar" [data]="taskStatusChartData" [options]="commanChartOption" class="w-100" style="height: 500px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Status by Group -->
+            <div class="col-md-6" *ngIf="showStatusByGroup">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status by Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusByGroupChartData" [options]="statusByGroupChartDataOption" class="w-100" ></p-chart>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Individual Group Status (CMS, CSC, SCS, TaNCS) -->
+            <div class="col-md-6" *ngIf="showCMSStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking CMS Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusCMSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6" *ngIf="showCSCStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking CSC Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusCSCGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6" *ngIf="showSCSStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking SCS Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusSCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-6" *ngIf="showTaNCSStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking TaNCS Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusTaNCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="showTaNCSStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking ETG Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusETGGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="showTaNCSStatus">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title fw-bold">Status of Tasking CSI Group</h3>
+                    </div>
+                    <div class="card-body">
+                        <p-chart type="bar" [data]="statusCSIGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>    
 </div>

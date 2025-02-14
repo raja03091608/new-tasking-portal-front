@@ -95,60 +95,46 @@ export class NotificationsInnerComponent implements OnInit {
 
 
 
-    getNotifications() {
-
-          if( this.token_detail.role_id==3 &&this.token_detail.process_id==2){
-            this.api.getAPI(environment.API_URL + "notification/get-notifications?tasking__created_by_id="+this.token_detail.user_id).subscribe((res) => {
-              if(res.status==environment.SUCCESS_CODE){
-
-              this.notificationsList=res.data;
-              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
-
-
-              } else if(res.status==environment.ERROR_CODE) {
-                  this.notification.displayMessage(res.message);
-              } else {
-                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-              }
-            });
+    getNotifications(page: number = 1) {
+      if (this.data.process_id == 2 && this.data.role_id == 3) {
+        this.api.getAPI(
+          `${environment.API_URL}notification/get-notifications?tasking__created_by_id=${this.data.user_id}&page=${page}`
+        ).subscribe((res) => {
+          if (res.status == environment.SUCCESS_CODE) {
+            this.notification = res.results.total_unread_notifications;
+          } else if (res.status == environment.ERROR_CODE) {
+            this.notification.displayMessage(res.message);
+          } else {
+            this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
-
-          else if(this.token_detail.process_id==3 && this.token_detail.tasking_id!=''){
-            this.api.getAPI(environment.API_URL +"notification/get-notifications?process_id="+this.token_detail.process_id +'&tasking_group_id='+this.token_detail.tasking_id).subscribe((res) => {
-              if(res.status==environment.SUCCESS_CODE){
-
-              this.notificationsList=res.data;
-              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
-
-              } else if(res.status==environment.ERROR_CODE) {
-                  this.notification.displayMessage(res.message);
-              } else {
-                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-              }
-            });
-
-
+        });
+      } 
+      else if (this.data.process_id == 3) {
+        this.api.getAPI(
+          `${environment.API_URL}notification/get-notifications?process_id=${this.data.process_id}&tasking_group=${this.data.tasking_id}&page=${page}`
+        ).subscribe((res) => {
+          if (res.status == environment.SUCCESS_CODE) {
+            this.notification = res.results.total_unread_notifications;
+          } else if (res.status == environment.ERROR_CODE) {
+            this.notification.displayMessage(res.message);
           }
-          else{
-            this.api.getAPI(environment.API_URL + "notification/get-notifications").subscribe((res) => {
-              if(res.status==environment.SUCCESS_CODE){
-
-              this.notificationsList=res.data;
-              // $('.notify-count').html('<span>'+this.notificationsList.length+'</span>');
-              } else if(res.status==environment.ERROR_CODE) {
-                  this.notification.displayMessage(res.message);
-              } else {
-                // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
-              }
-            });
-
-
+        });
+      } 
+      else {
+        this.api.getAPI(
+          `${environment.API_URL}notification/get-notifications?page=${page}`
+        ).subscribe((res) => {
+          if (res.status == environment.SUCCESS_CODE) {
+            this.notification = res.results.total_unread_notifications;
+          } else if (res.status == environment.ERROR_CODE) {
+            this.notification.displayMessage(res.message);
+          } else {
+            this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
-
-
-
-
+        });
+      }
     }
+    
   //  notification1
     saveNotificationsLog(notification_id) {
       this.api.postAPI(environment.API_URL + "notification/save-notification-log",{notification_id:notification_id}).subscribe((res) => {

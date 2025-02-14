@@ -1,18 +1,13 @@
 <div class="card">
-    <!--begin::Body-->
     <div class="card-header">
         <h2 class="card-title fw-bolder">Add Category</h2>
     </div>
     <div class="card-body p-lg-17">
         <div class="d-flex flex-column flex-lg-row ">
-            <!--begin::Content-->
             <div class="flex-lg-row-fluid me-0 me-lg-20">
-                <!--begin::Form-->
                 <form [formGroup]="categoryForm">
                     <div class="row mb-5">
                         <label class="required fs-5 fw-bold mb-2">Category Name </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
                         <input type="text" class="form-control form-control-solid" placeholder="Title"
                             formControlName="name" />
                         <div *ngIf="submitted && f['name'].errors" class="text-danger">
@@ -21,8 +16,6 @@
                     </div>
                     <div class="row mb-5">
                         <label class="required fs-5 fw-bold mb-2">Category Slug </label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
                         <input type="text" class="form-control form-control-solid" placeholder="Title"
                             formControlName="slug" />
                         <div *ngIf="submitted && f['slug'].errors" class="text-danger">
@@ -67,12 +60,9 @@
 
 
                     </button>
-                    <!--end::Submit-->
                 </form>
-                <!--end::Form-->
 
             </div>
-            <!--end::Content-->
 
         </div>
     </div>

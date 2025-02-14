@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WishRoutingModule } from './wish-routing.module';
@@ -12,10 +12,12 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 import { DialogModule } from 'primeng/dialog';
 import { ToastrModule } from 'ngx-toastr';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
 
 
@@ -23,7 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
       TicketsComponent
   ],
   imports: [
-    
+    DropdownModule ,
+    AngularEditorModule,
     ToastrModule,
     DialogModule,
     CommonModule,

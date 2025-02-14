@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild,Input} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaskBlockComponent } from '../task-block/task-block.component';
-//import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5percent from '@amcharts/amcharts5/percent';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
@@ -38,8 +37,6 @@ export type ChartOptions = {
   plotOptions: ApexPlotOptions;
   tooltip:ApexTooltip;
 };
-
-
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
@@ -49,7 +46,6 @@ export class TaskListComponent implements OnInit, AfterViewInit,OnDestroy{
 	displayedColumns: string[] = [
 		"task_number_dee",
 		"task_description",
-		// "file",
 		"due_date",
 		"assignee",
 		"Action",
@@ -77,11 +73,9 @@ export class TaskListComponent implements OnInit, AfterViewInit,OnDestroy{
   error_msg=false;
   showError=false;
 sub:any;
-//country:any;
 
 dataSource: MatTableDataSource<any>;
 
-//dtOptions: DataTables.Settings = {};
 @ViewChild("chart") chart: ChartComponent;
 public chartOptions: Partial<ChartOptions> | any;
 constructor(private modalService: NgbModal, private route: ActivatedRoute,public api: ApiService, private notification: NotificationService,
@@ -102,25 +96,13 @@ constructor(private modalService: NgbModal, private route: ActivatedRoute,public
       ],
       tooltip: {
         enabled:true
-        // custom: function({series, seriesIndex, dataPointIndex, w}) {
-        //   var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
-
-        //   return '<ul>' +
-        //   '<li><b>Price</b>: ' + data.x + '</li>' +
-        //   '<li><b>Number</b>: ' + data.y + '</li>' +
-        //   '<li><b>Product</b>: \'' + data.product + '\'</li>' +
-        //   '<li><b>Info</b>: \'' + data.info + '\'</li>' +
-        //   '<li><b>Site</b>: \'' + data.site + '\'</li>' +
-        //   '</ul>';
-        // }
+       
       },
       chart: {
         height: 450,
         type: "rangeBar",
         events: {
           click: (event:any, chartContext:any, config:any) => {
-            // // console.logconfig.seriesIndex);
-            // // console.logconfig.dataPointIndex);
             this.openPopup();
           }
         }
@@ -147,12 +129,7 @@ constructor(private modalService: NgbModal, private route: ActivatedRoute,public
         style: {
           colors: ["#f3f4f5", "#fff"]
         },
-        // events: {
-        //   click:
-        //     // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
-        //     this.openDelete()
-
-        // }
+       
       },
 
       xaxis: {
@@ -210,19 +187,14 @@ status = this.taskForm.value.status;
   this.taskForm.patchValue({sdForm:{sponsoring_directorate:data.sponsoring_directorate}})
 	if (data ? data.file : "") {
 		var img_link = data.file;
-		//var trim_img = img_link.substring(1)
 		this.ImageUrl = img_link;
 	  }
-
   }
-
   initForm() {
     this.taskForm.patchValue({
       status: "1",
     });
-
   }
-
   Error = (controlName: string, errorName: string) => {
     return this.taskForm.controls[controlName].hasError(errorName);
   };
@@ -237,7 +209,6 @@ status = this.taskForm.value.status;
 	  this.dataSource = new MatTableDataSource(res.data);
 	  this.statusTasking = res.data;
 	  this.dataSource.paginator = this.pagination;
-	  // this.logger.log('ytyty', this.statusTasking)
 	  for(let i=0;i<this.statusTasking.length;i++){
 		this.statusValue.push({value:this.statusTasking[i].project_status.project_progress,category:this.statusTasking[i].task_number_dee})
 		this.series.data.push({value:this.statusTasking[i].project_status.project_progress,category:this.statusTasking[i].task_number_dee})
@@ -247,8 +218,6 @@ status = this.taskForm.value.status;
 		info: 'info',
 		site: 'name',
 		fillColor: "#008FFB"})
-		 //     new Date("2019-03-07").getTime(),
-
 
 	   }
 
@@ -261,41 +230,14 @@ token_detail:any;
 	this.token_detail=this.api.decryptData(localStorage.getItem('token-detail'));
 	this.getTasking();
 	this.getStatusTasking();
-    // this.dtOptions = {
-    //   pagingType: 'full_numbers'
-    // };
-
-
-    // $("#kt_datatable_dom_positioning").DataTable({
-    //   "language": {
-    //    "lengthMenu": "Show _MENU_",
-    //   },
-    //   "dom":
-    //    "<'row'" +
-    //    "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
-    //    "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
-    //    ">" +
-
-    //    "<'table-responsive'tr>" +
-
-    //    "<'row'" +
-    //    "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
-    //    "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
-    //    ">"
-    //  });
 
 
     let root = am5.Root.new("chartdiv");
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root.setThemes([
   am5themes_Animated.new(root)
 ]);
 
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-// start and end angle must be set both for chart and series
 let chart = root.container.children.push(am5percent.PieChart.new(root, {
   startAngle: 180,
   endAngle: 360,
@@ -304,9 +246,6 @@ let chart = root.container.children.push(am5percent.PieChart.new(root, {
   innerRadius: am5.percent(50)
 }));
 
-// Create series
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-// start and end angle must be set both for chart and series
 this.series = chart.series.push(am5percent.PieSeries.new(root, {
   startAngle: 180,
   endAngle: 360,
@@ -314,7 +253,6 @@ this.series = chart.series.push(am5percent.PieSeries.new(root, {
   categoryField: "category",
   alignLabels: false
 }));
-
 this.series.states.create("hidden", {
   startAngle: 180,
   endAngle: 180
@@ -335,17 +273,7 @@ this.series.slices.template.setAll({
   tooltipText: "{category}"
 });
 
-// Set data
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-// series.data.setAll([
-//   { value: 10, category: "Task 1" },
-//   { value: 9, category: "Task 2" },
-//   { value: 6, category: "Task 3" },
-//   { value: 5, category: "Task 4" },
-//   { value: 4, category: "Task 5" },
-//   { value: 3, category: "Task 6" },
-//   { value: 1, category: "Task 7" }
-// ]);
+
 
 this.series.appear(1000, 100);
 
@@ -354,7 +282,6 @@ this.series.appear(1000, 100);
     this.api
       .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id})
       .subscribe((res) => {
-        //this.dataSource = new MatTableDataSource(res.data);
         this.countryList = res.data;
       });
 
@@ -372,7 +299,6 @@ this.series.appear(1000, 100);
   onSubmit() {
 	this.showError=true;
 	this.currentDate = new Date();
-	 //this.taskForm.value.id=this.id;
 
 	const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
 	const ccValue=formatDate(this.currentDate,'dd','en-US');
@@ -382,18 +308,10 @@ this.series.appear(1000, 100);
  	  this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
 	 	}
 
-//// console.logthis.sponsoring_directorate,this.taskForm.get('sdForm').value.sponsoring_directorate)
-//  if(this.taskForm.get('sdForm').value.sponsoring_directorate!=''){
-// 	this.taskForm.get('sdForm').value.sponsoring_directorate='IHQ MOD(N)/'+this.api.userid.first_name;
-// 	  }
-    //this.taskForm.value.sponsoring_directorate='IHQ MOD(N)/'+this.taskForm.value.sponsoring_directorate;
-    //this.taskForm.value.created_by = this.api.userid.user_id;
-   //this.taskForm.value.status = this.taskForm.value.status==true ? 1 : 2;
     const formData = new FormData();
     formData.append('sponsoring_directorate', this.taskForm.get('sdForm').value.sponsoring_directorate);
     formData.append('task_description', this.taskForm.get('sdForm').value.task_description);
     formData.append('id', this.taskForm.value.id);
-    // formData.append('file', this.imgToUpload);
 
 	formData.append('cost_implication', this.taskForm.get('weseeForm').value.cost_implication);
 	formData.append('time_frame_for_completion', this.taskForm.get('weseeForm').value.time_frame_for_completion);
@@ -403,12 +321,10 @@ this.series.appear(1000, 100);
 	formData.append('recommendation_of_acom_its', this.taskForm.get('acomForm').value.recommendation_of_acom_its);
 	formData.append('approval_of_com', this.taskForm.get('comForm').value.approval_of_com);
 
-    //formData.append('created_by', this.taskForm.value.created_by);
     formData.append('modified_by', this.api.userid.user_id);
 
 
 	if (this.taskForm.valid) {
-		//formData.append('id', this.editForm.value.id);
 		this.api
 		  .postAPI(
 			environment.API_URL + "transaction/tasking/crud",
@@ -416,9 +332,7 @@ this.series.appear(1000, 100);
 		  )
 
         .subscribe((res) => {
-          //this.error= res.status;
           if(res.status==environment.SUCCESS_CODE){
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
             this.closebutton.nativeElement.click();
@@ -436,23 +350,15 @@ this.series.appear(1000, 100);
 
     }
   }
-
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit(): void {
 
     let root = am5.Root.new("chartdiv1");
 
 
 
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
 root.setThemes([
   am5themes_Animated.new(root)
 ]);
-
-
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
 let chart = root.container.children.push(am5xy.XYChart.new(root, {
   panX: false,
   panY: false,
@@ -501,14 +407,11 @@ function prepareParetoData() {
   for (var i = 0; i < data.length; i++) {
     let value = data[i].visits;
     sum += value;
-    //data[i].pareto = sum / total * 100;
   }
 }
 
 
 
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
 let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
   categoryField: "country",
   renderer: am5xy.AxisRendererX.new(root, {
@@ -538,8 +441,6 @@ paretoAxisRenderer.grid.template.set("forceHidden", true);
 paretoAxis.set("numberFormat", "#'%");
 
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
 let series = chart.series.push(am5xy.ColumnSeries.new(root, {
   xAxis: xAxis,
   yAxis: yAxis,
@@ -555,12 +456,6 @@ series.columns.template.setAll({
   cornerRadiusTR: 6
 });
 
-// series.columns.template.adapters.add("fill", function(fill, target) {
-//   return chart.get("colors").getIndex(series.dataItems.indexOf(target.dataItem));
-// })
-
-
-// pareto series
 let paretoSeries = chart.series.push(am5xy.LineSeries.new(root, {
   xAxis: xAxis,
   yAxis: paretoAxis,
@@ -584,8 +479,6 @@ paretoSeries.bullets.push(function() {
 series.data.setAll(data);
 paretoSeries.data.setAll(data);
 
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
 series.appear();
 chart.appear(1000, 100);
 
@@ -624,8 +517,6 @@ chart.appear(1000, 100);
   }
 
   ngOnDestroy(){
-    // am5.disposeAllCharts();
-   // root.dispose();
   }
   imgToUpload:any;
   onImageHandler(event) {

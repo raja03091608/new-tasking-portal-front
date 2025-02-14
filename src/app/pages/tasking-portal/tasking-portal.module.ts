@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,8 @@ import { PringeComponentModule } from '../../primeng-component/pringe-component.
 import { FileUploadModule } from 'primeng/fileupload';
 import {NgxPrintModule} from 'ngx-print';
 import { TaskFormComponent } from './task-form/task-form.component';
+import { PaginatorModule } from 'primeng/paginator';
+schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -39,6 +41,7 @@ import { TaskFormComponent } from './task-form/task-form.component';
 
   ],
   imports: [
+  PaginatorModule,
     TimelineModule,
     NgxPrintModule,
     ConfirmDialogModule ,
@@ -74,7 +77,7 @@ import { TaskFormComponent } from './task-form/task-form.component';
       },
 	  {
         path: 'task-list',
-        component: TaskListComponent,
+        component: TaskFormComponent,
       },
       {
         path: 'archive-task',

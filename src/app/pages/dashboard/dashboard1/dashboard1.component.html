@@ -3,35 +3,8 @@
 <div class="row g-5 g-xl-8 justify-content-center">
   <ng-container *ngIf=" permission.santC">
     <div class="col-md-3 card-container-c">
-      <!--begin::Statistics Widget 5-->
-      <!-- <a routerLink="/tasking-portal/new-task" class="card bg-danger hoverable card-xl-stretch mb-xl-8 p-3 card-bg-1" style="height: 150px;">
-
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <span class="svg-icon svg-icon-gray-100 svg-icon-4x ms-n1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                  fill="none">
-                  <path opacity="0.3"
-                    d="M18 21.6C16.3 21.6 15 20.3 15 18.6V2.50001C15 2.20001 14.6 1.99996 14.3 2.19996L13 3.59999L11.7 2.3C11.3 1.9 10.7 1.9 10.3 2.3L9 3.59999L7.70001 2.3C7.30001 1.9 6.69999 1.9 6.29999 2.3L5 3.59999L3.70001 2.3C3.50001 2.1 3 2.20001 3 3.50001V18.6C3 20.3 4.3 21.6 6 21.6H18Z"
-                    fill="currentColor"></path>
-                  <path
-                    d="M12 12.6H11C10.4 12.6 10 12.2 10 11.6C10 11 10.4 10.6 11 10.6H12C12.6 10.6 13 11 13 11.6C13 12.2 12.6 12.6 12 12.6ZM9 11.6C9 11 8.6 10.6 8 10.6H6C5.4 10.6 5 11 5 11.6C5 12.2 5.4 12.6 6 12.6H8C8.6 12.6 9 12.2 9 11.6ZM9 7.59998C9 6.99998 8.6 6.59998 8 6.59998H6C5.4 6.59998 5 6.99998 5 7.59998C5 8.19998 5.4 8.59998 6 8.59998H8C8.6 8.59998 9 8.19998 9 7.59998ZM13 7.59998C13 6.99998 12.6 6.59998 12 6.59998H11C10.4 6.59998 10 6.99998 10 7.59998C10 8.19998 10.4 8.59998 11 8.59998H12C12.6 8.59998 13 8.19998 13 7.59998ZM13 15.6C13 15 12.6 14.6 12 14.6H10C9.4 14.6 9 15 9 15.6C9 16.2 9.4 16.6 10 16.6H12C12.6 16.6 13 16.2 13 15.6Z"
-                    fill="currentColor"></path>
-                  <path
-                    d="M15 18.6C15 20.3 16.3 21.6 18 21.6C19.7 21.6 21 20.3 21 18.6V12.5C21 12.2 20.6 12 20.3 12.2L19 13.6L17.7 12.3C17.3 11.9 16.7 11.9 16.3 12.3L15 13.6V18.6Z"
-                    fill="currentColor"></path>
-                </svg>
-              </span>
-            </div>
-            <div class="col-md-8">
-              <h4 class="text-white" style="text-align: right;">Start a New Tasking</h4>
-            </div>
-          </div>
-        </div>
-      </a> -->
-      <a routerLink="/tasking-portal/new-task" class="card-hover card card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
-       >
+      <a routerLink="/tasking-portal/new-task"
+        class="card-hover card card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2">
         <div class="logo-content ">
           <div class="border-rotation"></div>
           <img src="assets/taskingstart.png" alt="Logo" class="card-logo rotation" />
@@ -46,11 +19,9 @@
       </a>
     </div>
   </ng-container>
-
-
   <div *ngIf="permission.tatC" class="col-md-3 card-container-c">
     <a routerLink="/tasking-portal/view-tasking-status"
-      class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-h card-bg-2" >
+      class="card-hover card  card-xl-stretch mb-5 mb-xl-8 p-3 card-h card-bg-2">
       <div class="logo-content ">
         <div class="border-rotation"></div>
         <img src="assets/total_approved_task.png" alt="Logo" class="card-logo rotation" />
@@ -64,9 +35,9 @@
       </div>
     </a>
   </div>
-  <div  *ngIf="permission.twaC" class="col-md-3 card-container-c">
-    <a routerLink="/tasking-portal/task-list" class="card-hover card  card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
-      >
+  <div *ngIf="permission.twaC" class="col-md-3 card-container-c">
+    <a routerLink="/tasking-portal/task-list"
+      class="card-hover card  card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2">
       <div class="logo-content ">
         <div class="border-rotation"></div>
         <img src="assets/task_waiting_for_approve.png" alt="Logo" class="card-logo rotation" />
@@ -82,8 +53,8 @@
   </div>
 
   <div *ngIf="permission.atC" class="col-md-3 card-container-c">
-    <a routerLink="/tasking-portal/archive-task" class="card-hover card card-h  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
-      >
+    <a routerLink="/tasking-portal/archive-task"
+      class="card-hover card card-h  card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2">
       <div class="logo-content ">
         <div class="border-rotation"></div>
         <img src="assets/archieve_task.png" alt="Logo" class="card-logo rotation" />
@@ -102,16 +73,48 @@
 
 <!-- end::Row -->
 
- 
+
 <div class="row g-5 mt-5 g-xl-8 map-card d-flex justify-content-center">
 
-  <app-chart 
-  [showGroupWiseChart]="permission.gwtcG"
-  [showYearlyReport]="permission.ywtcG"
-  [showTaskDistribution]="permission.tsdG"
-  [showExtendedDeadlines]="permission.twedBYG"
-  [showOverdueTasks]="permission.otsBYG">
-</app-chart>
+  <app-chart [showGroupWiseChart]="permission.gwtcG" [showYearlyReport]="permission.ywtcG"
+    [showTaskDistribution]="permission.tsdG" [showExtendedDeadlines]="permission.twedBYG"
+    [showOverdueTasks]="permission.otsBYG">
+  </app-chart>
+
+  <div *ngIf="permission.mtP" class="row g-5 map-card g-xl-8">
+    <div class="col-md-12">
+      <div class="card p-0" style="margin-bottom: 60px;">
+        <div class="card-header mb-5 d-flex justify-content-between align-items-center">
+
+          <h3 class="card-title align-items-start flex-column pt-10">
+            <span class="fw-bold mb-3"> Monitor task progress </span>
+
+          </h3>
+          <div class="text-end">
+            <button (click)="submitToExcel()" class="btn btn-light btn-round-sm m-2">
+              <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="approveTask.length !=0">
+          <app-grid-table [gridColumns]="gridColum" [gridData]="approveTask" [ispaniNater]="true" [isAction]="true"
+            (filterEvent)="handleFilter($event)" [totalRecords]="totalCounts"
+            (paginationEvent)="handlePagination($event)" (viewEvent)="openEdit($event)" [isView]="true">
+          </app-grid-table>
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
 
   <p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
@@ -144,652 +147,524 @@
     </div>
   </p-dialog>
 
- 
+
   <p-dialog header="Group Data" [modal]="true" [(visible)]="visible4" [style]="{ width: '60rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-  <div class="input-container">
-    <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
-  </div>
-  <div class="card">
-    <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Tasking Group Name
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Title
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Task Count
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-group>
-        <tr *ngFor="let title of group.titles">
-          <td>{{ group.tasking_group_name }}</td>
-          <td>{{ title.title }}</td>
-          <td>{{ title.task_count }}</td>
-        </tr>
-
-        <tr *ngFor="let title of group.titles">
-          <td colspan="3">
-            <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
-              <ng-template pTemplate="header">
-        <tr>
-          <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Task Name
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Start Date
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>End Date</th>
-          <i class="pi pi-filter" style="font-size: 1rem"></i>
-          <th>Sponsoring Directorate
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-          <th>Status Summary
-            <i class="pi pi-filter" style="font-size: 1rem"></i>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{ task.task_number_dee }}</td>
-          <td>{{ task.task_name || 'N/A' }}</td>
-          <td>{{ task.start_date }}</td>
-          <td>{{ task.end_date }}</td>
-          <td>{{ task.sponsoring_directorate }}</td>
-          <td>{{ task.status_summary }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    </td>
-    </tr>
-    </ng-template>
-    </p-table>
-  </div>
-</p-dialog>
-
-
-
-
-<ng-template #template let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Delete Task</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-
-    <p><strong>Do you want to Delete the Task? </strong></p>
-
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-success">Yes</button>
-
-    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
-  </div>
-
-</ng-template>
-
-
-
-
-
-
-
-
-
-<div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static"
-  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
-        <button type="button" (click)="cancelmodal()" class="btn-close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="false">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body form-style-md form-style-font linux">
-        <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
-        </div>
-        <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
-          <div class="row"> &nbsp;
-            <div formGroupName="sdForm">
-              <div class="alert alert-dismissible alert-bg">
-
-                <div class="mb-5 ">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="matt-group">
-                        <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
-
-                        <input type="text" class="form-control" formControlName="sponsoring_directorate"
-                          maxlength="100" />
-                        <br>
-                        <input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments" />
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="matt-group">
-                        <mat-label style="font-size:large;"><b>Task Name</b></mat-label>
-                        <input type="text" class="form-control" formControlName="task_name" />
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-                <div class="mb-5">
-                  <mat-label style="font-size:large;">Task Description (Only 200 words)<b class="star">*</b></mat-label>
-                  <angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
-
-
-                </div>
-                <div class="mb-5">
-
-                  <div class="matt-group">
-                    <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-                    <a href="{{ImageUrl}}" *ngIf="ImageUrl!=''" class="edit-icon text-primary"><span
-                        class="material-icons-outlined"><span class="bi bi-journal-check"
-                          style="font-size:2rem;color: #4caf50;"></span></span></a>
-
-
-                    <a href="{{ImageUrl1}}" *ngIf="ImageUrl1!=''" class="edit-icon text-primary"><span
-                        class="material-icons-outlined"><span class="bi bi-journal-check"
-                          style="font-size:2rem;color: #4caf50;"></span></span></a>
-
-
-                    <a href="{{ImageUrl2}}" *ngIf="ImageUrl2!=''" class="edit-icon text-primary"><span
-                        class="material-icons-outlined"><span class="bi bi-journal-check"
-                          style="font-size:2rem;color: #4caf50;"></span></span></a>
-
-
-                    <a href="{{ImageUrl3}}" *ngIf="ImageUrl3!=''" class="edit-icon text-primary"><span
-                        class="material-icons-outlined"><span class="bi bi-journal-check"
-                          style="font-size:2rem;color: #4caf50;"></span></span></a>
-
-
-                    <a href="{{ImageUrl4}}" *ngIf="ImageUrl4!=''" class="edit-icon text-primary"><span
-                        class="material-icons-outlined"><span class="bi bi-journal-check"
-                          style="font-size:2rem;color: #4caf50;"></span></span></a>
-                  </div>
-                </div>
-
-              </div>
-
-
-            </div>
-
-            <div formGroupName="apsoForm">
-              <div class="alert alert-dismissible alert-bg">
-                <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
-                </div>
-                <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-
-                  <textarea rows="4" class="form-control" formControlName="comments_of_apso"
-                    value="Test comments"></textarea>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div formGroupName="weseeForm">
-              <div class="alert alert-dismissible alert-bg">
-                <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems Engineering Establishment)</b></mat-label>
-                </div>
-                
-                <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
-                  <form [formGroup]="this.allocateForm">
-                    <div class="col-md-6">
-                      <div class="matt-group matselect">
-                        <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
-                        <mat-form-field appearance="outline">
-                          <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups"
-                            [disabled]="token_details.process_id==1 || token_details.process_id==3">
-
-                            <mat-option [value]="">Select Tasking Groups</mat-option>
-                            <mat-option *ngFor="let taskingGroup of taskingGroups"
-                              [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-
-
-                      </div>
-                    </div>
-                  </form>
-                </ng-container>
-              </div>
-
-
-              &nbsp;
-              <div class="alert alert-dismissible alert-bg">
-                <div class="sub-heading" style="text-align:center;">
-                <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
-                  Engineering Establishment)</b></mat-label>
-              </div>
-                <div class="mb-5 ">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <mat-label style="font-size:large;">Cost Implication (Approx)<b class="star">*</b></mat-label>
-
-
-                      <div class="task-text-group">
-                        <p>Rs&nbsp;&nbsp;</p>
-                        <input type="text" class="form-control" formControlName="cost_implication" value="50000" />
-
-                      </div>
-
-                    </div>
-                    <div class="col-md-4 ">
-                      <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
-                      <div class="task-text-group">
-                        <p>Month's</p>
-                        <input type="text" class="form-control" formControlName="time_frame_for_completion_month"
-                          value="10000" max_length="10" />
-
-
-
-                      </div>
-
-                    </div>
-                    <div class="col-md-4 ">
-                      <mat-label style="font-size:large;"><b>&nbsp;</b></mat-label>
-                      <div class="task-text-group">
-                        <p>Day's</p>
-                        <input type="text" class="form-control" formControlName="time_frame_for_completion_days"
-                          value="10000" max_length="10" />
-                        &nbsp;&nbsp;
-                      </div>
-                    </div>
-
-
-
-                  </div>
-
-
-
-
-                </div>
-
-                <div class="mb-5 ">
-                  <div class="mb-5">
-                    <mat-label style="font-size:large;">Comments From Tasking Groups<b class="star">*</b></mat-label>
-
-                    <textarea rows="4" class="form-control" formControlName="comments_of_tasking_group"
-                      value="Test comments"></textarea>
-                  </div>
-                  <mat-label style="font-size:large;">Comments From DG WESEE<b class="star">*</b></mat-label>
-
-                  <textarea rows="4" class="form-control" formControlName="comments_of_wesee"
-                    value="Test comments"></textarea>
-
-
-                  <div class="mb-5">
-
-                    <div class="matt-group">
-                      <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-                      <a href="{{ImageUrl5}}" *ngIf="ImageUrl5!=''" class="edit-icon text-primary"><span
-                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
-                            style="font-size:5rem"></span></span></a>
-
-
-
-                      <a href="{{ImageUrl6}}" *ngIf="ImageUrl6!=''" class="edit-icon text-primary"><span
-                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
-                            style="font-size:5rem"></span></span></a>
-                    </div>
-                  </div>
-
-
-                </div>
-
-              </div>
-            </div>
-            <div formGroupName="deeForm">
-              <div class="alert alert-dismissible alert-bg">
-
-                <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">DEE (Directorate of Electrical
-                      Engineering)</b></mat-label>
-                </div>
-
-                <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
-                  <div class="task-text-group">
-                    <input type="text" class="form-control" formControlName="task_number_dee"
-                      value="WESEE/001/2022/01" />
-                  </div>
-
-                </div>
-                <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-                  <textarea rows="4" class="form-control" formControlName="comments_of_dee"
-                    value="Test comments"></textarea>
-
-
-                  <div class="mb-5">
-                    <div class="matt-group">
-                      <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
-                      <a href="{{ImageUrl7}}" *ngIf="ImageUrl7!=''" class="edit-icon text-primary"><span
-                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
-                            style="font-size:5rem"></span></span></a>
-
-                      <a href="{{ImageUrl8}}" *ngIf="ImageUrl8!=''" class="edit-icon text-primary"><span
-                          class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
-                            style="font-size:5rem"></span></span></a>
-                    </div>
-                  </div>
-
-
-                </div>
-
-
-              </div>
-
-            </div>
-            <div formGroupName="acomForm">
-              <div class="alert alert-dismissible alert-bg">
-
-                <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S) (Asst.Chief of
-                      Materiel(Information Technology & Sys))</b></mat-label>
-                </div>
-
-                <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-
-                  <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"
-                    value="Test comments"></textarea>
-
-                </div>
-
-              </div>
-
-            </div>
-            <div formGroupName="comForm">
-              <div class="alert alert-dismissible alert-bg mb-0">
-
-                <div class="sub-heading" style="text-align:center;">
-                  <mat-label class="subheading3"><b style="font-size:large;">COM (Chief of Materiel)</b></mat-label>
-                </div>
-
-                <div class="mb-5 ">
-                  <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
-                  <textarea rows="4" class="form-control" formControlName="approval_of_com"
-                    value="Test comments"></textarea>
-
-                </div>
-
-
-              </div>
-
-            </div>
-          </div>
-          <div class="row button-group-lg button-auto mt-4">
-            <div class="col-md-6 col-6">
-            </div>
-            <div class="card-footer text-end">
-              <button type="button" class="btn btn-primary" #closebutton data-dismiss="modal"
-                (click)="cancelmodal()">Cancel</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade master-modal-style" id="view-milestone" data-bs-keyboard="false" data-bs-backdrop="static"
-  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">List of Milestone</h5>
-        <button type="button" (click)="closeview()" class="btn-close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="false">&times;</span>
-        </button>
-      </div>
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table mat-table [dataSource]="dataSourcelist"
-            class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
-            <ng-container matColumnDef="milestone">
-              <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
-            </ng-container>
-            <ng-container matColumnDef="percentage_completion">
-              <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
-            </ng-container>
-            <ng-container matColumnDef="budget_utilized">
-              <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
-            </ng-container>
-            <ng-container matColumnDef="manpower">
-              <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
-            </ng-container>
-            <ng-container matColumnDef="task_start_date">
-              <th mat-header-cell *matHeaderCellDef><b> Task Start Date </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
-            </ng-container>
-            <ng-container matColumnDef="task_end_date">
-              <th mat-header-cell *matHeaderCellDef><b> Task End Date </b></th>
-              <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
-
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumnsview"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumnsview;"></tr>
-
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-</div>
-
-
-
-<p-dialog header="Task Distribution" [modal]="true" [(visible)]="visible1" [style]="{ width: '50rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-
-  <div class="dialog-content">
-
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
     <div class="input-container">
-      <input type="text" pInputText [(ngModel)]="value" placeholder="search " />
+      <input type="text" pInputText [(ngModel)]="value" placeholder="Search" />
     </div>
-
     <div class="card">
-      <p-table [value]="distributiondata?.completed?.tasks" [tableStyle]="{ 'min-width': '50rem' }">
+      <p-table [value]="groupdata" [tableStyle]="{ 'min-width': '60rem' }">
         <ng-template pTemplate="header">
           <tr>
-            <th>Task ID
+            <th>Tasking Group Name
               <i class="pi pi-filter" style="font-size: 1rem"></i>
             </th>
-            <th>Task Number
+            <th>Title
+              <i class="pi pi-filter" style="font-size: 1rem"></i>
+            </th>
+            <th>Task Count
+              <i class="pi pi-filter" style="font-size: 1rem"></i>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-group>
+          <tr *ngFor="let title of group.titles">
+            <td>{{ group.tasking_group_name }}</td>
+            <td>{{ title.title }}</td>
+            <td>{{ title.task_count }}</td>
+          </tr>
+
+          <tr *ngFor="let title of group.titles">
+            <td colspan="3">
+              <p-table [value]="title.tasks" [tableStyle]="{ 'min-width': '55rem' }">
+                <ng-template pTemplate="header">
+          <tr>
+            <th>Task Number DEE<i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Task Name
               <i class="pi pi-filter" style="font-size: 1rem"></i>
             </th>
             <th>Start Date
               <i class="pi pi-filter" style="font-size: 1rem"></i>
             </th>
-            <th>End Date
+            <th>End Date</th>
+            <i class="pi pi-filter" style="font-size: 1rem"></i>
+            <th>Sponsoring Directorate
               <i class="pi pi-filter" style="font-size: 1rem"></i>
             </th>
-            <th>Title
+            <th>Status Summary
               <i class="pi pi-filter" style="font-size: 1rem"></i>
             </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-task>
           <tr>
-            <td>{{ task.tasking_id }}</td>
-            <td>{{ task.tasking__task_number_dee }}</td>
+            <td>{{ task.task_number_dee }}</td>
+            <td>{{ task.task_name || 'N/A' }}</td>
             <td>{{ task.start_date }}</td>
             <td>{{ task.end_date }}</td>
-            <td>{{ task.title }}</td>
+            <td>{{ task.sponsoring_directorate }}</td>
+            <td>{{ task.status_summary }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      </td>
+      </tr>
+      </ng-template>
+      </p-table>
+    </div>
+  </p-dialog>
+  <ng-template #template let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Delete Task</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Do you want to Delete the Task? </strong></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success">Yes</button>
+
+      <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">No</button>
+    </div>
+  </ng-template>
+  <div class="modal fade master-modal-style" id="crud-countries" data-bs-keyboard="false" data-bs-backdrop="static"
+    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{crudName}} Tasking</h5>
+          <button type="button" (click)="cancelmodal()" class="btn-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body form-style-md form-style-font linux">
+          <div id="hide_alert" class="alert alert-danger form-error-message my-4" *ngIf="error_msg==true">{{ErrorMsg}}
+          </div>
+          <form [formGroup]="this.taskForm" (ngSubmit)="onSubmit()">
+            <div class="row"> &nbsp;
+              <div formGroupName="sdForm">
+                <div class="alert alert-dismissible alert-bg">
+
+                  <div class="mb-5 ">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="matt-group">
+                          <mat-label style="font-size:large;">Sponsoring Directorate <b class="star">*</b></mat-label>
+
+                          <input type="text" class="form-control" formControlName="sponsoring_directorate"
+                            maxlength="100" />
+                          <br>
+                          <input type="text" class="form-control" *ngIf="showSD" formControlName="SD_comments" />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="matt-group">
+                          <mat-label style="font-size:large;"><b>Task Name</b></mat-label>
+                          <input type="text" class="form-control" formControlName="task_name" />
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div class="mb-5">
+                    <mat-label style="font-size:large;">Task Description (Only 200 words)<b
+                        class="star">*</b></mat-label>
+                    <angular-editor formControlName="task_description" [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div class="mb-5">
+
+                    <div class="matt-group">
+                      <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                      <a href="{{ImageUrl}}" *ngIf="ImageUrl!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check"
+                            style="font-size:2rem;color: #4caf50;"></span></span></a>
+                      <a href="{{ImageUrl1}}" *ngIf="ImageUrl1!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check"
+                            style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+                      <a href="{{ImageUrl2}}" *ngIf="ImageUrl2!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check"
+                            style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+                      <a href="{{ImageUrl3}}" *ngIf="ImageUrl3!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check"
+                            style="font-size:2rem;color: #4caf50;"></span></span></a>
+
+
+                      <a href="{{ImageUrl4}}" *ngIf="ImageUrl4!=''" class="edit-icon text-primary"><span
+                          class="material-icons-outlined"><span class="bi bi-journal-check"
+                            style="font-size:2rem;color: #4caf50;"></span></span></a>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+
+              <div formGroupName="apsoForm">
+                <div class="alert alert-dismissible alert-bg">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">APSO</b></mat-label>
+                  </div>
+                  <div class="mb-5 ">
+                    <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+
+                    <textarea rows="4" class="form-control" formControlName="comments_of_apso"
+                      value="Test comments"></textarea>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div formGroupName="weseeForm">
+                <div class="alert alert-dismissible alert-bg">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
+                        Engineering Establishment)</b></mat-label>
+                  </div>
+
+                  <ng-container *ngIf="token_details.process_id==1 || token_details.process_id==3">
+                    <form [formGroup]="this.allocateForm">
+                      <div class="col-md-6">
+                        <div class="matt-group matselect">
+                          <mat-label>Select Tasking Groups <b class="star">*</b></mat-label>
+                          <mat-form-field appearance="outline">
+                            <mat-select formControlName="tasking_group" placeholder="Select Tasking Groups"
+                              [disabled]="token_details.process_id==1 || token_details.process_id==3">
+
+                              <mat-option [value]="">Select Tasking Groups</mat-option>
+                              <mat-option *ngFor="let taskingGroup of taskingGroups"
+                                [value]="taskingGroup.id">{{taskingGroup.name}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </form>
+                  </ng-container>
+                </div>
+
+
+                &nbsp;
+                <div class="alert alert-dismissible alert-bg">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">DG WESEE (Weapons and Electronics Systems
+                        Engineering Establishment)</b></mat-label>
+                  </div>
+                  <div class="mb-5 ">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <mat-label style="font-size:large;">Cost Implication (Approx)<b class="star">*</b></mat-label>
+
+
+                        <div class="task-text-group">
+                          <p>Rs&nbsp;&nbsp;</p>
+                          <input type="text" class="form-control" formControlName="cost_implication" value="50000" />
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-4 ">
+                        <mat-label style="font-size:large;">Time Frame For Completion<b class="star">*</b></mat-label>
+                        <div class="task-text-group">
+                          <p>Month's</p>
+                          <input type="text" class="form-control" formControlName="time_frame_for_completion_month"
+                            value="10000" max_length="10" />
+
+
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-4 ">
+                        <mat-label style="font-size:large;"><b>&nbsp;</b></mat-label>
+                        <div class="task-text-group">
+                          <p>Day's</p>
+                          <input type="text" class="form-control" formControlName="time_frame_for_completion_days"
+                            value="10000" max_length="10" />
+                          &nbsp;&nbsp;
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-5 ">
+                    <div class="mb-5">
+                      <mat-label style="font-size:large;">Comments From Tasking Groups<b class="star">*</b></mat-label>
+
+                      <textarea rows="4" class="form-control" formControlName="comments_of_tasking_group"
+                        value="Test comments"></textarea>
+                    </div>
+                    <mat-label style="font-size:large;">Comments From DG WESEE<b class="star">*</b></mat-label>
+
+                    <textarea rows="4" class="form-control" formControlName="comments_of_wesee"
+                      value="Test comments"></textarea>
+                    <div class="mb-5">
+                      <div class="matt-group">
+                        <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                        <a href="{{ImageUrl5}}" *ngIf="ImageUrl5!=''" class="edit-icon text-primary"><span
+                            class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                              style="font-size:5rem"></span></span></a>
+                        <a href="{{ImageUrl6}}" *ngIf="ImageUrl6!=''" class="edit-icon text-primary"><span
+                            class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                              style="font-size:5rem"></span></span></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div formGroupName="deeForm">
+                <div class="alert alert-dismissible alert-bg">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">DEE (Directorate of Electrical
+                        Engineering)</b></mat-label>
+                  </div>
+                  <div class="mb-5 ">
+                    <mat-label style="font-size:large;">Task Number<b class="star">*</b></mat-label>
+                    <div class="task-text-group">
+                      <input type="text" class="form-control" formControlName="task_number_dee"
+                        value="WESEE/001/2022/01" />
+                    </div>
+                  </div>
+                  <div class="mb-5 ">
+                    <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                    <textarea rows="4" class="form-control" formControlName="comments_of_dee"
+                      value="Test comments"></textarea>
+                    <div class="mb-5">
+                      <div class="matt-group">
+                        <mat-label style="font-size:large;">File (Maximum 20MB Allowed)<b class="star">*</b></mat-label>
+                        <a href="{{ImageUrl7}}" *ngIf="ImageUrl7!=''" class="edit-icon text-primary"><span
+                            class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                              style="font-size:5rem"></span></span></a>
+
+                        <a href="{{ImageUrl8}}" *ngIf="ImageUrl8!=''" class="edit-icon text-primary"><span
+                            class="material-icons-outlined"><span class="bi bi-journal-check" style="color:blue"
+                              style="font-size:5rem"></span></span></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div formGroupName="acomForm">
+                <div class="alert alert-dismissible alert-bg">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">ACOM (IT & S) (Asst.Chief of
+                        Materiel(Information Technology & Sys))</b></mat-label>
+                  </div>
+                  <div class="mb-5 ">
+                    <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                    <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"
+                      value="Test comments"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div formGroupName="comForm">
+                <div class="alert alert-dismissible alert-bg mb-0">
+                  <div class="sub-heading" style="text-align:center;">
+                    <mat-label class="subheading3"><b style="font-size:large;">COM (Chief of Materiel)</b></mat-label>
+                  </div>
+                  <div class="mb-5 ">
+                    <mat-label style="font-size:large;">Comments<b class="star">*</b></mat-label>
+                    <textarea rows="4" class="form-control" formControlName="approval_of_com"
+                      value="Test comments"></textarea>
+                  </div>
+                </div>
+                \
+              </div>
+            </div>
+            <div class="row button-group-lg button-auto mt-4">
+              <div class="col-md-6 col-6">
+              </div>
+              <div class="card-footer text-end">
+                <button type="button" class="btn btn-primary" #closebutton data-dismiss="modal"
+                  (click)="cancelmodal()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade master-modal-style" id="view-milestone" data-bs-keyboard="false" data-bs-backdrop="static"
+    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">List of Milestone</h5>
+          <button type="button" (click)="closeview()" class="btn-close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="false">&times;</span>
+          </button>
+        </div>
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSourcelist"
+              class="table table-striped table-row-bordered gy-5 gs-7 border rounded">
+              <ng-container matColumnDef="milestone">
+                <th mat-header-cell *matHeaderCellDef><b> Milestone </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.milestone}} </td>
+              </ng-container>
+              <ng-container matColumnDef="percentage_completion">
+                <th mat-header-cell *matHeaderCellDef><b> Percentage Completion </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.percentage_completion}} </td>
+              </ng-container>
+              <ng-container matColumnDef="budget_utilized">
+                <th mat-header-cell *matHeaderCellDef><b> Budget Utilised </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.budget_utilized}} </td>
+              </ng-container>
+              <ng-container matColumnDef="manpower">
+                <th mat-header-cell *matHeaderCellDef><b> Manpower </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.manpower}} </td>
+              </ng-container>
+              <ng-container matColumnDef="task_start_date">
+                <th mat-header-cell *matHeaderCellDef><b> Task Start Date </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.task_start_date}} </td>
+              </ng-container>
+              <ng-container matColumnDef="task_end_date">
+                <th mat-header-cell *matHeaderCellDef><b> Task End Date </b></th>
+                <td mat-cell *matCellDef="let milestone"> {{milestone.task_end_date}} </td>
+
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsview"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsview;"></tr>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-dialog header="Task Distribution" [modal]="true" [(visible)]="visible1" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <div class="dialog-content">
+      <div class="input-container">
+        <input type="text" pInputText [(ngModel)]="value" placeholder="search " />
+      </div>
+      <div class="card">
+        <p-table [value]="distributiondata?.completed?.tasks" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Task ID
+                <i class="pi pi-filter" style="font-size: 1rem"></i>
+              </th>
+              <th>Task Number
+                <i class="pi pi-filter" style="font-size: 1rem"></i>
+              </th>
+              <th>Start Date
+                <i class="pi pi-filter" style="font-size: 1rem"></i>
+              </th>
+              <th>End Date
+                <i class="pi pi-filter" style="font-size: 1rem"></i>
+              </th>
+              <th>Title
+                <i class="pi pi-filter" style="font-size: 1rem"></i>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-task>
+            <tr>
+              <td>{{ task.tasking_id }}</td>
+              <td>{{ task.tasking__task_number_dee }}</td>
+              <td>{{ task.start_date }}</td>
+              <td>{{ task.end_date }}</td>
+              <td>{{ task.title }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-dialog>
+  <!-- overdue task -->
+
+  <p-dialog header="Overdue Tasks" [modal]="true" [(visible)]="visible2" [style]="{ width: '90rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+
+    <!-- Input field placed at the top -->
+    <div class="input-container">
+      <input type="text" pInputText [(ngModel)]="searchValue" placeholder="Search" />
+    </div>
+
+    <div class="card">
+      <p-table [value]="filteredTasks" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Sponsoring Directorate <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Task Group Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Task Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Task Number <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Created On <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+            <th>Due Date <i class="pi pi-filter" style="font-size: 1rem"></i></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-task>
+          <tr>
+            <td>{{ task.tasking__sponsoring_directorate }}</td>
+            <td>{{ task.tasking__tasking_group_name }}</td>
+            <td>{{ task.tasking__task_name }}</td>
+            <td>{{ task.tasking__task_number_dee }}</td>
+            <td>{{ task.created_on | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ task.due_date | date: 'yyyy-MM-dd' }}</td>
           </tr>
         </ng-template>
       </p-table>
     </div>
-  </div>
-
-</p-dialog>
-
-
-
-
-
-
-
-
-<!-- overdue task -->
-
-<p-dialog header="Overdue Tasks" [modal]="true" [(visible)]="visible2" [style]="{ width: '90rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
-
-  <!-- Input field placed at the top -->
-  <div class="input-container">
-    <input type="text" pInputText [(ngModel)]="searchValue" placeholder="Search" />
-  </div>
-
-  <div class="card">
-    <p-table [value]="filteredTasks" [tableStyle]="{ 'min-width': '50rem' }">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Sponsoring Directorate <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Task Group Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Task Name <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Task Number <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Created On <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-          <th>Due Date <i class="pi pi-filter" style="font-size: 1rem"></i></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-task>
-        <tr>
-          <td>{{ task.tasking__sponsoring_directorate }}</td>
-          <td>{{ task.tasking__tasking_group_name }}</td>
-          <td>{{ task.tasking__task_name }}</td>
-          <td>{{ task.tasking__task_number_dee }}</td>
-          <td>{{ task.created_on | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ task.due_date | date: 'yyyy-MM-dd' }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-   
+  </p-dialog>
   
-  </div>
-</p-dialog>
+  <p-dialog header="Preview Sheet" [modal]="true" [(visible)]="visibleExcel" [style]="{ width: '90vw' }">
+    <ng-container *ngIf="!isFormHide" class="row ">
 
+      <form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
+        <div class="row my-5">
+          <div class="col-md-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Select Header(s)</mat-label>
+              <mat-select formControlName="header" multiple>
+                <mat-option (click)="selectAll()">Select All</mat-option>
+                <mat-option *ngFor="let option of expDataHeader" [value]="option">{{option.header}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
+          <div class="col-md-12">
+            <mat-form-field appearance="outline" hintLabel="Max 10 characters">
+              <mat-label>Enter File Name</mat-label>
+              <input matInput formControlName="fileName" maxlength="10" placeholder="File Name"
+                (input)="onInput($event)" />
+              <mat-hint align="end">{{value.length}}/10</mat-hint>
 
+            </mat-form-field>
+          </div>
 
-
-
-
-
-
-<div *ngIf="permission.mtP" class="row g-5 map-card g-xl-8">
-  <div class="col-md-12">
-    <div class="card p-0" style="margin-bottom: 60px;">
-      <div class="card-header mb-5 d-flex justify-content-between align-items-center">
-
-        <h3 class="card-title align-items-start flex-column pt-10">
-          <span class="fw-bold mb-3"> Monitor task progress </span>
-
-        </h3>
-        <div class="text-end">
-          <button (click)="submitToExcel()" class="btn btn-light btn-round-sm m-2">
-            <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
-          </button>
         </div>
+
+
+        <div class="row">
+
+          <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!xlxsForm.valid">Submit</button>
+
+        </div>
+
+
+      </form>
+    </ng-container>
+
+    <div class="row my-5">
+      <div class="col-4 float-end">
+        <a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="saveAsExcelFile()"><i
+            class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
       </div>
-
-
-      <!-- <div class="card-header mb-5 d-flex justify-content-between align-items-center">
-      <h3 class="card-title flex-column">
-        <span class="fw-bold mb-3">Monitor task progress</span>
-      </h3>
-      <div>
-        <button (click)="submitToExcel()" class="btn btn-light btn-round-sm m-2">
-          <i class="fa-regular fa-file-excel fa-2xl"></i>&nbsp;Export Excel
-        </button>
-      </div>
-    </div> -->
-
-      <ng-container *ngIf="approveTask.length !=0">
-        <app-grid-table [gridColumns]="gridColum" [gridData]="approveTask" [ispaniNater]="true" [isAction]="true"
-          (filterEvent)="handleFilter($event)" (paginationEvent)="handlePagination($event)"
-          (viewEvent)="openEdit($event)" [isView]="true">
-        </app-grid-table>
-      </ng-container>
-
     </div>
-  </div>
-
-</div>
-<p-dialog header="Preview Sheet" [modal]="true" [(visible)]="visibleExcel" [style]="{ width: '90vw' }">
-  <ng-container *ngIf="!isFormHide" class="row ">
-
-    <form [formGroup]="xlxsForm" (ngSubmit)="submitHeaderForm()" class="col-9 mx-auto">
-      <div class="row my-5">
-        <div class="col-md-12">
-          <mat-form-field appearance="outline">
-            <mat-label>Select Header(s)</mat-label>
-            <mat-select formControlName="header" multiple>
-              <mat-option (click)="selectAll()">Select All</mat-option>
-              <mat-option *ngFor="let option of expDataHeader" [value]="option">{{option.header}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="col-md-12">
-          <mat-form-field appearance="outline" hintLabel="Max 10 characters">
-            <mat-label>Enter File Name</mat-label>
-            <input matInput formControlName="fileName" maxlength="10" placeholder="File Name"
-              (input)="onInput($event)" />
-            <!-- <mat-hint align="end">{{value().length}}/10</mat-hint> -->
-            <mat-hint align="end">{{value.length}}/10</mat-hint>
-
-          </mat-form-field>
-        </div>
-
-      </div>
-
-
-      <div class="row">
-
-        <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!xlxsForm.valid">Submit</button>
-
-      </div>
-
-
-    </form>
-  </ng-container>
-
-  <div class="row my-5">
-    <div class="col-4 float-end">
-      <a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="saveAsExcelFile()"><i
-          class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
-    </div>
-  </div>
-  <ng-container *ngIf=" isFormHide">
-    <app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData" [ispaniNater]="false"
-      [isAction]="false">
-    </app-grid-table>
-  </ng-container>
-</p-dialog>
-
+    <ng-container *ngIf=" isFormHide">
+      <app-grid-table id="xlseExport" [gridColumns]="selectedHeader" [gridData]="exportData" [ispaniNater]="false"
+        [isAction]="false">
+      </app-grid-table>
+    </ng-container>
+  </p-dialog>
