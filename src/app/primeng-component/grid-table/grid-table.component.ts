@@ -13,6 +13,12 @@ import { FilterService } from 'primeng/api';
 import { Paginator } from 'primeng/paginator';
 import { Table } from 'primeng/table';
 import { ApiService } from '../../service/api.service';
+interface PageEvent {
+    first: number;
+    rows: number;
+    page: number;
+    pageCount: number;
+}
 
 @Component({
   selector: 'app-grid-table',
@@ -20,7 +26,8 @@ import { ApiService } from '../../service/api.service';
   styleUrl: './grid-table.component.scss'
 })
 export class GridTableComponent implements OnInit {
-
+    first: number = 0;
+    rows: number = 10;
     @Input() isupload:boolean;
     @Input() isPermanentDelete: boolean;
     @Input() isRestore: boolean;
@@ -56,11 +63,10 @@ export class GridTableComponent implements OnInit {
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
   token_detail:any
-
-  newRowData: any = {}; // Object to store data for a new row
-  currentPage: number = 1;
-  rowsPerPage: number = 10;
-  filteredData: any[];  // New property to store filtered data
+  @Input() totalRecords:number;
+  newRowData: any = {}; 
+ 
+  filteredData: any[];  
   // filters:  { [field: string]: { value?: any } } = {};
   filters: { [field: string]: { value?: any; condition?: string } } = {};
     searchValue: string;
@@ -83,12 +89,10 @@ export class GridTableComponent implements OnInit {
                   value = value[part];
               }
           } else {
-              // Break the loop if value becomes null or undefined
               break;
           }
       }
 
-      // Check if the resolved value is a date and format it
       if (
           value &&
           typeof value === 'string' &&
@@ -177,25 +181,14 @@ export class GridTableComponent implements OnInit {
  
 
   ngOnInit(): void {
-    // this.isRestore = true;
-
-    
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
-    
       this.filteredData = this.gridData;
-      // console.logthis.gridData);
-      // console.logthis.gridColumns);
   }
 
   constructor(private filterService: FilterService, private api:ApiService) { }
-
-
   getFilterValue(field: string): any {
       return this.filters[field]?.value;
   }
-
-
-
   onCustomClear() {
     this.filteredData = [...this.gridData]; // Replace filtered data with the original dataset
     this.searchValue = ''; 
@@ -203,31 +196,21 @@ export class GridTableComponent implements OnInit {
   onSearchInput(val):string {
     return val.trimStart(); // Remove leading spaces
 }
-
-
- 
-
   onFilterChange(filterValue: string, field: string, condition: string) {
       if (filterValue && filterValue.trim()) {
-          // Update the specific filter for the given field
           this.filters[field] = { value: filterValue.trim(), condition: condition };
 
-          // Apply filtering logic here
           this.applyFilters();
       } else {
-          // Clear the filter for the field
           delete this.filters[field];
 
-          // Apply filtering logic here
           this.applyFilters();
       }
   }
 
   applyFilters() {
-      // Copy original data
       this.filteredData = [...this.gridData];
 
-      // Apply filtering logic for each field
       for (const field in this.filters) {
           if (this.filters.hasOwnProperty(field)) {
               const filter = this.filters[field];
@@ -249,9 +232,7 @@ export class GridTableComponent implements OnInit {
   applyFilter(row: any, field: string, filterValue: any, condition: string): boolean {
       const resolvedValue = this.resolveNestedField(row, field);
 
-      // Check if the resolved value is an object (indicating nested data)
       if (typeof resolvedValue === 'object' && resolvedValue !== null) {
-          // If the resolved value is an object, recursively apply the filter to its properties
           for (const key in resolvedValue) {
               if (resolvedValue.hasOwnProperty(key)) {
                   const nestedValue = resolvedValue[key];
@@ -262,7 +243,6 @@ export class GridTableComponent implements OnInit {
           }
           return false; // If no nested property matches the filter, return false
       } else {
-          // If the resolved value is not an object, apply the filter directly
           if (resolvedValue !== undefined && resolvedValue !== null) {
               const formattedValue = resolvedValue.toString().toLowerCase();
               const formattedFilterValue = filterValue.toString().toLowerCase();
@@ -361,5 +341,28 @@ export class GridTableComponent implements OnInit {
     return `${day}-${month}-${year}`;
 }
 
+
+getButtonClass(status: number): string {
+    const statusClasses = {
+        7: 'bg-info-subtle text-primary', // Commented
+        8: 'bg-warning-subtle text-warning', // Pending
+        9: 'bg-warning-light text-warning-dark', // Uploaded
+        10: 'bg-orange-subtle text-orange', // Returned
+        11: 'bg-danger-subtle text-danger', // Redrafted
+        12: 'bg-purple-subtle text-purple', // Reuploaded
+        13: 'bg-indigo-subtle text-indigo', // Draft
+        14: 'bg-teal-subtle text-teal', // Initiated
+        15: 'bg-blue-subtle text-blue', // Concurrence
+        16: 'bg-yellow-subtle text-yellow' // Initiation Started
+    };
+
+    return statusClasses[status] || 'bg-light text-dark'; // Default class
+}
+onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.paginationEvent.emit(event);
+    console.log(event)
+}
 }
 

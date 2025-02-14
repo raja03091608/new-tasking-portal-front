@@ -419,10 +419,7 @@ tasknumber:any;
   }
   
 
-  // onChangePages(event:any){
-  //   this.getViewstatusComment(event.page + 1);
-  //   this.currentPage = event.page + 1;
-  // }
+ 
 
   }
 

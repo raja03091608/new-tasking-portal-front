@@ -83,7 +83,6 @@ export class AddAnnouncementsComponent implements OnInit {
 	  private toastr: ToastrService, private route:ActivatedRoute,private logger: ConsoleService,public api: ApiService,private notification: NotificationService,public datepipe:DatePipe) {
 		this.route.queryParams.subscribe(params => {
 			this.id = atob(params['id']);
-		   // Print the parameter to the console.
 		   if (this.id) {
 				this.getPageDetail();
 				this.showImage = true;
@@ -101,8 +100,6 @@ export class AddAnnouncementsComponent implements OnInit {
 	   }
 
 	ngOnInit(): void {
-	  // let currentUser = localStorage.getItem('currentUser');
-	  // this.userData = JSON.parse(currentUser || '{}');
 	  if(!this.id){
 		this.createForm();
 	  }

@@ -113,6 +113,7 @@ export class TaskListComponent implements OnInit {
   token_detail: any;
   allocateForm: FormGroup;
   res: any;
+  totalCounts: any;
   constructor(public api: ApiService, private notification: NotificationService, private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
 
@@ -300,9 +301,6 @@ export class TaskListComponent implements OnInit {
   status = this.taskForm.value.status;
   showSD = false;
   populate(data) {
-
-    // this.taskForm.get('sdForm').patchValue({sdForm.sponsoring_directorate: data.sponsoring_directorate.id});
-    //this.taskForm.get('sdForm').patchValue(data);
     this.taskForm.get('apsoForm').patchValue(data);
     this.taskForm.get('weseeForm').patchValue(data);
     this.taskForm.get('deeForm').patchValue(data);
@@ -324,7 +322,6 @@ export class TaskListComponent implements OnInit {
       tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : '',
       tasking_user:data?.assigned_tasking_group?.tasking_user
      });
-    // console.log('data.task_number_dee', data);
 
     if (data.task_number_dee != null) {
       let split_task_number_dee = data.task_number_dee.split("/");
@@ -334,19 +331,15 @@ export class TaskListComponent implements OnInit {
 
     if (data ? data.file : "") {
       var img_link = data.file;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl = img_link;
-      // // console.log'ImageUrl', this.ImageUrl);
 
     } else {
       this.ImageUrl = "";
-      // // console.log'ImageUrl "d"', this.ImageUrl);
 
     }
 
     if (data ? data.file1 : "") {
       var img_link1 = data.file1;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl1 = img_link1;
     } else {
       this.ImageUrl1 = ""
@@ -354,14 +347,12 @@ export class TaskListComponent implements OnInit {
 
     if (data ? data.file2 : "") {
       var img_link2 = data.file2;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl2 = img_link2;
     } else {
       this.ImageUrl2 = ""
     }
     if (data ? data.file3 : "") {
       var img_link3 = data.file3;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl3 = img_link3;
     } else {
       this.ImageUrl3 = ""
@@ -369,14 +360,12 @@ export class TaskListComponent implements OnInit {
 
     if (data ? data.file4 : "") {
       var img_link4 = data.file4;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl4 = img_link4;
     } else {
       this.ImageUrl4 = ""
     }
     if (data ? data.file5 : "") {
       var img_link5 = data.file5;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl5 = img_link5;
     }
     else {
@@ -384,7 +373,6 @@ export class TaskListComponent implements OnInit {
     }
     if (data ? data.file6 : "") {
       var img_link6 = data.file6;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl6 = img_link6;
     }
     else {
@@ -393,7 +381,6 @@ export class TaskListComponent implements OnInit {
 
     if (data ? data.file7 : "") {
       var img_link7 = data.file7;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl7 = img_link7;
     }
     else {
@@ -402,7 +389,6 @@ export class TaskListComponent implements OnInit {
 
     if (data ? data.file8 : "") {
       var img_link8 = data.file8;
-      //var trim_img = img_link.substring(1)
       this.ImageUrl8 = img_link8;
     }
     else {
@@ -445,20 +431,6 @@ export class TaskListComponent implements OnInit {
   SDFORM = false;
 
 
-  //   randomString(length) {
-
-  //     var randomChars = '1234567890';
-
-  //     // var result = '';
-  //     var randNumber = Math.random() * 1000;
-
-  //     // result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-  //     // Math.random() * 1000;
-
-
-  //     return randNumber;
-
-  // }
   randomChars = '1234567890';
   randNumber = '';
   ngOnInit(): void {
@@ -499,17 +471,6 @@ export class TaskListComponent implements OnInit {
     this.taskForm.get('deeForm').disable();
     this.taskForm.get('acomForm').disable();
     this.taskForm.get('comForm').disable();
-    // // console.logthis.taskForm.get('deeForm'), "====================%%%%%%%%%%%%%%%%%%%%")
-
-
-
-    //  if(this.SDFORM==false && this.current_taskingID!='')this.initiator_active='active';
-    //  if(this.api.userid.role_center[0].user_role.code=='APSO')this.apso_active='active';
-    //  if(this.token_detail.tasking_id!=null && this.current_taskingID!='')this.wesee_active='active';
-    //  if(this.api.userid.role_center[0].user_role.code=='WESEE')this.dgwesee_active='active';
-    //  if(this.api.userid.role_center[0].user_role.code=='DEE')this.dee_active='active';
-    //  if(this.api.userid.role_center[0].user_role.code=='ACOM')this.acom_active='active';
-    //  if(this.api.userid.role_center[0].user_role.code=='APP')this.com_active='active';
   }
 
   modulesData = [
@@ -538,7 +499,8 @@ export class TaskListComponent implements OnInit {
 
 
   disableWesee(): boolean {
-    if (this.role === 4 && this.taskListRoot.comment_status != 4) {
+   
+    if (this.role === 4 && this.taskListRoot.comment_status != 4 && (this.listDelapso==3 || this.listDelapso==1 )) {
       return false;
     }
     return true;
@@ -591,14 +553,6 @@ export class TaskListComponent implements OnInit {
 
 
 
-  // refreshPaginator() {
-  //   let pageIndex = 0;
-  //   setTimeout((idx) => {
-  //     this.pagination.pageIndex = 0;
-  //     this.pagination._changePageSize(10);
-  //   }, 0, pageIndex);
-  // }
-
 
 
 
@@ -608,8 +562,6 @@ export class TaskListComponent implements OnInit {
       .getAPI(environment.API_URL + "master/taskinggroups")
       .subscribe((res) => {
         this.taskingGroups = res.data;
-        // // console.log'TTTTT', this.taskingGroups);
-
       });
   }
   ImgUrl: any;
@@ -626,31 +578,29 @@ export class TaskListComponent implements OnInit {
     this.api.displayLoading(true);
 
     if (this.token_detail.process_id == 2 && this.token_detail.role_id == 3) {
-      this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" + this.param + "&created_by_id=" + this.token_detail.user_id)
+      this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc${this.param}&created_by_id=${this.token_detail.user_id}`)
         .subscribe((res) => {
           this.api.displayLoading(false)
           if (res.status == environment.SUCCESS_CODE) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.countryList = res.data;
+            this.dataSource = new MatTableDataSource(res.results);
+            this.countryList = res.results;
             this.totalLength = res.total_length
-            //   this.dataSource.paginator = this.pagination;
+            this.totalCounts=res.count;
             var Img = environment.MEDIA_URL;
             this.ImgUrl = Img.substring(0, Img.length - 1);
-
           }
 
         });
     }
     else {
       this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc" + this.param + "&limit_start=" + limit_start + "&limit_end=" + limit_end)
-        .subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.dataSource = new MatTableDataSource(res.data);
-            this.countryList = res.data;
+      .getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&page=${this.page}`)
+      .subscribe((res) => {
+        this.dataSource = new MatTableDataSource(res.results);
+            this.countryList = res.results;
+            this.totalCounts=res.count;
             this.totalLength = res.total_length
-            //   this.dataSource.paginator = this.pagination;
+          if (res.status == environment.SUCCESS_CODE) {
             var Img = environment.MEDIA_URL;
             this.ImgUrl = Img.substring(0, Img.length - 1);
           }
@@ -722,14 +672,6 @@ export class TaskListComponent implements OnInit {
 }
 
   taskingID: any;
-  //   openPopup(id) {
-  // 	this.taskingID=id;
-  //     // this.getMileStone();
-  // 	openModal('#crud-countries');
-  //     setTimeout(()=> {
-  //       this.getComments();
-  //      }, 2000);
-  // 	}
   getTrials() {
     this.api
       .getAPI(environment.API_URL + "transaction/trials/approval")
@@ -832,13 +774,10 @@ export class TaskListComponent implements OnInit {
     }
     this.onEditRole(country);
     this.commentEditor.editable = true;
-    // // console.logcountry, "==================>>>>>>>>>>>>")
     this.apiCall();
     this.taskListRoot = country;
     this.formGroup.get('taskId').setValue(this.taskListRoot.task_name);
-    // // console.log'country', country)
     this.listassign = country.assigned_tasking_group
-    // // console.log'this.listassign', this.listassign)
     this.listDelapso = country.APSO_recommender
     this.listwesee = country.WESEE_recommender
     this.listdee = country.DEE_recommender
@@ -860,7 +799,6 @@ export class TaskListComponent implements OnInit {
     this.populate1(country);
     this.list = country;
     this.getComments();
-    // this.getTaskingg();
     this.getMiniting();
     this.getStatusTimeline();
     if (this.token_detail.role_center[0].user_role.code == 'Initiator') {
@@ -895,7 +833,6 @@ export class TaskListComponent implements OnInit {
     this.taskForm.patchValue({
 
       deeForm: ({
-        // task_number_dee:splitFirst
         task_number_dee: this.taskForm.get('deeForm').value.task_number_dee + this.taskForm.get('deeForm').value.task_number_dee1 + this.taskForm.get('deeForm').value.task_number_dee2
       })
 
@@ -925,9 +862,6 @@ export class TaskListComponent implements OnInit {
     if ((country.APSO_recommender == '1')) this.apso_active = 'active';
     if (country.assigned_tasking_group != '') this.wesee_active = 'active';
     if ((country.WESEE_recommender == '1')) this.dgwesee_active = 'active';
-    // // {
-    // //         if(this.api.userid.process_id!='3')this.wesee_active='active';
-    // //           }
     if ((country.DEE_recommender == '1')) this.dee_active = 'active';
     if ((country.ACOM_recommender == '1')) this.acom_active = 'active';
     if ((country.comment_status == '3')) this.com_active = 'active';
@@ -942,11 +876,9 @@ export class TaskListComponent implements OnInit {
 }
 
   onView(country) {
-    // this.commentEditor.editable=false;
     this.id = country.id;
     this.apiCall();
     this.getComments();
-    // this.getTaskingg();
     this.getMiniting();
     this.getStatusTimeline();
     this.taskListRoot = country;
@@ -964,13 +896,10 @@ export class TaskListComponent implements OnInit {
     this.taskForm.disable();
     this.taskForm.get('sdForm').disable();
     this.populate(country);
-    // var element = <HTMLInputElement> document.getElementById("exampleCheck1");
-    // // console.log'tr', country)
     this.list = country;
     
     this.getComments();
     this.getMiniting();
-    // this.listdee=country.DEE_recommender
 
     if (country.SD_initiater == '1')
       this.initiator_active = 'active';
@@ -980,9 +909,6 @@ export class TaskListComponent implements OnInit {
     if (country.assigned_tasking_group != '') this.wesee_active = 'active';
     if (country.WESEE_recommender == '1')
       this.dgwesee_active = 'active';
-    // {
-    //         if(this.api.userid.process_id!='3')this.wesee_active='active';
-    //           }
     if ((country.DEE_recommender == '1')) this.dee_active = 'active';
     if ((country.ACOM_recommender == '1')) this.acom_active = 'active';
     if ((country.comment_status == '3')) this.com_active = 'active';
@@ -1015,32 +941,17 @@ export class TaskListComponent implements OnInit {
     });
   }
   taskingg: any;
-  // getTaskingg() {
-  //   this.api
-  //     .getAPI(environment.API_URL + "transaction/allocate/status")
-  //     .subscribe((res) => {
-  //       this.taskingg = res.data;
-
-  //       // this.logger.log('country', this.taskingg)
-  //     });
-  // }
   onSubmit() {
+    if(this.lastStatusData <= this.taskListRoot.level ){
+      this.showConfirm();
+      return;
+    }
     this.showError = true;
     this.currentDate = new Date();
-    //this.taskForm.value.id=this.id;
-    // // console.log'this.taskForm', this.taskForm.value)
 
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
     (new Date(), 'yyyy/MM/dd', 'en');
-
-    //  if(this.taskForm.get('sdForm').value.sponsoring_directorate==''){
-
-    // 	this.taskForm.get('sdForm').value.sponsoring_directorate='IHQ MOD(N)/'+this.api.userid.first_name;
-    // 	  }
-
-    //this.taskForm.value.created_by = this.api.userid.user_id;
-    //this.taskForm.value.status = this.taskForm.value.status==true ? 1 : 2;
     this.taskForm.value.id = this.id;
     const formData = new FormData();
     formData.append('sponsoring_directorate', this.taskForm.get('sdForm').value.sponsoring_directorate);
@@ -1100,7 +1011,6 @@ export class TaskListComponent implements OnInit {
 
 
     if (this.taskForm) {
-      //formData.append('id', this.editForm.value.id);
       this.api
         .postAPI(
           environment.API_URL + "transaction/tasking/crud",
@@ -1112,7 +1022,6 @@ export class TaskListComponent implements OnInit {
 
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
             }, 3000);
@@ -1162,10 +1071,8 @@ export class TaskListComponent implements OnInit {
 
   imgToUpload: any;
   onImageHandler(event) {
-    // // console.log'image', event.target.files[0])
     if (event.target.files.length > 0) {
       this.imgToUpload = event.target.files[0];
-      // // console.log'img', event)
 
     };
 
@@ -1225,9 +1132,7 @@ export class TaskListComponent implements OnInit {
 
         )
         .subscribe((res) => {
-          // // console.log'tasking res', res)
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             localStorage.setItem('allocate_Del', this.api.encryptData(res));
             this.notification.displayMessage("Task Allocated Sucessfully");
             this.getTasking();
@@ -1313,7 +1218,6 @@ export class TaskListComponent implements OnInit {
 
       });
     }
-    //closeModal('#crud-countries');
   }
 
   notRecommended() { 
@@ -1327,10 +1231,8 @@ export class TaskListComponent implements OnInit {
       this.api.postAPI( environment.API_URL + "transaction/tasking/crud",this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.displayMessage("Not Recommended Successfully");
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
             }, 1200);
@@ -1346,7 +1248,6 @@ export class TaskListComponent implements OnInit {
 
         });
     }
-    //closeModal('#crud-countries');
   }
   Recommened() { // wasee
     if(this.lastStatusData <= this.taskListRoot.level ){
@@ -1379,16 +1280,13 @@ export class TaskListComponent implements OnInit {
 
       if (this.taskForm) {
         this.api.postAPI(environment.API_URL + "transaction/tasking/crud", formData,
-            // this.taskForm.value
 
 
           )
           .subscribe((res) => {
             if (res.status == environment.SUCCESS_CODE) {
-              // this.logger.log('Formvalue',this.editForm.value);
               this.notification.success(res.message);
               this.getTasking();
-              // this.closebutton.nativeElement.click();
               setTimeout(() => {
                 this.close()
               }, 1200);
@@ -1440,45 +1338,37 @@ export class TaskListComponent implements OnInit {
           environment.API_URL + "transaction/tasking/crud", formData)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    // this.close()
   }
 
   deenotRecommended() {
     this.showError = true;
     this.currentDate = new Date();
-    //this.taskForm.value.id=this.id;
 
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
     (new Date(), 'yyyy/MM/dd', 'en');
-    // // console.log'trr',this.taskForm.get('deeForm').value.task_number_dee);
 
-    // this.taskForm.get('deeForm').value.task_number_dee;
     if (this.taskForm.get('deeForm').value.task_number_dee0 == '' || this.taskForm.get('deeForm').value.task_number_dee0 == null) {
-      // this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
       this.taskForm.get('deeForm').value.task_number_dee0 = 'WESEE/' + this.taskForm.get('deeForm').value.task_number_dee0 + '/' + this.taskForm.get('deeForm').value.task_number_dee1 + '/' + this.taskForm.get('deeForm').value.task_number_dee2
     }
     if (this.taskForm) {
-      // this.taskForm.get('deeForm').value.task_number_dee='WESEE/'+this.taskForm.get('deeForm').value.task_number_dee+'/'+cValue+'/'+ccValue;
       this.taskForm.value.comment_status = '2';
       this.taskForm.value.status = '1';
       this.taskForm.value.id = this.id;
@@ -1488,26 +1378,23 @@ export class TaskListComponent implements OnInit {
           this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    // this.close()
   }
   deeRecommened() {
     if(this.lastStatusData <= this.taskListRoot.level ){
@@ -1518,8 +1405,6 @@ export class TaskListComponent implements OnInit {
     this.currentDate = new Date();
 
     const formData = new FormData();
-    //this.taskForm.value.id=this.id;
-    // // console.log'task_number_dee', this.taskForm.get('deeForm').value.task_number_dee0)
     const cValue = formatDate(this.currentDate, 'yyyy', 'en-US');
     const ccValue = formatDate(this.currentDate, 'dd', 'en-US');
     (new Date(), 'yyyy/MM/dd', 'en');
@@ -1552,26 +1437,23 @@ export class TaskListComponent implements OnInit {
           formData)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close()
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
 
         });
     }
-    // this.close()
   }
   acomnotRecommended() {
     if(this.lastStatusData <= this.taskListRoot.level ){
@@ -1590,19 +1472,17 @@ export class TaskListComponent implements OnInit {
           this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 3000);
+            }, 300);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 2000);
+            }, 400);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1628,19 +1508,17 @@ export class TaskListComponent implements OnInit {
           this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               closeModal('#crud-countries');
-            }, 1200);
+            }, 200);
           } else if (res.status == environment.ERROR_CODE) {
             this.error_msg = false;
             this.ErrorMsg = res.message;
             setTimeout(() => {
               this.error_msg = true;
-            }, 900);
+            }, 200);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
           }
@@ -1662,12 +1540,9 @@ export class TaskListComponent implements OnInit {
           environment.API_URL + "transaction/tasking/crud",
           this.taskForm.value)
         .subscribe((res) => {
-          //this.error= res.status;
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
             }, 1200);
@@ -1700,10 +1575,8 @@ export class TaskListComponent implements OnInit {
           this.taskForm.value)
         .subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.logger.log('Formvalue',this.editForm.value);
             this.notification.success(res.message);
             this.getTasking();
-            // this.closebutton.nativeElement.click();
             setTimeout(() => {
               this.close();
             }, 3000);
@@ -1746,15 +1619,12 @@ export class TaskListComponent implements OnInit {
     const formData = new FormData();
     formData.append('file_upload', this.imgToUpload);
     if (this.importform.valid) {
-      // this.importform.value.created_by = this.api.userid.user_id;
-      // this.importform.value.status = this.importform.value.status == true ? 1 : 2;
       this.api
         .postAPI(
           environment.API_URL + "transaction/trials_import",
           formData
         )
         .subscribe((res) => {
-          //this.error= res.status;
           if (res.status == environment.SUCCESS_CODE) {
             this.notification.success(res.message);
             this.getTasking();
@@ -1776,11 +1646,7 @@ export class TaskListComponent implements OnInit {
 
   import() {
     this.importname = 'Import';
-    //this.crudName = "Add";
-    //this.isReadonly=false;
-
-    //var element = <HTMLInputElement>document.getElementById("exampleCheck1");
-    // element.checked = true;
+    
     openModal('#import');
   }
   closeimport() {
@@ -1877,10 +1743,15 @@ export class TaskListComponent implements OnInit {
 
   apiCall() {
     this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
-      // this.userRoleListFrom= res.data
-      // this.userRoleListTo= res.data
-      this.userRoleListFrom = res.data.filter(role => role.id !== 18);
-      this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      if(this.listDelapso===3){
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18 && role.id !== 14);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3  && role.id !== 14);
+
+      }else{
+
+        this.userRoleListFrom = res.data.filter(role => role.id !== 18);
+        this.userRoleListTo = res.data.filter(role => role.id !== 18 && role.id !== 3);
+      }
 
     })
 
@@ -1893,17 +1764,14 @@ export class TaskListComponent implements OnInit {
   saveRoot() {
     let index = this.steps.findIndex(step => step.level === parseInt(this.formGroup.get('process').value));
 
-    // Create the new step object
     let newStep = {
       level: parseInt(this.formGroup.get('process').value) + 1,
       label: this.formGroup.get('userRoleId').value, // Assuming name is a string
       status: 'inactive'
     };
 
-    // Insert the new step after the found index
     this.steps.splice(index + 1, 0, newStep);
 
-    // Update the levels of all subsequent steps
     for (let i = index + 2; i < this.steps.length; i++) {
       this.steps[i].level += 1;
     }
@@ -2018,7 +1886,7 @@ export class TaskListComponent implements OnInit {
     return `${directorate}`;
   }
 
-
+page=1;
   getMiniting() {
     this.minitingList=[]
     this.api.getAPI(environment.API_URL + `transaction/comments?tasking_id=${this.id}`).subscribe(res => {
@@ -2045,11 +1913,9 @@ export class TaskListComponent implements OnInit {
       recommendation_status: 1
     };
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
-      // // console.logres)
       this.getMiniting();
       this.getStatusTimeline();
       this.close();
-      // this.getTasking();
     })
     this.minitingForm.reset();
 
@@ -2069,7 +1935,9 @@ export class TaskListComponent implements OnInit {
   }
 
   handlePagination(pageEvent: any) {
-    // // console.log'Pagination triggered with event:', pageEvent);
+    this.getTaskingGroups();
+    this.page=pageEvent.page+1;
+    
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
@@ -2103,10 +1971,15 @@ export class TaskListComponent implements OnInit {
   usersList=[]
   getTaskingUser(event){
     console.log(event,"Console not work ing please chaeck ")
-    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event.value}`).subscribe(res => {
+    this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event?.value}`).subscribe(res => {
         this.usersList=res.data
     })
   }
+  hasHTML(text: string): boolean {
+    const regex = /<\/?[a-z][\s\S]*>/i;  
+    return regex.test(text);
+}
+
   
 }
 

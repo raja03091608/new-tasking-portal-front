@@ -59,6 +59,8 @@ export class UsersComponent implements OnInit {
 	@ViewChild("closebutton") closebutton;
 	@ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
 	userData= [] as any;
+	totalCounts: any;
+	
 	constructor(public api: ApiService, private notification: NotificationService,
 		private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService,
 		private formBuilder: FormBuilder
@@ -138,9 +140,9 @@ export class UsersComponent implements OnInit {
 	ngOnInit(): void {
 		this.getProcess();
 		this.getUnit()
-		this.getDepartment(this.currentPage);
+		this.getDepartment();
 		this.getAccess();
-				this.getUserList(this.currentPage);
+				this.getUserList();
 		this.getDeletedUserList();
 		this.getTasking();
 
@@ -159,10 +161,10 @@ export class UsersComponent implements OnInit {
 
 	currentPage: number;
 	departmentList = [];
-	getDepartment(page:number=1) {
-		this.api.getAPI(`${environment.API_URL}master/department?status=1?page=${page}`)
+	getDepartment() {
+		this.api.getAPI(`${environment.API_URL}master/department?status=1`)
   .subscribe((res) => {
-    this.departmentList = res.results.data;
+    this.departmentList = res.results;
   });
 
 	}
@@ -170,11 +172,7 @@ export class UsersComponent implements OnInit {
 	
 
 	taskingList = [];
-	onChangePages(event:any){
-		this.getDepartment(event.page + 1);
-		this.getUserList(event.page + 1)
-		this.currentPage = event.page + 1;
-	  }
+	
 	getTasking() {
 		this.api.getAPI(environment.API_URL + "master/taskinggroups?status=1").subscribe((res) => {
 			this.taskingList = res.data;
@@ -203,18 +201,41 @@ export class UsersComponent implements OnInit {
 	}
 
 	param: any;
-	getUserList(page:number=1) {
-		this.userData=[]
-		this.api.displayLoading(true);
-		this.api
-			.getAPI(environment.API_URL + "api/auth/users?order_type=desc&page=${page}")
-			.subscribe((res) => {
-				this.api.displayLoading(false)
-				this.userData=res.results.data;
-				this.user = res.results.data;
+	// getUserList(page:number=1) {
+	// 	this.userData=[]
+	// 	this.api.displayLoading(true);
+	// 	this.api
+	// 		.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${page}`)
+	// 		.subscribe((res) => {
+	// 			this.api.displayLoading(false)
+	// 			this.userData=res.results;
+	// 			this.user = res.results;
 
+	// 		});
+	// }
+page=1;
+	getUserList() {
+		this.userData = [];
+		this.api.displayLoading(true);
+		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${this.page}`)
+			.subscribe((res) => {
+				this.api.displayLoading(false);
+				if (res && res.results) {
+					this.userData = res.results;
+					this.totalCounts=res.count;
+					this.user = res.results;
+				} else {
+					this.userData = [];
+					this.user = [];
+				}
+			}, (error) => {
+				this.api.displayLoading(false);
+				console.error("Error fetching user list:", error);
 			});
 	}
+	
+
+	
 	deleted_users: any;
 	getDeletedUserList() {
 		this.api
@@ -589,10 +610,9 @@ export class UsersComponent implements OnInit {
 		this.filterData = filterValue;
 	  }
 	  handlePagination(pageEvent: any) {
-		this.getDepartment(pageEvent.page + 1);
-		this.getUserList(pageEvent.page + 1)
-		this.currentPage = pageEvent.page + 1;
-	  }
+		this.getUserList()
+   		 this.page=pageEvent.page+1;  }
+
 
 	
 		  

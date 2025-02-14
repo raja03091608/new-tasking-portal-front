@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, ElementRef } from "@angular/core";
 import { ApiService } from "../../../service/api.service";
 import { environment } from "../../../../environments/environment";
-import { FormGroup, FormControl, Validators, FormGroupDirective } from "@angular/forms";
+import { FormGroupDirective } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { NotificationService } from "../../../service/notification.service";
@@ -10,8 +10,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { language } from "../../../../environments/language";
 import { Router } from '@angular/router';
 import { ConsoleService } from "../../../service/console.service";
-import { of } from 'rxjs';
-import { formatDate } from "@angular/common";
 
 declare function closeModal(selector): any;
 declare function openModal(selector): any;
@@ -22,7 +20,6 @@ declare var moment:any;
   styleUrls: ['./archive-task.component.scss']
 })
 export class ArchiveTaskComponent implements OnInit {
-
   @ViewChild(MatPaginator) pagination: MatPaginator;
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
@@ -44,6 +41,7 @@ export class ArchiveTaskComponent implements OnInit {
   archiveList:any;
   token_detail:any;
   archivetask=[] as any;
+  currentPage: number;
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService) {
 
@@ -51,31 +49,45 @@ export class ArchiveTaskComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getTasking()
+    this.getTasking(this.currentPage)
     this.getAccess();
   }
-  getTasking() {
-
-    if(this.token_detail.process_id==1){
+  // getTasking(page:number=1) {
+  //   if(this.token_detail.process_id==1){
+  //     this.api
+  //     .getAPI(environment.API_URL + "transaction/archive_list&page=${page}")
+  //     .subscribe((res) => {
+  //       if(res.status==environment.SUCCESS_CODE){
+  //         this.dataSource = new MatTableDataSource(res.data);
+  //         this.archivetask=res.data;
+  //         this.archiveList = res.data;
+  //         // // console.log'res.data',res.data)
+  //         this.dataSource.paginator = this.pagination;
+  //       }
+  //     });
+  //   }
+  // }
+  getTasking(page: number = 1) {
+    if (this.token_detail.process_id === 1) {
       this.api
-      .getAPI(environment.API_URL + "transaction/archive_list")
-      .subscribe((res) => {
-        if(res.status==environment.SUCCESS_CODE){
-          this.dataSource = new MatTableDataSource(res.data);
-          this.archivetask=res.data;
-          this.archiveList = res.data;
-          // // console.log'res.data',res.data)
-          this.dataSource.paginator = this.pagination;
-
-
-        }
-
-      });
+        .getAPI(`${environment.API_URL}transaction/archive_list?page=${page}`)
+        .subscribe((res) => {
+          if (res?.status === environment.SUCCESS_CODE && res?.data) {
+            this.dataSource = new MatTableDataSource(res.data);
+            this.archivetask = res.data;
+            this.archiveList = res.data;
+            this.dataSource.paginator = this.pagination;
+          }
+        });
     }
+  }
   
 
-
+  onChangePages(event:any){
+    this.getTasking(event.page + 1);
+    this.currentPage = event.page + 1;
   }
+  
   filterValue:any;
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -98,9 +110,7 @@ export class ArchiveTaskComponent implements OnInit {
      }
 
    }
-
    restoreDelete(id){
-    // // console.log"ID",id);
     this.api.postAPI(environment.API_URL + "transaction/trial/status_restore", {
       tasking: id,
     }).subscribe((res)=>{
@@ -112,8 +122,6 @@ export class ArchiveTaskComponent implements OnInit {
       }
     });
    }
-   
-
    approvedDelete(id) {
     let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -124,13 +132,10 @@ export class ArchiveTaskComponent implements OnInit {
         this.api.postAPI(environment.API_URL + "transaction/trial/status_delete", {
           id: id,
           status: 3,
-          // authority_permission: '',
-          // reason:''
         }).subscribe((res)=>{
           if(res.status==environment.SUCCESS_CODE) {
             this.notification.warn('Approved Task '+language[environment.DEFAULT_LANG].deleteMsg);
             this.getTasking();
-            // this.getViewStatus(this.data_list.id);
           } else {
             this.notification.displayMessage(language[environment.DEFAULT_LANG].unableDelete);
           }
@@ -139,10 +144,6 @@ export class ArchiveTaskComponent implements OnInit {
       dialogRef=null;
     });
   }
-
-
-
-
   gridColumns=[
     { field: 'tasking.task_number_dee', header: 'Task Number', filter: true, filterMatchMode: 'contains' },
     { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
@@ -153,44 +154,21 @@ export class ArchiveTaskComponent implements OnInit {
   exportData:any;
   filterData:any;
   handleFilter(filterValue: any) {
-    
     this.filterData = filterValue;
-    // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // // console.log'Pagination triggered with event:', pageEvent);
   }
-
   openCurrentStatus(country){
-    // this.id=country.id;
-    //   // console.log'tasking country',country)
-    //   this.taskname = country.task_name;
-    //   this.tasknumber = country.task_number_dee;
-    //   // this.selectedTrial=tasking;
-    //   openModal('#trial-status-modal');
-    // this.getComments();
     }
 
     UploadReceipt(country) {
-      // this.id=country.id;
-      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
     }
   
     completedtask(country) {
-      // this.id=country.id;
-      // openModal('#completedTask-modal');
     }
     taskid:any;
     opentask(country:any){
-      // // console.log'countyryry',country);
-      // this.resetexportform();
-      // this.exportform.reset();
       openModal('#export');
       this.taskid = country.id;
-  
     }
-
-
-
-
 }

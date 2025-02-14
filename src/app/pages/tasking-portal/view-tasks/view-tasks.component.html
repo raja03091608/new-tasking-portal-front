@@ -32,6 +32,7 @@
 								(statusEventAdd)="add($event)"
 								 [isStatusAdd]="isStatusAdd"
 								 (archivetaskEvent)="archivetask($event)" 
+								 [totalRecords]="totalCounts"
 								 [isArchiveTask]="permission.archive"
 								(exportEvent)="opentask($event)" 
 								(downloadEvent)="UploadReceipt($event)"
@@ -54,63 +55,87 @@
 
 <!-- modal -->
 
-<p-dialog header="APPROVED TASKING HISTORY" [modal]="true" [(visible)]="isStatusOpen" [style]="{ width: '40vw' }">
-	<div class="card flex justify-content-center">
-		<table class="table table-bordered">
+<p-dialog header="APPROVED TASKING HISTORY" [modal]="true" [(visible)]="isStatusOpen" [style]="{ width: '50vw' }">
+	
+	<div>
+	<div  #tableContent class="container m-4">
+		
+		<!-- <h3 class="text-center mb-4 title-header"><u>APPROVED TASKING HISTORY</u></h3> -->
+		<table class="custom-table" >
 			<thead>
 				<tr>
-					<th colspan="2">TASK NAME ({{ statusData?.task_number_dee }})</th>
+					<th colspan="2" class=" text-center title-header">
+						<u>APPROVED TASKING HISTORY</u>
+					</th>
+				</tr>
+				<tr>
+					<th colspan="2" class="table-title">
+						<span [innerHTML]="statusData?.task_name "></span>-<u>({{ statusData?.task_number_dee }})</u>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr >
-					<td>Sponsoring Directorate </td>
-					<td>{{ statusData }}</td>
+				<tr>
+					<td class="table-label">Sponsoring Directorate</td>
+					<td class="table-data">{{ statusData?.sponsoring_directorate }}</td>
 				</tr>
-				<tr >
-					<td>Task Number </td>
-					<td>{{ statusData?.task_number_dee }}</td>
+				<tr>
+					<td class="table-label">Task Number</td>
+					<td class="table-data">{{ statusData?.task_number_dee }}</td>
 				</tr>
-				<tr >
-					<td>Task Name </td>
-					<td>{{ statusData?.task_name }}</td>
+				<tr>
+					<td class="table-label">Task Name</td>
+					<td class="table-data" [innerHTML]="statusData?.task_name"></td>
 				</tr>
-				<tr >
-					<td>Cost Implication</td>
-					<td>{{ statusData?.cost_implication }}</td>
+				<tr>
+					<td class="table-label">Cost Implication</td>
+					<td class="table-data">Rs {{ statusData?.cost_implication }}</td>
 				</tr>
-				<tr >
-					<td>Time Frame for Completion</td>
-					<td>{{ statusData?.time_frame_for_completion_month }} Months</td>
+				<tr>
+					<td class="table-label">Time Frame for Completion</td>
+					<td class="table-data">{{ statusData?.time_frame_for_completion_month }} Months</td>
 				</tr>
-				<tr >
-					<td>Initiator Remarks -</td>
-					<td>{{ statusData }}</td>
-				</tr>
-				<tr >
-					<td>APSO Remarks -</td>
-					<td>{{ statusData }}</td>
-				</tr>
-				<tr >
-					<td>DG WESEE Remarks -{{ statusData }}</td>
-					<td>{{ statusData }}</td>
-				</tr>
-				<tr >
-					<td>DEE Remarks -{{ statusData }}</td>
-					<td>{{ statusData }}</td>
-				</tr>
-				<tr >
-					<td>ACOM IT&S Remarks -{{ statusData }}</td>
-					<td>{{ statusData }}</td>
-				</tr>
-				<tr >
-					<td>COM Remarks -{{ statusData }}</td>
-					<td>{{ statusData }}</td>
+	
+				<!-- Dynamic Remarks Sections -->
+				<tr *ngFor="let key of ['SD_initiater', 'APSO_recommender', 'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver']">
+					<td class="table-label">
+						{{ getRemarkTitle(key) }} -
+						<span class="remark-comment" *ngIf="hasHTML(signatureData?.[key]?.comments)"  [innerHTML]="signatureData?.[key]?.comments"></span>
+						<span class="remark-comment" *ngIf="!hasHTML(signatureData?.[key]?.comments)"  [innerText]="signatureData?.[key]?.comments"></span>
+									
+					</td>
+					<td class="table-data">
+						<div >
+							<span><i>Electronically Signed by:</i></span><br>
+							
+								{{ signatureData?.[key]?.created_by?.rankCode }} 
+								{{ signatureData?.[key]?.created_by?.first_name }} 
+								{{ signatureData?.[key]?.created_by?.last_name }}
+							
+							<br>
+							<span>
+								{{ signatureData?.[key]?.created_by?.department?.name }}, 
+								{{
+									signatureData?.[key]?.created_on ? 
+									(signatureData?.[key]?.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A'
+								}}
+							</span>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
-	
 	</div>
+	</div>
+	<div class="row">
+
+		<a class="btn btn-primary my-3 mx-2 " (click)="printPDF()">
+			<i class="fa fa-download"></i> Download PDF
+		</a>
+	</div>
+   
+	
+	
 </p-dialog>
 
 <div class="modal fade master-modal-style" id="tasking-modal" data-bs-keyboard="false" data-bs-backdrop="static"
@@ -735,7 +760,7 @@
 	</ng-container>
 
 	<div class="row my-5">
-		<div class="col-4 float-end">
+		<div class="col-4 ">
 			<a *ngIf="isFormHide" mat-raised-button class="btn btn-success py-5" (click)="downloadexcel()"><i
 					class="fa-regular fa-file-excel fa-2xl"></i> &nbsp; Download Excel</a>
 		</div>

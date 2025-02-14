@@ -57,6 +57,13 @@
 				<p class="user-type">({{ api.userid.role_name }})</p>
 				</div>
 			</ng-container>
+			<ng-container *ngIf="api.userid.process_id==4">
+				<div class="user-name">
+					<p class="user-type">{{ api?.userid?.loginname }}</p>
+				<p class="user-title"><span>{{api?.userid?.rankCode}}</span> {{api.userid.first_name+' '+api.userid.last_name }} </p>
+				<p class="user-type">({{ api.userid.role_name }})</p>
+				</div>
+			</ng-container>
 		</div>
 	</div>
 	<!-- end::Toggle  -->

@@ -80,20 +80,14 @@ export class AddHomepageComponent implements OnInit {
   constructor(private fb: FormBuilder, private dataService: DataService,private logger: ConsoleService,public api: ApiService,private notification: NotificationService,private route: ActivatedRoute,private router: Router,
     private toastr: ToastrService,) {
 
-//   this.route.queryParams.subscribe(params => {
-	// this.id = atob(params['id']);
 	this.id=1;
-   // Print the parameter to the console.
    if (this.id) {
 		this.getHomepageDetail();
 
    }
-// });
 }
   ngOnInit(): void {
     this.createForm();
-    // let currentUser = localStorage.getItem('currentUser');
-    // this.userData = JSON.parse(currentUser || '{}');
 
   }
 
@@ -105,7 +99,6 @@ export class AddHomepageComponent implements OnInit {
       website_about: ['', [Validators.required]],
       address: ['', [Validators.required]],
       contact: ['', [Validators.required]],
-      // contact: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       email: ['', [Validators.required, Validators.email]]
     });
   }
@@ -157,8 +150,6 @@ export class AddHomepageComponent implements OnInit {
       formData.append('contact', data.contact)
       formData.append('email', data.email)
       formData.append('user', this.api.userid.user_id)
-      // formData.append('website_menu', this.userData.user_id)
-      // // console.logformData)
 
       this.dataService.putRequest('website/website_settings/details/'+ this.id +'/', formData).subscribe((data: any) => {
         this.webSetting = data;
@@ -174,7 +165,6 @@ export class AddHomepageComponent implements OnInit {
         this.isLoading$ = false
         this.websiteSettingForm.reset()
         this.submitted = false
-        // // console.logthis.webSetting);
 
       },error => {
         this.errorMessage = error.error ? error.error.Message : error.Message;
@@ -196,7 +186,6 @@ export class AddHomepageComponent implements OnInit {
     formData.append('email', data.email)
     formData.append('user', this.api.userid.user_id)
     formData.append('website_menu', this.api.userid.user_id)
-    // // console.logformData)
 
     this.dataService.postRequest('website/website_settings/', formData).subscribe((data: any) => {
       this.webSetting = data;
@@ -206,11 +195,9 @@ export class AddHomepageComponent implements OnInit {
      setTimeout(()=> {
       this.router.navigateByUrl('website/edit-home/{{websetting.id}}');
     }, 1000);
-
       this.isLoading$ = false
       this.websiteSettingForm.reset()
       this.submitted = false
-      // // console.logthis.webSetting);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)
@@ -222,7 +209,6 @@ export class AddHomepageComponent implements OnInit {
 
   }
 }
-// number input only
 numberOnly(event:any): boolean {
   const charCode = (event.which) ? event.which : event.keyCode;
   if (charCode > 31 && (charCode < 48 || charCode > 57)) {

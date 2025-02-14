@@ -82,6 +82,7 @@ export class ViewTasksComponent implements OnInit {
   dataSourceStatus: MatTableDataSource<any>;
   xlxsForm: FormGroup;
   isStatusAdd:boolean = false;
+  totalCounts: any;
   patchValue(data: any) {
     throw new Error('Method not implemented.');
   }
@@ -522,7 +523,7 @@ onCustomClear(item){
   isStatusOpen=false;
   statusData:any;
   statusDataMainUser:object
-
+  signatureData: any = {};
   openCurrentStatus(eventRow){
     this.statusData=eventRow;
     this.isStatusOpen=true
@@ -530,15 +531,144 @@ onCustomClear(item){
    
     this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking="+eventRow.id)
     .subscribe((res) => {
-      this.statusDataMainUser = res.data;
+      const keys = [
+        'SD_initiater', 'APSO_recommender', , 
+        'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver'
+    ];
+
+    keys.forEach(key => {
+        const match = res.data.find(country => country[key] === 1 ||( country[key] === 3 && key === 'COM_approver'));
+        this.signatureData[key] = match || null; // Store the full object or null if no match
+    });
+      // this.statusDataMainUser = res.data;
 
     });
 
   }
-  printReceipt(country) {
-    this.id=country.id;
-    window.open(environment.API_URL+"transaction/approved_task/"+ this.id)
+
+  getRemarkTitle(key: string): string {
+    const titles: any = {
+        'SD_initiater': 'Initiator Remarks',
+        'APSO_recommender': 'APSO Remarks',
+        'WESEE_recommender': 'DG WESEE Remarks',
+        'DEE_recommender': 'DEE Remarks',
+        'ACOM_recommender': 'ACOM IT&S Remarks',
+        'COM_approver': 'COM Remarks'
+    };
+    return titles[key] || 'Remarks';
+}
+
+@ViewChild('tableContent', { static: false }) tableContent!: ElementRef;
+
+  printPDF(): void {
+    const content = this.tableContent.nativeElement.innerHTML;
+    const printWindow = window.open('', '', 'width=794,height=1123'); // A4 size
+
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(`
+          <html>
+              <head>
+                  <title>Approved Tasking History</title>
+                  <style>
+                      @page {
+                          
+                          margin: 20mm 15mm 20mm 15mm; /* Top, Right, Bottom, Left */
+                      }
+
+                    body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 30px;
+}
+
+
+                      .text-center {
+                          text-align: center;
+                      }
+
+                     .label-text{font-size: 16px;}
+
+.p-datatable .wrap-text {
+    max-width: 300px;    /* Limit the maximum width */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
   }
+
+  /* General Table Styling */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    margin-top: 20px;
+}
+
+/* Table Header Styling */
+.table-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 10px;
+    // border: 1px solid black;
+}
+
+/* Table Labels (Left Column) */
+.table-label {
+    font-weight: bold;
+    padding: 12px;
+    width: 60%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+    margin:0px !important;
+}
+
+/* Table Data (Right Column) */
+.table-data {
+margin:0px !important;
+    padding: 12px;
+    width: 40%;
+    border: 1px solid rgb(41, 41, 41);
+    vertical-align: middle;
+    background-color: #ffffff;
+}
+
+/* Remark Comments Styling */
+.remark-comment {
+    font-weight: normal;
+    font-style: italic;
+    
+}
+
+
+.title-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin:20px
+}
+                      /* Prevent table breaks across pages */
+                      table, tr, td, th {
+                          page-break-inside: avoid;
+                      }
+                  </style>
+              </head>
+              <body>
+                  ${content}
+                  <script>
+                      window.onload = function() { window.print(); window.close(); }
+                  </script>
+              </body>
+          </html>
+      `);
+      printWindow.document.close();
+    }
+  }
+
+  hasHTML(text: string): boolean {
+    const regex = /<\/?[a-z][\s\S]*>/i;  // Regex to check for HTML tags
+    return regex.test(text);
+}
+
 
   UploadReceipt(country) {
     this.id=country.id;
@@ -643,40 +773,42 @@ onCustomClear(item){
   setActiveTab(tab: Tabs) {
     this.activeTab = tab;
   }
+  page=1;
   getTasking() {
     this.countryList=[]
       if(this.token_detail.process_id==3 ){
-      this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id,'created_by':this.token_detail.user_id})
+      this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
+        'tasking_id': this.token_detail.tasking_id,
+        'process_id': this.token_detail.process_id,
+        'created_by': this.token_detail.user_id
+      })
       .subscribe((res) => {
         if(res.status==environment.SUCCESS_CODE){
-          this.countryList = res.data
+          this.countryList = res.results;
+          this.totalCounts=res.count
         this.dataSourcelist = new MatTableDataSource(this.countryList);
-  
-        this.dataSourcelist
-        .paginator = this.pagination;
-        
-        
+        this.dataSourcelist.paginator = this.pagination;
         }
-
       });
-
     }
     else{
       this.api
-      .postAPI(environment.API_URL + "transaction/trial/status",{'tasking_id':this.token_detail.tasking_id,'process_id':this.token_detail.process_id})
-      .subscribe((res) => {
-        if(res.status==environment.SUCCESS_CODE){
-        this.dataSourcelist = new MatTableDataSource(res.data);
-        this.countryList = res.data;
-        this.dataSourcelist
-        .paginator = this.pagination;
+      .postAPI(
+        `${environment.API_URL}transaction/trial/status?page=${this.page}`,
+        {
+          'tasking_id': this.token_detail.tasking_id,
+          'process_id': this.token_detail.process_id
         }
-
+      )
+      .subscribe((res) => {
+        this.dataSourcelist = new MatTableDataSource(res.data);
+        this.countryList = res.results;
+        this.totalCounts=res.count;
+        this.dataSourcelist.paginator = this.pagination;
+        if(res.results.status==environment.SUCCESS_CODE){
+        }
       });
-
     }
-
   }
   approvalID:any;
   viewlist:any;
@@ -1111,6 +1243,8 @@ handleFilter(filterValue: any) {
   this.filterData = filterValue;
 }
 handlePagination(pageEvent: any) {
+  this.getTasking();
+  this.page=pageEvent.page+1;
 }
 expDataHeader=[
   { field: 'task_number_dee', header: 'Task Number (DEE)' },

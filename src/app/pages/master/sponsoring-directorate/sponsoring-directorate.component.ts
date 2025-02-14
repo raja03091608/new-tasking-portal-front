@@ -53,6 +53,7 @@ export class SponsoringDirectorateComponent implements OnInit {
 
   ];
   sponSoringData=[]as any;
+  totalCounts: any;
 
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private viewcontainerref : ViewContainerRef , private logger:ConsoleService) { }
@@ -67,7 +68,8 @@ export class SponsoringDirectorateComponent implements OnInit {
     created_by: new FormControl(""),
     created_ip: new FormControl(""),
     modified_by: new FormControl(""),
-    sequence : new FormControl("", [Validators.pattern("^[0-9]*$")]),
+   
+    
     status: new FormControl("", [Validators.required]),
     skip_apso: new FormControl(""),
 
@@ -76,6 +78,7 @@ export class SponsoringDirectorateComponent implements OnInit {
 
   populate(data){
     this.editForm.patchValue(data);
+    
   }
 
   initForm() {
@@ -91,6 +94,7 @@ export class SponsoringDirectorateComponent implements OnInit {
   ngOnInit(): void {
     this.getInititator();
     this.getAccess();
+    this.getUser()
   }
 
   create(){
@@ -152,13 +156,25 @@ export class SponsoringDirectorateComponent implements OnInit {
 
     openModal('#crud-countries');
   }
+userList=[]
+  getUser() {
+    this.userList=[]
+    this.api
+      .getAPI(environment.API_URL + "master/department")
+      .subscribe((res) => {
+      this.userList=res?.data;
+        
+      });
+  }
 
   getInititator() {
+    this.sponSoringData=[]
     this.api
       .getAPI(environment.API_URL + "master/sponsoring_directorate")
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
-        this.sponSoringData= res.data;
+        this.sponSoringData= res.results;
+        this.totalCounts=res.count;
 
         this. initiatorList= res.data;
         this.dataSource.paginator = this.pagination;
@@ -185,7 +201,6 @@ export class SponsoringDirectorateComponent implements OnInit {
           }
         });
       }
-      // dialogRef=null;
     });
   }
 
@@ -193,7 +208,6 @@ export class SponsoringDirectorateComponent implements OnInit {
     this.showError=true;
      if (this.editForm.valid) {
       this.editForm.value.created_by = this.api.userid.user_id;
-      // this.editForm.value.status = this.editForm.value.status=="true" ? "1" : "2";
       if(this.editForm.value.status){
         if(this.editForm.value.status=="1")
           this.editForm.value.status="1"
@@ -215,7 +229,6 @@ export class SponsoringDirectorateComponent implements OnInit {
           this.editForm.value
         )
         .subscribe((res) => {
-          //this.error= res.status;
           if(res.status==environment.SUCCESS_CODE){
             this.notification.success(res.message);
             this.getInititator();
@@ -233,14 +246,11 @@ export class SponsoringDirectorateComponent implements OnInit {
 
         });
     }
-    //closeModal('#crud-countries');
   }
 
 
   getAccess() {
     this.moduleAccess=this.api.getPageAction();
-    // // console.log'addPermission',this.permission.delete)
-    // // console.log'addPermission122',)
 
 
     if(this.moduleAccess)
@@ -273,8 +283,6 @@ export class SponsoringDirectorateComponent implements OnInit {
     { field: 'name', header: ' Name', filter: true, filterMatchMode: 'contains' },
     { field: 'description', header: 'Description', filter: true, filterMatchMode: 'contains' },
     { field: 'skip_apso', header: 'Skip Apso', filter: true, filterMatchMode: 'contains' },
-    // { field: 'status', header: 'Status', filter: true, filterMatchMode: 'contains' },
-    // { field: 'authority_permission', header: 'Authority Permission', filter: true, filterMatchMode: 'contains' },
   ]
   exportData:any;
   filterData:any;
@@ -284,33 +292,19 @@ export class SponsoringDirectorateComponent implements OnInit {
     // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // // console.log'Pagination triggered with event:', pageEvent);
+    this.getInititator();
   }
-
   openCurrentStatus(country){
-    // this.id=country.id;
-    //   // console.log'tasking country',country)
-    //   this.taskname = country.task_name;
-    //   this.tasknumber = country.task_number_dee;
-    //   // this.selectedTrial=tasking;
-    //   openModal('#trial-status-modal');
-    // this.getComments();
+   
     }
 
     UploadReceipt(country) {
-      // this.id=country.id;
-      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
     }
   
     completedtask(country) {
-      // this.id=country.id;
-      // openModal('#completedTask-modal');
     }
     taskid:any;
     opentask(country:any){
-      // // console.log'countyryry',country);
-      // this.resetexportform();
-      // this.exportform.reset();
       openModal('#export');
       this.taskid = country.id;
   

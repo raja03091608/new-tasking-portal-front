@@ -67,6 +67,7 @@ export class UserGroupComponent implements OnInit {
   @ViewChild("closebutton") closebutton;
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   departmentData= [] as any;
+  totalCounts: any;
 
 
 
@@ -111,12 +112,14 @@ export class UserGroupComponent implements OnInit {
 
     this.getAccess();
   }
-
+page=1;
   getDepartment() {
-    this.api.getAPI(environment.API_URL + "master/department").subscribe((res) => {
+    this.departmentData=[];
+      this.api.getAPI(`${environment.API_URL}master/department?page=${this.page}`).subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
         this.countryList = res.data;
-        this.departmentData = res.data;
+        this.departmentData = res.results;
+        this.totalCounts=res.count;
         this.dataSource.paginator = this.pagination;
       });
   }
@@ -276,33 +279,23 @@ export class UserGroupComponent implements OnInit {
     // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    // // console.log'Pagination triggered with event:', pageEvent);
+    this. getDepartment();
+    this.page=pageEvent.page+1;
+
+    
   }
 
   openCurrentStatus(country){
-    // this.id=country.id;
-    //   // console.log'tasking country',country)
-    //   this.taskname = country.task_name;
-    //   this.tasknumber = country.task_number_dee;
-    //   // this.selectedTrial=tasking;
-    //   openModal('#trial-status-modal');
-    // this.getComments();
+   
     }
 
     UploadReceipt(country) {
-      // this.id=country.id;
-      // window.open(environment.API_URL+"transaction/approved_all_task_view/"+ this.id)
     }
   
     completedtask(country) {
-      // this.id=country.id;
-      // openModal('#completedTask-modal');
     }
     taskid:any;
     opentask(country:any){
-      // // console.log'countyryry',country);
-      // this.resetexportform();
-      // this.exportform.reset();
       openModal('#export');
       this.taskid = country.id;
   

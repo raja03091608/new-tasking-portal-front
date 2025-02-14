@@ -15,11 +15,19 @@
   		</div>
 
         <div class="mb-5">
-			<mat-label style="font-size:large;"><b>Task Description (Maximum 500 words)</b><b class="star">*</b></mat-label>
+			<mat-label style="font-size:large;"><b>Task Description </b><b class="star">*</b></mat-label>
+
+
+            <!-- <ckeditor formControlName="task_description" maxlength="200"></ckeditor> -->
 			<angular-editor formControlName="task_description"  [config]="editorConfig"></angular-editor>
-			   <div class="limit">
-                Words : {{ remainingCharacters }}
-              </div>
+			<!-- <mat-error *ngIf="sdError('task_description','required') && showError">Enter Task Description</mat-error> -->
+			<!-- <mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.maxlength && showError">
+				Name must be at least 200 characters long.
+		   	</mat-error>  -->
+			   
+			   <!-- <mat-error *ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
+				Word limit exceeded! Maximum 200 words allowed.
+			  </mat-error> -->
             <mat-error *ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter task_description</mat-error>
         </div>
 		<div class="mb-5">

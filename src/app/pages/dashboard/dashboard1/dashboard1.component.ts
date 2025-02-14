@@ -494,10 +494,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getJSON()
     this.getStatus();
-    this.getNewTaskingStatus(this.currentPage);
+    this.getNewTaskingStatus();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     this.getTasking();
-    this.getDashboardCount(this.currentPage);
+    this.getDashboardCount();
     this.getAccess();
     this.getTaskingGroups();
     this.tasklist();
@@ -918,22 +918,22 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   countlist: any;
   totalCounts:number=0;
 
-  getDashboardCount(page:number=1) {
-    this.api.getAPI(`${environment.API_URL}transaction/archive_list?page=${page}`)
+  getDashboardCount() {
+    this.api.getAPI(`${environment.API_URL}transaction/archive_list?page=${this.page}`)
       .subscribe((res) => {
         if (res?.status === environment.SUCCESS_CODE && res?.data) {
-          this.archive_count = res.data.length || 0;  // Ensure it's always a number
+          this.archive_count = res.results|| 0;  // Ensure it's always a number
         }
       });
       if (this.token_detail.role_id == 3) {
 
         this.api.getAPI(
-          `${environment.API_URL}transaction/tasking/count?comment_status=3&page=${page}&created_by_id=${this.token_detail.user_id}`
+          `${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&created_by_id=${this.token_detail.user_id}`
         ).subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.dataSourcelist = new MatTableDataSource(res.results.data);
             this.countlist = res.results.data;
-            this.count = res.data.length;
+            this.count = res.results.data;
+            this.totalCounts=res.count;
           }
         });
         
@@ -949,61 +949,47 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       else if (this.token_detail.process_id == 3) {
   
   
-        this.api.getAPI(`${environment.API_URL}transaction/tasking/count?comment_status=3&page=${page}&assignedtaskinggroup__tasking_group__id=${this.token_detail.tasking_id}`
+        this.api.getAPI(`${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&assignedtaskinggroup__tasking_group__id=${this.token_detail.tasking_id}`
         ).subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             // this.dataSourcelist = new MatTableDataSource(res.results.data);
             this.countlist = res.results.data;
-            this.count = res.data.length;
+            this.count = res.results.data;
+            this.totalCounts=res.count;
           }
         });
         
         this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             this.count2 = res.data.length;
-  
           }
-  
         });
-  
-  
       }
-  
       else {
-  
-  
-        this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=3").subscribe((res) => {
+        this.api.getAPI(`$environment.API_URL + "transaction/tasking/count?comment_status=3&page=${this.page}`).subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
-            // this.dataSourcelist = new MatTableDataSource(res.data);
             this.countlist = res.data;
-            this.count = res.data.length;
+            this.count = res.results.data;
+            this.totalCounts=res.count;
   
           }
         });
         this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
           if (res.status == environment.SUCCESS_CODE) {
             this.count2 = res.data.length;
-  
           }
-  
         });
   
       }
-  
-  
-
   }
   openView() {
     this.TaskBlockRef = this.modalService.open(TaskBlockComponent, { size: 'lg' });
     this.TaskBlockRef.componentInstance.modelData = { 'data': 'view' };
-
   }
   task_del: any;
 
   id: any;
   list: any;
-
-
   openEdit(country) {
     this.isReadonly = false;
     this.crudName = "View";
@@ -1013,12 +999,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.taskForm.disable();
     openModal('#crud-countries');
   }
-
   openDelete() {
     this.deleteProjectRef = this.modalService.open(this.template);
 
   }
-
   taskingID: any;
   openPopup(id) {
     this.taskingID = id;
@@ -1030,14 +1014,12 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     this.router.navigateByUrl("/dashboard/view-task?tasking_id=" + btoa(id));
 
   }
-
   openlistitem(id) {
     this.taskingID = id;
     openModal('#view-milestone');
 
 
   }
-
   ngOnDestroy() {
   }
   imgToUpload: any;
@@ -1122,38 +1104,25 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   }
 
 
-  // 2ndchartapi
-
-
   
-
-  
-
-  
-
-
-
-  // 5thchartapi
-
   
 
   tabledata(data: any) {
 
   }
+  page=1;
   approveTask = [] as any
-  getNewTaskingStatus(page:number =1) { 
-    this.api.getAPI(`${environment.API_URL}transaction/tasking-status?flag=dashboard&page=${page}`)
-      .subscribe((res: any) => {
-        if (res && res.results.data) {
-          this.newTableDataSource = res.results.data;
-          this.approveTask =res.results.data;
+  getNewTaskingStatus() { 
+    this.approveTask = [];
+    this.api.getAPI(`${environment.API_URL}/transaction/tasking-status?flag=dashboard&page=${this.page}`)
+    .subscribe(
+      (res: any) => {
+        if (res?.results?.data) {
+          this.approveTask = res.results.data;
           this.totalCounts = res.count;
-        } else {
-          console.error('Data part of the response is undefined');
-        }
-      }, error => {
-        console.error('Error fetching API data', error);
-      });
+        } 
+      },
+    );
 }
 
 
@@ -1163,12 +1132,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   }
   handlePagination(pageEvent: any) {
     console.log('Pagination Event:', pageEvent);
-    console.log('Current Pagination State:', this.pagination);
-      this.getNewTaskingStatus(pageEvent.page + 1);
-      this.getDashboardCount(pageEvent.page + 1);
-      this.currentPage = pageEvent.page + 1;
-
-
+    this.page=pageEvent.page+1;
+    this.getNewTaskingStatus();
+    this. getDashboardCount();
+    
 }
 
   gridColum = [
@@ -1195,16 +1162,12 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       return;
     }
 
-    // Create a worksheet from the table
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
 
-    // Create a new workbook
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
 
-    // Append the worksheet to the workbook
     XLSX.utils.book_append_sheet(wb, ws, 'Approved Tasks');
 
-    // Write the workbook to a file with .xlsx extension
     XLSX.writeFile(wb, this.fileName);
     this.exportData = this.approveTask
     this.visible = false;

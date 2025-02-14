@@ -1,7 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 
 <div class="row g-5 g-xl-8 justify-content-center">
-  <ng-container *ngIf="(api?.userid?.role_center[0]?.user_role?.code=='Initiator'|| api?.userid?.role_center[0]?.user_role?.code=='Recommender' || token_detail?.process_id==3) && permission.santC">
+  <ng-container *ngIf=" permission.santC">
     <div class="col-md-3 card-container-c">
       <a routerLink="/tasking-portal/new-task" class="card-hover card card-h card-xl-stretch mb-5 mb-xl-8 p-3 card-bg-2"
        >
@@ -599,7 +599,7 @@
       </div>
       <ng-container *ngIf="approveTask.length !=0">
         <app-grid-table [gridColumns]="gridColum" [gridData]="approveTask" [ispaniNater]="true" [isAction]="true"
-          (filterEvent)="handleFilter($event)" (paginationEvent)="handlePagination($event)"
+          (filterEvent)="handleFilter($event)" [totalRecords]="totalCounts" (paginationEvent)="handlePagination($event)"
           (viewEvent)="openEdit($event)" [isView]="true">
         </app-grid-table>
       </ng-container>

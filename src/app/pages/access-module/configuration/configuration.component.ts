@@ -90,13 +90,13 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit(): void {
      this.getApproval(this.currentPage);
      this.getUserGroups(this.currentPage);
-     this.getUserRoles(this.currentPage);
+     this.getUserRoles();
      this.getAccess();
   }
   userRoles:any;
-  getUserRoles(page:number=1) {
+  getUserRoles() {
     this.api
-      .getAPI(environment.API_URL + "access/access_user_roles?status=1&page=${page}")
+      .getAPI(environment.API_URL + "access/access_user_roles?status=1")
       .subscribe((res) => {
         this.userRoles = res.data;
         this.totalCounts = res.count;
@@ -106,10 +106,10 @@ export class ConfigurationComponent implements OnInit {
   UserGroups:any;
   totalCounts:number=0;
   currentPage: number;
-
+page=1;
   getUserGroups(page: number = 1) {
     this.api
-      .getAPI(`${environment.API_URL}master/department?status=1&page=${page}`)
+      .getAPI(`${environment.API_URL}master/department?status=1&page=${this.page}`)
       .subscribe((res) => {
         this.UserGroups = res.data;
         this.totalCounts = res.count;
@@ -117,11 +117,11 @@ export class ConfigurationComponent implements OnInit {
   }
   getApproval(page: number = 1) {
     this.api
-      .getAPI(`${environment.API_URL}configuration/approvals&page=${page}`)
+      .getAPI(`${environment.API_URL}configuration/approvals`)
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.results.data);
-        this.configurationData = res.results.data;
-        this.countryList = res.results.data;
+        this.configurationData = res.data;
+        this.countryList = res.data;
         this.dataSource.paginator = this.pagination;
       });}
       create() {
@@ -262,20 +262,14 @@ applyFilter(event: Event) {
       this.filterData = filterValue;
       }
       handlePagination(pageEvent: any) {
-        this.getUserGroups(pageEvent.page + 1);
-        this.getUserRoles(pageEvent.page + 1);
-        this. getApproval(pageEvent.page + 1);
-        
-        this.currentPage = pageEvent.page + 1;
+        this.getUserGroups();
+        this.page = pageEvent.page + 1;
 
 
       }
 
-      taskid:any;
+       taskid:any;
       opentask(country:any){
-        // console.log'countyryry',country);
-        // this.resetexportform();
-        // this.exportform.reset();
         openModal('#export');
         this.taskid = country.id;
       

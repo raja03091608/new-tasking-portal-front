@@ -30,6 +30,7 @@
 				   (paginationEvent)="handlePagination($event)"
 				   (viewEvent)="onView($event)" 
 				  [isView]="permission.view"
+				  [totalRecords]="totalCounts"
 				  (deleteEvent)=" onDelete($event.id)" 
 				  [isDeletable]="permission.delete"
 				  (editEvent)="editOption($event)" 

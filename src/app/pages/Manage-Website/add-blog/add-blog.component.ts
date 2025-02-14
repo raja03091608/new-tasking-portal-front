@@ -62,14 +62,12 @@ export class AddBlogComponent implements OnInit {
 
     this.apiService.postRequest('blog/',formData).subscribe((result: any) => {
       this.toastr.success('Blog Added Successfully!');
-      // // console.logresult);
     },error => {
       this.errorMessage = error.error ? error.error.Message : error.Message;
       if (!this.errorMessage)
         this.errorMessage = error.error.error;
       this.toastr.error("Internal server error");
    });
-    // /blog/
   }
 
 }

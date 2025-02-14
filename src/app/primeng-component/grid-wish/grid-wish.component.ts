@@ -25,6 +25,7 @@ import { environment } from '../../../environments/environment.prod';
 })
 export class GridWishComponent implements OnInit {  
     @Input() isRestore: boolean;
+    @Input() totalRecords:any;
   @Input() gridColumns: any[];
   @Input() gridData: any[];
   @Input() isEditable: boolean;

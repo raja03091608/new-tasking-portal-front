@@ -27,7 +27,7 @@
 								[isAction]="true" (filterEvent)="handleFilter($event)"
 								(paginationEvent)="handlePagination($event)" (editEvent)="handleEdit($event)"
 								(deleteEvent)="handleDelete($event)" (viewEvent)="handleView($event)"
-								[isView]="this.permission.view" [isEditable]="this.permission.edit"
+								[isView]="this.permission.view"[totalRecords]="totalCounts" [isEditable]="this.permission.edit"
 								[isDeletable]="this.permission.delete">
 
 							</app-grid-table>
@@ -122,7 +122,8 @@
 
 							<ng-container *ngIf="minitingList && minitingList?.length > 0">
 								<div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-									<div class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
+									<div *ngIf="hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
+									<div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div>
 									<div>
 										<span class="float-end">
 											<i class="font-normal"> Electronically Signed by:</i>
@@ -195,8 +196,10 @@
 
 											<ng-container *ngIf="api.userid.role_center[0].user_role.code!='Initiator'">
 												<div class="mb-5">
-													<mat-label style="font-size:large;"><b>Task Description (Maximum 500
-															words)</b><b class="star">*</b></mat-label>
+													<!-- <mat-label style="font-size:large;"><b>Task Description (Maximum 500
+															words)</b><b class="star">*</b></mat-label> -->
+													<!-- <ng-container *ngIf="api.userid.role_center[0].user_role.code=='Initiator'">						 -->
+													<!-- <ckeditor formControlName="task_description" class="form-control"  maxLength="200" [readOnly]="true"></ckeditor> -->
 													<angular-editor formControlName="task_description"
 														[config]="editorConfig"></angular-editor>
 												</div>
@@ -224,10 +227,7 @@
 													<div class="limit">
 														Words remaining: {{ remainingCharacters }}
 													</div>
-													<mat-error
-														*ngIf="taskForm.get('sdForm.task_description')?.hasError('wordCountError')">
-														Word limit exceeded! Maximum 500 words allowed.
-													</mat-error>
+													
 													<mat-error
 														*ngIf="taskForm.get('sdForm.task_description')?.errors?.['required'] && showError">Enter
 														task_description</mat-error>
@@ -492,7 +492,7 @@
 															<!-- Submit Button -->
 															<div class="col-md-4 mt-3" *ngIf="!disableWesee()">
 																<button type="submit" class="btn btn-primary"
-																	[disabled]="listDelapso!=1 || token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">
+																	[disabled]=" token_detail.process_id==1 || token_detail.process_id==3 || token_detail.tasking_id!='' && crudName=='View'">
 																	Submit
 																</button>
 															</div>
@@ -515,8 +515,7 @@
 															{{signatureDatawesee?.created_by?.department?.name}}
 															,&nbsp;{{
 															signatureDatawesee?.created_on ?
-															(signatureDatawesee.created_on | date: 'dd
-															MMM yy HH:mm:ss') : 'N/A' }}
+															(signatureDatawesee.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
 														</span>
 													</div>
 
@@ -583,8 +582,7 @@
 																{{signatureDataTs?.created_by?.department?.name}}
 																,&nbsp;{{
 																signatureDataTs?.created_on ?
-																(signatureDataTs.created_on | date: 'dd MMM yy
-																HH:mm:ss') : 'N/A' }}
+																(signatureDataTs.created_on | date: 'dd MMM yy																HH:mm:ss') : 'N/A' }}
 															</span>
 														</div>
 														<div class="card-footer mt-4 mb-5">

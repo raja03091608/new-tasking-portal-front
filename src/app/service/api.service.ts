@@ -8,6 +8,7 @@ import { NotificationService } from "../service/notification.service";
 import * as CryptoJS from 'crypto-js';
 import { language } from "../../environments/language";
 import { Base64 } from 'js-base64';
+import { array } from '@amcharts/amcharts5';
 //import * as $ from 'jquery';
 
 declare const $: any;
@@ -42,11 +43,19 @@ export class ApiService {
     }
 
   }
-  getToken(loginname:any,password:any): Observable<any>
+  selectedTab;
+  getToken(loginname:any,password:any,selectedTab:string): Observable<any>
   {
+    this.selectedTab=selectedTab
+    let url;
+    if(selectedTab === 'tasking')
+      url='api/auth/token'
+    else
+       url='ticket/login/'
+
     this.userid=this.decryptData(localStorage.getItem('token-detail'));
     return new Observable((observer)=>{
-      this.http.post(environment.API_URL+'api/auth/token',{loginname: loginname,password:password}).subscribe((res)=>{
+      this.http.post(environment.API_URL+url,{loginname: loginname,password:password}).subscribe((res)=>{
         localStorage.setItem('user_id', this.userid );
         let data = res
         this.saveLocalData(data)
@@ -76,15 +85,20 @@ export class ApiService {
       },(error)=>{
         let finalRes={status:'error',message:'Incorrect username/password'};
         observer.next(finalRes);
-        // // console.logerror);
+        
       });
     });
 
   }
-  saveLocalData(data:any) {
-        localStorage.setItem('sponsoring_directorate', data.user_group[0].name );
+  wishData:any
+ saveLocalData(data: any) {
+    if (Array.isArray(data.user_group) && data.user_group.length > 0) {
+        localStorage.setItem('sponsoring_directorate', data.user_group[0]?.name || '');
+    } else {
+      this.wishData=data
+    }
+}
 
-  }
   getAPI(url:any) : Observable<any>
   {
     this.userid=this.decryptData(localStorage.getItem('token-detail'));
@@ -107,7 +121,7 @@ export class ApiService {
       },(error)=>{
         if(error.status==401)
         {
-          this.getToken(userDetail.loginname,userDetail.password).subscribe((res)=>{
+          this.getToken(userDetail.loginname,userDetail.password,this.selectedTab).subscribe((res)=>{
             this.getAPI(url).subscribe((res)=>{
               observer.next(res);
             });
@@ -143,7 +157,7 @@ export class ApiService {
       },(error)=>{
         if(error.status==401)
         {
-          this.getToken(userDetail.loginname,userDetail.password).subscribe((res)=>{
+          this.getToken(userDetail.loginname,userDetail.password,this.selectedTab).subscribe((res)=>{
             this.postAPI(url,data,headerOptions).subscribe((res)=>{
               observer.next(res);
             });
@@ -181,7 +195,7 @@ export class ApiService {
         observer.next(res);
       }, (error) => {
         if (error.status == 401) {
-          this.getToken(userDetail.loginname, userDetail.password).subscribe((res) => {
+          this.getToken(userDetail.loginname, userDetail.password,this.selectedTab).subscribe((res) => {
             this.putAPI(url, data, headerOptions).subscribe((res) => {
               observer.next(res);
             });
@@ -218,7 +232,7 @@ export class ApiService {
         observer.next(res);
       }, (error) => {
         if (error.status == 401) {
-          this.getToken(userDetail.loginname, userDetail.password).subscribe((res) => {
+          this.getToken(userDetail.loginname, userDetail.password,this.selectedTab).subscribe((res) => {
             this.deleteAPI(url, headerOptions).subscribe((res) => {
               observer.next(res);
             });

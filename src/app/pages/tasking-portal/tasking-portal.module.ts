@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { RouterModule } from '@angular/router';
@@ -25,6 +25,8 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PringeComponentModule } from '../../primeng-component/pringe-component.module';
 import { FileUploadModule } from 'primeng/fileupload';
+import { PaginatorModule } from 'primeng/paginator';
+schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -37,6 +39,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 
   ],
   imports: [
+  PaginatorModule,
     TimelineModule,
     ConfirmDialogModule ,
     ToastModule,
