@@ -4,6 +4,10 @@
         resizableColumns="true" columnResizeMode="expand" 
         dataKey="id"
         >
+       
+
+
+        <ng-template *ngIf="isShearchDisable" pTemplate="caption">
             <div class="d-flex align-items-between">
               <button class="btn btn-primary my-4" (click)="clearEvent.emit()">
                 <i class="pi pi-filter-slash"></i> Clear
