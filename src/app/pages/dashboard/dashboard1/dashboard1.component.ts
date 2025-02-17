@@ -211,18 +211,17 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   editorConfig: AngularEditorConfig = {
     editable: false,
     spellcheck: true,
-    height: '10rem',
-    minHeight: '5rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    defaultFontSize: '3',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
@@ -231,27 +230,27 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
     ],
     uploadWithCredentials: false,
-    sanitize: false,
+    sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
+      ['subscript', 'superscript'],
       ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-
+    ],
+    outline: true
   };
   isReadonly = false;
   moduleAccess: any;

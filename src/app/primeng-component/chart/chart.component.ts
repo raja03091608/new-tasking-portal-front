@@ -60,11 +60,12 @@ export class ChartComponent implements OnInit {
     constructor(private api: ApiService) {}
 
     ngOnInit(): void {
-        this.getStackBarChart();
-        this.generateChart();
-        this.overDue();
-        this.updated22();
-        this.pieChart();
+        this.loadYearlyTaskStatusCount();
+        this.loadYearlyGroupwiseTaskCount();
+        this.loadGroupwiseTaskCount();
+        this.loadDirectorateTaskStatus();
+        this.loadDirectorateGroupwiseTaskCount();
+        this.loadTaskStatusCount();
         this.taskingSponsoringDirectorate()
         this.generateDirectorateChart()
         this.loadOngoingTasksChart()
@@ -81,295 +82,213 @@ export class ChartComponent implements OnInit {
         this.initETGGroupChart()
     }
 
-    // ✅ Stacked Bar Chart (Group-wise)
-    getStackBarChart() {
-        this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((response: any) => {
-            if (!response || !response.data) {
-                console.error('Invalid API response:', response);
-                return;
-            }
-
-            const groups = response.data;
-            const moduleNames: string[] = [];
-            const workInProgressData: number[] = [];
-            const completedData: number[] = [];
-            const taskClosedData: number[] = [];
-
-            groups.forEach((group) => {
-                moduleNames.push(group.tasking_group_name);
-
-                let workInProgressCount = 0, completedCount = 0, taskClosedCount = 0;
-                group.titles.forEach((title) => {
-                    if (title.title.includes('Work In Progress')) workInProgressCount += title.task_count;
-                    else if (title.title.includes('Completed')) completedCount += title.task_count;
-                    else if (title.title.includes('Task Closed')) taskClosedCount += title.task_count;
-                });
-
-                workInProgressData.push(workInProgressCount);
-                completedData.push(completedCount);
-                taskClosedData.push(taskClosedCount);
-            });
-
-            this.stackBarChart = {
-                labels: moduleNames,
-                datasets: [
-                    {
-                        label: 'Work In Progress',
-                        backgroundColor: '#f7a400',
-                        data: workInProgressData,
-                        stack: 'Stack 0',
-                        barThickness: 130, 
-                         maxBarThickness: 130
-                    },
-                    {
-                        label: 'Completed',
-                        backgroundColor: '#3a9efd',
-                        data: completedData,
-                        stack: 'Stack 0',
-                        barThickness: 130, 
-                        maxBarThickness: 130
-                    },
-                    {
-                        label: 'Task Closed',
-                        backgroundColor: '#492a73',
-                        data: taskClosedData,
-                        stack: 'Stack 0',
-                        barThickness: 130, 
-                        maxBarThickness: 130
-                    
-                    }
-                ]
-            };
-
-            this.stackBarChartOptions = {
-                ...this.getChartOptions("Number of Tasks","WESEE GROUP"),
-                
-            };
-        });
-    }
-
-    // ✅ Yearly Task Report (Vertical Bar)
-    generateChart() {
-        this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status/').subscribe((response: any) => {
-            if (!response || !Array.isArray(response)) {
-                console.error('Invalid API response:', response);
-                return;
-            }
-
-            const years = response.map(item => item.year.toString());
-            const taskCounts = response.map(item => item.count);
-
-            this.yearWise = {
-                labels: years,
-                datasets: [{
-                    label: 'Completed Tasks',
-                    data: taskCounts,
-                    backgroundColor: '#00E396',
-                    barThickness: 40, 
-                    maxBarThickness: 40
-                }]
-            };
-
-            this.yearWiseOption = {
-                ...this.getChartOptions("Number of Tasks","YEARS"),
-                plugins: {
-                    legend: { display: false },
-                    datalabels: {
-                        display: true,
-                        color: '#fff',
-                        font: { size: 18, weight: 'bold' },
-                        anchor: 'center',
-                        align: 'center'
-                    }
-                }
-            };
-        });
-    }
-
-    // ✅ Overdue Tasks by Group
-    overDue() {
-        this.api.getAPI(environment.API_URL + 'transaction/overdue-by-group/').subscribe((res: any) => {
-            if (!res || !res.data) {
-                console.error('Invalid API response:', res);
-                return;
-            }
-
-            const categories = res.data.map(item => item.sponsoring_directorate);
-            const seriesData = res.data.map(item => item.overdue_count);
-
-            this.OverDueData = {
-                labels: categories,
-                datasets: [{
-                    label: 'Overdue Tasks',
-                    data: seriesData,
-                    backgroundColor: this.colors,
-                    barThickness: 90, 
-                    maxBarThickness: 90
-                }]
-            };
-
-            this.overDueOptions = {
-                ...this.getChartOptions("Number of Overdue Tasks","WESEE GROUP"),
-                plugins: {
-                    legend: { display: false },
-                    datalabels: {
-                        display: true,
-                        color: '#fff',
-                        font: { size: 18, weight: 'bold' },
-                        anchor: 'center',
-                        align: 'center'
-                    }
-                }
-            };
-        });
-    }
-
-    // ✅ Extended Task Report
-    updated22() {
-        this.api.getAPI(environment.API_URL + 'transaction/extended-deadlines/').subscribe((res: any) => {
-            if (!res || !res.data) {
-                console.error('Invalid API response:', res);
-                return;
-            }
-
-            const groupNames = res.data.map(item => item.tasking_group_name);
-            const extensionCounts = res.data.map(item => item.extension_count);
-            
-            // Define a list of custom colors
-            const customColors = [
-                "#00E396","#008FFB", "#FF4560" , "#FEB019"
-            ];
-            
-            // Assign colors dynamically (looping through colors if there are more bars than colors)
-            const barColors = groupNames.map((_, index) => customColors[index % customColors.length]);
-            
-            this.extData = {
-                labels: groupNames,
-                datasets: [{
-                    label: 'Extended Deadlines',
-                    data: extensionCounts,
-                    backgroundColor: barColors ,
-                    barThickness: 90, 
-                    maxBarThickness: 90
-                }]
-            };
-            
-
-            this.extDataOptions = {
-                ...this.getChartOptions("Number of Extended Deadlines","WESEE GROUP"),
-                plugins: {
-                    legend: { display: false },
-                    datalabels: {
-                        display: true,
-                        color: '#fff',
-                        font: { size: 18, weight: 'bold' },
-                        anchor: 'center',
-                        align: 'center'
-                    }
-                }
-            };
-        });
-    }
-
-    // ✅ Task Distribution Pie Chart
-    pieChart() {
-        this.api.getAPI(environment.API_URL + 'transaction/task-distribution').subscribe((res: any) => {
-            if (!res || !res.data) {
-                console.error('Invalid API response:', res);
-                return;
-            }
-
-            const completedCount = res.data.completed.count;
-            const inProgressCount = res.data.in_progress.count;
-
-            this.pieChartData = {
-                labels: ['IN PROGRESS', 'COMPLETED'],
-                datasets: [{
-                    data: [inProgressCount, completedCount],
-                    backgroundColor: ["#F4CE14", "#379777"]
-                }]
-            };
-
-            this.pieChartDataOption = {
-                
-                plugins: {
-                    datalabels: { display: true, color: '#fff',
-                        font: { size: 18, weight: 'bold' },
-                        anchor: 'center',
-                        align: 'center' }
-                }
-            };
-        });
-    }
-
-    // ✅ Helper function to apply consistent chart options
-    getChartOptions(yLabel: string,xlable) {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            aspectRatio: 0.5,
-            plugins: {
-                datalabels: {
-                    display: true,
-                    color: '#fff',
-                    font: { size: 18, weight: 'bold' },
-                    anchor: 'center',
-                    align: 'center'
-                }
-            },
-            scales: {
-                x: { title: { display: true, text: xlable ,font: { size: 18, weight: 'bold' }},font: { size: 18, weight: 'bold' } },
-                y: { title: { display: true, text: yLabel ,font: { size: 18, weight: 'bold' } }, beginAtZero: true ,}
-            }
-        };
-    }
-
-
-    
-
-    // ✅ **Download Chart as PNG**
-    downloadChart(chartInstance: any, filename: string): void {
-        const base64Image = chartInstance?.toBase64Image();
-        if (base64Image) {
-            const link = document.createElement('a');
-            link.href = base64Image;
-            link.download = `${filename}.png`;
-            link.click();
-        } else {
-            console.error('Failed to generate chart image.');
-        }
-    }
-
-    // ✅ **Download Data as CSV**
-    downloadCSV(chartData: any, filename: string): void {
-        if (!chartData || !chartData.labels || !chartData.datasets) {
-            console.error('Invalid chart data.');
-            return;
-        }
-
-        const headers = ['Category', ...chartData.datasets.map(ds => ds.label)];
-        const rows = chartData.labels.map((label, index) => {
-            const row = [label];
-            chartData.datasets.forEach(ds => row.push(ds.data[index]));
-            return row;
-        });
-
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.join(','))
-        ].join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${filename}.csv`;
-        link.click();
-    }
-
-
+    distributionChartData: any;
+    distributionChartOptions: any;
     directorateChartData: any;
     directorateChartOptions: any;
+    ongoingTasksData: any;
+    ongoingTasksOptions: any;
+    groupwiseChartData: any;
+    groupwiseChartOptions: any;
+    statusByGroupChartData: any;
+    statusByGroupChartDataOption: any;
+    pieChartData1: any;
+    pieChartData2: any;
+    taskStatusChartData: any;
+    statusCSIGroupChartData: any;
+    statusCMSGroupChartData: any;
+    statusSCSGroupChartData: any;
+    statusTaNCSGroupChartData: any;
+    statusCSCGroupChartData: any;
+    statusETGGroupChartData: any;
     
+    // API Integration Methods
+    loadYearlyTaskStatusCount() {
+        this.api.getAPI(environment.API_URL + 'transaction/yearly-task-status-count/')
+          .subscribe((res: any[]) => {
+             const years = res.map(item => item.year);
+            const completed = res.map(item => item.Completed);
+            const closed = res.map(item => item['Task Closed']);
+            const inProgress = res.map(item => item['Work In Progress']);
+      
+            this.taskIssuedData = {
+              labels: years,
+              datasets: [
+                {
+                  label: 'Completed',
+                  backgroundColor: '#008FFB',
+                  data: completed
+                },
+                {
+                  label: 'Task Closed',
+                  backgroundColor: '#FF9800',
+                  data: closed
+                },
+                {
+                  label: 'Work In Progress',
+                  backgroundColor: '#4CAF50',
+                  data: inProgress
+                }
+              ]
+            };
+      
+            // 3. Set the chart options (assuming you have a helper)
+            this.taskIssuedOptions = this.getChartOptionsStackBar('Year', 'Tasks', 'x', 'top');
+          });
+      }
+      
+      loadYearlyGroupwiseTaskCount() {
+        this.api.getAPI(environment.API_URL + 'transaction/yearly-groupwise-task-count/')
+          .subscribe((res: any[]) => {
+            const allGroups = Array.from(
+              res.reduce((acc, item) => {
+                item.task_groups.forEach(tg => acc.add(tg.group_code));
+                return acc;
+              }, new Set<string>())
+            );
+      
+            const labels = res.map(item => item.year);
+            const datasets = allGroups.map(group => {
+              return {
+                label: group as string,
+                backgroundColor: this.getGroupColor(group as string),
+                data: res.map(item => {
+                  const found = item.task_groups.find(tg => tg.group_code === group);
+                  return found ? found.task_count : 0;  // Default 0 if not found
+                })
+              };
+            });
+      
+            this.ongoingTasksData = {
+              labels,
+              datasets
+            };
+      
+            // Your existing stacked-bar configuration
+            this.ongoingTasksOptions = this.getChartOptionsStackBar('Year', 'Tasks', 'y', 'top');
+          });
+      }
+      
+
+      loadGroupwiseTaskCount() {
+        this.api.getAPI(environment.API_URL + 'transaction/groupwise-task-count/')
+          .subscribe((res: any[]) => {
+      
+            // 1. Build arrays for labels and data
+            const labels = res.map(item => item.group_code);
+            const values = res.map(item => item.task_count);
+      
+            // 2. Configure the chart data
+            this.groupwiseChartData = {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Total Tasks',
+                  // Assign a unique color for each group (optional)
+                  backgroundColor: labels.map(group => this.getGroupColor(group)),
+                  data: values
+                }
+              ]
+            };
+      
+            // 3. Configure chart options (your existing helper method)
+            this.groupwiseChartOptions = this.getChartOptionsStackBar('Tasks', 'Group', 'x', 'top');
+          });
+      }
+      
+
+      loadDirectorateTaskStatus() {
+        this.api.getAPI(environment.API_URL + 'transaction/directorate-task-status/')
+          .subscribe((res: any[]) => {
+      
+            // Extract each piece of data from the array response
+            const directorates = res.map(item => item.sponsoring_directorate);
+            const completed = res.map(item => item.Completed || 0);
+            const closed = res.map(item => item['Task Closed'] || 0);
+            const inProgress = res.map(item => item['Work In Progress'] || 0);
+      
+            // Build the chart data
+            this.distributionChartData = {
+              labels: directorates,
+              datasets: [
+                {
+                  label: 'Completed',
+                  backgroundColor: '#007bff',
+                  data: completed
+                },
+                {
+                  label: 'Task Closed',
+                  backgroundColor: '#ff9800',
+                  data: closed
+                },
+                {
+                  label: 'Work In Progress',
+                  backgroundColor: '#4caf50',
+                  data: inProgress
+                }
+              ]
+            };
+      
+            // Configure the chart (using your existing stacked bar helper)
+            this.distributionChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks');
+          });
+      }
+      
+
+      loadDirectorateGroupwiseTaskCount() {
+        this.api.getAPI(environment.API_URL + 'transaction/directorate-groupwise-task-count/')
+          .subscribe((res: any[]) => {
+      
+            // 1. Extract all unique group codes across all directorates
+            const allGroups = Array.from(
+              res.reduce((acc, item) => {
+                item.task_groups.forEach(tg => acc.add(tg.group_code));
+                return acc;
+              }, new Set<string>())
+            );
+      
+            // 2. Labels will be each directorate in the data
+            const labels = res.map(item => item.sponsoring_directorate);
+      
+            // 3. Build datasets, one for each unique group code
+            const datasets = allGroups.map(group => {
+              return {
+                label: group as string,
+                backgroundColor: this.getGroupColor(group as string),
+                data: res.map(item => {
+                  // Find task_groups entry with the matching group_code
+                  const found = item.task_groups.find(tg => tg.group_code === group);
+                  return found ? found.task_count : 0;  // Default to 0 if not found
+                })
+              };
+            });
+      
+            // 4. Assign chart data and options
+            this.directorateChartData = {
+              labels,
+              datasets
+            };
+      
+            // Your existing stacked-bar configuration
+            this.directorateChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks');
+          });
+      }
+      
+
+    // Helper method for consistent group colors
+    getGroupColor(group: string): string {
+        const colorMap = {
+            'CMS': '#008FFB',
+            'CSC': '#FF9800', 
+            'CSI': '#4CAF50',
+            'ETG': '#F44336',
+            'SCS': '#9C27B0',
+            'TaNCS': '#7A5548',
+            'TCOE': '#00BCD4'
+        };
+        return colorMap[group] || '#FFD700'; // Changed default color to gold
+    }
+
     // ✅ **Function to populate the chart data**
     taskingSponsoringDirectorate() {
         const directorates = [
@@ -402,8 +321,7 @@ export class ChartComponent implements OnInit {
         // ✅ **Using helper function to generate chart options**
         this.directorateChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks");
     }
-    distributionChartData: any;
-    distributionChartOptions: any;
+    
     
     generateDirectorateChart() {
         const directorates = [
@@ -432,8 +350,7 @@ export class ChartComponent implements OnInit {
     }
 
 
-    ongoingTasksData: any;
-    ongoingTasksOptions: any;
+    
 
     loadOngoingTasksChart() {
         this.ongoingTasksData = {
@@ -539,19 +456,7 @@ export class ChartComponent implements OnInit {
         };
     }
 
-    groupwiseChartData: any;
-    groupwiseChartOptions: any;
-    statusByGroupChartData: any;
-    statusByGroupChartDataOption: any;
-    pieChartData1: any;
-    pieChartData2: any;
-    taskStatusChartData: any;
-    statusCSIGroupChartData: any;
-    statusCMSGroupChartData: any;
-    statusSCSGroupChartData: any;
-    statusTaNCSGroupChartData: any;
-    statusCSCGroupChartData: any;
-    statusETGGroupChartData: any;
+   
   
 
     commanChartOption={
@@ -681,7 +586,145 @@ export class ChartComponent implements OnInit {
        
         };
       }
+
+    // Add new function to load task status count
+    loadTaskStatusCount() {
+        this.api.getAPI(environment.API_URL + 'transaction/taskcount-statuswise/')
+            .subscribe((res: any[]) => {
+                // Transform the API response into chart data
+                const statusData = {
+                    labels: [],
+                    datasets: [{
+                        label: 'Status',
+                        backgroundColor: [],
+                        data: []
+                    }]
+                };
+
+                // Color mapping for different statuses
+                const statusColors = {
+                    'Total': '#90EE90',
+                    'Work In Progress': '#ADD8E6',
+                    'Completed': '#D3D3D3',
+                    'Approval in Progress': '#FFA500',
+                    'Closure in Progress': '#800080',
+                    'Extension in Progress': '#FF69B4'
+                };
+
+                // Process each status from the API response
+                res.forEach(item => {
+                    statusData.labels.push(item.status);
+                    statusData.datasets[0].data.push(item.count);
+                    statusData.datasets[0].backgroundColor.push(statusColors[item.status] || '#FFD700');
+                });
+
+                // Update the task status chart data
+                this.taskStatusChartData = statusData;
+
+                // Update individual group status charts
+                this.updateGroupStatusCharts(res);
+            });
+    }
+
+    // Helper function to update individual group status charts
+    updateGroupStatusCharts(statusData: any[]) {
+        const groups = ['CSI', 'CMS', 'SCS', 'TaNCS', 'CSC', 'ETG'];
+        
+        groups.forEach(group => {
+            const groupData = {
+                labels: statusData.map(item => item.status),
+                datasets: [{
+                    backgroundColor: statusData.map(item => {
+                        const statusColors = {
+                            'Total': '#90EE90',
+                            'Work In Progress': '#ADD8E6',
+                            'Completed': '#D3D3D3',
+                            'Approval in Progress': '#FFA500',
+                            'Closure in Progress': '#800080',
+                            'Extension in Progress': '#FF69B4'
+                        };
+                        return statusColors[item.status] || '#FFD700';
+                    }),
+                    data: statusData.map(item => {
+                        // Calculate a portion of the total count for each group
+                        // This is a placeholder calculation - adjust based on your actual data structure
+                        return Math.round(item.count * (Math.random() * 0.3 + 0.1));
+                    })
+                }]
+            };
+
+            // Update the appropriate group chart data
+            switch(group) {
+                case 'CSI':
+                    this.statusCSIGroupChartData = groupData;
+                    break;
+                case 'CMS':
+                    this.statusCMSGroupChartData = groupData;
+                    break;
+                case 'SCS':
+                    this.statusSCSGroupChartData = groupData;
+                    break;
+                case 'TaNCS':
+                    this.statusTaNCSGroupChartData = groupData;
+                    break;
+                case 'CSC':
+                    this.statusCSCGroupChartData = groupData;
+                    break;
+                case 'ETG':
+                    this.statusETGGroupChartData = groupData;
+                    break;
+            }
+        });
+    }
+
+    // ✅ **Download Chart as PNG**
+    downloadChart(chartInstance: any, filename: string): void {
+        const base64Image = chartInstance?.toBase64Image();
+        if (base64Image) {
+            const link = document.createElement('a');
+            link.href = base64Image;
+            link.download = `${filename}.png`;
+            link.click();
+        } else {
+            console.error('Failed to generate chart image.');
+        }
+    }
+
+    // ✅ **Download Data as CSV**
+    downloadCSV(chartData: any, filename: string): void {
+        if (!chartData || !chartData.labels || !chartData.datasets) {
+            console.error('Invalid chart data.');
+            return;
+        }
+
+        const headers = ['Category', ...chartData.datasets.map(ds => ds.label)];
+        const rows = chartData.labels.map((label, index) => {
+            const row = [label];
+            chartData.datasets.forEach(ds => row.push(ds.data[index]));
+            return row;
+        });
+
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${filename}.csv`;
+        link.click();
+    }
     
+
+
+
+
+
+
+
+
+
 
 
 }

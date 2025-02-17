@@ -119,7 +119,7 @@
                       </div>
                   </div>
                   <div class="col-8">
-                      <h3 class="bg-primary pl-1 text-light rounded text-center">Tasking Form</h3>
+                      <h3 class="bg-primary p-2 text-light rounded text-center">Tasking Form</h3>
                       <div class="scrollTable height-Task">
                           <form [formGroup]="sdForm" (ngSubmit)="onSubmitSD()">
                               <div class="alert alert-dismissible alert-bg">
@@ -134,19 +134,22 @@
                                           <input type="text" class="form-control" formControlName="task_name" />
                                       </div>
                                   </div>
-                                  <angular-editor class="mb-3" formControlName="task_description"	[config]="{editable: SubmitAccess.formPermission1}"></angular-editor>
-                                 <div *ngIf="rowData.file" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <mat-label style="font-size:large;"><b>Task Description</b> <b class="star">*</b></mat-label>
+                                  <angular-editor class="mb-3" id="task_description" formControlName="task_description" [config]="getEditorConfig(SubmitAccess.formPermission1)"></angular-editor>
+                                 <div *ngIf="rowData.file" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file)  }}</span><i *ngIf="SubmitAccess.formPermission1" (click)="removeFile('file')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,1)" *ngIf="!rowData.file && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div  *ngIf="rowData.file1"class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file1}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file1) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file1')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div  *ngIf="rowData.file1"class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file1}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file1)   }}</span><i *ngIf="SubmitAccess.formPermission1" (click)="removeFile('file1')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,2)" *ngIf="!rowData.file1 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div *ngIf="rowData.file2" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file2}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file2) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file2')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file2" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file2}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file2)   }}</span><i *ngIf="SubmitAccess.formPermission1" (click)="removeFile('file2')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,3)" *ngIf="!rowData.file2 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div *ngIf="rowData.file3" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file3}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file3) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file3')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file3" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file3}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file3)   }}</span><i *ngIf="SubmitAccess.formPermission1" (click)="removeFile('file3')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,4)" *ngIf="!rowData.file3 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div *ngIf="rowData.file4" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file4}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file4) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file4')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file4" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file4}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file4)   }}</span><i *ngIf="SubmitAccess.formPermission1" (click)="removeFile('file4')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,5)" *ngIf="!rowData.file4 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                   <button *ngIf="SubmitAccess.formPermission1" type="submit" class="btn btn-primary mt-3">Submit</button>
-                                       <div [innerHTML]="getSignatureHtml('SD_initiater')" *ngIf="getSignatureHtml('SD_initiater' )"> </div>
+                                       <ng-container *ngIf="getSignatureHtml('SD_initiater')">
+                                           <div [innerHTML]="getSignatureHtml('SD_initiater')"></div>
+                                       </ng-container>
                               </div>
                           </form>
                           
@@ -157,10 +160,12 @@
                           
                                   <mat-label style="font-size:large;"><b>APSO Comments</b><b class="star">*</b></mat-label>
                                   <!-- <angular-editor formControlName="task_description"	[config]="{editable: false}"></angular-editor> -->
-                                  <angular-editor class="mb-4" formControlName="comments_of_apso"	[config]="{editable: SubmitAccess.formPermission2}"></angular-editor>
+                                  <angular-editor id="comments_of_apso" class="mb-4" formControlName="comments_of_apso"	[config]="getEditorConfig(SubmitAccess.formPermission2)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_apso"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission2" type="submit" class="btn btn-success mt-4">Submit</button>
-                                  <div [innerHTML]="getSignatureHtml('APSO_recommender')" *ngIf="getSignatureHtml('APSO_recommender' )"> {{getSignatureHtml('APSO_recommender') | json}} </div>
+                                  <ng-container *ngIf="getSignatureHtml('APSO_recommender')">
+                                      <div [innerHTML]="getSignatureHtml('APSO_recommender')"></div>
+                                  </ng-container>
                           
                               </div>
                           </form>
@@ -199,20 +204,23 @@
                                           <input type="number" class="form-control" formControlName="cost_implication" maxlength="100" />
                                       </div>
                                       <div class="col-5">
-                                          <mat-label style="font-size:large;"><b>Time Frame For Completion</b> <b class="star">*</b></mat-label>
+                                          <mat-label style="font-size:large;"><b>Time Frame For Completion in Month's</b> <b class="star">*</b></mat-label>
                                           <input type="number" class="form-control" formControlName="time_frame_for_completion_month" />
                                       </div>
                                   </div>
                                   <mat-label style="font-size:large;"><b>Comments For Tasking User</b><b class="star">*</b></mat-label>
-                                  <angular-editor formControlName="comments_of_tasking_group"	[config]="{editable: SubmitAccess.formPermission3}"></angular-editor>
-                                  <div *ngIf="rowData.file5" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file5}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file5) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file5')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <angular-editor id="comments_of_tasking_group" formControlName="comments_of_tasking_group"	[config]="getEditorConfig(SubmitAccess.formPermission3)"></angular-editor>
+                                  <div *ngIf="rowData.file5" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file5}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file5)   }}</span><i *ngIf="SubmitAccess.formPermission3" (click)="removeFile('file5')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,6)" *ngIf="!rowData.file5 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div *ngIf="rowData.file6" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file6}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file6) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file6')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file6" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file6}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file6)   }}</span><i *ngIf="SubmitAccess.formPermission3" (click)="removeFile('file6')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,7)" *ngIf="!rowData.file6 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                 
                                   <button *ngIf="SubmitAccess.formPermission3" type="submit" class="btn btn-success mt-3">Submit </button>
+                                  <ng-container *ngIf="getSignatureHtml('TS_recommender')">
+                                      <div [innerHTML]="getSignatureHtml('TS_recommender')"></div>
+                                  </ng-container>
                               </form>
-                              <div [innerHTML]="getSignatureHtml('TS_recommender')" *ngIf="getSignatureHtml('TS_recommender' )"> </div>
+                              <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div>
                           
                               </div>
                           <!--DG WESEE Form -->
@@ -221,10 +229,10 @@
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">DG WESEE &nbsp;(Weapons and Electronics Systems Engineering Establishment)</b></mat-label></div>
                                  
                                   <mat-label style="font-size:large;"><b>DG WESEE Comments</b><b class="star">*</b></mat-label>
-                                  <angular-editor class="mb-4" formControlName="comments_of_wesee"	[config]="{editable: SubmitAccess.formPermission4}"></angular-editor>
+                                  <angular-editor class="mb-4" formControlName="comments_of_wesee"	[config]="getEditorConfig(SubmitAccess.formPermission4)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_wesee"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission4" type="submit" class="btn btn-success mt-3">Submit</button>
-                              <div [innerHTML]="getSignatureHtml('WESEE_recommender')" *ngIf="getSignatureHtml('WESEE_recommender' )"> </div>
+                              <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div>
                           
                           
                               </div>
@@ -248,15 +256,17 @@
                                   </div>
                                   
                                   <mat-label style="font-size:large;"><b>DEE Comments</b><b class="star">*</b></mat-label>
-                                  <angular-editor  class="mb-4" formControlName="comments_of_dee"	[config]="{editable: SubmitAccess.formPermission5}"></angular-editor>
+                                  <angular-editor  class="mb-4" id="comments_of_dee" formControlName="comments_of_dee"	[config]="getEditorConfig(SubmitAccess.formPermission5)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_dee"></textarea> -->
-                                  <div *ngIf="rowData.file7" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file7}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file7) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file7')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file7" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file7}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file7)   }}</span><i *ngIf="SubmitAccess.formPermission5" (click)="removeFile('file7')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,8)" *ngIf="!rowData.file7 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
-                                  <div *ngIf="rowData.file8" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file8}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file8) + "suyhvuwqvuywh" }}</span><i (click)="removeFile('file8')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
+                                  <div *ngIf="rowData.file8" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file8}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file8)   }}</span><i *ngIf="SubmitAccess.formPermission5" (click)="removeFile('file8')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,9)" *ngIf="!rowData.file8 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                 
                                   <button *ngIf="SubmitAccess.formPermission5" type="submit" class="btn btn-success mt-3">Submit</button>
-                                  <div [innerHTML]="getSignatureHtml('DEE_recommender')" *ngIf="getSignatureHtml('DEE_recommender' )"> </div>
+                                  <ng-container *ngIf="getSignatureHtml('DEE_recommender')">
+                                      <div [innerHTML]="getSignatureHtml('DEE_recommender')"></div>
+                                  </ng-container>
                           
                               </div>
                           </form>
@@ -265,10 +275,12 @@
                               <div class="alert alert-dismissible alert-bg">
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">PD DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
                                    <!-- <textarea rows="4" class="form-control" formControlName="comments_of_pd_dee"></textarea> -->
-                                   <angular-editor class="mb-4" formControlName="comments_of_pd_dee"	[config]="{editable: SubmitAccess.formPermission6}"></angular-editor>
+                                   <angular-editor class="mb-4" id="comments_of_pd_dee" formControlName="comments_of_pd_dee"	[config]="getEditorConfig(SubmitAccess.formPermission6)"></angular-editor>
                                   
                                   <button *ngIf="SubmitAccess.formPermission6" type="submit" class="btn btn-success mt-3">Submit</button>
-                                  <div [innerHTML]="getSignatureHtml('COM_approver')" *ngIf="getSignatureHtml('COM_approver' )"> </div>
+                                  <ng-container *ngIf="getSignatureHtml('PDDEE_recommender')">
+                                      <div [innerHTML]="getSignatureHtml('PDDEE_recommender')"></div>
+                                  </ng-container>
                           
                               </div>
                           </form>
@@ -279,10 +291,12 @@
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(IT & S)  (Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label> </div>
                           
                                   <mat-label style="font-size:large;"><b>ACOM Comments</b><b class="star">*</b></mat-label>
-                                  <angular-editor class="mb-4" formControlName="recommendation_of_acom_its"	[config]="{editable: SubmitAccess.formPermission7}"></angular-editor>
+                                  <angular-editor class="mb-4" id="recommendation_of_acom_its" formControlName="recommendation_of_acom_its"	[config]="getEditorConfig(SubmitAccess.formPermission7)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission7" type="submit" class="btn btn-success mt-3">Submit</button>
-                                  <div [innerHTML]="getSignatureHtml('ACOM_recommender')" *ngIf="getSignatureHtml('ACOM_recommender' )"> </div>
+                                  <ng-container *ngIf="getSignatureHtml('ACOM_recommender')">
+                                      <div [innerHTML]="getSignatureHtml('ACOM_recommender')"></div>
+                                  </ng-container>
                           
                               </div>
                           </form>
@@ -290,12 +304,14 @@
                           <!-- COM Form -->
                           <form [formGroup]="comForm" (ngSubmit)="onSubmitCOM()">
                               <div class="alert alert-dismissible alert-bg">
-                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(Chief of Materiel)</b></mat-label> </div>
+                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">COM &nbsp;(Chief of Materiel)</b></mat-label> </div>
                                   <mat-label style="font-size:large;"><b>COM Approval Comments</b><b class="star">*</b></mat-label>
-                                  <angular-editor class="mb-4" formControlName="approval_of_com"	[config]="{editable: SubmitAccess.formPermission8}"></angular-editor>
+                                    <angular-editor class="mb-4" id="approval_of_com" formControlName="approval_of_com"	[config]="getEditorConfig(SubmitAccess.formPermission8)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="approval_of_com"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission8" type="submit" class="btn btn-success mt-3">Approve</button>
-                                  <div [innerHTML]="getSignatureHtml('COM_approver')" *ngIf="getSignatureHtml('COM_approver' )"> </div>
+                                  <ng-container *ngIf="getSignatureHtml('COM_approver')">
+                                      <div [innerHTML]="getSignatureHtml('COM_approver')"></div>
+                                  </ng-container>
                           
                               </div>
                           </form>

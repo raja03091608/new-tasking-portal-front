@@ -121,50 +121,49 @@ export class NewTaskComponent implements OnInit {
   }
 
   editorConfig: AngularEditorConfig = {
-    editable:true,
+    editable: true,
     spellcheck: true,
-    height: '10rem',
-    minHeight: '5rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    defaultFontSize: '3',
     fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
     ],
     customClasses: [
-    {
-      name: 'quote',
-      class: 'quote',
-    },
-    {
-      name: 'redText',
-      class: 'redText'
-    },
-    {
-      name: 'titleText',
-      class: 'titleText',
-      tag: 'h1',
-    },
-  ],
-  uploadWithCredentials: false,
-  sanitize: false,
-  toolbarPosition: 'top',
-  toolbarHiddenButtons: [
-    ['bold', 'italic'],
-    ['fontSize','toggleEditorMode','customClasses']
-  ]
-
-};
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ],
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['subscript', 'superscript'],
+      ['fontSize', 'toggleEditorMode', 'customClasses']
+    ],
+    outline: true
+  };
 
 get remainingCharacters(): number {
   const wordLimit = 500; // Set your desired word limit

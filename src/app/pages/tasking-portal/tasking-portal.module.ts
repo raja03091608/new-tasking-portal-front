@@ -85,7 +85,7 @@ schemas: [CUSTOM_ELEMENTS_SCHEMA]
       },
       {
         path: 'taskForm',
-        component: TaskFormComponent,
+        component: TaskListComponent,
       },
     ])
   ]

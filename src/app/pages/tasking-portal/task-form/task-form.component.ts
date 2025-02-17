@@ -73,18 +73,17 @@ export class TaskFormComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    
-    minHeight: '10rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    defaultFontSize: '',
+    defaultFontSize: '3',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
@@ -93,27 +92,27 @@ export class TaskFormComponent implements OnInit {
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
     ],
     uploadWithCredentials: false,
-    sanitize: false,
+    sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
+      ['subscript', 'superscript'],
       ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-
+    ],
+    outline: true
   };
   usersList = []
   taskingGroups=[];
@@ -128,6 +127,7 @@ export class TaskFormComponent implements OnInit {
   moduleAccess: any;
   token_detail: any;
   totaleRecords:any;
+  private signatureCache: { [key: string]: string } = {};
   constructor(private fb: FormBuilder, private api: ApiService,private messageService: MessageService,private conFdialog: MatDialog,) { 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
   }
@@ -137,6 +137,7 @@ export class TaskFormComponent implements OnInit {
     this.getAccess()
     this.initializeForms();
     this.getTasking()
+    this.disableAllForms()
     
   }
   page = 1;
@@ -154,7 +155,7 @@ export class TaskFormComponent implements OnInit {
       next: (res) => {
         this.taskList = res.results;
         this.totaleRecords = res.count;
-        this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
+        // this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
       },
       error: (error) => {
         console.error('Error fetching tasks:', error);
@@ -168,9 +169,16 @@ export class TaskFormComponent implements OnInit {
 
   hideModal(): void {
     this.visible = false;
+    this.getTasking();
+  }
+  setAllPermissionsFalse(obj) {
+    Object.keys(obj).forEach(key => {
+      obj[key] = false;
+    });
   }
 
   onEditRow(rowData){
+    this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
     this.apiCall();
@@ -179,13 +187,54 @@ export class TaskFormComponent implements OnInit {
     this.getStatusTimeline();
     this.setFormData()
     this.getSignatureData()
-    this.editorConfig.editable=false;
+    // this.editorConfig.editable=false;
     if(this.rowData && this.rowData.assigned_tasking_group &&this.rowData.assigned_tasking_group?.tasking_group)
         this.getTaskingUser({value:this.rowData.assigned_tasking_group?.tasking_group})
     // this.disableAllForms()
     this.showModal()
   }
+  formpermission(resdata:any){
+    if(resdata.detail==='Passed'){
+      if(this.rowData.form === 1){
+        this.SubmitAccess.commentPermission=true
+        return;
+      }
+      if(this.api.userid.role_center[0].user_role.code=='Initiator' && !this.rowData.SD_initiater ){
+        this.SubmitAccess.formPermission1=true
+        this.sdForm.enable();
+  
+      }else if(resdata.role === 14 && this.rowData.SD_initiater && !this.rowData.APSO_recommender){
+        this.SubmitAccess.formPermission2=true
+        this.apsoForm.enable();
+      }else if((resdata.role === 21 || (resdata.role === 4 && !this.rowData.TS_recommender)) && this.rowData.APSO_recommender){
+        this.SubmitAccess.formPermissionTasking=true
+        this.allocateForm.enable();
+      }else if(this.api.userid.process_id === 3 && !this.rowData.TS_recommender){
+        this.SubmitAccess.formPermission3=true
+        this.weseeForm.enable();
+      }else if(resdata.role === 4 && this.rowData.TS_recommender && !this.rowData.WESEE_recommender){
+        this.SubmitAccess.formPermission4=true
+        this.dgweseeForm.enable();
+      }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
+        this.SubmitAccess.formPermission5=true
+        this.deeForm.enable();
+      }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
+        this.SubmitAccess.formPermission6=true
+        this.pdDeeForm.enable();
+      }else if(resdata.role === 8 && this.rowData.PDEE_recommender && !this.rowData.ACOM_recommender){
+        this.SubmitAccess.formPermission7=true
+        this.acomForm.enable();
+      }else if(resdata.role === 5 && this.rowData.ACOM_recommender && !this.rowData.COM_approver){
+        this.SubmitAccess.formPermission8=true
+        this.comForm.enable();
+      }
+      
+      
+    }
+   
+  }
   onViewRow(rowData){
+    this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
     this.apiCall();
@@ -323,7 +372,12 @@ export class TaskFormComponent implements OnInit {
   }
   removeFile(key:string){    this.rowData[key]=null;  }
   getFileNameFromUrl(url: string): string {    return url ? url.substring(url.lastIndexOf('/') + 1) : '';}
-  getSignatureData() { this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.rowData.id).subscribe((res) => { this.rowDataStatus = res.data;})}
+  getSignatureData() { 
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.rowData.id).subscribe((res) => { 
+        this.rowDataStatus = res.data;
+        this.signatureCache = {}; // Clear cache when new data is loaded
+    });
+  }
   getTaskingUser(event) { this.api.getAPI(environment.API_URL + `api/auth/users?tasking_id=${event?.value}`).subscribe(res => { this.usersList = res  })  }
   getTaskingGroups() { this.api.getAPI(environment.API_URL + "master/taskinggroups").subscribe((res) => {  this.taskingGroups = res.data;  }); }
   
@@ -337,8 +391,8 @@ export class TaskFormComponent implements OnInit {
 
 
   onSubmitSD(): void {
-    this.showConfirm();
     if(this.lastStatusData <= this.rowData.level ){
+      this.showConfirm();
       return;
     }
     if (this.sdForm.valid) {
@@ -375,9 +429,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'SD Form submitted successfully:' });
           console.log('SD Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting SD form:' });
           console.error('Error submitting SD form:', error);
         }
       );
@@ -392,8 +449,9 @@ export class TaskFormComponent implements OnInit {
     if (this.apsoForm.valid) {
       const payload = {
         comments_of_apso: this.apsoForm.value.comments_of_apso,
-        'id': this.rowData.id,
-        status :1
+        id: this.rowData.id,
+        status :1,
+        comment_status :1
 
       };
 
@@ -401,9 +459,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'APSO Form submitted successfully:' });
           console.log('APSO Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting APSO form:' });
           console.error('Error submitting APSO form:', error);
         }
       );
@@ -411,16 +472,17 @@ export class TaskFormComponent implements OnInit {
   }
 
   onSubmitWESEE(): void {
-    if(this.lastStatusData <= this.rowData.level ){
-      this.showConfirm();
-      return;
-    }
+    
     if (this.weseeForm.valid) {
       const formData = new FormData();
       formData.append('cost_implication', this.weseeForm.value.cost_implication);
       formData.append('time_frame_for_completion_month', this.weseeForm.value.time_frame_for_completion_month);
       formData.append('comments_of_tasking_group', this.weseeForm.value.comments_of_tasking_group);
-      
+      formData.append('status', '1');
+      formData.append(' comment_status','1');
+      formData.append('id', this.rowData.id+"");
+      formData.append('TS_recommender', "1");
+
       if (this.files.file6) {
         formData.append('files5', this.files.file6);
       }
@@ -430,11 +492,14 @@ export class TaskFormComponent implements OnInit {
 
       console.log('WESEE Payload:', formData);
 
-      this.api.postAPI(environment.API_URL + 'wesee-endpoint', formData).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'WESEE Form submitted successfully:' });
           console.log('WESEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting WESEE form:' });
           console.error('Error submitting WESEE form:', error);
         }
       );
@@ -443,21 +508,28 @@ export class TaskFormComponent implements OnInit {
 
   onallocateSubmit(): void {
     if (this.allocateForm.valid) {
+    
       const payload = {
         tasking_group: this.allocateForm.value.tasking_group,
         tasking_user: this.allocateForm.value.tasking_user,
-        id: this.rowData.id,
-        status :1
+        tasking: this.rowData.id,
+        created_by: this.api.userid.user_id,
+        id: '',
+        status :1,
+        comment_status :1
 
       };
 
       console.log('Allocate Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/assigned-task/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'Allocate Form submitted successfully:' });
           console.log('Allocate Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting Allocate form:' });
           console.error('Error submitting Allocate form:', error);
         }
       );
@@ -471,9 +543,13 @@ export class TaskFormComponent implements OnInit {
     }
     if (this.dgweseeForm.valid) {
       const payload = {
+        cost_implication: this.rowData.cost_implication,
+        time_frame_for_completion_month: this.rowData.time_frame_for_completion_month,
+        time_frame_for_completion_days: this.rowData.time_frame_for_completion_days,
         comments_of_wesee: this.dgweseeForm.value.comments_of_wesee,
         id:this.rowData.id,
-        status :1
+        status :1,
+        comment_status :1
 
       };
 
@@ -481,9 +557,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DG WESEE Form submitted successfully:' });
           console.log('DG WESEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DG WESEE form:' });
           console.error('Error submitting DG WESEE form:', error);
         }
       );
@@ -501,6 +580,8 @@ export class TaskFormComponent implements OnInit {
       formData.append('comments_of_dee', this.deeForm.value.comments_of_dee);
       formData.append('id', this.rowData.id+"");
       formData.append('status', "1");
+      formData.append('comment_status', "1");
+
 
       if (this.files.file8) {
         formData.append('files2', this.files.file8);
@@ -513,9 +594,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DEE Form submitted successfully:' });
           console.log('DEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DEE form:' });
           console.error('Error submitting DEE form:', error);
         }
       );
@@ -529,9 +613,10 @@ export class TaskFormComponent implements OnInit {
     }
     if (this.pdDeeForm.valid) {
       const payload = {
-        comments_of_pd_dee: this.pdDeeForm.value.comments_of_pd_dee,
+        comments_of_pdee: this.pdDeeForm.value.comments_of_pd_dee,
       id:this.rowData.id,
-      status :1
+      status :1,
+      comment_status :1
 
       };
 
@@ -539,9 +624,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'PD DEE Form submitted successfully:' });
           console.log('PD DEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting PD DEE form:' });
           console.error('Error submitting PD DEE form:', error);
         }
       );
@@ -557,17 +645,27 @@ export class TaskFormComponent implements OnInit {
       const payload = {
         recommendation_of_acom_its: this.acomForm.value.recommendation_of_acom_its,
         id:this.rowData.id,
-        status :1
+        status :1,
+        comment_status :1
 
       };
+      let fpayload={
+        acomForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :1
+      }
 
       console.log('ACOM Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'ACOM Form submitted successfully:' });
           console.log('ACOM Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting ACOM form:' });
           console.error('Error submitting ACOM form:', error);
         }
       );
@@ -579,53 +677,76 @@ export class TaskFormComponent implements OnInit {
       const payload = {
         approval_of_com: this.comForm.value.approval_of_com,
         id:this.rowData.id,
-        status :1
-      };
+        status :1,
+        comment_status :3
 
+      };
+      let fpayload={
+        comForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :3
+      }
+
+     
       console.log('COM Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'COM Form submitted successfully:' });
           console.log('COM Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting COM form:' });
           console.error('Error submitting COM form:', error);
         }
       );
     }
   }
   
-  getSignatureHtml(key:string ): string {
-    
-    const signature = this.rowDataStatus.find(country => country[key] === 1);
-    
-    if (!signature) {
-      return ''; 
+  getSignatureHtml(key: string): string {
+    // Return cached result if available
+    if (this.signatureCache[key] !== undefined) {
+        return this.signatureCache[key];
     }
 
-    const dateString = signature.created_on
-      ? new Date(signature.created_on).toLocaleString()
-      : 'N/A';
+    if (!this.rowDataStatus || !key) {
+        this.signatureCache[key] = '';
+        return '';
+    }
 
-    
-    return `
-      
+    // Find the signature entry for the given key
+    const signature = this.rowDataStatus.find(item => item[key] === 1);
+    console.log(signature);
+    if (!signature) {
+        this.signatureCache[key] = '';
+        return '';
+    }
+
+    const dateString =   signature.created_on ? this.api.formatDate(signature.created_on) : 'N/A';
+
+    // Create the HTML string
+    const html = `
         <span class="float-end">
-          <i class="font-normal">Electronically Signed by:</i>
+            <i class="font-normal">Electronically Signed by:</i>
         </span>
         <br />
         <span class="float-end">
-          ${signature.created_by?.rankCode || ''} 
-          ${signature.created_by?.first_name || ''} 
-          ${signature.created_by?.last_name || ''}
+            ${signature.created_by?.rankCode || ''} 
+            ${signature.created_by?.first_name || ''} 
+            ${signature.created_by?.last_name || ''}
         </span>
         <br />
         <span class="float-end">
-          ${signature.created_by?.department?.name || ''}, 
-          ${dateString}
+            ${signature.created_by?.department?.name || ''}, 
+            ${dateString}
         </span>
-      
     `;
+
+    // Cache the result
+    this.signatureCache[key] = html;
+    return html;
   }
   setFormData(): void {
     this.sdForm.patchValue({
@@ -657,7 +778,7 @@ export class TaskFormComponent implements OnInit {
       comments_of_dee: this.rowData?.comments_of_dee || ''
     });
     this.pdDeeForm.patchValue({
-      // comments_of_pd_dee: this.rowData?.comments_of_pd_dee || ''
+      comments_of_pd_dee: this.rowData?.comments_of_pdee || ''
     });
     this.acomForm.patchValue({ recommendation_of_acom_its: this.rowData?.recommendation_of_acom_its || '' });
     this.comForm.patchValue({ approval_of_com: this.rowData?.approval_of_com || '' });
@@ -717,6 +838,7 @@ export class TaskFormComponent implements OnInit {
 onEditRole(rowData) {
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
       this.roleDetaile=res
+      this.formpermission(res)
      })
   }
   displayModal=false
@@ -812,8 +934,7 @@ onEditRole(rowData) {
     };
     this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
       this.getStatusTimeline()
-      this.hideModal()
-      // this.modalService.dismissAll("Close")
+      this.displayModal=false;
     })
     let taskId = this.formGroup.get('taskId').value
     this.formGroup.reset();
@@ -844,6 +965,15 @@ onEditRole(rowData) {
 
     showSuccess() {
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+  }
+
+  getEditorConfig(permission: boolean): AngularEditorConfig {
+    return {
+      ...this.editorConfig,
+      editable: permission,
+      showToolbar: permission,
+      minHeight: '15rem',
+    };
   }
 
 }

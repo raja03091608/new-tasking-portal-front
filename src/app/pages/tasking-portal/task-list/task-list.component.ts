@@ -131,18 +131,17 @@ export class TaskListComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '10rem',
-    minHeight: '5rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    defaultFontSize: '3',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
@@ -151,77 +150,34 @@ export class TaskListComponent implements OnInit {
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
     ],
     uploadWithCredentials: false,
-    sanitize: false,
+    sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
+      ['subscript', 'superscript'],
       ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-
+    ],
+    outline: true
   };
 
   commentEditor: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '10rem',
-    minHeight: '5rem',
-    maxHeight: 'auto',
-    width: 'auto',
-    minWidth: '0',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
+    ...this.editorConfig,
     placeholder: 'Enter Comment here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
-    ],
-    customClasses: [
-      {
-        name: 'whiteBackground',
-        class: 'white-background'
-      },
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadWithCredentials: false,
-    sanitize: false,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-  }
+    minHeight: '10rem'
+  };
 
 
   get remainingCharacters(): number {
@@ -320,10 +276,10 @@ export class TaskListComponent implements OnInit {
 
     this.taskForm.patchValue({ sdForm: { sponsoring_directorate: data.sponsoring_directorate, task_name: data.task_name, task_description: data.task_description } })
 
-    this.allocateForm.patchValue({
-      tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : '',
-      tasking_user:data?.assigned_tasking_group?.tasking_user
-     });
+    // this.allocateForm.patchValue({
+    //   tasking_group: data.assigned_tasking_group.tasking_group ? data.assigned_tasking_group.tasking_group.id : '',
+    //   tasking_user:data?.assigned_tasking_group?.tasking_user
+    //  });
     // console.log('data.task_number_dee', data);
 
     if (data.task_number_dee != null) {
@@ -645,7 +601,7 @@ export class TaskListComponent implements OnInit {
     }
     else {
       this.api
-        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc&page=4" )
+        .getAPI(environment.API_URL + "transaction/tasking?order_type=desc&page=1" )
         .subscribe((res) => {
           // if (res.status == environment.SUCCESS_CODE) {
             this.dataSource = new MatTableDataSource(res.results);
@@ -825,10 +781,10 @@ export class TaskListComponent implements OnInit {
   rowId
 
   editOption(country) {
-    const taskingGroupId = country?.assigned_tasking_group?.tasking_group?.id;
-    if (typeof taskingGroupId !== 'undefined' && taskingGroupId !== null) {
-        this.getTaskingUser({ value: taskingGroupId });
-    }
+    // const taskingGroupId = country?.assigned_tasking_group?.tasking_group?.id;
+    // if (typeof taskingGroupId !== 'undefined' && taskingGroupId !== null) {
+    //     this.getTaskingUser({ value: taskingGroupId });
+    // }
     this.onEditRole(country);
     this.commentEditor.editable = true;
     // // console.logcountry, "==================>>>>>>>>>>>>")

@@ -1,171 +1,25 @@
 <div class="container-fluid">
-    <!-- Group Wise Chart -->
-    <div class="row" *ngIf="showGroupWiseChart">
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title align-items-start flex-column pt-5">
-                        <span class="fw-bold mb-3">Group wise Task Completion</span>
-                      </h3>
-                    <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(stackBarChart, 'Group Wise Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
-                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                        </a>
-                        <a (click)="downloadChart(groupWiseChart.chart, 'Group Wise Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
-                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p-chart #groupWiseChart type="bar" [data]="stackBarChart" [options]="stackBarChartOptions"
-                        class="w-100" style="height: 400px;"></p-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row for Two Charts (Yearly Report + Task Distribution) -->
-    <div class="row">
-        <!-- Yearly Task Report -->
-        <div class="col-md-6" *ngIf="showYearlyReport">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title align-items-start flex-column pt-5">
-                        <span class="fw-bold mb-3">Yearly Task Report</span>
-                      </h3>
-                    <!-- <p class="title-class text-white">Yearly Task Report</p> -->
-                    <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(yearWise, 'Annual Task Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
-                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                        </a>
-                        <a (click)="downloadChart(yearWiseData.chart, 'Annual Task Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
-                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p-chart #yearWiseData type="bar" [data]="yearWise" [options]="yearWiseOption" class="w-100"
-                        style="height: 400px;"></p-chart>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task Distribution (Pie Chart) -->
-        <div class="col-md-6" *ngIf="showTaskDistribution">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title align-items-start flex-column pt-5">
-                        <span class="fw-bold mb-3">Task Distribution</span>
-                      </h3>
-                    
-                    <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(pieChart, 'Task Distribution Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
-                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                        </a>
-                        <a (click)="downloadChart(pieChart.chart, 'Task Distribution Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
-                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p-chart #pieChart type="pie" [data]="pieChartData" [options]="pieChartDataOption" class="w-100"
-                        style="height: 400px;"></p-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Row for Two Charts (Extended Deadlines + Overdue Tasks) -->
-    <div class="row">
-        <!-- Extended Deadlines Chart -->
-        <div class="col-md-6" *ngIf="showExtendedDeadlines">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title align-items-start flex-column pt-5">
-                        <span class="fw-bold mb-3">Extended Deadlines</span>
-                      </h3>
-                    <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
-                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                        </a>
-                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
-                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p-chart #extDate type="bar" [data]="extData" [options]="extDataOptions" class="w-100"
-                        style="height: 400px;"></p-chart>
-                </div>
-            </div>
-        </div>
-
-        <!-- Overdue Tasks Chart -->
-        <div class="col-md-6" *ngIf="showOverdueTasks">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title align-items-start flex-column pt-5">
-                        <span class="fw-bold mb-3">Overdue Tasks</span>
-                      </h3>
-                    <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
-                            <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                        </a>
-                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
-                            <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p-chart #overDueChart type="bar" [data]="OverDueData" [options]="overDueOptions" class="w-100"
-                        style="height: 400px;"></p-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+      <div class="row">
         <!-- Extended Deadlines Chart -->
         <div class="col-md-6" *ngIf="showExtendedDeadlines">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title align-items-start flex-column pt-5">
                         <span class="fw-bold mb-3">Task Issued Since 2016</span>
-                      </h3>
+                    </h3>
                     <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
+                        <a (click)="downloadCSV(taskIssuedData, 'Task Issued Report')" 
+                           class="btn btn-light btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-csv fa-lg"></i> CSV
                         </a>
-                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
+                        <a (click)="downloadChart(taskIssuedChart.chart, 'Task Issued Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-image fa-lg"></i> PNG
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p-chart type="bar" [data]="taskIssuedData" [options]="taskIssuedOptions" class="w-100"
+                    <p-chart #taskIssuedChart type="bar" [data]="taskIssuedData" [options]="taskIssuedOptions" class="w-100"
                         style="height: 400px;"></p-chart>
                 </div>
             </div>
@@ -177,23 +31,21 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title align-items-start flex-column pt-5">
                         <span class="fw-bold mb-3">Ongoing Tasks by Year</span>
-                      </h3>
+                    </h3>
                     <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
+                        <a (click)="downloadCSV(ongoingTasksData, 'Ongoing Tasks Report')" 
+                           class="btn btn-light btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-csv fa-lg"></i> CSV
                         </a>
-                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
+                        <a (click)="downloadChart(ongoingTasksChart.chart, 'Ongoing Tasks Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-image fa-lg"></i> PNG
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p-chart type="bar" [data]="ongoingTasksData" [options]="ongoingTasksOptions" class="w-100"
-                    style="height: 400px;"></p-chart>
+                    <p-chart #ongoingTasksChart type="bar" [data]="ongoingTasksData" [options]="ongoingTasksOptions" class="w-100"
+                        style="height: 400px;"></p-chart>
                 </div>
             </div>
         </div>
@@ -205,22 +57,20 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title align-items-start flex-column pt-5">
                         <span class="fw-bold mb-3">Tasking by Sponsoring Directorate</span>
-                      </h3>
+                    </h3>
                     <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(extData, 'Extended Deadlines Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
+                        <a (click)="downloadCSV(directorateChartData, 'Sponsoring Directorate Report')" 
+                           class="btn btn-light btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-csv fa-lg"></i> CSV
                         </a>
-                        <a (click)="downloadChart(extDate.chart, 'Extended Deadlines Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
+                        <a (click)="downloadChart(directorateChart.chart, 'Sponsoring Directorate Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-image fa-lg"></i> PNG
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p-chart type="bar" [data]="directorateChartData" [options]="directorateChartOptions" class="w-100" style="height: 600px;"></p-chart>
+                    <p-chart #directorateChart type="bar" [data]="directorateChartData" [options]="directorateChartOptions" class="w-100" style="height: 600px;"></p-chart>
                 </div>
             </div>
         </div>
@@ -231,22 +81,20 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title align-items-start flex-column pt-5">
                         <span class="fw-bold mb-3">Distribution by Task Status</span>
-                      </h3>
+                    </h3>
                     <div class="d-flex gap-2">
-                        <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
-                           class="btn btn-light btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download CSV">
+                        <a (click)="downloadCSV(distributionChartData, 'Task Distribution Report')" 
+                           class="btn btn-light btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-csv fa-lg"></i> CSV
                         </a>
-                        <a (click)="downloadChart(overDueChart.chart, 'Overdue Tasks Report')" 
-                           class="btn btn-warning btn-sm text-decoration-none" 
-                           data-bs-toggle="tooltip" title="Download PNG">
+                        <a (click)="downloadChart(distributionChart.chart, 'Task Distribution Report')" 
+                           class="btn btn-warning btn-sm text-decoration-none">
                             <i class="fa-solid fa-file-image fa-lg"></i> PNG
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p-chart type="bar" [data]="distributionChartData" [options]="distributionChartOptions" class="w-100" style="height: 600px;"></p-chart>
+                    <p-chart #distributionChart type="bar" [data]="distributionChartData" [options]="distributionChartOptions" class="w-100" style="height: 600px;"></p-chart>
                 </div>
             </div>
         </div>
@@ -348,9 +196,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status by Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusByGroupChartData, 'Status by Group Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusByGroupChart.chart, 'Status by Group Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusByGroupChartData" [options]="statusByGroupChartDataOption" class="w-100" ></p-chart>
+                        <p-chart #statusByGroupChart type="bar" [data]="statusByGroupChartData" [options]="statusByGroupChartDataOption" class="w-100"></p-chart>
                     </div>
                 </div>
             </div>
@@ -360,9 +218,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking CMS Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusCMSGroupChartData, 'CMS Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusCMSGroupChart.chart, 'CMS Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusCMSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusCMSGroupChart type="bar" [data]="statusCMSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
@@ -371,9 +239,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking CSC Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusCSCGroupChartData, 'CSC Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusCSCGroupChart.chart, 'CSC Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusCSCGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusCSCGroupChart type="bar" [data]="statusCSCGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
@@ -382,9 +260,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking SCS Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusSCSGroupChartData, 'SCS Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusSCSGroupChart.chart, 'SCS Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusSCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusSCSGroupChart type="bar" [data]="statusSCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
@@ -393,9 +281,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking TaNCS Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusTaNCSGroupChartData, 'TaNCS Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusTaNCSGroupChart.chart, 'TaNCS Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusTaNCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusTaNCSGroupChart type="bar" [data]="statusTaNCSGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
@@ -403,9 +301,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking ETG Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusETGGroupChartData, 'ETG Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusETGGroupChart.chart, 'ETG Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusETGGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusETGGroupChart type="bar" [data]="statusETGGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
@@ -413,9 +321,19 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title fw-bold">Status of Tasking CSI Group</h3>
+                        <div class="d-flex gap-2">
+                            <a (click)="downloadCSV(statusCSIGroupChartData, 'CSI Group Status Report')" 
+                               class="btn btn-light btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                            </a>
+                            <a (click)="downloadChart(statusCSIGroupChart.chart, 'CSI Group Status Report')" 
+                               class="btn btn-warning btn-sm text-decoration-none">
+                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p-chart type="bar" [data]="statusCSIGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
+                        <p-chart #statusCSIGroupChart type="bar" [data]="statusCSIGroupChartData" [options]="commanChartOption" class="w-100" style="height: 400px;"></p-chart>
                     </div>
                 </div>
             </div>
