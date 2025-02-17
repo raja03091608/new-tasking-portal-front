@@ -113,6 +113,8 @@ export class TaskListComponent implements OnInit {
   token_detail: any;
   allocateForm: FormGroup;
   res: any;
+  searchValue: string;
+  searchTerm: string;
   constructor(public api: ApiService, private notification: NotificationService, private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
 
@@ -615,6 +617,8 @@ export class TaskListComponent implements OnInit {
   }
   ImgUrl: any;
   param: any;
+
+  
   getTasking() {
     this.countryList = []
     let limit_start = 0;
@@ -2087,7 +2091,8 @@ export class TaskListComponent implements OnInit {
   }
 
   handlePagination(pageEvent: any) {
-    console.log('Pagination triggered with event:', pageEvent);
+   
+    
   }
   handleEdit(rowData: any) {
     this.editOption(rowData)
@@ -2129,8 +2134,8 @@ export class TaskListComponent implements OnInit {
     return regex.test(text);
 }
 
-  
-}
 
+
+}
 
 

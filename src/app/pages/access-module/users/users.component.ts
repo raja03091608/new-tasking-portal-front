@@ -60,6 +60,7 @@ export class UsersComponent implements OnInit {
 	@ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
 	userData= [] as any;
 	totalCounts: any;
+	totaleRecords: any;
 	
 	constructor(public api: ApiService, private notification: NotificationService,
 		private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService,
@@ -159,7 +160,6 @@ export class UsersComponent implements OnInit {
 		}, 0, pageIndex);
 	}
 
-	currentPage: number;
 	departmentList = [];
 	getDepartment() {
 		this.api.getAPI(`${environment.API_URL}master/department?status=1`)
@@ -201,28 +201,19 @@ export class UsersComponent implements OnInit {
 	}
 
 	param: any;
-	// getUserList(page:number=1) {
-	// 	this.userData=[]
-	// 	this.api.displayLoading(true);
-	// 	this.api
-	// 		.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${page}`)
-	// 		.subscribe((res) => {
-	// 			this.api.displayLoading(false)
-	// 			this.userData=res.results;
-	// 			this.user = res.results;
-
-	// 		});
-	// }
+	currentPage = 0;
+  pageSize = 10;
 page=1;
 	getUserList() {
 		this.userData = [];
 		this.api.displayLoading(true);
 		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${this.page}`)
 			.subscribe((res) => {
+				this.totaleRecords = res.count; // Ensure count is defined
+				this.currentPage=this.page-1;
+				this.userData = res.results;
 				this.api.displayLoading(false);
 				if (res && res.results) {
-					this.userData = res.results;
-					this.totalCounts=res.count;
 					this.user = res.results;
 				} else {
 					this.userData = [];
@@ -609,9 +600,12 @@ page=1;
 		
 		this.filterData = filterValue;
 	  }
-	  handlePagination(pageEvent: any) {
+	  handlePagination(event: any) {
 		this.getUserList()
-   		 this.page=pageEvent.page+1;  }
+   		 this.page=event.page+1; 
+			this.currentPage=event.page;
+			this.pageSize = event.rows;
+		 }
 
 
 	

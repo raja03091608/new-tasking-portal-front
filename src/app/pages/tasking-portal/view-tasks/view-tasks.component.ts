@@ -83,6 +83,11 @@ export class ViewTasksComponent implements OnInit {
   xlxsForm: FormGroup;
   isStatusAdd:boolean = false;
   totalCounts: any;
+  searchValue: string;
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<any, MatPaginator>;
+  paginator: any;
+  sort: any;
   patchValue(data: any) {
     throw new Error('Method not implemented.');
   }
@@ -775,6 +780,8 @@ margin:0px !important;
     this.activeTab = tab;
   }
   page=1;
+pageSize=10;
+currentPage=0;
   getTasking() {
     this.countryList=[]
       if(this.token_detail.process_id==3 ){
@@ -804,8 +811,8 @@ margin:0px !important;
       .subscribe((res) => {
         this.dataSourcelist = new MatTableDataSource(res.data);
         this.countryList = res.results;
-        this.totalCounts=res.count;
-        this.dataSourcelist.paginator = this.pagination;
+        this.totaleRecords = res.count; // Ensure count is defined
+        this.currentPage=this.page-1;        this.dataSourcelist.paginator = this.pagination;
         if(res.results.status==environment.SUCCESS_CODE){
         }
       });
@@ -1243,9 +1250,12 @@ handleFilter(filterValue: any) {
   
   this.filterData = filterValue;
 }
-handlePagination(pageEvent: any) {
+handlePagination(event: any) {
   this.getTasking();
-  this.page=pageEvent.page+1;
+  this.page=event.page+1;
+  this.currentPage=event.page;
+  this.pageSize = event.rows;
+  
 }
 expDataHeader=[
   { field: 'task_number_dee', header: 'Task Number (DEE)' },
@@ -1344,5 +1354,58 @@ onFileUpload(event) {
     window.open(url, '_blank');
   
 }
+
+
+
+
+
+onSearch(searchText: string) {
+  searchText = searchText.trim();
+  this.countryList = [];
+  this.totaleRecords = 0;
+  this.updateTable();
+
+  if (!searchText) {
+    return; 
+  }
+  const requestBody = { search: searchText }; 
+
+  this.api.postAPI(`${environment.API_URL}transaction/trial/status`, requestBody)
+    .subscribe({
+      next: (res) => {
+
+        this.countryList = res.results|| []; 
+        this.totaleRecords = res?.count || 0;
+
+
+        this.updateTable(); 
+      },
+      error: (error) => {
+        this.countryList = []; 
+        this.totaleRecords = 0;
+        this. getTasking() ;
+        this.updateTable();
+      }
+    });
+}
+updateTable() {
+  this.tableDataSource = new MatTableDataSource(this.countryList);
+  if (this.paginator) {
+    this.tableDataSource.paginator = this.paginator;
+  }
+  if (this.sort) {
+    this.tableDataSource.sort = this.sort;
+  }
+}
+
+
+
+
+
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
 
 }

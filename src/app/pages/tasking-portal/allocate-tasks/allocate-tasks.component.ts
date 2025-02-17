@@ -59,6 +59,9 @@ export class AllocateTasksComponent implements OnInit {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   totolCounts: any;
   totalCounts: any;
+  searchValue: string;
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<any, MatPaginator>;
 
   constructor(public api: ApiService, private notification: NotificationService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
@@ -120,12 +123,14 @@ gridColumns=[
         this.usersList=res.data
     })
   }
-  handlePagination(pageEvent: any) {
-    console.log('Pagination Event:', pageEvent);
-    this.page=pageEvent.page+1;
+  handlePagination(event: any) {
+    this.page=event.page+1;
    this.getTasking();
-    
-}
+   this.currentPage=event.page;
+   this.pageSize = event.rows;
+ }
+pageSize=10;
+currentPage=0;
   page=1;
   getTasking() {
     this.countryList = [];
@@ -134,29 +139,33 @@ gridColumns=[
       this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}&page=${this.page}`)
         .subscribe((res) => {
           this.countryList = res.results.data || []; // Handle undefined results safely
-          this.totalCounts = res.count; // Ensure count is defined
+          this.totaleRecords = res.count; // Ensure count is defined
+          this.currentPage=this.page-1;
           if (res.status == environment.SUCCESS_CODE) {
             if (this.dataSourcelist) {
-              // this.dataSourcelist.data = this.countryList;
-              // this.dataSourcelist.paginator = this.pagination;
+            //   this.dataSourcelist.data = this.countryList;
+            //   this.dataSourcelist.paginator = this.pagination;
+            // //  this.countryList = res.data || []; // Handle undefined results safely
+
             }
           }
         });
     } else {
       this.api.getAPI(`${environment.API_URL}transaction/allocate/status?page=${this.page}`)
   .subscribe((res) => {
+    this.countryList = res.results.data || []; // Handle undefined results safely
+    this.totaleRecords = res.count; // Ensure count is defined
+    this.currentPage=this.page-1;
     if (res.results?.status === environment.SUCCESS_CODE) {
-      this.countryList = res.results?.data || []; // Ensure data is defined
 
       if (this.dataSourcelist) {
-        this.dataSourcelist.data = this.countryList;
-        this.dataSourcelist.paginator = this.pagination;
+        // this.dataSourcelist.data = this.countryList;
+        // this.dataSourcelist.paginator = this.pagination;
       }
     }
   });
     }
   }
-  
   getTrials() {
     this.api
       .getAPI(environment.API_URL + "transaction/trials/approval")
@@ -273,6 +282,37 @@ gridColumns=[
   cancelmodal(){
 	closeModal('#crud-allocate');
   }
+  onSearch(searchText: string) {
+    if (!searchText.trim()) {
+      this.countryList = []; // Agar empty ho to data clear kar do
+      return;
+    }
+    this.countryList = []; // Pehle ka data clear karo
 
+    this.api.getAPI(`${environment.API_URL}transaction/allocate/status?search=${searchText}`).subscribe(
+      (res) => {
+        if (res && res.results && res.results.data && res.results.data.length > 0) {
+          this.countryList = res.results.data;
+          this.totaleRecords = res.count;
+        } else {
+          this.countryList = []; // No data found
+          this.getTasking();
 
+        }
+        this.updateTable(); // Update the table data after API call
+      },
+    );
+  }
+  
+  updateTable() {
+    this.tableDataSource = new MatTableDataSource(this.countryList);
+  }
+  
+ 
+  
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
 }

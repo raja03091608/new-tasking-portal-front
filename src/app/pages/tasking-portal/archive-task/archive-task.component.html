@@ -28,7 +28,11 @@
                 (deleteEvent)="approvedDelete($event.tasking.id)" 
                 (restoreEvent)="restoreDelete($event.tasking.id)"
                 [isDeletable]="true" 
-                [totalRecords]="totalCounts"
+                [currentPage]="currentPage"
+				   [totalRecords]="totaleRecords"
+				   [rows]="pageSize"
+               [isShearchDisable]="true" 
+               (searchEvent)="onSearch($event)"
                 [isRestore]="true">
               </app-grid-table>
             </ng-container>

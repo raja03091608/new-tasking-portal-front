@@ -25,9 +25,12 @@
 
 							<app-grid-table [gridColumns]="gridColum" [gridData]="taskList" [ispaniNater]="true"
 								[isAction]="true" 
+                                (clearEvent)="clearFields()"
 								[totalRecords]="totaleRecords"
 								[currentPage]="currentPage"
 								[rows]="pageSize"
+                                [isShearchDisable]="true"
+                                (searchEvent)="onSearch($event)"
 								(paginationEvent)="handlePagination($event)" (editEvent)="onEditRow($event)"
 								(deleteEvent)="onDelete($event.id)" (viewEvent)="onViewRow($event)"
 								[isView]="this.permission.view" [isEditable]="this.permission.edit"
