@@ -66,6 +66,11 @@ export class GridTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
+  @Output() searchEvent? = new EventEmitter<any>();
+  @Output() clearEvent? = new EventEmitter<any>();
+  @Input() isShearchDisable: boolean = false;
+//   @Input() currentPage!: number; 
+
   token_detail:any
   newRowData: any = {}; 
  
@@ -383,5 +388,11 @@ onPageChange(event: PaginatorState) {
         });
     }
 }
+
+emitSearchEvent(searchText: string) {
+    if (searchText.trim()) {
+      this.searchEvent.emit(searchText); 
+    }
+  }
 }
 

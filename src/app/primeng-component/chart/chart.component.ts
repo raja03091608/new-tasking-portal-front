@@ -37,12 +37,12 @@ export class ChartComponent implements OnInit {
     @Input() showExtendedDeadlines: boolean = true;
     @Input() showOverdueTasks: boolean = true;
     @Input() showGroupwiseChart: boolean = true;
-    @Input() showTaskStatus: boolean = true;
-    @Input() showStatusByGroup: boolean = true;
-    @Input() showCMSStatus: boolean = true;
-    @Input() showCSCStatus: boolean = true;
-    @Input() showSCSStatus: boolean = true;
-    @Input() showTaNCSStatus: boolean = true;
+    @Input() showTaskStatus: boolean = false;
+    @Input() showStatusByGroup: boolean = false;
+    @Input() showCMSStatus: boolean = false;
+    @Input() showCSCStatus: boolean = false;
+    @Input() showSCSStatus: boolean = false;
+    @Input() showTaNCSStatus: boolean = false;
 
     stackBarChart: any;
     stackBarChartOptions: any;
@@ -80,6 +80,7 @@ export class ChartComponent implements OnInit {
         this.initTaNCSGroupChart();
         this.initCSCGroupChart();
         this.initETGGroupChart()
+        this.getStackBarChart()
     }
 
     distributionChartData: any;
@@ -230,7 +231,7 @@ export class ChartComponent implements OnInit {
             };
       
             // Configure the chart (using your existing stacked bar helper)
-            this.distributionChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks');
+            this.distributionChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks','y','top',0.2);
           });
       }
       
@@ -270,7 +271,7 @@ export class ChartComponent implements OnInit {
             };
       
             // Your existing stacked-bar configuration
-            this.directorateChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks');
+            this.directorateChartOptions = this.getChartOptionsStackBar('Sponsor Directorate', 'Tasks','y','top',0.2);
           });
       }
       
@@ -292,9 +293,11 @@ export class ChartComponent implements OnInit {
     // ✅ **Function to populate the chart data**
     taskingSponsoringDirectorate() {
         const directorates = [
-            'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ',
+            'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ', 
             'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
-            'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE'
+            'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE',
+            'DGP (DGS-V)', 'DGAQA', 'DGAFMS', 'DGMS(N)', 'DGME', 
+            'CNS Directorate', 'ATVP', '14th DITCC Meeting Directive'
         ];
 
         const taskCounts = {
@@ -319,16 +322,18 @@ export class ChartComponent implements OnInit {
         };
 
         // ✅ **Using helper function to generate chart options**
-        this.directorateChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks");
+        this.directorateChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks",'y','top',0.2);
     }
     
     
     generateDirectorateChart() {
-        const directorates = [
-            'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ',
-            'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
-            'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE'
-        ];
+      const directorates = [
+        'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ', 
+        'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
+        'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE',
+        'DGP (DGS-V)', 'DGAQA', 'DGAFMS', 'DGMS(N)', 'DGME', 
+        'CNS Directorate', 'ATVP', '14th DITCC Meeting Directive'
+    ];
   
         const taskCounts = {
             Completed: [5, 2, 3, 1, 8, 15, 12, 3, 4, 1, 5, 2, 3, 4, 2, 5, 6, 3, 2, 10, 8],
@@ -417,12 +422,12 @@ export class ChartComponent implements OnInit {
         };
         this.taskIssuedOptions = this.getChartOptionsStackBar('Year','Tasks',"x",'top') 
     }
-    getChartOptionsStackBar(yLabel: string, xLabel: string,indexAxis='y',pos='right') {
+    getChartOptionsStackBar(yLabel: string, xLabel: string,indexAxis='y',pos='right',asp:number=0.7) {
         return {
             indexAxis: indexAxis,
             responsive: true,
             maintainAspectRatio: false,
-            aspectRatio: 0.7,
+            aspectRatio: asp,
             plugins: {
                 legend: { display: true, position: pos },
                 tooltip: { enabled: true },
@@ -497,15 +502,27 @@ export class ChartComponent implements OnInit {
         labels: ['CSI', 'CSC', 'SCS', 'ETG', 'TaNCS', 'CMS'],
         datasets: [{
           data: [53, 26, 12, 3, 51, 35],
-          backgroundColor: ['#008FFB', '#FF9800', '#4CAF50', '#9C27B0', '#F44336', '#795548']
+          backgroundColor: ['#4CAF50', '#FF9800', '#9C27B0', '#F44336', '#7A5548', '#008FFB'],
+          datalabels: {
+            color: '#FFFFFF',
+            font: {
+              weight: 'bold'
+            }
+          }
         }]
       };
       
       this.pieChartData2 = {
         labels: ['Time Independent', 'Completed', 'Task Closed', 'WIP'],
         datasets: [{
-          data: [24, 20, 77, 83],
-          backgroundColor: ['#008FFB', '#F44336', '#4CAF50', '#FF9800']
+          data: [24, 20, 77, 59],
+          backgroundColor: ['#008FFB', '#FF9800', '#4CAF50', '#F44336'],
+          datalabels: {
+            color: '#FFFFFF',
+            font: {
+              weight: 'bold'
+            }
+          }
         }]
       };
     }
@@ -721,7 +738,71 @@ export class ChartComponent implements OnInit {
 
 
 
-
+    getStackBarChart() {
+          this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((response: any) => {
+              if (!response || !response.data) {
+                  console.error('Invalid API response:', response);
+                  return;
+              }
+  
+              const groups = response.data;
+              const moduleNames: string[] = [];
+              const workInProgressData: number[] = [];
+              const completedData: number[] = [];
+              const taskClosedData: number[] = [];
+  
+              groups.forEach((group) => {
+                  moduleNames.push(group.tasking_group_name);
+  
+                  let workInProgressCount = 0, completedCount = 0, taskClosedCount = 0;
+                  group.titles.forEach((title) => {
+                      if (title.title.includes('Work In Progress')) workInProgressCount += title.task_count;
+                      else if (title.title.includes('Completed')) completedCount += title.task_count;
+                      else if (title.title.includes('Task Closed')) taskClosedCount += title.task_count;
+                  });
+  
+                  workInProgressData.push(workInProgressCount);
+                  completedData.push(completedCount);
+                  taskClosedData.push(taskClosedCount);
+              });
+  
+              this.stackBarChart = {
+                  labels: moduleNames,
+                  datasets: [
+                      {
+                          label: 'Work In Progress',
+                          backgroundColor: '#4caf50',
+                          data: workInProgressData,
+                          stack: 'Stack 0',
+                          barThickness: 130, 
+                          maxBarThickness: 130
+                      },
+                      {
+                          label: 'Completed',
+                          backgroundColor: '#007bff',
+                          data: completedData,
+                          stack: 'Stack 0',
+                          barThickness: 130, 
+                          maxBarThickness: 130
+                      },
+                      {
+                          label: 'Task Closed',
+                          backgroundColor: '#ff9800',
+                          data: taskClosedData,
+                          stack: 'Stack 0',
+                          barThickness: 130, 
+                          maxBarThickness: 130
+                      }
+                  ]
+              };
+  
+              this.stackBarChartOptions = {
+                  ...this.getChartOptionsStackBar("Number of Tasks","WESEE GROUP",'x','top',0.5),
+                  
+              };
+          });
+      }
+  
 
 
 

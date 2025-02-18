@@ -30,17 +30,6 @@ declare let $: any;
 declare function closeModal(selector): any;
 declare function openModal(selector): any;
 
-
-
-
-
-
-
-
-
-
-
-
 @Component({
   selector: 'app-dashboard1',
   templateUrl: './dashboard1.component.html',
@@ -103,7 +92,9 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     { field: 'tasking.comments_of_apso', header: 'APSO Comments' },
     { field: 'tasking.task_description', header: 'Task Description' }
   ];
-  currentPage: number;
+  gridData: any[];
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<unknown, MatPaginator>;
 
   downloadexcel() {
     let data = document.getElementById('xlseExport');
@@ -491,6 +482,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
   }
   ngOnInit(): void {
+    this.getTicketCounts()
     this.getJSON()
     this.getStatus();
     this.getNewTaskingStatus();
@@ -918,10 +910,10 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   totalCounts:number=0;
 
   getDashboardCount() {
-    this.api.getAPI(`${environment.API_URL}transaction/archive_list?page=${this.page}`)
+    this.api.getAPI(`${environment.API_URL}transaction/archive_list`)
       .subscribe((res) => {
         if (res?.status === environment.SUCCESS_CODE && res?.data) {
-          this.archive_count = res.results|| 0;  // Ensure it's always a number
+          this.archive_count = res.results.data|| 0;  // Ensure it's always a number
         }
       });
       if (this.token_detail.role_id == 3) {
@@ -1110,6 +1102,8 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
   }
   page=1;
+  pageSize=10;
+  currentPage=0;
   approveTask = [] as any
   getNewTaskingStatus() { 
     this.approveTask = [];
@@ -1118,7 +1112,8 @@ export class Dashboard1Component implements OnInit, OnDestroy {
       (res: any) => {
         if (res?.results?.data) {
           this.approveTask = res.results.data;
-          this.totalCounts = res.count;
+          this.currentPage=this.page-1;
+          this.totaleRecords = res.count; // Ensure count is defined
         } 
       },
     );
@@ -1129,11 +1124,13 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   handleFilter(filterValue: any) {
     this.filterData = filterValue;
   }
-  handlePagination(pageEvent: any) {
-    console.log('Pagination Event:', pageEvent);
-    this.page=pageEvent.page+1;
+  handlePagination(event: any) {
+    this.page=event.page+1;
     this.getNewTaskingStatus();
     this. getDashboardCount();
+    this.currentPage=event.page;
+    this.pageSize = event.rows;
+  
     
 }
 
@@ -1142,6 +1139,7 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
     { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
     { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
 
   ]
@@ -1213,12 +1211,50 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   getFileNameFromUrl(url: string): string {
     return url ? url.substring(url.lastIndexOf('/') + 1) : '';
 }
-
-
+onSearch(searchText: string) {
+  if (!searchText.trim()) {
+    this.approveTask = []; 
+    return;
+  }
+  this.approveTask = []; 
+  this.api.getAPI(`${environment.API_URL}transaction/tasking-status?flag=dashboard&search=${searchText}`).subscribe(
+    (res) => {
+      if (res && res.results && res.results.data && res.results.data.length > 0) {
+        this.approveTask = res.results.data;
+        this.totaleRecords = res.count; 
+      } else {
+        this.approveTask = []; 
+        console.warn('No matching data found.');
+        this.getNewTaskingStatus();
+      }
+    },
+   
+  );
+}
+updateTable() {
+  this.tableDataSource = new MatTableDataSource(this.approveTask);
+}
+  clearFields() {
+    this.searchValue = '';
+    this.getNewTaskingStatus();
+   
+  }
+  getTicketCounts(): void {
+    this.api.getAPI(environment.API_URL + 'transaction/dashboard-cards')  // Replace with your actual API URL
+      .subscribe(
+        (response) => {
+          this.count = response.approved_count || 0;
+          this.count2 = response.waiting_for_approval || 0;
+          this.archive_count = response.archive_count || 0;
+        },
+        (error) => {
+          console.error('Error fetching ticket counts', error);
+        }
+      );
+}
 
 
 
 }
-
 
 

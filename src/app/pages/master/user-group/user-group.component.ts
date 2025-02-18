@@ -68,6 +68,7 @@ export class UserGroupComponent implements OnInit {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   departmentData= [] as any;
   totalCounts: any;
+  totaleRecords: any;
 
 
 
@@ -112,7 +113,9 @@ export class UserGroupComponent implements OnInit {
 
     this.getAccess();
   }
-page=1;
+  pageSize=10;
+currentPage=0;
+  page=1;
   getDepartment() {
     this.departmentData=[];
       this.api.getAPI(`${environment.API_URL}master/department?page=${this.page}`).subscribe((res) => {
@@ -121,6 +124,8 @@ page=1;
         this.departmentData = res.results;
         this.totalCounts=res.count;
         this.dataSource.paginator = this.pagination;
+        this.totaleRecords = res.count; // Ensure count is defined
+        this.currentPage=this.page-1;
       });
   }
 
@@ -281,6 +286,8 @@ page=1;
   handlePagination(pageEvent: any) {
     this. getDepartment();
     this.page=pageEvent.page+1;
+    this.currentPage=pageEvent.page;
+    this.pageSize = pageEvent.rows;
 
     
   }

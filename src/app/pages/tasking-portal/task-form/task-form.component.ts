@@ -9,6 +9,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { language } from '../../../../environments/language';
 import { ConfirmationDialogComponent } from '../../../confirmation-dialog/confirmation-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -128,6 +129,11 @@ export class TaskFormComponent implements OnInit {
   token_detail: any;
   totaleRecords:any;
   private signatureCache: { [key: string]: string } = {};
+  searchValue: string;
+  globalsearch: any;
+  tableDataSource: any;
+  sort: any;
+  paginator: any;
   constructor(private fb: FormBuilder, private api: ApiService,private messageService: MessageService,private conFdialog: MatDialog,) { 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
   }
@@ -373,7 +379,7 @@ export class TaskFormComponent implements OnInit {
   removeFile(key:string){    this.rowData[key]=null;  }
   getFileNameFromUrl(url: string): string {    return url ? url.substring(url.lastIndexOf('/') + 1) : '';}
   getSignatureData() { 
-    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.rowData.id).subscribe((res) => { 
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking=" + this.rowData.id).subscribe((res) => { 
         this.rowDataStatus = res.data;
         this.signatureCache = {}; // Clear cache when new data is loaded
     });
@@ -447,6 +453,7 @@ export class TaskFormComponent implements OnInit {
       return;
     }
     if (this.apsoForm.valid) {
+
       const payload = {
         comments_of_apso: this.apsoForm.value.comments_of_apso,
         id: this.rowData.id,
@@ -454,10 +461,16 @@ export class TaskFormComponent implements OnInit {
         comment_status :1
 
       };
+      let fpayload={
+        apsoForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :1
+      }
 
       console.log('APSO Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'APSO Form submitted successfully:' });
           console.log('APSO Form submitted successfully:', response);
@@ -848,7 +861,7 @@ onEditRole(rowData) {
   }
 
   timelineStepName(step: any): string {
-    const roleName = step?.next_user?.roles[0]?.user_role?.name;
+    const roleName = step?.next_user?.hrcdf_designation || step?.next_user?.roles[0]?.user_role?.name ;
     return ` (${roleName})`;
   }
   timelineStepDirect(step: any): string {
@@ -976,5 +989,47 @@ onEditRole(rowData) {
     };
   }
 
+  onSearch(searchText: string) {
+    searchText = searchText.trim();
+    this.taskList = [];
+    this.updateTable();
+    if (!searchText) {
+      this.totaleRecords = 0; 
+      return;
+    }
+    const encodedSearchText = encodeURIComponent(searchText);
+    this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&search=${encodedSearchText}&page=${this.page}`)
+      .subscribe({
+        next: (res) => {
+          this.taskList = Array.isArray(res.results) ? res.results : [];
+          this.totaleRecords = res?.count || 0;
+          this.updateTable(); 
+        },
+        error: (error) => {
+          this.taskList = []; 
+          this.totaleRecords = 0;
+          this.getTasking();
+          this.updateTable();
+        }
+      });
+  }
+
+  updateTable() {
+    this.tableDataSource = new MatTableDataSource(this.taskList);
+    if (this.paginator) {
+      this.tableDataSource.paginator = this.paginator;
+    }
+    if (this.sort) {
+      this.tableDataSource.sort = this.sort;
+    }
+}
+
+  
+    
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
 }
 

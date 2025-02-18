@@ -104,32 +104,38 @@
         <div class="row">
             
             <!-- Groupwise Summary Chart -->
-            <div class="col-md-12" *ngIf="showGroupwiseChart">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title fw-bold">Groupwise Summary</h3>
-                        <div class="d-flex gap-2">
-                            <a (click)="downloadCSV(groupwiseChartData, 'Groupwise Summary Report')" 
-                               class="btn btn-light btn-sm text-decoration-none">
-                                <i class="fa-solid fa-file-csv fa-lg"></i> CSV
-                            </a>
-                            <a (click)="downloadChart(groupWiseChart.chart, 'Groupwise Summary Report')" 
-                               class="btn btn-warning btn-sm text-decoration-none">
-                                <i class="fa-solid fa-file-image fa-lg"></i> PNG
-                            </a>
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="card-title align-items-start flex-column pt-5">
+                                <span class="fw-bold mb-3">Groupwise Summary</span>
+                              </h3>
+                            <div class="d-flex gap-2">
+                                <a (click)="downloadCSV(stackBarChart, 'Group Wise Report')" 
+                                   class="btn btn-light btn-sm text-decoration-none" 
+                                   data-bs-toggle="tooltip" title="Download CSV">
+                                    <i class="fa-solid fa-file-csv fa-lg"></i> CSV
+                                </a>
+                                <a (click)="downloadChart(groupWiseChart.chart, 'Group Wise Report')" 
+                                   class="btn btn-warning btn-sm text-decoration-none" 
+                                   data-bs-toggle="tooltip" title="Download PNG">
+                                    <i class="fa-solid fa-file-image fa-lg"></i> PNG
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p-chart #groupWiseChart type="bar" [data]="stackBarChart" [options]="stackBarChartOptions"
+                                class="w-100" style="height: 400px;"></p-chart>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <p-chart type="bar" [data]="groupwiseChartData" [options]="groupwiseChartOptions" class="w-100" style="height: 500px;"></p-chart>
-                    </div>
                 </div>
-            </div>
+           
     
             <!-- Task Distribution Pie Chart -->
             <div class="col-md-6" *ngIf="showTaskDistribution">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title fw-bold">Task Distribution</h3>
+                        <h3 class="card-title fw-bold">Task Distribution - by Group</h3>
                         <div class="d-flex gap-2">
                             <a (click)="downloadCSV(pieChart1, 'Task Distribution Report')" 
                                class="btn btn-light btn-sm text-decoration-none">
@@ -151,7 +157,7 @@
             <div class="col-md-6" *ngIf="showOverdueTasks">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="card-title fw-bold">Overdue Tasks</h3>
+                        <h3 class="card-title fw-bold">Task Distribution - by Status</h3>
                         <div class="d-flex gap-2">
                             <a (click)="downloadCSV(OverDueData, 'Overdue Tasks Report')" 
                                class="btn btn-light btn-sm text-decoration-none">
@@ -341,3 +347,5 @@
         </div>
     </div>    
 </div>
+
+

@@ -25,9 +25,12 @@
 
 							<app-grid-table [gridColumns]="gridColum" [gridData]="taskList" [ispaniNater]="true"
 								[isAction]="true" 
+                                (clearEvent)="clearFields()"
 								[totalRecords]="totaleRecords"
 								[currentPage]="currentPage"
 								[rows]="pageSize"
+                                [isShearchDisable]="true"
+                                (searchEvent)="onSearch($event)"
 								(paginationEvent)="handlePagination($event)" (editEvent)="onEditRow($event)"
 								(deleteEvent)="onDelete($event.id)" (viewEvent)="onViewRow($event)"
 								[isView]="this.permission.view" [isEditable]="this.permission.edit"
@@ -220,7 +223,7 @@
                                       <div [innerHTML]="getSignatureHtml('TS_recommender')"></div>
                                   </ng-container>
                               </form>
-                              <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div>
+                              <!-- <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div> -->
                           
                               </div>
                           <!--DG WESEE Form -->
@@ -273,7 +276,7 @@
                           <!-- PD DEE Form -->
                           <form [formGroup]="pdDeeForm" (ngSubmit)="onSubmitPdDEE()">
                               <div class="alert alert-dismissible alert-bg">
-                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">PD DEE &nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
+                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">CMDE (EE)&nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
                                    <!-- <textarea rows="4" class="form-control" formControlName="comments_of_pd_dee"></textarea> -->
                                    <angular-editor class="mb-4" id="comments_of_pd_dee" formControlName="comments_of_pd_dee"	[config]="getEditorConfig(SubmitAccess.formPermission6)"></angular-editor>
                                   
@@ -288,7 +291,7 @@
                           <!-- ACOM Form -->
                           <form [formGroup]="acomForm" (ngSubmit)="onSubmitACOM()">
                               <div class="alert alert-dismissible alert-bg">
-                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(IT & S)  (Asst.Chief of Materiel(Information Technology & Sys))</b></mat-label> </div>
+                                  <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">ACOM &nbsp;(IT & S) </b></mat-label> </div>
                           
                                   <mat-label style="font-size:large;"><b>ACOM Comments</b><b class="star">*</b></mat-label>
                                   <angular-editor class="mb-4" id="recommendation_of_acom_its" formControlName="recommendation_of_acom_its"	[config]="getEditorConfig(SubmitAccess.formPermission7)"></angular-editor>
@@ -305,7 +308,7 @@
                           <form [formGroup]="comForm" (ngSubmit)="onSubmitCOM()">
                               <div class="alert alert-dismissible alert-bg">
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">COM &nbsp;(Chief of Materiel)</b></mat-label> </div>
-                                  <mat-label style="font-size:large;"><b>COM Approval Comments</b><b class="star">*</b></mat-label>
+                                  <mat-label style="font-size:large;"><b>COM Comments</b><b class="star">*</b></mat-label>
                                     <angular-editor class="mb-4" id="approval_of_com" formControlName="approval_of_com"	[config]="getEditorConfig(SubmitAccess.formPermission8)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="approval_of_com"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission8" type="submit" class="btn btn-success mt-3">Approve</button>
@@ -351,7 +354,7 @@
         <div   class="timeline-cover text-center">
             <ul class="timeline">
                 <li *ngFor="let step of roles" class="active">
-                    <label>({{step?.current?.roles[0]?.user_role?.name }})</label> <br>
+                    <label>({{step?.next_user?.hrcdf_designation || step?.current?.roles[0]?.user_role?.name }})</label> <br>
                     <label>{{step?.current?.department?.name }}</label>
                 </li>
                 <li *ngFor="let step of routeList; let i = index" [ngClass]="{'active': i < rowData.level-1}">
@@ -472,7 +475,7 @@
             </div>
         </form>
 
-        <ng-container *ngIf="routeList && routeList.length > 0">
+        <ng-container *ngIf="false &&routeList && routeList.length > 0">
             <p-table [value]="routeList" responsiveLayout="scroll" class="mt-4"
                 styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded">
                 <ng-template pTemplate="header">

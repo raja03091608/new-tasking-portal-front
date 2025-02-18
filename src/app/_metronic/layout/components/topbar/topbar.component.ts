@@ -40,14 +40,14 @@ export class TopbarComponent implements OnInit {
   getNotifications(page: number = 1) {
     if (this.data.process_id == 2 && this.data.role_id == 3) {
       this.api.getAPI(
-        `${environment.API_URL}notification/get-notifications?tasking__created_by_id=${this.data.user_id}&page=${page}`
+        `${environment.API_URL}notification/get-notifications?tasking__created_by_id=${this.data.user_id}`
       ).subscribe((res) => {
-        if (res.status == environment.SUCCESS_CODE) {
+        if (res.results.status == environment.SUCCESS_CODE) {
           this.notificatiUnread = res.results.total_unread_notifications;
-        } else if (res.status == environment.ERROR_CODE) {
-          this.notification.displayMessage(res.message);
+        } else if (res.results.status == environment.ERROR_CODE) {
+          // this.notification.displayMessage(res.message);
         } else {
-          this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+          // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
         }
       });
     } 
@@ -55,10 +55,10 @@ export class TopbarComponent implements OnInit {
       this.api.getAPI(
         `${environment.API_URL}notification/get-notifications?process_id=${this.data.process_id}&tasking_group=${this.data.tasking_id}&page=${page}`
       ).subscribe((res) => {
-        if (res.status == environment.SUCCESS_CODE) {
+        if (res.results.status == environment.SUCCESS_CODE) {
           this.notificatiUnread = res.results.total_unread_notifications;
-        } else if (res.status == environment.ERROR_CODE) {
-          this.notification.displayMessage(res.message);
+        } else if (res.results.status == environment.ERROR_CODE) {
+          // this.notification.displayMessage(res.message);
         }
       });
     } 
@@ -66,12 +66,12 @@ export class TopbarComponent implements OnInit {
       this.api.getAPI(
         `${environment.API_URL}notification/get-notifications?page=${page}`
       ).subscribe((res) => {
-        if (res.status == environment.SUCCESS_CODE) {
+          if (res.results.status == environment.SUCCESS_CODE) {
           this.notificatiUnread = res.results.total_unread_notifications;
-        } else if (res.status == environment.ERROR_CODE) {
-          this.notification.displayMessage(res.message);
+        } else if (res.results.status == environment.ERROR_CODE) {
+          // this.notification.displayMessage(res.message);
         } else {
-          this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
+          // this.notification.displayMessage(language[environment.DEFAULT_LANG].unableSubmit);
         }
       });
     }
