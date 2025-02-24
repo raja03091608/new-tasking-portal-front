@@ -29,6 +29,8 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import{TableModule} from'primeng/table';
 import { AuthService } from './service/interceptors/auth.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CheckboxModule } from 'primeng/checkbox';
 
 // import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
@@ -67,7 +69,9 @@ import { AuthService } from './service/interceptors/auth.service';
     NgbModule,
     MaterialModule,
     AngularEditorModule,
-    TableModule
+    TableModule,
+    MultiSelectModule,
+    CheckboxModule
 
   ],
 

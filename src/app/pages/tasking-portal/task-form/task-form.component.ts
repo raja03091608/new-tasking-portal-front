@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { environment } from '../../../../environments/environment.prod';
 import { ApiService } from '../../../service/api.service';
@@ -10,6 +10,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { language } from '../../../../environments/language';
 import { ConfirmationDialogComponent } from '../../../confirmation-dialog/confirmation-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { ReplaySubject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { MultiSelect } from 'primeng/multiselect';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 
 @Component({
@@ -134,7 +138,14 @@ export class TaskFormComponent implements OnInit {
   tableDataSource: any;
   sort: any;
   paginator: any;
-  constructor(private fb: FormBuilder, private api: ApiService,private messageService: MessageService,private conFdialog: MatDialog,) { 
+ 
+  selectedRoutes: any[] = [];
+  allUsers: any[] = [];
+  filteredUsers: any[] = [];
+  selectedUsers: any;
+  editingIndex: number = -1;
+  isEditing: boolean = false;
+  constructor(private fb: FormBuilder, public api: ApiService, private messageService: MessageService, private conFdialog: MatDialog) { 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
   }
 
@@ -184,6 +195,7 @@ export class TaskFormComponent implements OnInit {
   }
 
   onEditRow(rowData){
+    this.loadUsers();
     this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
@@ -198,6 +210,17 @@ export class TaskFormComponent implements OnInit {
         this.getTaskingUser({value:this.rowData.assigned_tasking_group?.tasking_group})
     // this.disableAllForms()
     this.showModal()
+  }
+  enterfristTimeRoute(){
+    const createdById=this.rowData.created_by?.id
+    const user= this.allUsers.find(user => user.id === createdById)
+    if(user && this.selectedRoutes.length === 0){
+      this.selectedRoutes.push({
+        ...user,
+        isCommenter:false,
+        isRecommender:true
+      })
+    }
   }
   formpermission(resdata:any){
     if(resdata.detail==='Passed'){
@@ -935,24 +958,7 @@ onEditRole(rowData) {
 
     })
   }
-  onSubmitRoute() {
-    const formData = this.formGroup.value;
 
-    const newComment = {
-      tasking: this.rowData.id,
-      id: '',
-      process: 2,
-      current_id: this.formGroup.get('current_id').value,
-      next_user_id: this.formGroup.get('next_user_id').value, //loginname
-    };
-    this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
-      this.getStatusTimeline()
-      this.displayModal=false;
-    })
-    let taskId = this.formGroup.get('taskId').value
-    this.formGroup.reset();
-    this.formGroup.get('taskId').setValue(taskId)
-  }
 
   apiCall() {
     this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
@@ -1031,5 +1037,145 @@ onEditRole(rowData) {
     this.getTasking();
    
   }
+
+ 
+
+  loadUsers() {
+    this.api.getAPI(environment.API_URL + 'api/auth/users?order_type=desc').subscribe(
+      (res: any) => {
+        this.allUsers = res;
+        if(!this.rowData.TS_recommender){
+          this.enterfristTimeRoute();
+        }
+      }
+    );
+  }
+
+  removeUser(user: any, index: number) {
+    this.selectedRoutes.splice(index, 1);
+  }
+routeedit:boolean=false;
+editindex:number;
+  onUsersSelected() {
+    const newUser = {
+      ...this.selectedUsers,
+      isRecommender: false,
+      isCommenter: true,
+      uniqueId: Date.now()
+    };
+    if(this.selectedUsers.process?.id === 2){
+      newUser.isRecommender=true;
+      newUser.isCommenter=false;
+    }
+    
+    if(this.routeedit){
+      this.editindex++;
+      this.selectedRoutes.splice(this.editindex, 0, newUser);
+      // this.routeedit=false;
+    }else{
+      this.selectedRoutes.push(newUser);
+    }
+    this.selectedUsers = null;
+    this.filteredUsers = [];
+  }
+  index:number;
+  checkRecommender(route: any) {
+    const index = this.selectedRoutes.findIndex(r => r.uniqueId  === route.uniqueId);
+    if (index !== -1) {
+      this.selectedRoutes[index].isRecommender=!this.selectedRoutes[index].isRecommender ;      
+      this.selectedRoutes[index].isCommenter=!this.selectedRoutes[index].isRecommender;
+    }
+  }
+  clear(key: string) {
+    this.messageService.clear(key);
+    this.selectedRoutes[this.index].isRecommender=!this.selectedRoutes[this.index].isRecommender ;      
+    this.selectedRoutes[this.index].isCommenter=!this.selectedRoutes[this.index].isRecommender;
+  }
+  editRoute(index: number) {
+    this.routeedit = true;
+    this.editindex = index;
+  }
+
+  filterUsers(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.allUsers as any[]).length; i++) {
+        let user = (this.allUsers as any[])[i];
+        if (
+            user?.loginname?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.rankCode?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.first_name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.last_name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.department?.name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.hrcdf_designation?.toLowerCase().includes(query.toLowerCase())
+        ) {
+            filtered.push(user);
+        }
+    }
+    this.filteredUsers = filtered;
+}
+
+onSubmitRoute() {
+  const routes=[]
+    this.selectedRoutes.forEach((route,index) => {
+      if(index < this.selectedRoutes.length ){
+        const user={
+        id:route.routeId || '',
+        seq:index+1,
+        tasking_id:this.rowData.id,
+        current_user:route.id,
+        next_user:this.selectedRoutes[index+1]?.id || '',
+        is_recommender:route.isRecommender,
+        is_commenter:route.isCommenter
+        }
+        routes.push(user)
+      }
+    })
+    this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', routes).subscribe(res=>{
+      console.log(res)
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Route configuration saved successfully'
+      });
+      this.getStatusTimeline();
+    })
+    console.log(routes)
+  // if (this.selectedRoutes.length > 0) {
+  //     const routes = this.selectedRoutes.map(route => ({
+  //         tasking: this.rowData.id,
+  //         process: 2,
+  //         current_id: route.fromUser.id,
+  //         next_user_id: route.toUser.id,
+  //         is_recommender: route.isRecommender,
+  //         is_commenter: route.isCommenter
+  //     }));
+
+  //     Promise.all(
+  //         routes.map(route => 
+  //             this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', route).toPromise()
+  //         )
+  //     ).then(
+  //         responses => {
+  //             this.messageService.add({
+  //                 severity: 'success',
+  //                 summary: 'Success',
+  //                 detail: 'Route configuration saved successfully'
+  //             });
+  //             this.getStatusTimeline();
+  //             this.displayModal = false;
+  //         }
+  //     ).catch(error => {
+  //         this.messageService.add({
+  //             severity: 'error',
+  //             summary: 'Error',
+  //             detail: 'Failed to save route configuration'
+  //         });
+  //         console.error('Error saving routes:', error);
+  //     });
+  // }
+}
+
 }
 

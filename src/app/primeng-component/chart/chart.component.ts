@@ -4,6 +4,7 @@ import { ApiService } from '../../service/api.service';
 import { environment } from '../../../environments/environment.prod';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
+import { ChartColors } from './chart-colors';
 
 Chart.register(ChartDataLabels);
 @Component({
@@ -37,12 +38,12 @@ export class ChartComponent implements OnInit {
     @Input() showExtendedDeadlines: boolean = true;
     @Input() showOverdueTasks: boolean = true;
     @Input() showGroupwiseChart: boolean = true;
-    @Input() showTaskStatus: boolean = false;
-    @Input() showStatusByGroup: boolean = false;
-    @Input() showCMSStatus: boolean = false;
-    @Input() showCSCStatus: boolean = false;
-    @Input() showSCSStatus: boolean = false;
-    @Input() showTaNCSStatus: boolean = false;
+    @Input() showTaskStatus: boolean = true;
+    @Input() showStatusByGroup: boolean = true;
+    @Input() showCMSStatus: boolean = true;
+    @Input() showCSCStatus: boolean = true;
+    @Input() showSCSStatus: boolean = true;
+    @Input() showTaNCSStatus: boolean = true;
 
     stackBarChart: any;
     stackBarChartOptions: any;
@@ -55,7 +56,10 @@ export class ChartComponent implements OnInit {
     pieChartData: any;
     pieChartDataOption: any;
 
-    colors = ["#008FFB", "#00E396", "#FEB019", "#FF4560"];
+    colors = ["#E6F3FF", "#FFE6E6", "#E6FFE6", "#FFE6F3"];
+
+    // Use centralized color configuration
+    standardColors = ChartColors;
 
     constructor(private api: ApiService) {}
 
@@ -66,9 +70,9 @@ export class ChartComponent implements OnInit {
         this.loadDirectorateTaskStatus();
         this.loadDirectorateGroupwiseTaskCount();
         this.loadTaskStatusCount();
-        this.taskingSponsoringDirectorate()
-        this.generateDirectorateChart()
-        this.loadOngoingTasksChart()
+        // this.taskingSponsoringDirectorate()
+        // this.generateDirectorateChart()
+        // this.loadOngoingTasksChart()
         this.loadTaskIssuedChart()
         this.initGroupwiseChart();
         this.initPieCharts();
@@ -117,17 +121,17 @@ export class ChartComponent implements OnInit {
               datasets: [
                 {
                   label: 'Completed',
-                  backgroundColor: '#008FFB',
+                  backgroundColor: this.standardColors.completed,
                   data: completed
                 },
                 {
                   label: 'Task Closed',
-                  backgroundColor: '#FF9800',
+                  backgroundColor: this.standardColors.closed,
                   data: closed
                 },
                 {
                   label: 'Work In Progress',
-                  backgroundColor: '#4CAF50',
+                  backgroundColor: this.standardColors.inProgress,
                   data: inProgress
                 }
               ]
@@ -147,7 +151,6 @@ export class ChartComponent implements OnInit {
                 return acc;
               }, new Set<string>())
             );
-      
             const labels = res.map(item => item.year);
             const datasets = allGroups.map(group => {
               return {
@@ -214,17 +217,17 @@ export class ChartComponent implements OnInit {
               datasets: [
                 {
                   label: 'Completed',
-                  backgroundColor: '#007bff',
+                  backgroundColor: this.standardColors.completed,
                   data: completed
                 },
                 {
                   label: 'Task Closed',
-                  backgroundColor: '#ff9800',
+                  backgroundColor: this.standardColors.closed,
                   data: closed
                 },
                 {
                   label: 'Work In Progress',
-                  backgroundColor: '#4caf50',
+                  backgroundColor: this.standardColors.inProgress,
                   data: inProgress
                 }
               ]
@@ -278,124 +281,52 @@ export class ChartComponent implements OnInit {
 
     // Helper method for consistent group colors
     getGroupColor(group: string): string {
-        const colorMap = {
-            'CMS': '#008FFB',
-            'CSC': '#FF9800', 
-            'CSI': '#4CAF50',
-            'ETG': '#F44336',
-            'SCS': '#9C27B0',
-            'TaNCS': '#7A5548',
-            'TCOE': '#00BCD4'
-        };
-        return colorMap[group] || '#FFD700'; // Changed default color to gold
+        return this.standardColors[group] || this.standardColors.default;
     }
-
+    
     // ✅ **Function to populate the chart data**
-    taskingSponsoringDirectorate() {
-        const directorates = [
-            'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ', 
-            'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
-            'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE',
-            'DGP (DGS-V)', 'DGAQA', 'DGAFMS', 'DGMS(N)', 'DGME', 
-            'CNS Directorate', 'ATVP', '14th DITCC Meeting Directive'
-        ];
+    // taskingSponsoringDirectorate() {
+    //     const directorates = [
+    //         'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ',
+    //         'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
+    //         'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE',
+    //         'DGP (DGS-V)', 'DGAQA', 'DGAFMS', 'DGMS(N)', 'DGME', 
+    //         'CNS Directorate', 'ATVP', '14th DITCC Meeting Directive'
+    //     ];
 
-        const taskCounts = {
-            CMS: [5, 2, 3, 1, 8, 15, 12, 3, 4, 1, 5, 2, 3, 4, 2, 5, 6, 3, 2, 10, 8],
-            CSC: [2, 1, 2, 0, 5, 8, 6, 1, 2, 0, 3, 1, 1, 2, 1, 3, 2, 1, 1, 4, 3],
-            CSI: [3, 1, 2, 1, 7, 12, 10, 2, 3, 1, 4, 2, 2, 3, 2, 4, 5, 2, 1, 9, 7],
-            ETG: [1, 0, 1, 0, 3, 5, 4, 1, 1, 0, 2, 1, 0, 1, 0, 2, 2, 1, 0, 3, 2],
-            SCS: [4, 2, 3, 1, 9, 14, 11, 3, 4, 1, 5, 3, 3, 4, 2, 5, 6, 3, 2, 11, 9],
-            TaNCS: [6, 3, 4, 2, 10, 18, 14, 4, 5, 2, 6, 3, 4, 5, 3, 6, 7, 4, 3, 12, 10]
-        };
+    //     const taskCounts = {
+    //         CMS: [5, 2, 3, 1, 8, 15, 12, 3, 4, 1, 5, 2, 3, 4, 2, 5, 6, 3, 2, 10, 8],
+    //         CSC: [2, 1, 2, 0, 5, 8, 6, 1, 2, 0, 3, 1, 1, 2, 1, 3, 2, 1, 1, 4, 3],
+    //         CSI: [3, 1, 2, 1, 7, 12, 10, 2, 3, 1, 4, 2, 2, 3, 2, 4, 5, 2, 1, 9, 7],
+    //         ETG: [1, 0, 1, 0, 3, 5, 4, 1, 1, 0, 2, 1, 0, 1, 0, 2, 2, 1, 0, 3, 2],
+    //         SCS: [4, 2, 3, 1, 9, 14, 11, 3, 4, 1, 5, 3, 3, 4, 2, 5, 6, 3, 2, 11, 9],
+    //         TaNCS: [6, 3, 4, 2, 10, 18, 14, 4, 5, 2, 6, 3, 4, 5, 3, 6, 7, 4, 3, 12, 10]
+    //     };
 
-        this.directorateChartData = {
-            labels: directorates,
-            datasets: [
-                { label: 'CMS', backgroundColor: '#008FFB', data: taskCounts.CMS },
-                { label: 'CSC', backgroundColor: '#FF9800', data: taskCounts.CSC },
-                { label: 'CSI', backgroundColor: '#4CAF50', data: taskCounts.CSI },
-                { label: 'ETG', backgroundColor: '#F44336', data: taskCounts.ETG },
-                { label: 'SCS', backgroundColor: '#9C27B0', data: taskCounts.SCS },
-                { label: 'TaNCS', backgroundColor: '#795548', data: taskCounts.TaNCS }
-            ]
-        };
+    //     this.directorateChartData = {
+    //         labels: directorates,
+    //         datasets: [
+    //             { label: 'CMS', backgroundColor: this.standardColors.completed, data: taskCounts.CMS },
+    //             { label: 'CSC', backgroundColor: this.standardColors.closed, data: taskCounts.CSC },
+    //             { label: 'CSI', backgroundColor: this.standardColors.inProgress, data: taskCounts.CSI },
+    //             { label: 'ETG', backgroundColor: this.standardColors.closed, data: taskCounts.ETG },
+    //             { label: 'SCS', backgroundColor: this.standardColors.closed, data: taskCounts.SCS },
+    //             { label: 'TaNCS', backgroundColor: this.standardColors.closed, data: taskCounts.TaNCS }
+    //         ]
+    //     };
 
-        // ✅ **Using helper function to generate chart options**
-        this.directorateChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks",'y','top',0.2);
-    }
+    //     // ✅ **Using helper function to generate chart options**
+    //     this.directorateChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks",'y','top',0.2);
+    // }
     
     
-    generateDirectorateChart() {
-      const directorates = [
-        'WESEE', 'WDB', 'PMG CMS', 'NHO', 'DWE', 'DSR', 'DSP', 'DMAQ', 
-        'DNS', 'DNSO/DNS', 'DNSO', 'DNSM', 'DNI', 'DNCO', 'DNOM',
-        'DIT', 'DEE/WDB', 'DEE/DNS', 'DEE/DNAS', 'DEE (SM)', 'DEE',
-        'DGP (DGS-V)', 'DGAQA', 'DGAFMS', 'DGMS(N)', 'DGME', 
-        'CNS Directorate', 'ATVP', '14th DITCC Meeting Directive'
-    ];
-  
-        const taskCounts = {
-            Completed: [5, 2, 3, 1, 8, 15, 12, 3, 4, 1, 5, 2, 3, 4, 2, 5, 6, 3, 2, 10, 8],
-            TaskClosed: [2, 1, 2, 0, 5, 8, 6, 1, 2, 0, 3, 1, 1, 2, 1, 3, 2, 1, 1, 4, 3],
-            WorkInProgress: [3, 1, 2, 1, 7, 12, 10, 2, 3, 1, 4, 2, 2, 3, 2, 4, 5, 2, 1, 9, 7]
-        };
-  
-        this.distributionChartData = {
-            labels: directorates,
-            datasets: [
-                { label: 'Completed', backgroundColor: '#007bff', data: taskCounts.Completed },
-                { label: 'Task Closed', backgroundColor: '#ff9800', data: taskCounts.TaskClosed },
-                { label: 'Work In Progress', backgroundColor: '#4caf50', data: taskCounts.WorkInProgress }
-            ]
-        };
-  
-        // ✅ **Using helper function to generate chart options**
-        this.distributionChartOptions = this.getChartOptionsStackBar("Sponsor Directorate", "Tasks");
-    }
+ 
 
 
     
 
-    loadOngoingTasksChart() {
-        this.ongoingTasksData = {
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            datasets: [
-                {
-                    label: 'CMS',
-                    backgroundColor: '#008FFB',
-                    data: [8, 5, 10, 15, 2]
-                },
-                {
-                    label: 'CSC',
-                    backgroundColor: '#FF9800',
-                    data: [5, 3, 6, 8, 2]
-                },
-                {
-                    label: 'CSI',
-                    backgroundColor: '#4CAF50',
-                    data: [10, 6, 12, 20, 5]
-                },
-                {
-                    label: 'ETG',
-                    backgroundColor: '#F44336',
-                    data: [3, 2, 4, 6, 1]
-                },
-                {
-                    label: 'SCS',
-                    backgroundColor: '#9C27B0',
-                    data: [7, 5, 8, 10, 3]
-                },
-                {
-                    label: 'TaNCS',
-                    backgroundColor: '#795548',
-                    data: [12, 10, 15, 18, 7]
-                }
-            ]
-        };
-
-        this.ongoingTasksOptions = this.getChartOptionsStackBar('Year','Tasks','y','top')
-    }
+   
+    
     taskIssuedData: any;
     taskIssuedOptions: any;
 
@@ -405,17 +336,17 @@ export class ChartComponent implements OnInit {
             datasets: [
                 {
                     label: 'Completed',
-                    backgroundColor: '#008FFB',
+                    backgroundColor: this.standardColors.completed,
                     data: [2, 4, 3, 3, 2, 5, 8, 10, 12, 3]
                 },
                 {
                     label: 'Task Closed',
-                    backgroundColor: '#FF9800',
+                    backgroundColor: this.standardColors.closed,
                     data: [3, 5, 4, 4, 3, 10, 6, 12, 8, 2]
                 },
                 {
                     label: 'Work In Progress',
-                    backgroundColor: '#4CAF50',
+                    backgroundColor: this.standardColors.inProgress,
                     data: [1, 2, 1, 1, 0, 20, 12, 15, 10, 1]
                 }
             ]
@@ -461,37 +392,81 @@ export class ChartComponent implements OnInit {
         };
     }
 
-   
+    getStackBarChart() {
+      this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((response: any) => {
+          if (!response || !response.data) {
+              console.error('Invalid API response:', response);
+              return;
+          }
+
+          const groups = response.data;
+          const moduleNames: string[] = [];
+          const workInProgressData: number[] = [];
+          const completedData: number[] = [];
+          const taskClosedData: number[] = [];
+
+          groups.forEach((group) => {
+              moduleNames.push(group.tasking_group_name);
+
+              let workInProgressCount = 0, completedCount = 0, taskClosedCount = 0;
+              group.titles.forEach((title) => {
+                  if (title.title.includes('Work In Progress')) workInProgressCount += title.task_count;
+                  else if (title.title.includes('Completed')) completedCount += title.task_count;
+                  else if (title.title.includes('Task Closed')) taskClosedCount += title.task_count;
+              });
+
+              workInProgressData.push(workInProgressCount);
+              completedData.push(completedCount);
+              taskClosedData.push(taskClosedCount);
+          });
+
+          this.stackBarChart = {
+              labels: moduleNames,
+              datasets: [
+                  {
+                      label: 'Work In Progress',
+                      backgroundColor: this.standardColors.inProgress,
+                      data: workInProgressData,
+                      stack: 'Stack 0',
+                      barThickness: 130, 
+                      maxBarThickness: 130
+                  },
+                  {
+                      label: 'Completed',
+                      backgroundColor: this.standardColors.completed,
+                      data: completedData,
+                      stack: 'Stack 0',
+                      barThickness: 130, 
+                      maxBarThickness: 130
+                  },
+                  {
+                      label: 'Task Closed',
+                      backgroundColor: this.standardColors.closed,
+                      data: taskClosedData,
+                      stack: 'Stack 0',
+                      barThickness: 130, 
+                      maxBarThickness: 130
+                  }
+              ]
+          };
+
+          this.stackBarChartOptions = {
+              ...this.getChartOptionsStackBar("Number of Tasks","WESEE GROUP",'x','top',0.5),
+              
+          };
+      });
+  }
   
 
-    commanChartOption={
-        responsive: true,
-        maintainAspectRatio: false,
-        aspectRatio: 0.7,
-        indexAxis: 'y', // ✅ **Makes the chart horizontal**
-        plugins: {
-            legend: { display: false },
-            datalabels: { display: true, color: '#000', font: { size: 12, weight: 'bold' } }
-        },
-        scales: {
-            x: {
-            title: { display: true, text: "Tasks", font: { size: 14, weight: 'bold' } },
-            beginAtZero: true
-            },
-            y: {
-            title: { display: true, text: "Category", font: { size: 14, weight: 'bold' } }
-            }
-        }
-        
-    }
+ 
     
     initGroupwiseChart() {
       this.groupwiseChartData = {
         labels: ['CMS', 'CSC', 'CSI', 'ETG', 'SCS', 'TaNCS'],
         datasets: [
-          { label: 'Completed', backgroundColor: '#008FFB', data: [5, 4, 6, 1, 3, 7] },
-          { label: 'Task Closed', backgroundColor: '#FF9800', data: [15, 12, 18, 3, 7, 14] },
-          { label: 'Work In Progress', backgroundColor: '#4CAF50', data: [20, 10, 30, 2, 5, 30] }
+          { label: 'Completed', backgroundColor: this.standardColors.completed, data: [5, 4, 6, 1, 3, 7] },
+          { label: 'Task Closed', backgroundColor: this.standardColors.closed, data: [15, 12, 18, 3, 7, 14] },
+          { label: 'Work In Progress', backgroundColor: this.standardColors.inProgress, data: [20, 10, 30, 2, 5, 30] }
         ]
       };
       this.groupwiseChartOptions = this.getChartOptionsStackBar('Tasks', 'Group','x','top');
@@ -502,9 +477,16 @@ export class ChartComponent implements OnInit {
         labels: ['CSI', 'CSC', 'SCS', 'ETG', 'TaNCS', 'CMS'],
         datasets: [{
           data: [53, 26, 12, 3, 51, 35],
-          backgroundColor: ['#4CAF50', '#FF9800', '#9C27B0', '#F44336', '#7A5548', '#008FFB'],
+          backgroundColor: [
+            this.standardColors.CSI, 
+            this.standardColors.CSC, 
+            this.standardColors.SCS, 
+            this.standardColors.ETG, 
+            this.standardColors.TaNCS, 
+            this.standardColors.CMS
+          ],
           datalabels: {
-            color: '#FFFFFF',
+            color: '#000000',
             font: {
               weight: 'bold'
             }
@@ -516,9 +498,15 @@ export class ChartComponent implements OnInit {
         labels: ['Time Independent', 'Completed', 'Task Closed', 'WIP'],
         datasets: [{
           data: [24, 20, 77, 59],
-          backgroundColor: ['#008FFB', '#FF9800', '#4CAF50', '#F44336'],
+          backgroundColor: [
+            this.standardColors.timeIndependent, 
+            this.standardColors.completed, 
+            this.standardColors.closed, 
+            this.standardColors.inProgress, 
+            
+          ],
           datalabels: {
-            color: '#FFFFFF',
+            color: '#000000',
             font: {
               weight: 'bold'
             }
@@ -529,11 +517,17 @@ export class ChartComponent implements OnInit {
   
     initTaskStatusChart() {
       this.taskStatusChartData = {
-        labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
+        labels: ['Total', 'Work In Progress', 'Completed', 'Task Closed', 'Overdue'],
         datasets: [{
           label: 'Status',
-          backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'],
-          data: [100, 70, 30, 10, 5, 8]
+          backgroundColor: [
+              this.standardColors.total,                           // Light Grey for Total
+              this.standardColors.inProgress,      // Orange for WIP
+              this.standardColors.completed,       // Blue for Completed
+              this.standardColors.closed,          // Green for Closed
+              this.standardColors.overdue          // Red for Overdue
+          ],
+          data: [100, 70, 30, 10, 5]
         }]
       };
     }
@@ -542,12 +536,12 @@ export class ChartComponent implements OnInit {
       this.statusByGroupChartData = {
         labels: ['Work In Progress', 'Completed'],
         datasets: [
-          { label: 'CMS', backgroundColor: '#008FFB', data: [15, 5] },
-          { label: 'CSC', backgroundColor: '#FF9800', data: [12, 4] },
-          { label: 'CSI', backgroundColor: '#4CAF50', data: [18, 6] },
-          { label: 'ETG', backgroundColor: '#9C27B0', data: [3, 1] },
-          { label: 'SCS', backgroundColor: '#F44336', data: [7, 3] },
-          { label: 'TaNCS', backgroundColor: '#795548', data: [14, 7] }
+          { label: 'CMS', backgroundColor: this.getGroupColor('CMS'), data: [15, 5] },
+          { label: 'CSC', backgroundColor: this.getGroupColor('CSC'), data: [12, 4] },
+          { label: 'CSI', backgroundColor: this.getGroupColor('CSI'), data: [18, 6] },
+          { label: 'ETG', backgroundColor: this.getGroupColor('ETG'), data: [3, 1] },
+          { label: 'SCS', backgroundColor: this.getGroupColor('SCS'), data: [7, 3] },
+          { label: 'TaNCS', backgroundColor: this.getGroupColor('TaNCS'), data: [14, 7] }
         ]
       };
       this.statusByGroupChartDataOption={
@@ -561,21 +555,51 @@ export class ChartComponent implements OnInit {
     initCSIGroupChart() {
       this.statusCSIGroupChartData = {
         labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-        datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [35, 25, 10, 5, 3, 4] }]
+        datasets: [{
+            backgroundColor: [
+                this.standardColors.total,               // Light Grey for Total
+                this.standardColors.inProgress,           // Orange for WIP
+                this.standardColors.completed,            // Blue for Completed
+                this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                this.standardColors.extensionInProgress   // Red for Extension in Progress
+            ],
+            data: [35, 25, 10, 5, 3, 4]
+        }]
       };
     }
   
     initCMSGroupChart() {
       this.statusCMSGroupChartData = {
         labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-        datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [25, 10, 6, 4, 0, 0] }]
+        datasets: [{
+            backgroundColor: [
+                this.standardColors.total,               // Light Grey for Total
+                this.standardColors.inProgress,           // Orange for WIP
+                this.standardColors.completed,            // Blue for Completed
+                this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                this.standardColors.extensionInProgress   // Red for Extension in Progress
+            ],
+            data: [25, 10, 6, 4, 0, 0]
+        }]
       };
     }
   
     initSCSGroupChart() {
       this.statusSCSGroupChartData = {
         labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-        datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [20, 10, 6, 4, 2, 3] }]
+        datasets: [{
+            backgroundColor: [
+                this.standardColors.total,               // Light Grey for Total
+                this.standardColors.inProgress,           // Orange for WIP
+                this.standardColors.completed,            // Blue for Completed
+                this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                this.standardColors.extensionInProgress   // Red for Extension in Progress
+            ],
+            data: [20, 10, 6, 4, 2, 3]
+        }]
    
       };
     }
@@ -583,7 +607,17 @@ export class ChartComponent implements OnInit {
     initTaNCSGroupChart() {
       this.statusTaNCSGroupChartData = {
         labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-        datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [25, 8, 3, 8, 0, 3] }]
+        datasets: [{
+            backgroundColor: [
+                this.standardColors.total,               // Light Grey for Total
+                this.standardColors.inProgress,           // Orange for WIP
+                this.standardColors.completed,            // Blue for Completed
+                this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                this.standardColors.extensionInProgress   // Red for Extension in Progress
+            ],
+            data: [25, 8, 3, 8, 0, 3]
+        }]
    
       };
     }
@@ -591,7 +625,17 @@ export class ChartComponent implements OnInit {
     initCSCGroupChart() {
       this.statusCSCGroupChartData = {
         labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-        datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [19, 11, 4, 1, 2, 0] }]
+        datasets: [{
+            backgroundColor: [
+                this.standardColors.total,               // Light Grey for Total
+                this.standardColors.inProgress,           // Orange for WIP
+                this.standardColors.completed,            // Blue for Completed
+                this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                this.standardColors.extensionInProgress   // Red for Extension in Progress
+            ],
+            data: [19, 11, 4, 1, 2, 0]
+        }]
    
       };
     }
@@ -599,10 +643,19 @@ export class ChartComponent implements OnInit {
     initETGGroupChart() {
         this.statusETGGroupChartData = {
             labels: ['Total', 'Work In Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress'],
-            datasets: [{ backgroundColor: ['#90EE90', '#ADD8E6', '#D3D3D3', '#FFA500', '#800080', '#FF69B4'], data: [16, 8, 6, 1, 2, 3] }]
-       
+            datasets: [{
+                backgroundColor: [
+                    this.standardColors.total,               // Light Grey for Total
+                    this.standardColors.inProgress,           // Orange for WIP
+                    this.standardColors.completed,            // Blue for Completed
+                    this.standardColors.approvalInProgress,   // Pink for Approval in Progress
+                    this.standardColors.closureInProgress,    // Purple for Closure in Progress
+                    this.standardColors.extensionInProgress   // Red for Extension in Progress
+                ],
+                data: [16, 8, 6, 1, 2, 3]
+            }]
         };
-      }
+    }
 
     // Add new function to load task status count
     loadTaskStatusCount() {
@@ -620,19 +673,19 @@ export class ChartComponent implements OnInit {
 
                 // Color mapping for different statuses
                 const statusColors = {
-                    'Total': '#90EE90',
-                    'Work In Progress': '#ADD8E6',
-                    'Completed': '#D3D3D3',
-                    'Approval in Progress': '#FFA500',
-                    'Closure in Progress': '#800080',
-                    'Extension in Progress': '#FF69B4'
+                    'Total':this.standardColors.total, 
+                    'Work In Progress':this.standardColors.inProgress, 
+                    'Completed':this.standardColors.completed, 
+                    'Approval in Progress':this.standardColors.approvalInProgress,
+                    'Closure in Progress':this.standardColors.closureInProgress,
+                    'Extension in Progress':this.standardColors.extensionInProgress   // '#FFE6E6'
                 };
 
                 // Process each status from the API response
                 res.forEach(item => {
                     statusData.labels.push(item.status);
                     statusData.datasets[0].data.push(item.count);
-                    statusData.datasets[0].backgroundColor.push(statusColors[item.status] || '#FFD700');
+                    statusData.datasets[0].backgroundColor.push(statusColors[item.status] || '#FFF3E6');
                 });
 
                 // Update the task status chart data
@@ -653,18 +706,15 @@ export class ChartComponent implements OnInit {
                 datasets: [{
                     backgroundColor: statusData.map(item => {
                         const statusColors = {
-                            'Total': '#90EE90',
-                            'Work In Progress': '#ADD8E6',
-                            'Completed': '#D3D3D3',
-                            'Approval in Progress': '#FFA500',
-                            'Closure in Progress': '#800080',
-                            'Extension in Progress': '#FF69B4'
+                            'Total': this.standardColors.total,                     // Light Grey
+                            'Work In Progress': this.standardColors.inProgress,
+                            'Completed': this.standardColors.completed,
+                            'Task Closed': this.standardColors.closed,
+                            'Overdue': this.standardColors.overdue
                         };
-                        return statusColors[item.status] || '#FFD700';
+                        return statusColors[item.status] || '#D9D9D9';
                     }),
                     data: statusData.map(item => {
-                        // Calculate a portion of the total count for each group
-                        // This is a placeholder calculation - adjust based on your actual data structure
                         return Math.round(item.count * (Math.random() * 0.3 + 0.1));
                     })
                 }]
@@ -672,24 +722,12 @@ export class ChartComponent implements OnInit {
 
             // Update the appropriate group chart data
             switch(group) {
-                case 'CSI':
-                    this.statusCSIGroupChartData = groupData;
-                    break;
-                case 'CMS':
-                    this.statusCMSGroupChartData = groupData;
-                    break;
-                case 'SCS':
-                    this.statusSCSGroupChartData = groupData;
-                    break;
-                case 'TaNCS':
-                    this.statusTaNCSGroupChartData = groupData;
-                    break;
-                case 'CSC':
-                    this.statusCSCGroupChartData = groupData;
-                    break;
-                case 'ETG':
-                    this.statusETGGroupChartData = groupData;
-                    break;
+                case 'CSI': this.statusCSIGroupChartData = groupData; break;
+                case 'CMS': this.statusCMSGroupChartData = groupData; break;
+                case 'SCS': this.statusSCSGroupChartData = groupData; break;
+                case 'TaNCS': this.statusTaNCSGroupChartData = groupData; break;
+                case 'CSC': this.statusCSCGroupChartData = groupData; break;
+                case 'ETG': this.statusETGGroupChartData = groupData; break;
             }
         });
     }
@@ -732,76 +770,32 @@ export class ChartComponent implements OnInit {
         link.download = `${filename}.csv`;
         link.click();
     }
-    
-
-
-
-
-
-    getStackBarChart() {
-          this.api.getAPI(environment.API_URL + 'transaction/group-wise/').subscribe((response: any) => {
-              if (!response || !response.data) {
-                  console.error('Invalid API response:', response);
-                  return;
-              }
-  
-              const groups = response.data;
-              const moduleNames: string[] = [];
-              const workInProgressData: number[] = [];
-              const completedData: number[] = [];
-              const taskClosedData: number[] = [];
-  
-              groups.forEach((group) => {
-                  moduleNames.push(group.tasking_group_name);
-  
-                  let workInProgressCount = 0, completedCount = 0, taskClosedCount = 0;
-                  group.titles.forEach((title) => {
-                      if (title.title.includes('Work In Progress')) workInProgressCount += title.task_count;
-                      else if (title.title.includes('Completed')) completedCount += title.task_count;
-                      else if (title.title.includes('Task Closed')) taskClosedCount += title.task_count;
-                  });
-  
-                  workInProgressData.push(workInProgressCount);
-                  completedData.push(completedCount);
-                  taskClosedData.push(taskClosedCount);
-              });
-  
-              this.stackBarChart = {
-                  labels: moduleNames,
-                  datasets: [
-                      {
-                          label: 'Work In Progress',
-                          backgroundColor: '#4caf50',
-                          data: workInProgressData,
-                          stack: 'Stack 0',
-                          barThickness: 130, 
-                          maxBarThickness: 130
-                      },
-                      {
-                          label: 'Completed',
-                          backgroundColor: '#007bff',
-                          data: completedData,
-                          stack: 'Stack 0',
-                          barThickness: 130, 
-                          maxBarThickness: 130
-                      },
-                      {
-                          label: 'Task Closed',
-                          backgroundColor: '#ff9800',
-                          data: taskClosedData,
-                          stack: 'Stack 0',
-                          barThickness: 130, 
-                          maxBarThickness: 130
-                      }
-                  ]
-              };
-  
-              this.stackBarChartOptions = {
-                  ...this.getChartOptionsStackBar("Number of Tasks","WESEE GROUP",'x','top',0.5),
-                  
-              };
-          });
+    commanChartOption={
+      responsive: true,
+      maintainAspectRatio: false,
+      aspectRatio: 0.7,
+      indexAxis: 'y', // ✅ **Makes the chart horizontal**
+      plugins: {
+          legend: { display: false },
+          datalabels: { display: true, color: '#000', font: { size: 12, weight: 'bold' } }
+      },
+      scales: {
+          x: {
+          title: { display: true, text: "Tasks", font: { size: 14, weight: 'bold' } },
+          beginAtZero: true
+          },
+          y: {
+          title: { display: true, text: "Category", font: { size: 14, weight: 'bold' } }
+          }
       }
+      
+  }
+
+
+
+
+
+  
   
 
 
