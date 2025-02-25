@@ -157,21 +157,21 @@ export class TaskFormComponent implements OnInit {
     this.disableAllForms()
     
   }
-  page = 1;
-  currentPage = 0;
-  pageSize = 10;
   
+  url:string;
+
   getTasking() {
+    this.url=environment.API_URL + "transaction/tasking?order_type=desc"
     this.taskList = [];
-    let url = environment.API_URL + "transaction/tasking?order_type=desc&page=" + this.page;
+    let url = environment.API_URL + "transaction/tasking?order_type=desc&limit_start=0&limit_end=10"
     if (this.token_detail.process_id == 2 && this.token_detail.role_id == 3) {
+      this.url +=`&created_by_id=${this.token_detail.user_id}`;
       url += `&created_by_id=${this.token_detail.user_id}`;
     }
 
     this.api.getAPI(url).subscribe({
       next: (res) => {
-        this.taskList = res.results;
-        this.totaleRecords = res.count;
+        this.taskList = res;
         // this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
       },
       error: (error) => {
@@ -412,9 +412,9 @@ export class TaskFormComponent implements OnInit {
   
 
   handlePagination(event: any) {
-    this.page = event.page + 1; // Convert 0-based to 1-based for API
-    this.pageSize = event.rows;
-    this.currentPage = event.page;
+    // this.page = event.page + 1; // Convert 0-based to 1-based for API
+    // this.pageSize = event.rows;
+    // this.currentPage = event.page;
     this.getTasking();
   }
 
@@ -1005,7 +1005,7 @@ onEditRole(rowData) {
         return;
     }
     const encodedSearchText = encodeURIComponent(searchText);
-    this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&search=${encodedSearchText}&page=${this.page}`)
+    this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&search=${encodedSearchText}`)
       .subscribe({
         next: (res) => {
           this.taskList = Array.isArray(res.results) ? res.results : [];
@@ -1022,7 +1022,6 @@ onEditRole(rowData) {
           this.totaleRecords = 0;
           if (error?.error?.detail === "Invalid page.") {
               this.messageService.add({severity:'error', summary:'Invalid Page', detail:'Resetting to the first page.'});
-              this.page = 1; // Page reset karke dubara API call karein
               this.onSearch(searchText); 
               return;
           }

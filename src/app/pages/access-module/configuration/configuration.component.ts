@@ -119,12 +119,13 @@ page=1;
         this.currentPage = this.page - 1; 
       });
   }
+  url:string;
   getApproval() {
     this.api
-      .getAPI(`${environment.API_URL}configuration/approvals`)
+      .getAPI(`${environment.API_URL}configuration/approvals?limit_start=0&limit_end=10`)
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
-        this.configurationData = res.data;
+        this.configurationData = res;
         this.countryList = res.data;
         this.dataSource.paginator = this.pagination;
       });}

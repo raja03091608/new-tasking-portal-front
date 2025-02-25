@@ -599,8 +599,8 @@
       </div>
       <ng-container *ngIf="approveTask.length !=0">
         <app-grid-table [gridColumns]="gridColum" [gridData]="approveTask" [ispaniNater]="true" [isAction]="true"
-          (filterEvent)="handleFilter($event)"  [currentPage]="currentPage" [totalRecords]="totaleRecords"
-          [rows]="pageSize"[isShearchDisable]="true" (searchEvent)="onSearch($event)" (clearEvent)="clearFields()" (paginationEvent)="handlePagination($event)"
+          (filterEvent)="handleFilter($event)" [url]="url"
+          (paginationEvent)="handlePagination($event)"
           (viewEvent)="openEdit($event)" [isView]="true">
         </app-grid-table>
       </ng-container>

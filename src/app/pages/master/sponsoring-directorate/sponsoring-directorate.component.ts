@@ -166,11 +166,11 @@ userList=[]
         
       });
   }
-
+  url:string;
   getInititator() {
     this.sponSoringData=[]
     this.api
-      .getAPI(environment.API_URL + "master/sponsoring_directorate")
+      .getAPI(environment.API_URL + "master/sponsoring_directorate?limit_start=0&limit_end=10")
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
         this.sponSoringData= res.data;
