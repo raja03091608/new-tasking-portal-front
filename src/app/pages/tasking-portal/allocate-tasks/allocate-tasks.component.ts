@@ -124,23 +124,19 @@ gridColumns=[
     })
   }
   handlePagination(event: any) {
-    this.page=event.page+1;
    this.getTasking();
-   this.currentPage=event.page;
-   this.pageSize = event.rows;
  }
-pageSize=10;
-currentPage=0;
-  page=1;
+ url:string;
+
   getTasking() {
+    this.url=`${environment.API_URL}transaction/allocate/status`
+
     this.countryList = [];
     if (this.token_detail.role_id == 3) {
       this.api
-      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}&page=${this.page}`)
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}`)
         .subscribe((res) => {
-          this.countryList = res.results.data || []; // Handle undefined results safely
-          this.totaleRecords = res.count; // Ensure count is defined
-          this.currentPage=this.page-1;
+          this.countryList = res.data || []; // Handle undefined results safely
           if (res.status == environment.SUCCESS_CODE) {
             if (this.dataSourcelist) {
             //   this.dataSourcelist.data = this.countryList;
@@ -151,11 +147,9 @@ currentPage=0;
           }
         });
     } else {
-      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?page=${this.page}`)
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?limit_start=0&limit_end=10`)
   .subscribe((res) => {
-    this.countryList = res.results.data || []; // Handle undefined results safely
-    this.totaleRecords = res.count; // Ensure count is defined
-    this.currentPage=this.page-1;
+    this.countryList = res.data || []; // Handle undefined results safely
     if (res.results?.status === environment.SUCCESS_CODE) {
 
       if (this.dataSourcelist) {

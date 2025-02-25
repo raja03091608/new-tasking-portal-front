@@ -17,13 +17,11 @@
 				 [ispaniNater]="true" [isAction]="true" 
 				 (editEvent)="updateallocate($event)" 
 				 [isEditable]="true"
-				 (clearEvent)="clearFields()"
-				 [currentPage]="currentPage"
-				 [totalRecords]="totaleRecords"
-				 [rows]="pageSize"
+				 
 				 (paginationEvent)="handlePagination($event)"
-				 [isShearchDisable]="true"
-				 (searchEvent)="onSearch($event)" >
+				
+				 [url]="url"
+				  >
 			  </app-grid-table>
 		   </ng-container> 
 		<ng-container *ngIf="countryList.length === 0">
