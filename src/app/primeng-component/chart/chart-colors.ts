@@ -1,26 +1,26 @@
 export const ChartColors = {
-    // Status Colors - Main
-    completed: '#4A90E2',    // Soft Blue - easier to read than previous
-    closed: '#5CB85C',       // Muted Green - professional and clear
-    inProgress: '#F0AD4E',   // Warm Orange - less harsh
-    overdue: '#D9534F',      // Soft Red - serious but not aggressive
+    // Status Colors - Main (Sharp and Clear)
+    completed: '#45aaf2',    // Soft Blue - clear
+    closed: '#7bed9f',       // Muted Green - professional
+    inProgress: '#ffbe76',   // Warm Orange - visible
+    overdue: '#ff7675',      // Soft Red - attention-grabbing
 
-    // Status Colors - Secondary
-    approvalInProgress: '#F8E5F3',    // Very Light Pink
-    closureInProgress: '#E9E5F8',     // Very Light Purple
-    extensionInProgress: '#F8E5E5',   // Very Light Red
-    timeIndependent: '#E6F3FF',
+    // Status Colors - Secondary (More visible, but still subtle)
+    approvalInProgress: '#E488C2',    // Medium Pink
+    closureInProgress: '#8A79F8',     // Medium Purple
+    extensionInProgress: '#F47B7B',   // Medium Red
+    timeIndependent: '#66B2FF',       // Clear Light Blue
 
-    // Department Colors - All Muted and Professional
-    CMS: '#A3C5E6',         // Muted Blue-Grey
-    CSC: '#A3D6B5',         // Muted Green-Grey
-    CSI: '#E6C9A3',         // Muted Sand
-    ETG: '#C9A3E6',         // Muted Purple-Grey
-    SCS: '#E6A3A3',         // Muted Rose
-    TaNCS: '#A3E6C9',       // Muted Teal
-    TCOE: '#B5A3E6',        // Muted Lavender
+    // Department Colors - Enhanced for visibility
+    CMS: '#5B91C5',         // Medium Blue-Grey
+    CSC: '#5FC98E',         // Medium Green-Grey
+    CSI: '#D1A063',         // Medium Sand
+    ETG: '#A76EC9',         // Medium Purple-Grey
+    SCS: '#D96E6E',         // Medium Rose
+    TaNCS: '#5BC9A0',       // Medium Teal
+    TCOE: '#8A6EC9',        // Medium Lavender
 
     // Default Colors
-    total: '#E8F5E8',       // Very Light Green
-    default: '#E5E5E5'      // Neutral Grey
+    total: '#8AC78A',       // Soft Green
+    default: '#B3B3B3'      // Neutral Grey (slightly darker for clarity)
 };

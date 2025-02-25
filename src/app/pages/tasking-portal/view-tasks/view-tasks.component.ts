@@ -1226,7 +1226,7 @@ currentPage=0;
   }
 
   gridColumns=[
-    { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
+    { field: 'task_number_dee', header: 'Tasking Number', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
     { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
@@ -1354,11 +1354,6 @@ onFileUpload(event) {
     window.open(url, '_blank');
   
 }
-
-
-
-
-
 onSearch(searchText: string) {
   searchText = searchText.trim();
   this.countryList = [];
@@ -1366,28 +1361,33 @@ onSearch(searchText: string) {
   this.updateTable();
 
   if (!searchText) {
-    return; 
+    return;
   }
-  const requestBody = { search: searchText }; 
+  
+  const requestBody = { search: searchText };
 
   this.api.postAPI(`${environment.API_URL}transaction/trial/status`, requestBody)
     .subscribe({
       next: (res) => {
-
-        this.countryList = res.results|| []; 
+        this.countryList = res.results || [];
         this.totaleRecords = res?.count || 0;
-
-
-        this.updateTable(); 
+        if (this.countryList.length === 0) {
+          console.warn('No data found, calling getTasking() API...');
+          this.getTasking();
+        }
+        this.updateTable();
       },
       error: (error) => {
-        this.countryList = []; 
+        console.error('API Error:', error);
+        this.countryList = [];
         this.totaleRecords = 0;
-        this. getTasking() ;
+
+        this.getTasking();
         this.updateTable();
       }
     });
 }
+
 updateTable() {
   this.tableDataSource = new MatTableDataSource(this.countryList);
   if (this.paginator) {

@@ -588,7 +588,7 @@
       <div class="card-header mb-5 d-flex justify-content-between align-items-center">
 
         <h3 class="card-title align-items-start flex-column pt-10">
-          <span class="fw-bold mb-3"> Monitor task progress </span>
+          <span class="fw-bold mb-3"> TASKING STATUS </span>
 
         </h3>
         <div class="text-end">
@@ -603,6 +603,11 @@
           [rows]="pageSize"[isShearchDisable]="true" (searchEvent)="onSearch($event)" (clearEvent)="clearFields()" (paginationEvent)="handlePagination($event)"
           (viewEvent)="openEdit($event)" [isView]="true">
         </app-grid-table>
+      </ng-container>
+      <ng-container *ngIf="approveTask.length === 0">
+        <div class="alert text-center alert-warning" role="alert">
+          No Records Found!
+        </div>
       </ng-container>
 
     </div>

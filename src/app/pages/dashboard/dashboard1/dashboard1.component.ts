@@ -1139,8 +1139,11 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
     { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
     { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
+    { field: 'modified_on', header: 'Task Approved On Date', filter: true, filterMatchMode: 'contains' },
     { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
     { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+
+
 
   ]
 
@@ -1231,6 +1234,8 @@ onSearch(searchText: string) {
    
   );
 }
+
+
 updateTable() {
   this.tableDataSource = new MatTableDataSource(this.approveTask);
 }

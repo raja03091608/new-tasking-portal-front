@@ -49,6 +49,11 @@
 								[isCompleted]="true">
 							</app-grid-table>
 						</ng-container>
+						<ng-container *ngIf="countryList.length === 0">
+                            <div class="alert text-center alert-warning" role="alert">
+                              No Records Found!
+                            </div>
+                          </ng-container>
 					</div>
 				</div>
 			</div>
@@ -366,6 +371,7 @@
 			<ng-template #nodata>
 			  <div class="body-card">No records found</div>
 			</ng-template>
+			
 		  </div>
 		</div>
   
