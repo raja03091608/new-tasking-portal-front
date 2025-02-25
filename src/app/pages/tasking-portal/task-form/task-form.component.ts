@@ -246,7 +246,8 @@ export class TaskFormComponent implements OnInit {
         this.dgweseeForm.enable();
       }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
         this.SubmitAccess.formPermission5=true
-        this.deeForm.enable();
+        this.SubmitAccess.commentPermission=true
+        // this.deeForm.enable();
       }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
         this.SubmitAccess.formPermission6=true
         this.pdDeeForm.enable();
@@ -343,7 +344,7 @@ export class TaskFormComponent implements OnInit {
       task_number_dee0: ['', Validators.required],
       task_number_dee1: ['', Validators.required],
       task_number_dee2: ['', Validators.required],
-      comments_of_dee: ['', Validators.required]
+      comments_of_dee: ['']
     });
     this.pdDeeForm = this.fb.group({
       comments_of_pd_dee: ['', Validators.required]
@@ -520,10 +521,10 @@ export class TaskFormComponent implements OnInit {
       formData.append('TS_recommender', "1");
 
       if (this.files.file6) {
-        formData.append('files5', this.files.file6);
+        formData.append('file5', this.files.file6);
       }
       if (this.files.file7) {
-        formData.append('files6', this.files.file7); 
+        formData.append('file6', this.files.file7); 
       }
 
       console.log('WESEE Payload:', formData);
@@ -632,7 +633,8 @@ export class TaskFormComponent implements OnInit {
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DEE Form submitted successfully:' });
           console.log('DEE Form submitted successfully:', response);
-          this.hideModal();
+          // this.hideModal();
+          this.deeForm.enable()
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DEE form:' });
@@ -902,7 +904,12 @@ export class TaskFormComponent implements OnInit {
       this.showConfirm();
       return;
     }
-    const formData = this.minitingForm.value;
+    if(this.SubmitAccess.formPermission5){
+      this.deeForm.enable()
+      this.onSubmitDEE()
+
+    }
+      const formData = this.minitingForm.value;
 
     const newComment = {
       tasking: this.rowData.id,
@@ -915,6 +922,8 @@ export class TaskFormComponent implements OnInit {
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
       this.getMiniting();
       this.getStatusTimeline();
+      
+      this.hideModal()
      
     })
     this.minitingForm.reset();
