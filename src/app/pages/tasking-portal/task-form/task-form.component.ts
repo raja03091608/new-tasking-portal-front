@@ -437,19 +437,19 @@ export class TaskFormComponent implements OnInit {
       
       // Append files if they exist
       if (this.files.file1) {
-        formData.append('files', this.files.file1);
+        formData.append('file', this.files.file1);
       }
       if (this.files.file2) {
-        formData.append('files1', this.files.file2);
+        formData.append('file1', this.files.file2);
       }
       if (this.files.file3) {
-        formData.append('files2', this.files.file3);
+        formData.append('file2', this.files.file3);
       }
       if (this.files.file4) {
-        formData.append('files3', this.files.file4);
+        formData.append('file3', this.files.file4);
       }
       if (this.files.file5) {
-        formData.append('files4', this.files.file5);
+        formData.append('file4', this.files.file5);
       }
       
       
@@ -831,6 +831,60 @@ export class TaskFormComponent implements OnInit {
         this.roles.push(temp[0]);
         this.routeList = res;
         this.lastStatusData = res[res.length - 1]?.sequence;
+        temp.sort((a, b) => a.sequence - b.sequence);
+        this.selectedRoutes=[];
+
+        for(let i=0;i<temp.length;i++){
+          console.log(temp[i],i, "temp[i]");
+         if(i<temp.length){
+          const user={
+            ...temp[i].current,
+            routeId:temp[i].id,
+            is_recommender:temp[i].form === 2,
+            is_commenter:temp[i].form === 1
+          }
+          this.selectedRoutes.push(user);
+         }
+          if(i===temp.length-1){  
+            const user={
+              ...temp[i].next_user,
+              routeId:null,
+              is_recommender:temp[i].form === 2,
+              is_commenter:temp[i].form === 1
+            }
+            this.selectedRoutes.push(user);
+          }
+        }
+
+
+        console.log(this.selectedRoutes);
+
+
+      //   temp.forEach((item, index) => {
+      //     // For all items except the last one
+      //     if (index < temp.length - 1) {
+      //         const user = {
+      //             ...item.current,
+      //             routeId: item.id,
+      //             is_recommender: item.form === 2,
+      //             is_commenter: item.form === 1
+      //         };
+      //         this.selectedRoutes.push(user);
+      //     } 
+      
+      //     // For the last item
+      //     // if (index === temp.length -2) {
+      //     //     const user = {
+      //     //         ...item.next_user,
+      //     //         routeId: null,  // Last object has routeId as null
+      //     //         is_recommender: item.form === 2,
+      //     //         is_commenter: item.form === 1
+      //     //     };
+      //     //     this.selectedRoutes.push(user);
+      //     // }
+      // });
+      
+        console.log(this.selectedRoutes);
       },
       error: (err) => {        console.error('Error fetching data:', err);      }
     });
@@ -1053,6 +1107,13 @@ onEditRole(rowData) {
 
   removeUser(user: any, index: number) {
     this.selectedRoutes.splice(index, 1);
+    this.api.deleteAPI(environment.API_URL+"transaction/process-flows/"+user.routeId+"/").subscribe(
+      res=> this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Route configuration Delete successfully'
+      })
+    )
   }
 routeedit:boolean=false;
 editindex:number;
@@ -1119,10 +1180,11 @@ editindex:number;
 onSubmitRoute() {
   const routes=[]
     this.selectedRoutes.forEach((route,index) => {
-      if(index < this.selectedRoutes.length ){
+      if(index < this.selectedRoutes.length-1 ){
         const user={
         id:route.routeId || '',
-        seq:index+1,
+        sequence:index+1,
+        process:route?.process?.id,
         tasking_id:this.rowData.id,
         current_user:route.id,
         next_user:this.selectedRoutes[index+1]?.id || '',
@@ -1134,47 +1196,23 @@ onSubmitRoute() {
     })
     this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', routes).subscribe(res=>{
       console.log(res)
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Route configuration saved successfully'
-      });
-      this.getStatusTimeline();
+      if(res.status===1){
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Route configuration saved successfully'
+        });
+        this.getStatusTimeline();
+      }else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to save route configuration'
+        });
+      }
     })
     console.log(routes)
-  // if (this.selectedRoutes.length > 0) {
-  //     const routes = this.selectedRoutes.map(route => ({
-  //         tasking: this.rowData.id,
-  //         process: 2,
-  //         current_id: route.fromUser.id,
-  //         next_user_id: route.toUser.id,
-  //         is_recommender: route.isRecommender,
-  //         is_commenter: route.isCommenter
-  //     }));
-
-  //     Promise.all(
-  //         routes.map(route => 
-  //             this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', route).toPromise()
-  //         )
-  //     ).then(
-  //         responses => {
-  //             this.messageService.add({
-  //                 severity: 'success',
-  //                 summary: 'Success',
-  //                 detail: 'Route configuration saved successfully'
-  //             });
-  //             this.getStatusTimeline();
-  //             this.displayModal = false;
-  //         }
-  //     ).catch(error => {
-  //         this.messageService.add({
-  //             severity: 'error',
-  //             summary: 'Error',
-  //             detail: 'Failed to save route configuration'
-  //         });
-  //         console.error('Error saving routes:', error);
-  //     });
-  // }
+  
 }
 
 }
