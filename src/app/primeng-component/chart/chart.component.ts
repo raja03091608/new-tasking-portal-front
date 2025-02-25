@@ -495,11 +495,11 @@ export class ChartComponent implements OnInit {
       };
       
       this.pieChartData2 = {
-        labels: ['Time Independent', 'Completed', 'Task Closed', 'WIP'],
+        labels: ['Completed', 'Task Closed', 'WIP'],
         datasets: [{
           data: [24, 20, 77, 59],
           backgroundColor: [
-            this.standardColors.timeIndependent, 
+            // this.standardColors.timeIndependent, 
             this.standardColors.completed, 
             this.standardColors.closed, 
             this.standardColors.inProgress, 

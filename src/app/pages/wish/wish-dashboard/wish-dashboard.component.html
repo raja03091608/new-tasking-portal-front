@@ -149,112 +149,12 @@
 
 
 
-<!-- 
-<p-dialog header="Create/Edit Tickets" [(visible)]="displayPopup"[value]="tickets"[modal]="true" [closable]="true"
-[style]="{width: '60vw'}" [resizable]="true" [maximizable]="true">
-<form [formGroup]="detailsForm">
-  <div class="row">
-   
-    <div class="col-md-6 mt-4">
-      <label for="subModule"><b>TITLE</b></label>
-      <input type="text" id="title" class="form-control" formControlName="title" placeholder="Enter To Title" required>
-    </div>
-  
- 
-
-    <div *ngIf="isEditMode" class="col-md-6 mt-4">
-      <label for="status"><b>Status</b></label>
-      <select formControlName="status" class="form-control status-dropdown">
-        <option *ngFor="let status of statusOptions" [value]="status.value">
-          {{ status.label }}
-        </option>
-      </select>
-    </div>
-    
-  
 
 
 
 
- <div class="col-md-6 mt-4">
-      <label for="assigned_to"><b>Assign To</b></label>
-      <p-dropdown 
-          [options]="usersList" 
-          optionLabel="loginname" 
-          optionValue="id"
-          formControlName="assigned_to" 
-          placeholder="Select User"
-          [disabled]="isView"
-          [style.width.%]="100"
-          [style.display]="'block'">
-          <ng-template let-user pTemplate="item">
-            {{ user.loginname }} - <b>{{ user.rankCode }} - {{ user.first_name }} - {{ user.last_name }}</b>
-          </ng-template>
-      </p-dropdown>
-      
-  </div>
-   
-
-  <div class="col-md-6 mt-4">
-    <label for="subModule"><b>SELECT TASKING GROUP </b></label>
-    <p-dropdown
-    id="taskingGroup"
-    [options]="taskingGroups"
-    optionLabel="name"
-    optionValue="id"
-    placeholder="Select Tasking Groups"
-    formControlName="tasking_group"
-    [disabled]="
-      (listDelapso === 3 && (token_detail.process_id === 1 || token_detail.process_id === 3) && crudName === 'View' && disableWesee()) ||
-      (listDelapso !== 3 && (listDelapso !== 1 || token_detail.process_id === 1 || token_detail.process_id === 3 || token_detail.tasking_id !== '') && crudName === 'View' && disableWesee())
-    "
-    (onChange)="onTaskingGroupChange($event)">
-  </p-dropdown>  </div>
-    
-<div class="col-md-6 mt-4 ">
-  <label for="status"><b>PRIORITY</b></label>
-  <select formControlName="priority" class="status-dropdown">
-    <option *ngFor="let status of priorityOptions" [value]="status.id">
-      {{ status.label }}
-    </option>
-  </select>
-</div>
-<div class="col-md-6 mt-4 ">
-  <label for="sub_sub_section"><b>DUE DATE</b></label>
-  <input type="date" id="due_date" class="form-control" formControlName="due_date"placeholder="Enter Due Date"  style="padding:6px;margin-top:9px;" >
-</div>
-<div></div>
-<div class="col-md-6 mt-4">
-  <label for="attachment"><b>ATTACHMENT</b></label>
-  <input type="file" id="attachment" class="form-control"  placeholder="Enter Attachment"(change)="onFileChange($event)" >
-</div>
-
-<div class="col-md-6 mt-4 d-flex ">
-  <label for="on_hold" class="form-check-label on-hold-label"><b> HOLD</b></label>
-  <input type="checkbox" id="on_hold" class="form-check-input custom-checkbox" formControlName="on_hold">
-</div>
 
 
-<br>
-<br>
-
-<div class="editor-container">
-  <label for="section"><b>DESCRIPTION</b></label>
-  <angular-editor 
-    formControlName="description" 
-    [config]="editorConfig"
-    class="small-editor">
-  </angular-editor>
-</div>
-  </div>
-
-</form>
-<p-footer>
-<button type="button" pButton label="Submit" class="mx-2 custom-submit-btn btn btn-dark" (click)="submitForm()">Submit</button>
-<button type="button" class="btn btn-dark" (click)="displayPopup = false">Cancel</button>
-</p-footer>
-
-</p-dialog> -->
 <p-dialog header="Create/Edit Tickets" [(visible)]="displayPopup" [modal]="true" [closable]="true"
   [style]="{width: '80vw'}" [resizable]="true" [maximizable]="true">
   <form [formGroup]="detailsForm">
@@ -273,9 +173,6 @@
           </option>
         </select>
       </div>
-
-      
-
       <div class="col-md-6 mt-4">
         <label for="taskingGroup"><b>SELECT TASKING GROUP</b></label>
         <p-dropdown
@@ -350,7 +247,6 @@
 
     </div>
   </form>
-
   <p-footer>
     <button type="button" pButton label="Submit" class="mx-2 custom-submit-btn btn btn-dark submit-btn" (click)="submitForm()">Submit</button>
     <button type="button" class="btn btn-dark cancel-btn" (click)="displayPopup = false">Cancel</button>

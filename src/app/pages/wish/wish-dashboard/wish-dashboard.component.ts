@@ -11,7 +11,6 @@ import { HttpHeaders } from "@angular/common/http";
   styleUrls: ['./wish-dashboard.component.scss']
 })
 export class WishDashboardComponent implements OnInit {
-
   taskingGroups: any[] = [];
   usersList: any[] = [];
   listDelapso: number;
@@ -319,12 +318,6 @@ onCommentPopup(event: any) {
       }
     });
   }
-  
-  
-  
-  
-
-
   initializeForm(): void {
     this.detailsForm = this.fb.group({
       tasking_group: ['', Validators.required],
@@ -354,7 +347,7 @@ onCommentPopup(event: any) {
   getTaskingUser(taskingGroupId: string): void {
     this.api.getAPI(`${environment.API_URL}api/auth/users?tasking_id=${taskingGroupId}`).subscribe(
       (res) => {
-        this.usersList = res.data;
+        this.usersList = res;
         console.log('Fetched users:', this.usersList);
       },
       (error) => {
