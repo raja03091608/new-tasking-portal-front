@@ -1054,8 +1054,9 @@ onEditRole(rowData) {
     this.taskList = [];
     this.updateTable();
     if (!searchText) {
-      this.totaleRecords = 0; 
-      return;
+        this.totaleRecords = 0; 
+        this.getTasking();  // Empty search par default API call karein
+        return;
     }
     const encodedSearchText = encodeURIComponent(searchText);
     this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&search=${encodedSearchText}&page=${this.page}`)
@@ -1064,18 +1065,32 @@ onEditRole(rowData) {
           this.taskList = Array.isArray(res.results) ? res.results : [];
           this.totaleRecords = res?.count || 0;
           this.updateTable(); 
+
+          if (this.totaleRecords === 0) {
+              // this.messageService.add({severity:'warn', summary:'No Record Found', detail:'No matching records found for your search.'});
+              this.getTasking();
+          }
         },
         error: (error) => {
           this.taskList = []; 
           this.totaleRecords = 0;
-          this.getTasking();
+          if (error?.error?.detail === "Invalid page.") {
+              this.messageService.add({severity:'error', summary:'Invalid Page', detail:'Resetting to the first page.'});
+              this.page = 1; // Page reset karke dubara API call karein
+              this.onSearch(searchText); 
+              return;
+          }
+          this.messageService.add({severity:'error', summary:'Error', detail:'Something went wrong. Showing default records.'});
+          this.getTasking(); // Error case me bhi default API call
           this.updateTable();
         }
       });
-  }
+}
+
 
   updateTable() {
     this.tableDataSource = new MatTableDataSource(this.taskList);
+
     if (this.paginator) {
       this.tableDataSource.paginator = this.paginator;
     }

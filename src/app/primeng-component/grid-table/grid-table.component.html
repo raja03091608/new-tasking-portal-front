@@ -65,7 +65,7 @@
 
                     <ng-container *ngIf="col.header != 'Status' && col.header != 'Title' ">
                         <span *ngIf="col.header == 'Time Frame for Completion'">{{ resolveNestedField(rowData,
-                            col.field) }} Month's</span>
+                            col.field) }} Months</span>
                         <span *ngIf="col.header != 'Time Frame for Completion' && col.header != 'Approved on'">
                             {{ resolveNestedField(rowData, col.field) }}
                         </span>
@@ -89,7 +89,7 @@
                     </button>
                     <mat-menu #actionsMenu="matMenu">
                         <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item [ngClass]="getButtonClass(7)">
-                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View</small>
+                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item [ngClass]="getButtonClass(8)">
@@ -101,7 +101,7 @@
                         </button>
                 
                         <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item [ngClass]="getButtonClass(14)">
-                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>Status</small>
+                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item [ngClass]="getButtonClass(15)">
