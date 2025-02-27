@@ -107,7 +107,7 @@
                           </ng-container>
       
       
-                          <form [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
+                          <form  [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
                               >
                               <div class="mb-5 alert alert-dismissible alert-bg">
                                   <mat-label style="font-size:large;"><b>Comment</b></mat-label>
@@ -257,7 +257,7 @@
                                   <mat-label style="font-size:large;"><b>Task Number</b><b class="star">*</b></mat-label>
                                   <div class="row align-items-center">
                                       <div class="col-md-8 d-flex align-items-center gap-2">
-                                          <b class="me-2">WESEE</b>
+                                          <b class="me-2">WESEE /</b>
                                           <input type="text" class="form-control w-25" formControlName="task_number_dee0" />
                                           <span>/</span>
                                           <input type="number" class="form-control w-25" formControlName="task_number_dee1" />
@@ -266,18 +266,18 @@
                                       </div>
                                   </div>
                                   
-                                  <mat-label style="font-size:large;"><b>DEE Comments</b><b class="star">*</b></mat-label>
-                                  <angular-editor  class="mb-4" id="comments_of_dee" formControlName="comments_of_dee"	[config]="getEditorConfig(SubmitAccess.formPermission5)"></angular-editor>
+                                  <!-- <mat-label style="font-size:large;"><b>DEE Comments</b><b class="star">*</b></mat-label> -->
+                                  <!-- <angular-editor  class="mb-4" id="comments_of_dee" formControlName="comments_of_dee"	[config]="getEditorConfig(SubmitAccess.formPermission5)"></angular-editor> -->
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_dee"></textarea> -->
                                   <div *ngIf="rowData.file7" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file7}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file7)   }}</span><i *ngIf="SubmitAccess.formPermission5" (click)="removeFile('file7')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,8)" *ngIf="!rowData.file7 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                   <div *ngIf="rowData.file8" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file8}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file8)   }}</span><i *ngIf="SubmitAccess.formPermission5" (click)="removeFile('file8')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,9)" *ngIf="!rowData.file8 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                 
-                                  <button *ngIf="SubmitAccess.formPermission5" type="submit" class="btn btn-success mt-3">Submit</button>
-                                  <ng-container *ngIf="getSignatureHtml('DEE_recommender')">
+                                  <!-- <button *ngIf="SubmitAccess.formPermission5" type="submit" class="btn btn-success mt-3">Submit</button> -->
+                                  <!-- <ng-container *ngIf="getSignatureHtml('DEE_recommender')">
                                       <div [innerHTML]="getSignatureHtml('DEE_recommender')"></div>
-                                  </ng-container>
+                                  </ng-container> -->
                           
                               </div>
                           </form>
@@ -286,6 +286,8 @@
                               <div class="alert alert-dismissible alert-bg">
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">CMDE (EE)&nbsp;(Directorate of Electrical Engineering)</b></mat-label> </div>
                                    <!-- <textarea rows="4" class="form-control" formControlName="comments_of_pd_dee"></textarea> -->
+                                  <mat-label style="font-size:large;"><b>CMDE (EE) Comments</b><b class="star">*</b></mat-label>
+                                   
                                    <angular-editor class="mb-4" id="comments_of_pd_dee" formControlName="comments_of_pd_dee"	[config]="getEditorConfig(SubmitAccess.formPermission6)"></angular-editor>
                                   
                                   <button *ngIf="SubmitAccess.formPermission6" type="submit" class="btn btn-success mt-3">Submit</button>
@@ -532,11 +534,11 @@
                                 label="For Comments Only">
                             </p-checkbox>
                             <ng-template  #elseLable>
-                                <label class="bg-yellow-subtle px-2" ><strong>{{i===0 ? 'Initiated' : route.isCommenter ? 'Commented' : 'Recommended'}}</strong></label>
+                                <label class="bg-teal-subtle px-2" ><strong>{{i===0 ? 'Initiated' : route.isCommenter ? 'Commented' : 'Recommended'}}</strong></label>
                             </ng-template>
                         </div>
                         <div *ngIf="route?.process?.id !== 2 " class="d-flex flex-column align-items-center py-3 ps-2">
-                            <label class="bg-yellow-subtle px-2" ><strong>Commenter</strong></label>
+                            <label class="bg-teal-subtle px-2" ><strong>Commenter</strong></label>
                         </div>
                     </div>
                     <i *ngIf="rowData.level <= i" class="fa-solid fa-user-pen fa-sm   cursor-pointer text-primary" (click)="editRoute(i)"></i>

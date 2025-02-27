@@ -1228,12 +1228,12 @@ margin:0px !important;
   gridColumns=[
     { field: 'task_number_dee', header: 'Tasking Number', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
-    { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
-    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+    { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate',     header: 'Sponsor', filter: true, filterMatchMode: 'contains', },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame', filter: true, filterMatchMode: 'contains',},
     {
       field: 'modified_on',
-      header: 'Approved on',
+      header: 'Approval Date',
       filter: true,
       filterMatchMode: 'contains',
       valueFormatter: (data: any) => {

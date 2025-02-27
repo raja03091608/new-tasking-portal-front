@@ -1125,11 +1125,11 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   gridColum = [
     { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
     { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
-    { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
-    { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'modified_on', header: 'Task Approved On Date', filter: true, filterMatchMode: 'contains' },
-    { field: 'title', header: 'Title', filter: true, filterMatchMode: 'contains' },
-    { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    { field: 'tasking.sponsoring_directorate', header: 'Sponsor', filter: true, filterMatchMode: 'contains' },
+    { field: 'assigned_tasking_group.name', header: 'Assigned Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'modified_on', header: 'Approval Date', filter: true, filterMatchMode: 'contains' },
+    { field: 'title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    { field: 'secondary_title', header: 'Stage', filter: true, filterMatchMode: 'contains' },
 
 
 

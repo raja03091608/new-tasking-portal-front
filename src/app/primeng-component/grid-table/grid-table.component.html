@@ -77,19 +77,20 @@
                 </td>
                 <td *ngFor="let col of gridColumns" class="wrappable">
 
-                    <ng-container *ngIf="col.header != 'Status' && col.header != 'Title' ">
-                        <span *ngIf="col.header == 'Time Frame for Completion'">{{ resolveNestedField(rowData,
+                    <ng-container *ngIf="col.header != 'Status' && col.header != 'Stage' ">
+                        <span *ngIf="col.header == 'Time Frame'">{{ resolveNestedField(rowData,
                             col.field) }} Months</span>
-                        <span *ngIf="col.header != 'Time Frame for Completion' && col.header != 'Approved on'">
+                        <span *ngIf="col.header != 'Time Frame' && col.header != 'Approval Date'">
                             {{ resolveNestedField(rowData, col.field) }}
                         </span>
-                        <span *ngIf="col.header == 'Approved on'">
-                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
-                            }}
+                        <span *ngIf="col.header == 'Approval Date'">
+                            {{resolveNestedField(rowData, col.field) | date:'dd MMM yyyy'}}
+                            <!-- {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
+                            }} -->
                         </span>
                     </ng-container>
 
-                    <ng-container *ngIf="col.header === 'Status' || col.header === 'Title'">
+                    <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage'">
                         <div class="status" [ngClass]="getStatusClass(resolveNestedField(rowData, col.field))"
                             [ngStyle]="getStatusStyle(resolveNestedField(rowData, col.field))">
                             <span>{{ getStatusName(resolveNestedField(rowData, col.field)) }}</span>

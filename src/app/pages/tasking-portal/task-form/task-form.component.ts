@@ -161,9 +161,9 @@ export class TaskFormComponent implements OnInit {
   url:string;
 
   getTasking() {
-    this.url=environment.API_URL + "transaction/tasking?order_type=desc"
+    this.url=environment.API_URL + "transaction/tasking?"
     this.taskList = [];
-    let url = environment.API_URL + "transaction/tasking?order_type=desc&limit_start=0&limit_end=10"
+    let url = environment.API_URL + "transaction/tasking?limit_start=0&limit_end=10"
     if (this.token_detail.process_id == 2 && this.token_detail.role_id == 3) {
       this.url +=`&created_by_id=${this.token_detail.user_id}`;
       url += `&created_by_id=${this.token_detail.user_id}`;
@@ -246,7 +246,8 @@ export class TaskFormComponent implements OnInit {
         this.dgweseeForm.enable();
       }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
         this.SubmitAccess.formPermission5=true
-        this.deeForm.enable();
+        this.SubmitAccess.commentPermission=true
+        // this.deeForm.enable();
       }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
         this.SubmitAccess.formPermission6=true
         this.pdDeeForm.enable();
@@ -343,7 +344,7 @@ export class TaskFormComponent implements OnInit {
       task_number_dee0: ['', Validators.required],
       task_number_dee1: ['', Validators.required],
       task_number_dee2: ['', Validators.required],
-      comments_of_dee: ['', Validators.required]
+      comments_of_dee: ['']
     });
     this.pdDeeForm = this.fb.group({
       comments_of_pd_dee: ['', Validators.required]
@@ -437,19 +438,19 @@ export class TaskFormComponent implements OnInit {
       
       // Append files if they exist
       if (this.files.file1) {
-        formData.append('files', this.files.file1);
+        formData.append('file', this.files.file1);
       }
       if (this.files.file2) {
-        formData.append('files1', this.files.file2);
+        formData.append('file1', this.files.file2);
       }
       if (this.files.file3) {
-        formData.append('files2', this.files.file3);
+        formData.append('file2', this.files.file3);
       }
       if (this.files.file4) {
-        formData.append('files3', this.files.file4);
+        formData.append('file3', this.files.file4);
       }
       if (this.files.file5) {
-        formData.append('files4', this.files.file5);
+        formData.append('file4', this.files.file5);
       }
       
       
@@ -520,10 +521,10 @@ export class TaskFormComponent implements OnInit {
       formData.append('TS_recommender', "1");
 
       if (this.files.file6) {
-        formData.append('files5', this.files.file6);
+        formData.append('file5', this.files.file6);
       }
       if (this.files.file7) {
-        formData.append('files6', this.files.file7); 
+        formData.append('file6', this.files.file7); 
       }
 
       console.log('WESEE Payload:', formData);
@@ -620,10 +621,10 @@ export class TaskFormComponent implements OnInit {
 
 
       if (this.files.file8) {
-        formData.append('files2', this.files.file8);
+        formData.append('file7', this.files.file8);
       }
       if (this.files.file9) {
-        formData.append('files3', this.files.file9);
+        formData.append('file8', this.files.file9);
       }
       
       console.log('DEE Payload:', formData);
@@ -632,7 +633,8 @@ export class TaskFormComponent implements OnInit {
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DEE Form submitted successfully:' });
           console.log('DEE Form submitted successfully:', response);
-          this.hideModal();
+          // this.hideModal();
+          this.deeForm.enable()
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DEE form:' });
@@ -831,6 +833,60 @@ export class TaskFormComponent implements OnInit {
         this.roles.push(temp[0]);
         this.routeList = res;
         this.lastStatusData = res[res.length - 1]?.sequence;
+        temp.sort((a, b) => a.sequence - b.sequence);
+        this.selectedRoutes=[];
+
+        for(let i=0;i<temp.length;i++){
+          console.log(temp[i],i, "temp[i]");
+         if(i<temp.length){
+          const user={
+            ...temp[i].current,
+            routeId:temp[i].id,
+            is_recommender:temp[i].form === 2,
+            is_commenter:temp[i].form === 1
+          }
+          this.selectedRoutes.push(user);
+         }
+          if(i===temp.length-1){  
+            const user={
+              ...temp[i].next_user,
+              routeId:null,
+              is_recommender:temp[i].form === 2,
+              is_commenter:temp[i].form === 1
+            }
+            this.selectedRoutes.push(user);
+          }
+        }
+
+
+        console.log(this.selectedRoutes);
+
+
+      //   temp.forEach((item, index) => {
+      //     // For all items except the last one
+      //     if (index < temp.length - 1) {
+      //         const user = {
+      //             ...item.current,
+      //             routeId: item.id,
+      //             is_recommender: item.form === 2,
+      //             is_commenter: item.form === 1
+      //         };
+      //         this.selectedRoutes.push(user);
+      //     } 
+      
+      //     // For the last item
+      //     // if (index === temp.length -2) {
+      //     //     const user = {
+      //     //         ...item.next_user,
+      //     //         routeId: null,  // Last object has routeId as null
+      //     //         is_recommender: item.form === 2,
+      //     //         is_commenter: item.form === 1
+      //     //     };
+      //     //     this.selectedRoutes.push(user);
+      //     // }
+      // });
+      
+        console.log(this.selectedRoutes);
       },
       error: (err) => {        console.error('Error fetching data:', err);      }
     });
@@ -848,7 +904,12 @@ export class TaskFormComponent implements OnInit {
       this.showConfirm();
       return;
     }
-    const formData = this.minitingForm.value;
+    if(this.SubmitAccess.formPermission5){
+      this.deeForm.enable()
+      this.onSubmitDEE()
+
+    }
+      const formData = this.minitingForm.value;
 
     const newComment = {
       tasking: this.rowData.id,
@@ -861,6 +922,8 @@ export class TaskFormComponent implements OnInit {
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
       this.getMiniting();
       this.getStatusTimeline();
+      
+      this.hideModal()
      
     })
     this.minitingForm.reset();
@@ -1067,6 +1130,13 @@ onEditRole(rowData) {
 
   removeUser(user: any, index: number) {
     this.selectedRoutes.splice(index, 1);
+    this.api.deleteAPI(environment.API_URL+"transaction/process-flows/"+user.routeId+"/").subscribe(
+      res=> this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Route configuration Delete successfully'
+      })
+    )
   }
 routeedit:boolean=false;
 editindex:number;
@@ -1133,10 +1203,11 @@ editindex:number;
 onSubmitRoute() {
   const routes=[]
     this.selectedRoutes.forEach((route,index) => {
-      if(index < this.selectedRoutes.length ){
+      if(index < this.selectedRoutes.length-1 ){
         const user={
         id:route.routeId || '',
-        seq:index+1,
+        sequence:index+1,
+        process:route?.process?.id,
         tasking_id:this.rowData.id,
         current_user:route.id,
         next_user:this.selectedRoutes[index+1]?.id || '',
@@ -1148,47 +1219,23 @@ onSubmitRoute() {
     })
     this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', routes).subscribe(res=>{
       console.log(res)
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Route configuration saved successfully'
-      });
-      this.getStatusTimeline();
+      if(res.status===1){
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Route configuration saved successfully'
+        });
+        this.getStatusTimeline();
+      }else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to save route configuration'
+        });
+      }
     })
     console.log(routes)
-  // if (this.selectedRoutes.length > 0) {
-  //     const routes = this.selectedRoutes.map(route => ({
-  //         tasking: this.rowData.id,
-  //         process: 2,
-  //         current_id: route.fromUser.id,
-  //         next_user_id: route.toUser.id,
-  //         is_recommender: route.isRecommender,
-  //         is_commenter: route.isCommenter
-  //     }));
-
-  //     Promise.all(
-  //         routes.map(route => 
-  //             this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', route).toPromise()
-  //         )
-  //     ).then(
-  //         responses => {
-  //             this.messageService.add({
-  //                 severity: 'success',
-  //                 summary: 'Success',
-  //                 detail: 'Route configuration saved successfully'
-  //             });
-  //             this.getStatusTimeline();
-  //             this.displayModal = false;
-  //         }
-  //     ).catch(error => {
-  //         this.messageService.add({
-  //             severity: 'error',
-  //             summary: 'Error',
-  //             detail: 'Failed to save route configuration'
-  //         });
-  //         console.error('Error saving routes:', error);
-  //     });
-  // }
+  
 }
 
 }

@@ -31,6 +31,7 @@ import{TableModule} from'primeng/table';
 import { AuthService } from './service/interceptors/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ChatBotModule } from './components/chat-bot/chat-bot.module';
 
 // import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
@@ -71,7 +72,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     AngularEditorModule,
     TableModule,
     MultiSelectModule,
-    CheckboxModule
+    CheckboxModule,
+    ChatBotModule
 
   ],
 
