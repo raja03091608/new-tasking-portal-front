@@ -63,6 +63,12 @@ export class ChartComponent implements OnInit {
     constructor(private api: ApiService) {}
 
     ngOnInit(): void {
+      this.loadTaskStatusCountCSI();
+      this.loadTaskStatusCountETG()
+      this.loadTaskStatusCountTaNCS();
+      this.loadTaskStatusCountscs();
+      this.loadTaskStatusCountcsc();
+      this. loadTaskStatusCountcms();
         this.loadYearlyTaskStatusCount();
         this.loadYearlyGroupwiseTaskCount();
         this.loadGroupwiseTaskCount();
@@ -818,15 +824,208 @@ export class ChartComponent implements OnInit {
             }
         }
     };
+}    loadTaskStatusCountcms() {
+        this.api.getAPI(environment.API_URL + 'transaction/COUNT/?group_code=CMS')
+            .subscribe((response: any) => {
+                const res = response.data[0].titles;
+
+                const statusData = {
+                    labels: [],
+                    datasets: [{
+                        label: 'Status',
+                        backgroundColor: [],
+                        data: []
+                    }]
+                };
+
+                const statusColors = {
+                    'Completed': this.standardColors.completed,
+                    'Task Closed': this.standardColors.closed,
+                    'Work In Progress': this.standardColors.inProgress,
+                    'Approval in Progress': this.standardColors.approvalInProgress,
+                    'Closure in Progress': this.standardColors.closureInProgress,
+                    'Extension in Progress': this.standardColors.extensionInProgress
+                };
+
+                res.forEach(item => {
+                    statusData.labels.push(item.title);
+                    statusData.datasets[0].data.push(item.task_count);
+                    statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+                });
+
+                this.statusCMSGroupChartData = statusData;
+            });
+    }
+
+
+    loadTaskStatusCountcsc() {
+      this.api.getAPI(environment.API_URL + 'transaction/COUNT/?group_code=CSC')
+          .subscribe((response: any) => {
+              const res = response.data[0].titles;
+
+              const statusData = {
+                  labels: [],
+                  datasets: [{
+                      label: 'Status',
+                      backgroundColor: [],
+                      data: []
+                  }]
+              };
+
+              const statusColors = {
+                  'Completed': this.standardColors.completed,
+                  'Task Closed': this.standardColors.closed,
+                  'Work In Progress': this.standardColors.inProgress,
+                  'Approval in Progress': this.standardColors.approvalInProgress,
+                  'Closure in Progress': this.standardColors.closureInProgress,
+                  'Extension in Progress': this.standardColors.extensionInProgress
+              };
+
+              res.forEach(item => {
+                  statusData.labels.push(item.title);
+                  statusData.datasets[0].data.push(item.task_count);
+                  statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+              });
+
+              this.statusCSCGroupChartData = statusData;
+          });
+  }
+
+  
+  loadTaskStatusCountscs() {
+    this.api.getAPI(environment.API_URL + 'transaction/COUNT/?group_code=SCS')
+        .subscribe((response: any) => {
+            const res = response.data[0].titles;
+
+            const statusData = {
+                labels: [],
+                datasets: [{
+                    label: 'Status',
+                    backgroundColor: [],
+                    data: []
+                }]
+            };
+
+            const statusColors = {
+                'Completed': this.standardColors.completed,
+                'Task Closed': this.standardColors.closed,
+                'Work In Progress': this.standardColors.inProgress,
+                'Approval in Progress': this.standardColors.approvalInProgress,
+                'Closure in Progress': this.standardColors.closureInProgress,
+                'Extension in Progress': this.standardColors.extensionInProgress
+            };
+
+            res.forEach(item => {
+                statusData.labels.push(item.title);
+                statusData.datasets[0].data.push(item.task_count);
+                statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+            });
+
+            this.statusSCSGroupChartData = statusData;
+        });
+}
+loadTaskStatusCountTaNCS() {
+  this.api.getAPI(environment.API_URL +'transaction/COUNT/?group_code=TANCS')
+      .subscribe((response: any) => {
+          const res = response.data[0].titles;
+
+          const statusData = {
+              labels: [],
+              datasets: [{
+                  label: 'Status',
+                  backgroundColor: [],
+                  data: []
+              }]
+          };
+
+          const statusColors = {
+              'Completed': this.standardColors.completed,
+              'Task Closed': this.standardColors.closed,
+              'Work In Progress': this.standardColors.inProgress,
+              'Approval in Progress': this.standardColors.approvalInProgress,
+              'Closure in Progress': this.standardColors.closureInProgress,
+              'Extension in Progress': this.standardColors.extensionInProgress
+          };
+
+          res.forEach(item => {
+              statusData.labels.push(item.title);
+              statusData.datasets[0].data.push(item.task_count);
+              statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+          });
+
+          this.statusTaNCSGroupChartData = statusData;
+      });
+}
+
+loadTaskStatusCountETG() {
+  this.api.getAPI(environment.API_URL + 'transaction/COUNT/?group_code=ETG')
+      .subscribe((response: any) => {
+          const res = response.data[0].titles;
+
+          const statusData = {
+              labels: [],
+              datasets: [{
+                  label: 'Status',
+                  backgroundColor: [],
+                  data: []
+              }]
+          };
+
+          const statusColors = {
+              'Completed': this.standardColors.completed,
+              'Task Closed': this.standardColors.closed,
+              'Work In Progress': this.standardColors.inProgress,
+              'Approval in Progress': this.standardColors.approvalInProgress,
+              'Closure in Progress': this.standardColors.closureInProgress,
+              'Extension in Progress': this.standardColors.extensionInProgress
+          };
+
+          res.forEach(item => {
+              statusData.labels.push(item.title);
+              statusData.datasets[0].data.push(item.task_count);
+              statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+          });
+
+          this.statusETGGroupChartData = statusData;
+      });
 }
 
 
 
-  
-  
+loadTaskStatusCountCSI() {
+  this.api.getAPI(environment.API_URL + 'transaction/COUNT/?group_code=CSI')
+      .subscribe((response: any) => {
+          const res = response.data[0].titles;
 
+          const statusData = {
+              labels: [],
+              datasets: [{
+                  label: 'Status',
+                  backgroundColor: [],
+                  data: []
+              }]
+          };
 
+          const statusColors = {
+              'Completed': this.standardColors.completed,
+              'Task Closed': this.standardColors.closed,
+              'Work In Progress': this.standardColors.inProgress,
+              'Approval in Progress': this.standardColors.approvalInProgress,
+              'Closure in Progress': this.standardColors.closureInProgress,
+              'Extension in Progress': this.standardColors.extensionInProgress
+          };
 
+          res.forEach(item => {
+              statusData.labels.push(item.title);
+              statusData.datasets[0].data.push(item.task_count);
+              statusData.datasets[0].backgroundColor.push(statusColors[item.title] || '#D9D9D9');
+          });
 
-
+          this.statusCSIGroupChartData = statusData;
+      });
 }
+  }
+
+
+
+
