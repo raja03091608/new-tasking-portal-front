@@ -779,9 +779,7 @@ margin:0px !important;
   setActiveTab(tab: Tabs) {
     this.activeTab = tab;
   }
-  page=1;
-pageSize=10;
-currentPage=0;
+  url:string;
   getTasking() {
     this.countryList=[]
       if(this.token_detail.process_id==3 ){
@@ -792,17 +790,18 @@ currentPage=0;
       })
       .subscribe((res) => {
         if(res.status==environment.SUCCESS_CODE){
-          this.countryList = res.results;
-          this.totalCounts=res.count
+          this.countryList = res.data;
         this.dataSourcelist = new MatTableDataSource(this.countryList);
         this.dataSourcelist.paginator = this.pagination;
         }
       });
     }
     else{
+      this.url=`${environment.API_URL}transaction/trial/status`
+      this.url=`${environment.API_URL}transaction/trial/status`
       this.api
       .postAPI(
-        `${environment.API_URL}transaction/trial/status?page=${this.page}`,
+        `${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`,
         {
           'tasking_id': this.token_detail.tasking_id,
           'process_id': this.token_detail.process_id
@@ -810,13 +809,14 @@ currentPage=0;
       )
       .subscribe((res) => {
         this.dataSourcelist = new MatTableDataSource(res.data);
-        this.countryList = res.results;
-        this.totaleRecords = res.count; // Ensure count is defined
-        this.currentPage=this.page-1;        this.dataSourcelist.paginator = this.pagination;
+        this.countryList = res.data;
         if(res.results.status==environment.SUCCESS_CODE){
         }
       });
     }
+
+  
+    
   }
   approvalID:any;
   viewlist:any;
@@ -1228,12 +1228,12 @@ currentPage=0;
   gridColumns=[
     { field: 'task_number_dee', header: 'Tasking Number', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
-    { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
-    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+    { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate',     header: 'Sponsor', filter: true, filterMatchMode: 'contains', },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame', filter: true, filterMatchMode: 'contains',},
     {
       field: 'modified_on',
-      header: 'Approved on',
+      header: 'Approval Date',
       filter: true,
       filterMatchMode: 'contains',
       valueFormatter: (data: any) => {
@@ -1252,9 +1252,9 @@ handleFilter(filterValue: any) {
 }
 handlePagination(event: any) {
   this.getTasking();
-  this.page=event.page+1;
-  this.currentPage=event.page;
-  this.pageSize = event.rows;
+  // this.page=event.page+1;
+  // this.currentPage=event.page;
+  // this.pageSize = event.rows;
   
 }
 expDataHeader=[

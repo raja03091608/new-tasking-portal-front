@@ -26,11 +26,7 @@
 							<app-grid-table [gridColumns]="gridColum" [gridData]="taskList" [ispaniNater]="true"
 								[isAction]="true" 
                                 (clearEvent)="clearFields()"
-								[totalRecords]="totaleRecords"
-								[currentPage]="currentPage"
-								[rows]="pageSize"
-                                [isShearchDisable]="true"
-                                (searchEvent)="onSearch($event)"
+                                [url]="url"
 								(paginationEvent)="handlePagination($event)" (editEvent)="onEditRow($event)"
 								(deleteEvent)="onDelete($event.id)" (viewEvent)="onViewRow($event)"
 								[isView]="this.permission.view" [isEditable]="this.permission.edit"
@@ -111,7 +107,7 @@
                           </ng-container>
       
       
-                          <form *ngIf="SubmitAccess.commentPermission" [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
+                          <form  [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
                               >
                               <div class="mb-5 alert alert-dismissible alert-bg">
                                   <mat-label style="font-size:large;"><b>Comment</b></mat-label>
@@ -279,9 +275,9 @@
                                   <input (change)="onFileSelected($event,9)" *ngIf="!rowData.file8 && SubmitAccess.formPermission5" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                 
                                   <!-- <button *ngIf="SubmitAccess.formPermission5" type="submit" class="btn btn-success mt-3">Submit</button> -->
-                                  <ng-container *ngIf="getSignatureHtml('DEE_recommender')">
+                                  <!-- <ng-container *ngIf="getSignatureHtml('DEE_recommender')">
                                       <div [innerHTML]="getSignatureHtml('DEE_recommender')"></div>
-                                  </ng-container>
+                                  </ng-container> -->
                           
                               </div>
                           </form>
@@ -538,11 +534,11 @@
                                 label="For Comments Only">
                             </p-checkbox>
                             <ng-template  #elseLable>
-                                <label class="bg-yellow-subtle px-2" ><strong>{{i===0 ? 'Initiated' : route.isCommenter ? 'Commented' : 'Recommended'}}</strong></label>
+                                <label class="bg-teal-subtle px-2" ><strong>{{i===0 ? 'Initiated' : route.isCommenter ? 'Commented' : 'Recommended'}}</strong></label>
                             </ng-template>
                         </div>
                         <div *ngIf="route?.process?.id !== 2 " class="d-flex flex-column align-items-center py-3 ps-2">
-                            <label class="bg-yellow-subtle px-2" ><strong>Commenter</strong></label>
+                            <label class="bg-teal-subtle px-2" ><strong>Commenter</strong></label>
                         </div>
                     </div>
                     <i *ngIf="rowData.level <= i" class="fa-solid fa-user-pen fa-sm   cursor-pointer text-primary" (click)="editRoute(i)"></i>

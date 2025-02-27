@@ -201,31 +201,44 @@ export class UsersComponent implements OnInit {
 	}
 
 	param: any;
-	currentPage = 0;
-  pageSize = 10;
-page=1;
+	// url:string;
+	// getUserList() {
+	// 	this.url=`${environment.API_URL}api/auth/users?order_type=desc`
+	// 	this.userData = [];
+	// 	this.api.displayLoading(true);
+	// 	this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&limit_start=0&limit_end=10`)
+	// 		.subscribe((res) => {
+	// 			this.userData = res;
+	// 			this.api.displayLoading(false);
+				
+	// 		}, (error) => {
+	// 			this.api.displayLoading(false);
+	// 			console.error("Error fetching user list:", error);
+	// 		});
+	// }
+	
+	url: string;
+
 	getUserList() {
+		this.url = `${environment.API_URL}api/auth/users?order_type=desc`;
 		this.userData = [];
 		this.api.displayLoading(true);
-		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${this.page}`)
-			.subscribe((res) => {
-				this.totaleRecords = res.count; // Ensure count is defined
-				this.currentPage=this.page-1;
-				this.userData = res.results;
-				this.api.displayLoading(false);
-				if (res && res.results) {
-					this.user = res.results;
-				} else {
-					this.userData = [];
-					this.user = [];
-				}
-			}, (error) => {
-				this.api.displayLoading(false);
-				console.error("Error fetching user list:", error);
-			});
-	}
+		
+		console.log("Fetching user list...");
 	
-
+		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&limit_start=0&limit_end=10`)
+			.subscribe(
+				(res) => {
+					console.log("User list fetched successfully:", res);
+					this.userData = res;
+					this.api.displayLoading(false);
+				},
+				(error) => {
+					this.api.displayLoading(false);
+					console.error("Error fetching user list:", error);
+				}
+			);
+	}
 	
 	deleted_users: any;
 	getDeletedUserList() {
@@ -602,9 +615,6 @@ page=1;
 	  }
 	  handlePagination(event: any) {
 		this.getUserList()
-   		 this.page=event.page+1; 
-			this.currentPage=event.page;
-			this.pageSize = event.rows;
 		 }
 
 
