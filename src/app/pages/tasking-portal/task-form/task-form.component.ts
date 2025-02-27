@@ -60,7 +60,9 @@ export class TaskFormComponent implements OnInit {
   gridColum = [
     { field: 'sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, }
+    { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, },
+    { field: 'tasking_next_status', header: ' Next', filterMatchMode: 'contains', filter: false, }
+
   ]
   SubmitAccess={
     formPermission1:false,
