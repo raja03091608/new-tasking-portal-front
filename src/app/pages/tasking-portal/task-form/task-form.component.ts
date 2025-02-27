@@ -224,9 +224,9 @@ export class TaskFormComponent implements OnInit {
   }
   formpermission(resdata:any){
     if(resdata.detail==='Passed'){
-      if(this.rowData.form === 1){
+      if(this.rowData.form === 1 || this.rowData.form === 2){
         this.SubmitAccess.commentPermission=true
-        return;
+        
       }
       if(this.api.userid.role_center[0].user_role.code=='Initiator' && !this.rowData.SD_initiater ){
         this.SubmitAccess.formPermission1=true

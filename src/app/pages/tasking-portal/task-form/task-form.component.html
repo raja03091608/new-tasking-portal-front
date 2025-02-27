@@ -107,7 +107,7 @@
                           </ng-container>
       
       
-                          <form  [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
+                          <form *ngIf="SubmitAccess.commentPermission" [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
                               >
                               <div class="mb-5 alert alert-dismissible alert-bg">
                                   <mat-label style="font-size:large;"><b>Comment</b></mat-label>
