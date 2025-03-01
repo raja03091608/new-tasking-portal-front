@@ -1,5 +1,5 @@
 <div class="card">
-    <p-table #dataTable [columns]="gridColumns"  [paginator]="true"  [rows]="10" [value]="filteredData" [scrollable]="true"
+    <p-table #dataTable [columns]="gridColumns"  [paginator]="ispaniNater"  [rows]="10" [value]="filteredData" [scrollable]="true"
         styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
         resizableColumns="true" columnResizeMode="expand" 
         dataKey="id"
@@ -77,7 +77,7 @@
                 </td>
                 <td *ngFor="let col of gridColumns" class="wrappable">
 
-                    <ng-container *ngIf="col.header != 'Status' && col.header != 'Stage' ">
+                    <ng-container *ngIf="col.header != 'Status' && col.header != 'Stage' && col.field !== 'tasking_next_status'">
                         <span *ngIf="col.header == 'Time Frame'">{{ resolveNestedField(rowData,
                             col.field) }} Months</span>
                         <span *ngIf="col.header != 'Time Frame' && col.header != 'Approval Date'">
@@ -90,7 +90,7 @@
                         </span>
                     </ng-container>
 
-                    <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage'">
+                    <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage' || col.field === 'tasking_next_status'">
                         <div class="status" [ngClass]="getStatusClass(resolveNestedField(rowData, col.field))"
                             [ngStyle]="getStatusStyle(resolveNestedField(rowData, col.field))">
                             <span>{{ getStatusName(resolveNestedField(rowData, col.field)) }}</span>
@@ -115,7 +115,7 @@
                             <i class="fa-solid fa-trash"></i>&nbsp;<small>Delete</small>
                         </button>
                 
-                        <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item [ngClass]="getButtonClass(14)">
+                        <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus && !downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(14)">
                             <i class="fa-solid fa-info-circle"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
@@ -132,7 +132,7 @@
                         </button>
                 
                         <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload && downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(12)">
-                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>Download</small>
+                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item [ngClass]="getButtonClass(16)">
