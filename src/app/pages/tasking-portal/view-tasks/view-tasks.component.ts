@@ -780,76 +780,46 @@ margin:0px !important;
     this.activeTab = tab;
   }
   url:string;
-  // getTasking() {
-  //   this.countryList=[]
-  //     if(this.token_detail.process_id==3 ){
-  //     this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
-  //       'tasking_id': this.token_detail.tasking_id,
-  //       'process_id': this.token_detail.process_id,
-  //       'created_by': this.token_detail.user_id
-  //     })
-  //     .subscribe((res) => {
-  //       if(res.status==environment.SUCCESS_CODE){
-  //         this.countryList = res.data;
-  //       this.dataSourcelist = new MatTableDataSource(this.countryList);
-  //       this.dataSourcelist.paginator = this.pagination;
-  //       }
-  //     });
-  //   }
-  //   else{
-  //     this.url=`${environment.API_URL}transaction/trial/status`
-  //     this.url=`${environment.API_URL}transaction/trial/status`
-  //     this.api
-  //     .postAPI(
-  //       `${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`,
-  //       {
-  //         'tasking_id': this.token_detail.tasking_id,
-  //         'process_id': this.token_detail.process_id
-  //       }
-  //     )
-  //     .subscribe((res) => {
-  //       this.dataSourcelist = new MatTableDataSource(res.data);
-  //       this.countryList = res.data;
-  //       if(res.results.status==environment.SUCCESS_CODE){
-  //       }
-  //     });
-  //   }
-
-  
-    
-  // }
-
   getTasking() {
-    this.countryList = [];
-    this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
+    this.countryList=[]
+      if(this.token_detail.process_id==='3' ){
+      this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
         'tasking_id': this.token_detail.tasking_id,
         'process_id': this.token_detail.process_id,
         'created_by': this.token_detail.user_id
-    })
-    .subscribe((res) => {
-        if (res.status == environment.SUCCESS_CODE) {
-            this.countryList = res.data;
-            this.dataSourcelist = new MatTableDataSource(this.countryList);
-            this.dataSourcelist.paginator = this.pagination;
-        }
-    });
+      })
 
-    this.url = `${environment.API_URL}transaction/trial/status`;
-    this.api.postAPI(
+      .subscribe((res) => {
+        if(res.status==environment.SUCCESS_CODE){
+          this.countryList = res.data;
+        this.dataSourcelist = new MatTableDataSource(this.countryList);
+        this.dataSourcelist.paginator = this.pagination;
+        }
+      });
+    }
+    else{
+      this.url=`${environment.API_URL}transaction/trial/status`
+      this.url=`${environment.API_URL}transaction/trial/status`
+      this.api
+      .postAPI(
         `${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`,
         {
-            'tasking_id': this.token_detail.tasking_id,
-            'process_id': this.token_detail.process_id
+          'tasking_id': this.token_detail.tasking_id,
+          'process_id': this.token_detail.process_id
         }
-    )
-    .subscribe((res) => {
+      )
+      .subscribe((res) => {
         this.dataSourcelist = new MatTableDataSource(res.data);
         this.countryList = res.data;
-        if (res.results.status == environment.SUCCESS_CODE) {
-            // You can add any additional logic here if needed
+        if(res.results.status==environment.SUCCESS_CODE){
         }
-    });
-}
+      });
+    }
+
+  
+    
+  }
+
 
   approvalID:any;
   viewlist:any;
