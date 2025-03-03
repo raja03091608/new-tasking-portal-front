@@ -226,12 +226,14 @@ export class TaskFormComponent implements OnInit {
   }
   formpermission(resdata:any){
     if(resdata.detail==='Passed'){
-      if(this.rowData.form === 1){
-        this.SubmitAccess.commentPermission=true
-        return;
-      }
+      
+      this.SubmitAccess.commentPermission=true
+       
+
       if(this.api.userid.role_center[0].user_role.code=='Initiator' && !this.rowData.SD_initiater ){
         this.SubmitAccess.formPermission1=true
+      this.SubmitAccess.commentPermission=false
+
         this.sdForm.enable();
   
       }else if(resdata.role === 14 && this.rowData.SD_initiater && !this.rowData.APSO_recommender){
@@ -239,12 +241,14 @@ export class TaskFormComponent implements OnInit {
         this.apsoForm.enable();
       }else if((resdata.role === 21 || (resdata.role === 4 && !this.rowData.TS_recommender)) && this.rowData.APSO_recommender){
         this.SubmitAccess.formPermissionTasking=true
+        this.SubmitAccess.commentPermission=false;
         this.allocateForm.enable();
       }else if(this.api.userid.process_id === 3 && !this.rowData.TS_recommender){
         this.SubmitAccess.formPermission3=true
         this.weseeForm.enable();
       }else if(resdata.role === 4 && this.rowData.TS_recommender && !this.rowData.WESEE_recommender){
         this.SubmitAccess.formPermission4=true
+        this.SubmitAccess.commentPermission=true
         this.dgweseeForm.enable();
       }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
         this.SubmitAccess.formPermission5=true
@@ -252,12 +256,15 @@ export class TaskFormComponent implements OnInit {
         // this.deeForm.enable();
       }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
         this.SubmitAccess.formPermission6=true
+        this.SubmitAccess.commentPermission=true
         this.pdDeeForm.enable();
       }else if(resdata.role === 8 && this.rowData.PDEE_recommender && !this.rowData.ACOM_recommender){
         this.SubmitAccess.formPermission7=true
+        this.SubmitAccess.commentPermission=true
         this.acomForm.enable();
       }else if(resdata.role === 5 && this.rowData.ACOM_recommender && !this.rowData.COM_approver){
         this.SubmitAccess.formPermission8=true
+        this.SubmitAccess.commentPermission=true
         this.comForm.enable();
       }
       
@@ -1228,6 +1235,7 @@ onSubmitRoute() {
           detail: 'Route configuration saved successfully'
         });
         this.getStatusTimeline();
+        this.onEditRole(this.rowData);
       }else{
         this.messageService.add({
           severity: 'error',

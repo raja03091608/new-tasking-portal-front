@@ -84,30 +84,33 @@
                       <div class="scrollTable height-Task">
       
                           <ng-container *ngIf="minitingList && minitingList?.length > 0">
-                              <div *ngFor="let data of minitingList" class="alert alert-dismissible alert-bg mb-4">
-                                  <div  class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
-                                  <!-- <div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div> -->
-                                  <div>
-                                      <span class="float-end">
-                                          <i class="font-normal"> Electronically Signed by:</i>
-                                      </span>
-                                      <br>
-                                      <span class="float-end">
-                                          {{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
-                                          data?.created_by?.last_name }}
-                                      </span>
-                                      <br>
-                                      <span class="float-end">
-                                          {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
-                                          (data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
-                                      </span>
-                                  </div>
-      
-                              </div>
+                            <ng-container *ngFor="let data of minitingList">
+                                <div *ngIf="data?.comments" class="alert alert-dismissible alert-bg mb-4">
+                                    <div class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
+                                    <!-- <div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div> -->
+                                    <div>
+                                        <span class="float-end">
+                                            <i class="font-normal"> Electronically Signed by:</i>
+                                        </span>
+                                        <br>
+                                        <span class="float-end">
+                                            {{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
+                                            data?.created_by?.last_name }}
+                                        </span>
+                                        <br>
+                                        <span class="float-end">
+                                            {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
+                                            (data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
+                                        </span>
+                                    </div>
+        
+                                </div>
+                            </ng-container>
+                              
                           </ng-container>
       
       
-                          <form  [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
+                          <form *ngIf="SubmitAccess.commentPermission" [formGroup]="minitingForm" (ngSubmit)="saveMiniting()"
                               >
                               <div class="mb-5 alert alert-dismissible alert-bg">
                                   <mat-label style="font-size:large;"><b>Comment</b></mat-label>
