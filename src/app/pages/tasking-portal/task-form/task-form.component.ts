@@ -1140,12 +1140,18 @@ onEditRole(rowData) {
   removeUser(user: any, index: number) {
     this.selectedRoutes.splice(index, 1);
     this.api.deleteAPI(environment.API_URL+"transaction/process-flows/"+user.routeId+"/").subscribe(
-      res=> this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Route configuration Delete successfully'
+      res=> {
+        this.getStatusTimeline()
+        this.messageService.add({
+       severity: 'success',
+       summary: 'Success',
+       detail: 'Route configuration Delete successfully'
       })
-    )
+        
+      })
+        
+      
+    
   }
 routeedit:boolean=false;
 editindex:number;

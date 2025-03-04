@@ -783,21 +783,23 @@ margin:0px !important;
   getTasking() {
     this.countryList=[]
       if(this.token_detail.process_id==3 ){
-      this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
+      this.url=`${environment.API_URL}transaction/trial/status?`
+
+      this.api.postAPI(`${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`, {
         'tasking_id': this.token_detail.tasking_id,
         'process_id': this.token_detail.process_id,
         'created_by': this.token_detail.user_id
       })
       .subscribe((res) => {
+        this.countryList = res.data;
+
         if(res.status==environment.SUCCESS_CODE){
-          this.countryList = res.data;
         this.dataSourcelist = new MatTableDataSource(this.countryList);
         this.dataSourcelist.paginator = this.pagination;
         }
       });
     }
     else{
-      this.url=`${environment.API_URL}transaction/trial/status`
       this.url=`${environment.API_URL}transaction/trial/status`
       this.api
       .postAPI(
