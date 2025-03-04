@@ -152,6 +152,7 @@ export class TaskFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadUsers();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     this.getAccess()
     this.initializeForms();
@@ -187,6 +188,7 @@ export class TaskFormComponent implements OnInit {
   }
 
   hideModal(): void {
+    this.selectedRoutes=[];
     this.visible = false;
     this.getTasking();
   }
@@ -197,7 +199,11 @@ export class TaskFormComponent implements OnInit {
   }
 
   onEditRow(rowData){
-    this.loadUsers();
+    console.log(rowData,"tdfyigkjuoilhujyiiyh")
+    if(!rowData?.SD_initiater){
+      console.log('first time route')
+      this.enterfristTimeRoute(rowData);
+    }
     this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
@@ -213,15 +219,18 @@ export class TaskFormComponent implements OnInit {
     // this.disableAllForms()
     this.showModal()
   }
-  enterfristTimeRoute(){
-    const createdById=this.rowData.created_by?.id
+  enterfristTimeRoute(rowData:any){
+    const createdById=rowData.created_by?.id
+    console.log(createdById,this.allUsers)
     const user= this.allUsers.find(user => user.id === createdById)
-    if(user && this.selectedRoutes.length === 0){
+    if(user && this.selectedRoutes?.length === 0){
+      console.log("first time route")
       this.selectedRoutes.push({
         ...user,
         isCommenter:false,
         isRecommender:true
       })
+      console.log(this.selectedRoutes,"selectedRoutes")
     }
   }
   formpermission(resdata:any){
@@ -708,7 +717,6 @@ export class TaskFormComponent implements OnInit {
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'ACOM Form submitted successfully:' });
-          console.log('ACOM Form submitted successfully:', response);
           this.hideModal();
         },
         error => {
@@ -741,12 +749,10 @@ export class TaskFormComponent implements OnInit {
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'COM Form submitted successfully:' });
-          console.log('COM Form submitted successfully:', response);
           this.hideModal();
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting COM form:' });
-          console.error('Error submitting COM form:', error);
         }
       );
     }
@@ -765,7 +771,6 @@ export class TaskFormComponent implements OnInit {
 
     // Find the signature entry for the given key
     const signature = this.rowDataStatus.find(item => item[key] === 1);
-    console.log(signature);
     if (!signature) {
         this.signatureCache[key] = '';
         return '';
@@ -843,10 +848,11 @@ export class TaskFormComponent implements OnInit {
         this.routeList = res;
         this.lastStatusData = res[res.length - 1]?.sequence;
         temp.sort((a, b) => a.sequence - b.sequence);
-        this.selectedRoutes=[];
+        if(res?.length !== 0){
+            this.selectedRoutes=[];
+        }
 
         for(let i=0;i<temp.length;i++){
-          console.log(temp[i],i, "temp[i]");
          if(i<temp.length){
           const user={
             ...temp[i].current,
@@ -868,7 +874,6 @@ export class TaskFormComponent implements OnInit {
         }
 
 
-        console.log(this.selectedRoutes);
 
 
       //   temp.forEach((item, index) => {
@@ -1130,15 +1135,17 @@ onEditRole(rowData) {
     this.api.getAPI(environment.API_URL + 'api/auth/users?order_type=desc').subscribe(
       (res: any) => {
         this.allUsers = res;
-        if(!this.rowData.TS_recommender){
-          this.enterfristTimeRoute();
-        }
+        // if(!this.rowData?.SD_initiater){
+        //   this.enterfristTimeRoute();
+        // }
       }
     );
   }
 
   removeUser(user: any, index: number) {
+    console.log(user,index)
     this.selectedRoutes.splice(index, 1);
+    if(user.routeId){
     this.api.deleteAPI(environment.API_URL+"transaction/process-flows/"+user.routeId+"/").subscribe(
       res=> {
         this.getStatusTimeline()
@@ -1149,7 +1156,7 @@ onEditRole(rowData) {
       })
         
       })
-        
+    }
       
     
   }
@@ -1226,8 +1233,8 @@ onSubmitRoute() {
         tasking_id:this.rowData.id,
         current_user:route.id,
         next_user:this.selectedRoutes[index+1]?.id || '',
-        is_recommender:route.isRecommender,
-        is_commenter:route.isCommenter
+        is_recommender:this.selectedRoutes[index+1]?.isRecommender,
+        is_commenter:this.selectedRoutes[index+1]?.isCommenter
         }
         routes.push(user)
       }
