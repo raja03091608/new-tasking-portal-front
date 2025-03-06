@@ -1,29 +1,50 @@
 <div class="card">
-    <p-table #dataTable [columns]="gridColumns" [value]="filteredData" [scrollable]="true"
+    <p-table #dataTable [columns]="gridColumns"  [paginator]="ispaniNater"  [rows]="10" [value]="filteredData" [scrollable]="true"
         styleClass="auto-width-table p-datatable-gridlines p-datatable-striped table table-striped table-row-bordered gy-5 gs-7 border rounded"
         resizableColumns="true" columnResizeMode="expand" 
         dataKey="id"
         >
-        <!-- Dynamic Column Headers -->
-        <ng-template pTemplate="caption">
+       
+        <ng-template pTemplate="caption"  *ngIf="!isShearchDisable">
             <div class="d-flex align-items-between">
-                <!-- Clear Button -->
-                <button class="btn btn-primary my-4 " (click)="clear(dataTable)">
-                    <i class="pi pi-filter-slash "></i>Clear
+                <button class="btn btn-primary my-4" (click)="clear(dataTable)">
+                    <i class="pi pi-filter-slash"></i> Clear
                 </button>
 
-                <!-- Search Input -->
-                <div class="input-group ms-auto w-25 ">
-                    <span class=" btn btn-primary">
+                <div class="input-group ms-auto w-25">
+                    <span class="btn btn-primary">
                         <i class="pi pi-search"></i>
                     </span>
                     <input type="text" class="form-control" [(ngModel)]="searchValue"
-                        (input)="dataTable.filterGlobal(onSearchInput(searchValue), 'contains')"
-                        placeholder="Search keyword" />
+                        (input)="dataTable.filterGlobal(onSearchInput(searchValue), 'contains')" placeholder="Search keyword" />
                 </div>
             </div>
         </ng-template>
 
+        <ng-template *ngIf="isShearchDisable" pTemplate="caption">
+            <div class="d-flex align-items-between">
+              <button class="btn btn-primary my-4" (click)="clearEvent.emit()">
+                <i class="pi pi-filter-slash"></i> Clear
+              </button>
+          
+              <div class="input-group ms-auto w-25">
+                <span class="btn btn-primary">
+                  <i class="pi pi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  #searchInput 
+                  class="form-control"
+                  (keyup.enter)="emitSearchEvent(searchInput.value)" 
+                  placeholder="Search keyword" 
+                />
+              </div>
+            </div>
+          </ng-template>
+          
+          
+
+        
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th class="headercolor" *ngIf="isCheckBox" class="text-center">
@@ -56,19 +77,20 @@
                 </td>
                 <td *ngFor="let col of gridColumns" class="wrappable">
 
-                    <ng-container *ngIf="col.header != 'Status' ">
-                        <span *ngIf="col.header == 'Time Frame for Completion'">{{ resolveNestedField(rowData,
-                            col.field) }} Month's</span>
-                        <span *ngIf="col.header != 'Time Frame for Completion' && col.header != 'Approved on'">
+                    <ng-container *ngIf="col.header != 'Status' && col.header != 'Stage' && col.field !== 'tasking_next_status'">
+                        <span *ngIf="col.header == 'Time Frame'">{{ resolveNestedField(rowData,
+                            col.field) }} Months</span>
+                        <span *ngIf="col.header != 'Time Frame' && col.header != 'Approval Date'">
                             {{ resolveNestedField(rowData, col.field) }}
                         </span>
-                        <span *ngIf="col.header == 'Approved on'">
-                            {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
-                            }}
+                        <span *ngIf="col.header == 'Approval Date'">
+                            {{resolveNestedField(rowData, col.field) | date:'dd MMM yyyy'}}
+                            <!-- {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
+                            }} -->
                         </span>
                     </ng-container>
 
-                    <ng-container *ngIf="col.header === 'Status'">
+                    <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage' || col.field === 'tasking_next_status'">
                         <div class="status" [ngClass]="getStatusClass(resolveNestedField(rowData, col.field))"
                             [ngStyle]="getStatusStyle(resolveNestedField(rowData, col.field))">
                             <span>{{ getStatusName(resolveNestedField(rowData, col.field)) }}</span>
@@ -82,7 +104,7 @@
                     </button>
                     <mat-menu #actionsMenu="matMenu">
                         <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item [ngClass]="getButtonClass(7)">
-                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View</small>
+                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item [ngClass]="getButtonClass(8)">
@@ -93,8 +115,8 @@
                             <i class="fa-solid fa-trash"></i>&nbsp;<small>Delete</small>
                         </button>
                 
-                        <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus" mat-menu-item [ngClass]="getButtonClass(14)">
-                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>Status</small>
+                        <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus && !downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(14)">
+                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item [ngClass]="getButtonClass(15)">
@@ -110,7 +132,7 @@
                         </button>
                 
                         <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload && downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(12)">
-                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>Download</small>
+                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>View Tasking</small>
                         </button>
                 
                         <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item [ngClass]="getButtonClass(16)">
@@ -142,7 +164,7 @@
             </tr>
         </ng-template>
     </p-table>
-    <div class="card" *ngIf="ispaniNater && totalRecords > 0">
+    <!-- <div class="card" *ngIf="ispaniNater && totalRecords > 0">
         <p-paginator 
             (onPageChange)="onPageChange($event)" 
             [first]="first" 
@@ -157,5 +179,5 @@
             styleClass="p-paginator-bottom"
         >
         </p-paginator>
-    </div>
+    </div> -->
 </div>

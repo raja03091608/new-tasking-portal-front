@@ -27,8 +27,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import{TableModule} from'primeng/table';
+import { TableModule } from 'primeng/table';
 import { AuthService } from './service/interceptors/auth.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CheckboxModule } from 'primeng/checkbox';
 
 // import { PringeComponentModule } from './primeng-component/pringe-component.module';
 
@@ -67,7 +69,9 @@ import { AuthService } from './service/interceptors/auth.service';
     NgbModule,
     MaterialModule,
     AngularEditorModule,
-    TableModule
+    TableModule,
+    MultiSelectModule,
+    CheckboxModule
 
   ],
 

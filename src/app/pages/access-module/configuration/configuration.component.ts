@@ -29,7 +29,8 @@ export class ConfigurationComponent implements OnInit {
     "edit",
     "delete",
 
-  ];;
+  ];totaleRecords: any;
+;
 
 
   dataSource: MatTableDataSource<any>;
@@ -88,8 +89,8 @@ export class ConfigurationComponent implements OnInit {
   };
 
   ngOnInit(): void {
-     this.getApproval(this.currentPage);
-     this.getUserGroups(this.currentPage);
+     this.getApproval();
+     this.getUserGroups();
      this.getUserRoles();
      this.getAccess();
   }
@@ -105,22 +106,26 @@ export class ConfigurationComponent implements OnInit {
 
   UserGroups:any;
   totalCounts:number=0;
-  currentPage: number;
 page=1;
-  getUserGroups(page: number = 1) {
+  currentPage = 0;
+  pageSize = 10;
+  getUserGroups() {
     this.api
-      .getAPI(`${environment.API_URL}master/department?status=1&page=${this.page}`)
+      .getAPI(`${environment.API_URL}master/department?status=1`)
       .subscribe((res) => {
-        this.UserGroups = res.data;
-        this.totalCounts = res.count;
+        this.UserGroups = res.results;
+        this.configurationData = res.results;
+        this.totaleRecords = res.count;
+        this.currentPage = this.page - 1; 
       });
   }
-  getApproval(page: number = 1) {
+  url:string;
+  getApproval() {
     this.api
-      .getAPI(`${environment.API_URL}configuration/approvals`)
+      .getAPI(`${environment.API_URL}configuration/approvals?limit_start=0&limit_end=10`)
       .subscribe((res) => {
-        this.dataSource = new MatTableDataSource(res.results.data);
-        this.configurationData = res.data;
+        this.dataSource = new MatTableDataSource(res.data);
+        this.configurationData = res;
         this.countryList = res.data;
         this.dataSource.paginator = this.pagination;
       });}
@@ -136,7 +141,6 @@ page=1;
         element.checked = true;
         openModal('#configuration');
       }
-
   editOption(country) {
     this.isReadonly=false;
     this.editForm.enable();
@@ -151,7 +155,6 @@ page=1;
     }
     openModal('#configuration');
   }
-
   onView(country) {
     this.crudName = 'View';
     this.isReadonly=true;
@@ -166,7 +169,6 @@ page=1;
     }
     openModal('#configuration');
   }
-
   onDelete(id) {
     let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -261,9 +263,11 @@ applyFilter(event: Event) {
       
       this.filterData = filterValue;
       }
-      handlePagination(pageEvent: any) {
+      handlePagination(event: any) {
         this.getUserGroups();
-        this.page = pageEvent.page + 1;
+        this.page = event.page + 1; // Convert 0-based to 1-based for API
+    this.pageSize = event.rows;
+    this.currentPage = event.page;
 
 
       }

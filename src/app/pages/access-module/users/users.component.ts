@@ -60,6 +60,7 @@ export class UsersComponent implements OnInit {
 	@ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
 	userData= [] as any;
 	totalCounts: any;
+	totaleRecords: any;
 	
 	constructor(public api: ApiService, private notification: NotificationService,
 		private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService,
@@ -159,12 +160,11 @@ export class UsersComponent implements OnInit {
 		}, 0, pageIndex);
 	}
 
-	currentPage: number;
 	departmentList = [];
 	getDepartment() {
 		this.api.getAPI(`${environment.API_URL}master/department?status=1`)
   .subscribe((res) => {
-    this.departmentList = res.results;
+    this.departmentList = res.data;
   });
 
 	}
@@ -201,40 +201,44 @@ export class UsersComponent implements OnInit {
 	}
 
 	param: any;
-	// getUserList(page:number=1) {
-	// 	this.userData=[]
+	// url:string;
+	// getUserList() {
+	// 	this.url=`${environment.API_URL}api/auth/users?order_type=desc`
+	// 	this.userData = [];
 	// 	this.api.displayLoading(true);
-	// 	this.api
-	// 		.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${page}`)
+	// 	this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&limit_start=0&limit_end=10`)
 	// 		.subscribe((res) => {
-	// 			this.api.displayLoading(false)
-	// 			this.userData=res.results;
-	// 			this.user = res.results;
-
+	// 			this.userData = res;
+	// 			this.api.displayLoading(false);
+				
+	// 		}, (error) => {
+	// 			this.api.displayLoading(false);
+	// 			console.error("Error fetching user list:", error);
 	// 		});
 	// }
-page=1;
+	
+	url: string;
+
 	getUserList() {
+		this.url = `${environment.API_URL}api/auth/users?order_type=desc`;
 		this.userData = [];
 		this.api.displayLoading(true);
-		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&page=${this.page}`)
-			.subscribe((res) => {
-				this.api.displayLoading(false);
-				if (res && res.results) {
-					this.userData = res.results;
-					this.totalCounts=res.count;
-					this.user = res.results;
-				} else {
-					this.userData = [];
-					this.user = [];
-				}
-			}, (error) => {
-				this.api.displayLoading(false);
-				console.error("Error fetching user list:", error);
-			});
-	}
+		
+		console.log("Fetching user list...");
 	
-
+		this.api.getAPI(`${environment.API_URL}api/auth/users?order_type=desc&limit_start=0&limit_end=10`)
+			.subscribe(
+				(res) => {
+					console.log("User list fetched successfully:", res);
+					this.userData = res;
+					this.api.displayLoading(false);
+				},
+				(error) => {
+					this.api.displayLoading(false);
+					console.error("Error fetching user list:", error);
+				}
+			);
+	}
 	
 	deleted_users: any;
 	getDeletedUserList() {
@@ -609,9 +613,9 @@ page=1;
 		
 		this.filterData = filterValue;
 	  }
-	  handlePagination(pageEvent: any) {
+	  handlePagination(event: any) {
 		this.getUserList()
-   		 this.page=pageEvent.page+1;  }
+		 }
 
 
 	

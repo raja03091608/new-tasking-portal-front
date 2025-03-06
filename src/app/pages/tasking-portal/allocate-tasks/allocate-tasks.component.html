@@ -16,9 +16,12 @@
 			  [gridData]="countryList"
 				 [ispaniNater]="true" [isAction]="true" 
 				 (editEvent)="updateallocate($event)" 
-				 [totalRecords]="totalCounts"
 				 [isEditable]="true"
-				 >
+				 
+				 (paginationEvent)="handlePagination($event)"
+				
+				 [url]="url"
+				  >
 			  </app-grid-table>
 		   </ng-container> 
 		<ng-container *ngIf="countryList.length === 0">

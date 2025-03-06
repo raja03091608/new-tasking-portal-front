@@ -30,13 +30,12 @@
 				   (paginationEvent)="handlePagination($event)"
 				   (viewEvent)="onView($event)" 
 				  [isView]="permission.view"
-				  [totalRecords]="totalCounts"
+				  [url]="url"
 				  (deleteEvent)=" onDelete($event.id)" 
 				  [isDeletable]="permission.delete"
 				  (editEvent)="editOption($event)" 
 				  [isPermanentDelete]="permission.delete"
 				  (permanentDeleteEvent)="onPermanentDelete($event.id)"
-				  
 				  [isEditable]="permission.edit">
 				</app-grid-table>
 			 </ng-container> 

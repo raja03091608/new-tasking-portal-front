@@ -11,7 +11,6 @@ import { HttpHeaders } from "@angular/common/http";
   styleUrls: ['./wish-dashboard.component.scss']
 })
 export class WishDashboardComponent implements OnInit {
-
   taskingGroups: any[] = [];
   usersList: any[] = [];
   listDelapso: number;
@@ -43,14 +42,46 @@ export class WishDashboardComponent implements OnInit {
     editorConfig: AngularEditorConfig = {
       editable: true,
       spellcheck: true,
-      height: '300px',
-      minHeight: '100px',
+      minHeight: '15rem',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
       placeholder: 'Enter text here...',
-      translate: 'no',
+      defaultParagraphSeparator: 'p',
       defaultFontName: 'Arial',
-      toolbarHiddenButtons: [['bold', 'italic'], ['fontSize']],
-      sanitize: false, // Disable sanitization to avoid automatic HTML encoding
-      defaultParagraphSeparator: 'p' // Default paragraph separator to <p>
+      defaultFontSize: '3',
+      fonts: [
+        { class: 'arial', name: 'Arial' },
+        { class: 'times-new-roman', name: 'Times New Roman' },
+        { class: 'calibri', name: 'Calibri' },
+        { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+      ],
+      customClasses: [
+        {
+          name: "quote",
+          class: "quote",
+        },
+        {
+          name: 'redText',
+          class: 'redText'
+        },
+        {
+          name: "titleText",
+          class: "titleText",
+          tag: "h1",
+        },
+      ],
+      uploadWithCredentials: false,
+      sanitize: true,
+      toolbarPosition: 'top',
+      toolbarHiddenButtons: [
+        ['subscript', 'superscript'],
+        ['fontSize', 'toggleEditorMode', 'customClasses']
+      ],
+      outline: true
     };
     
   gridColumns = [
@@ -287,12 +318,6 @@ onCommentPopup(event: any) {
       }
     });
   }
-  
-  
-  
-  
-
-
   initializeForm(): void {
     this.detailsForm = this.fb.group({
       tasking_group: ['', Validators.required],
@@ -322,7 +347,7 @@ onCommentPopup(event: any) {
   getTaskingUser(taskingGroupId: string): void {
     this.api.getAPI(`${environment.API_URL}api/auth/users?tasking_id=${taskingGroupId}`).subscribe(
       (res) => {
-        this.usersList = res.data;
+        this.usersList = res;
         console.log('Fetched users:', this.usersList);
       },
       (error) => {

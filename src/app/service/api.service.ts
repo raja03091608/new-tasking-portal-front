@@ -295,6 +295,25 @@ getPageAction()
 
   }
 
+  formatDate(dateInput) {
+    if (!dateInput) {
+      return 'N/A';
+    }
+    
+    const date = new Date(dateInput);
+  
+    // Get each component
+    const day = String(date.getDate()).padStart(2, '0'); // dd
+    const monthShort = date.toLocaleString('en', { month: 'short' }); // MMM
+    const year = String(date.getFullYear()).slice(-2); // yy
+    const hours = String(date.getHours()).padStart(2, '0'); // HH
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // mm
+    const seconds = String(date.getSeconds()).padStart(2, '0'); // ss
+  
+    // Construct the string: dd MMM yy HH:mm:ss
+    return `${day} ${monthShort} ${year} ${hours}:${minutes}:${seconds}`;
+  }
+  
 
 
   secugenErrorString(ErrorCode) {

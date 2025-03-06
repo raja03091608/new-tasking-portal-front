@@ -27,7 +27,8 @@
 								[isAction]="true" (filterEvent)="handleFilter($event)"
 								(paginationEvent)="handlePagination($event)" (editEvent)="handleEdit($event)"
 								(deleteEvent)="handleDelete($event)" (viewEvent)="handleView($event)"
-								[isView]="this.permission.view" [isEditable]="this.permission.edit"
+								[isView]="this.permission.view"
+								 [isEditable]="this.permission.edit"
 								[isDeletable]="this.permission.delete">
 
 							</app-grid-table>

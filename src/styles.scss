@@ -1367,3 +1367,8 @@ margin-bottom: 1rem;
 .text-teal { color: #013933 !important; }
 .text-blue { color: #012e60 !important; }
 .text-yellow { color: #a06602 !important; }
+.p-autocomplete input{
+  min-width: 100% !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+}

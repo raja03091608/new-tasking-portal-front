@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { environment } from '../../../../environments/environment.prod';
 import { ApiService } from '../../../service/api.service';
@@ -9,6 +9,11 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatDialog } from '@angular/material/dialog';
 import { language } from '../../../../environments/language';
 import { ConfirmationDialogComponent } from '../../../confirmation-dialog/confirmation-dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { ReplaySubject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { MultiSelect } from 'primeng/multiselect';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 
 @Component({
@@ -55,7 +60,9 @@ export class TaskFormComponent implements OnInit {
   gridColum = [
     { field: 'sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, }
+    { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, },
+    { field: 'tasking_next_status', header: ' Next', filterMatchMode: 'contains', filter: false, }
+
   ]
   SubmitAccess={
     formPermission1:false,
@@ -73,18 +80,17 @@ export class TaskFormComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    
-    minHeight: '10rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
-    defaultFontSize: '',
+    defaultFontSize: '3',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
@@ -93,27 +99,27 @@ export class TaskFormComponent implements OnInit {
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
     ],
     uploadWithCredentials: false,
-    sanitize: false,
+    sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
+      ['subscript', 'superscript'],
       ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-
+    ],
+    outline: true
   };
   usersList = []
   taskingGroups=[];
@@ -128,33 +134,48 @@ export class TaskFormComponent implements OnInit {
   moduleAccess: any;
   token_detail: any;
   totaleRecords:any;
-  constructor(private fb: FormBuilder, private api: ApiService,private messageService: MessageService,private conFdialog: MatDialog,) { 
+  private signatureCache: { [key: string]: string } = {};
+  searchValue: string;
+  globalsearch: any;
+  tableDataSource: any;
+  sort: any;
+  paginator: any;
+ 
+  selectedRoutes: any[] = [];
+  allUsers: any[] = [];
+  filteredUsers: any[] = [];
+  selectedUsers: any;
+  editingIndex: number = -1;
+  isEditing: boolean = false;
+  constructor(private fb: FormBuilder, public api: ApiService, private messageService: MessageService, private conFdialog: MatDialog) { 
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
   }
 
   ngOnInit(): void {
+    this.loadUsers();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     this.getAccess()
     this.initializeForms();
     this.getTasking()
+    this.disableAllForms()
     
   }
-  page = 1;
-  currentPage = 0;
-  pageSize = 10;
   
+  url:string;
+
   getTasking() {
+    this.url=environment.API_URL + "transaction/tasking?"
     this.taskList = [];
-    let url = environment.API_URL + "transaction/tasking?order_type=desc&page=" + this.page;
+    let url = environment.API_URL + "transaction/tasking?limit_start=0&limit_end=10"
     if (this.token_detail.process_id == 2 && this.token_detail.role_id == 3) {
+      this.url +=`&created_by_id=${this.token_detail.user_id}`;
       url += `&created_by_id=${this.token_detail.user_id}`;
     }
 
     this.api.getAPI(url).subscribe({
       next: (res) => {
-        this.taskList = res.results;
-        this.totaleRecords = res.count;
-        this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
+        this.taskList = res;
+        // this.currentPage = this.page - 1; // Convert 1-based to 0-based for PrimeNG
       },
       error: (error) => {
         console.error('Error fetching tasks:', error);
@@ -167,10 +188,23 @@ export class TaskFormComponent implements OnInit {
   }
 
   hideModal(): void {
+    this.selectedRoutes=[];
     this.visible = false;
+    this.getTasking();
+  }
+  setAllPermissionsFalse(obj) {
+    Object.keys(obj).forEach(key => {
+      obj[key] = false;
+    });
   }
 
   onEditRow(rowData){
+    console.log(rowData,"tdfyigkjuoilhujyiiyh")
+    if(!rowData?.SD_initiater){
+      console.log('first time route')
+      this.enterfristTimeRoute(rowData);
+    }
+    this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
     this.apiCall();
@@ -179,13 +213,76 @@ export class TaskFormComponent implements OnInit {
     this.getStatusTimeline();
     this.setFormData()
     this.getSignatureData()
-    this.editorConfig.editable=false;
+    // this.editorConfig.editable=false;
     if(this.rowData && this.rowData.assigned_tasking_group &&this.rowData.assigned_tasking_group?.tasking_group)
         this.getTaskingUser({value:this.rowData.assigned_tasking_group?.tasking_group})
     // this.disableAllForms()
     this.showModal()
   }
+  enterfristTimeRoute(rowData:any){
+    const createdById=rowData.created_by?.id
+    console.log(createdById,this.allUsers)
+    const user= this.allUsers.find(user => user.id === createdById)
+    if(user && this.selectedRoutes?.length === 0){
+      console.log("first time route")
+      this.selectedRoutes.push({
+        ...user,
+        isCommenter:false,
+        isRecommender:true
+      })
+      console.log(this.selectedRoutes,"selectedRoutes")
+    }
+  }
+  formpermission(resdata:any){
+    if(resdata.detail==='Passed'){
+      
+      this.SubmitAccess.commentPermission=true
+       
+
+      if(this.api.userid.role_center[0].user_role.code=='Initiator' && !this.rowData.SD_initiater ){
+        this.SubmitAccess.formPermission1=true
+      this.SubmitAccess.commentPermission=false
+
+        this.sdForm.enable();
+  
+      }else if(resdata.role === 14 && this.rowData.SD_initiater && !this.rowData.APSO_recommender){
+        this.SubmitAccess.formPermission2=true
+        this.apsoForm.enable();
+      }else if((resdata.role === 21 || (resdata.role === 4 && !this.rowData.TS_recommender)) && this.rowData.APSO_recommender){
+        this.SubmitAccess.formPermissionTasking=true
+        this.SubmitAccess.commentPermission=false;
+        this.allocateForm.enable();
+      }else if(this.api.userid.process_id === 3 && !this.rowData.TS_recommender){
+        this.SubmitAccess.formPermission3=true
+        this.weseeForm.enable();
+      }else if(resdata.role === 4 && this.rowData.TS_recommender && !this.rowData.WESEE_recommender){
+        this.SubmitAccess.formPermission4=true
+        this.SubmitAccess.commentPermission=true
+        this.dgweseeForm.enable();
+      }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
+        this.SubmitAccess.formPermission5=true
+        this.SubmitAccess.commentPermission=true
+        // this.deeForm.enable();
+      }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
+        this.SubmitAccess.formPermission6=true
+        this.SubmitAccess.commentPermission=true
+        this.pdDeeForm.enable();
+      }else if(resdata.role === 8 && this.rowData.PDEE_recommender && !this.rowData.ACOM_recommender){
+        this.SubmitAccess.formPermission7=true
+        this.SubmitAccess.commentPermission=true
+        this.acomForm.enable();
+      }else if(resdata.role === 5 && this.rowData.ACOM_recommender && !this.rowData.COM_approver){
+        this.SubmitAccess.formPermission8=true
+        this.SubmitAccess.commentPermission=true
+        this.comForm.enable();
+      }
+      
+      
+    }
+   
+  }
   onViewRow(rowData){
+    this.setAllPermissionsFalse(this.SubmitAccess);
     this.rowData=rowData
     this.onEditRole(rowData);
     this.apiCall();
@@ -265,7 +362,7 @@ export class TaskFormComponent implements OnInit {
       task_number_dee0: ['', Validators.required],
       task_number_dee1: ['', Validators.required],
       task_number_dee2: ['', Validators.required],
-      comments_of_dee: ['', Validators.required]
+      comments_of_dee: ['']
     });
     this.pdDeeForm = this.fb.group({
       comments_of_pd_dee: ['', Validators.required]
@@ -323,22 +420,27 @@ export class TaskFormComponent implements OnInit {
   }
   removeFile(key:string){    this.rowData[key]=null;  }
   getFileNameFromUrl(url: string): string {    return url ? url.substring(url.lastIndexOf('/') + 1) : '';}
-  getSignatureData() { this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking_id=" + this.rowData.id).subscribe((res) => { this.rowDataStatus = res.data;})}
+  getSignatureData() { 
+    this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking=" + this.rowData.id).subscribe((res) => { 
+        this.rowDataStatus = res.data;
+        this.signatureCache = {}; // Clear cache when new data is loaded
+    });
+  }
   getTaskingUser(event) { this.api.getAPI(environment.API_URL + `api/auth/users?tasking_id=${event?.value}`).subscribe(res => { this.usersList = res  })  }
   getTaskingGroups() { this.api.getAPI(environment.API_URL + "master/taskinggroups").subscribe((res) => {  this.taskingGroups = res.data;  }); }
   
 
   handlePagination(event: any) {
-    this.page = event.page + 1; // Convert 0-based to 1-based for API
-    this.pageSize = event.rows;
-    this.currentPage = event.page;
+    // this.page = event.page + 1; // Convert 0-based to 1-based for API
+    // this.pageSize = event.rows;
+    // this.currentPage = event.page;
     this.getTasking();
   }
 
 
   onSubmitSD(): void {
-    this.showConfirm();
     if(this.lastStatusData <= this.rowData.level ){
+      this.showConfirm();
       return;
     }
     if (this.sdForm.valid) {
@@ -354,19 +456,19 @@ export class TaskFormComponent implements OnInit {
       
       // Append files if they exist
       if (this.files.file1) {
-        formData.append('files', this.files.file1);
+        formData.append('file', this.files.file1);
       }
       if (this.files.file2) {
-        formData.append('files1', this.files.file2);
+        formData.append('file1', this.files.file2);
       }
       if (this.files.file3) {
-        formData.append('files2', this.files.file3);
+        formData.append('file2', this.files.file3);
       }
       if (this.files.file4) {
-        formData.append('files3', this.files.file4);
+        formData.append('file3', this.files.file4);
       }
       if (this.files.file5) {
-        formData.append('files4', this.files.file5);
+        formData.append('file4', this.files.file5);
       }
       
       
@@ -375,9 +477,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'SD Form submitted successfully:' });
           console.log('SD Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting SD form:' });
           console.error('Error submitting SD form:', error);
         }
       );
@@ -390,20 +495,31 @@ export class TaskFormComponent implements OnInit {
       return;
     }
     if (this.apsoForm.valid) {
+
       const payload = {
         comments_of_apso: this.apsoForm.value.comments_of_apso,
-        'id': this.rowData.id,
-        status :1
+        id: this.rowData.id,
+        status :1,
+        comment_status :1
 
       };
+      let fpayload={
+        apsoForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :1
+      }
 
       console.log('APSO Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'APSO Form submitted successfully:' });
           console.log('APSO Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting APSO form:' });
           console.error('Error submitting APSO form:', error);
         }
       );
@@ -411,30 +527,34 @@ export class TaskFormComponent implements OnInit {
   }
 
   onSubmitWESEE(): void {
-    if(this.lastStatusData <= this.rowData.level ){
-      this.showConfirm();
-      return;
-    }
+    
     if (this.weseeForm.valid) {
       const formData = new FormData();
       formData.append('cost_implication', this.weseeForm.value.cost_implication);
       formData.append('time_frame_for_completion_month', this.weseeForm.value.time_frame_for_completion_month);
       formData.append('comments_of_tasking_group', this.weseeForm.value.comments_of_tasking_group);
-      
+      formData.append('status', '1');
+      formData.append(' comment_status','1');
+      formData.append('id', this.rowData.id+"");
+      formData.append('TS_recommender', "1");
+
       if (this.files.file6) {
-        formData.append('files5', this.files.file6);
+        formData.append('file5', this.files.file6);
       }
       if (this.files.file7) {
-        formData.append('files6', this.files.file7); 
+        formData.append('file6', this.files.file7); 
       }
 
       console.log('WESEE Payload:', formData);
 
-      this.api.postAPI(environment.API_URL + 'wesee-endpoint', formData).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'WESEE Form submitted successfully:' });
           console.log('WESEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting WESEE form:' });
           console.error('Error submitting WESEE form:', error);
         }
       );
@@ -443,21 +563,28 @@ export class TaskFormComponent implements OnInit {
 
   onallocateSubmit(): void {
     if (this.allocateForm.valid) {
+    
       const payload = {
         tasking_group: this.allocateForm.value.tasking_group,
         tasking_user: this.allocateForm.value.tasking_user,
-        id: this.rowData.id,
-        status :1
+        tasking: this.rowData.id,
+        created_by: this.api.userid.user_id,
+        id: '',
+        status :1,
+        comment_status :1
 
       };
 
       console.log('Allocate Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/assigned-task/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'Allocate Form submitted successfully:' });
           console.log('Allocate Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting Allocate form:' });
           console.error('Error submitting Allocate form:', error);
         }
       );
@@ -471,9 +598,13 @@ export class TaskFormComponent implements OnInit {
     }
     if (this.dgweseeForm.valid) {
       const payload = {
+        cost_implication: this.rowData.cost_implication,
+        time_frame_for_completion_month: this.rowData.time_frame_for_completion_month,
+        time_frame_for_completion_days: this.rowData.time_frame_for_completion_days,
         comments_of_wesee: this.dgweseeForm.value.comments_of_wesee,
         id:this.rowData.id,
-        status :1
+        status :1,
+        comment_status :1
 
       };
 
@@ -481,9 +612,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DG WESEE Form submitted successfully:' });
           console.log('DG WESEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DG WESEE form:' });
           console.error('Error submitting DG WESEE form:', error);
         }
       );
@@ -501,21 +635,27 @@ export class TaskFormComponent implements OnInit {
       formData.append('comments_of_dee', this.deeForm.value.comments_of_dee);
       formData.append('id', this.rowData.id+"");
       formData.append('status', "1");
+      formData.append('comment_status', "1");
+
 
       if (this.files.file8) {
-        formData.append('files2', this.files.file8);
+        formData.append('file7', this.files.file8);
       }
       if (this.files.file9) {
-        formData.append('files3', this.files.file9);
+        formData.append('file8', this.files.file9);
       }
       
       console.log('DEE Payload:', formData);
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', formData).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DEE Form submitted successfully:' });
           console.log('DEE Form submitted successfully:', response);
+          // this.hideModal();
+          this.deeForm.enable()
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting DEE form:' });
           console.error('Error submitting DEE form:', error);
         }
       );
@@ -529,9 +669,10 @@ export class TaskFormComponent implements OnInit {
     }
     if (this.pdDeeForm.valid) {
       const payload = {
-        comments_of_pd_dee: this.pdDeeForm.value.comments_of_pd_dee,
+        comments_of_pdee: this.pdDeeForm.value.comments_of_pd_dee,
       id:this.rowData.id,
-      status :1
+      status :1,
+      comment_status :1
 
       };
 
@@ -539,9 +680,12 @@ export class TaskFormComponent implements OnInit {
 
       this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
         response => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'PD DEE Form submitted successfully:' });
           console.log('PD DEE Form submitted successfully:', response);
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting PD DEE form:' });
           console.error('Error submitting PD DEE form:', error);
         }
       );
@@ -557,17 +701,26 @@ export class TaskFormComponent implements OnInit {
       const payload = {
         recommendation_of_acom_its: this.acomForm.value.recommendation_of_acom_its,
         id:this.rowData.id,
-        status :1
+        status :1,
+        comment_status :1
 
       };
+      let fpayload={
+        acomForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :1
+      }
 
       console.log('ACOM Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
-          console.log('ACOM Form submitted successfully:', response);
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'ACOM Form submitted successfully:' });
+          this.hideModal();
         },
         error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting ACOM form:' });
           console.error('Error submitting ACOM form:', error);
         }
       );
@@ -579,53 +732,73 @@ export class TaskFormComponent implements OnInit {
       const payload = {
         approval_of_com: this.comForm.value.approval_of_com,
         id:this.rowData.id,
-        status :1
-      };
+        status :1,
+        comment_status :3
 
+      };
+      let fpayload={
+        comForm:payload,
+        id:this.rowData.id,
+        status :1,
+        comment_status :3
+      }
+
+     
       console.log('COM Payload:', payload);
 
-      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', payload).subscribe(
+      this.api.postAPI(environment.API_URL + 'transaction/tasking/crud', fpayload).subscribe(
         response => {
-          console.log('COM Form submitted successfully:', response);
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'COM Form submitted successfully:' });
+          this.hideModal();
         },
         error => {
-          console.error('Error submitting COM form:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message || 'Error submitting COM form:' });
         }
       );
     }
   }
   
-  getSignatureHtml(key:string ): string {
-    
-    const signature = this.rowDataStatus.find(country => country[key] === 1);
-    
-    if (!signature) {
-      return ''; 
+  getSignatureHtml(key: string): string {
+    // Return cached result if available
+    if (this.signatureCache[key] !== undefined) {
+        return this.signatureCache[key];
     }
 
-    const dateString = signature.created_on
-      ? new Date(signature.created_on).toLocaleString()
-      : 'N/A';
+    if (!this.rowDataStatus || !key) {
+        this.signatureCache[key] = '';
+        return '';
+    }
 
-    
-    return `
-      
+    // Find the signature entry for the given key
+    const signature = this.rowDataStatus.find(item => item[key] === 1);
+    if (!signature) {
+        this.signatureCache[key] = '';
+        return '';
+    }
+
+    const dateString =   signature.created_on ? this.api.formatDate(signature.created_on) : 'N/A';
+
+    // Create the HTML string
+    const html = `
         <span class="float-end">
-          <i class="font-normal">Electronically Signed by:</i>
+            <i class="font-normal">Electronically Signed by:</i>
         </span>
         <br />
         <span class="float-end">
-          ${signature.created_by?.rankCode || ''} 
-          ${signature.created_by?.first_name || ''} 
-          ${signature.created_by?.last_name || ''}
+            ${signature.created_by?.rankCode || ''} 
+            ${signature.created_by?.first_name || ''} 
+            ${signature.created_by?.last_name || ''}
         </span>
         <br />
         <span class="float-end">
-          ${signature.created_by?.department?.name || ''}, 
-          ${dateString}
+            ${signature.created_by?.department?.name || ''}, 
+            ${dateString}
         </span>
-      
     `;
+
+    // Cache the result
+    this.signatureCache[key] = html;
+    return html;
   }
   setFormData(): void {
     this.sdForm.patchValue({
@@ -657,7 +830,7 @@ export class TaskFormComponent implements OnInit {
       comments_of_dee: this.rowData?.comments_of_dee || ''
     });
     this.pdDeeForm.patchValue({
-      // comments_of_pd_dee: this.rowData?.comments_of_pd_dee || ''
+      comments_of_pd_dee: this.rowData?.comments_of_pdee || ''
     });
     this.acomForm.patchValue({ recommendation_of_acom_its: this.rowData?.recommendation_of_acom_its || '' });
     this.comForm.patchValue({ approval_of_com: this.rowData?.approval_of_com || '' });
@@ -674,6 +847,60 @@ export class TaskFormComponent implements OnInit {
         this.roles.push(temp[0]);
         this.routeList = res;
         this.lastStatusData = res[res.length - 1]?.sequence;
+        temp.sort((a, b) => a.sequence - b.sequence);
+        if(res?.length !== 0){
+            this.selectedRoutes=[];
+        }
+
+        for(let i=0;i<temp.length;i++){
+         if(i<temp.length){
+          const user={
+            ...temp[i].current,
+            routeId:temp[i].id,
+            is_recommender:temp[i].form === 2,
+            is_commenter:temp[i].form === 1
+          }
+          this.selectedRoutes.push(user);
+         }
+          if(i===temp.length-1){  
+            const user={
+              ...temp[i].next_user,
+              routeId:null,
+              is_recommender:temp[i].form === 2,
+              is_commenter:temp[i].form === 1
+            }
+            this.selectedRoutes.push(user);
+          }
+        }
+
+
+
+
+      //   temp.forEach((item, index) => {
+      //     // For all items except the last one
+      //     if (index < temp.length - 1) {
+      //         const user = {
+      //             ...item.current,
+      //             routeId: item.id,
+      //             is_recommender: item.form === 2,
+      //             is_commenter: item.form === 1
+      //         };
+      //         this.selectedRoutes.push(user);
+      //     } 
+      
+      //     // For the last item
+      //     // if (index === temp.length -2) {
+      //     //     const user = {
+      //     //         ...item.next_user,
+      //     //         routeId: null,  // Last object has routeId as null
+      //     //         is_recommender: item.form === 2,
+      //     //         is_commenter: item.form === 1
+      //     //     };
+      //     //     this.selectedRoutes.push(user);
+      //     // }
+      // });
+      
+        console.log(this.selectedRoutes);
       },
       error: (err) => {        console.error('Error fetching data:', err);      }
     });
@@ -691,7 +918,12 @@ export class TaskFormComponent implements OnInit {
       this.showConfirm();
       return;
     }
-    const formData = this.minitingForm.value;
+    if(this.SubmitAccess.formPermission5){
+      this.deeForm.enable()
+      this.onSubmitDEE()
+
+    }
+      const formData = this.minitingForm.value;
 
     const newComment = {
       tasking: this.rowData.id,
@@ -704,6 +936,8 @@ export class TaskFormComponent implements OnInit {
     this.api.postAPI(environment.API_URL + `transaction/comments/crud`, newComment).subscribe(res => {
       this.getMiniting();
       this.getStatusTimeline();
+      
+      this.hideModal()
      
     })
     this.minitingForm.reset();
@@ -717,6 +951,7 @@ export class TaskFormComponent implements OnInit {
 onEditRole(rowData) {
     this.api.getAPI(environment.API_URL + `transaction/current-status/${rowData.id}/?user=${this.api.userid.user_id}`).subscribe((res) => {
       this.roleDetaile=res
+      this.formpermission(res)
      })
   }
   displayModal=false
@@ -726,7 +961,7 @@ onEditRole(rowData) {
   }
 
   timelineStepName(step: any): string {
-    const roleName = step?.next_user?.roles[0]?.user_role?.name;
+    const roleName = step?.next_user?.hrcdf_designation || step?.next_user?.roles[0]?.user_role?.name ;
     return ` (${roleName})`;
   }
   timelineStepDirect(step: any): string {
@@ -800,25 +1035,7 @@ onEditRole(rowData) {
 
     })
   }
-  onSubmitRoute() {
-    const formData = this.formGroup.value;
 
-    const newComment = {
-      tasking: this.rowData.id,
-      id: '',
-      process: 2,
-      current_id: this.formGroup.get('current_id').value,
-      next_user_id: this.formGroup.get('next_user_id').value, //loginname
-    };
-    this.api.postAPI(environment.API_URL + `transaction/process-flows/details/`, newComment).subscribe(res => {
-      this.getStatusTimeline()
-      this.hideModal()
-      // this.modalService.dismissAll("Close")
-    })
-    let taskId = this.formGroup.get('taskId').value
-    this.formGroup.reset();
-    this.formGroup.get('taskId').setValue(taskId)
-  }
 
   apiCall() {
     this.api.getAPI(environment.API_URL + '/access/access_user_roles?process_id=2').subscribe((res) => {
@@ -845,6 +1062,204 @@ onEditRole(rowData) {
     showSuccess() {
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
   }
+
+  getEditorConfig(permission: boolean): AngularEditorConfig {
+    return {
+      ...this.editorConfig,
+      editable: permission,
+      showToolbar: permission,
+      minHeight: '15rem',
+    };
+  }
+
+  onSearch(searchText: string) {
+    searchText = searchText.trim();
+    this.taskList = [];
+    this.updateTable();
+    if (!searchText) {
+        this.totaleRecords = 0; 
+        this.getTasking();  // Empty search par default API call karein
+        return;
+    }
+    const encodedSearchText = encodeURIComponent(searchText);
+    this.api.getAPI(`${environment.API_URL}transaction/tasking?order_type=desc&search=${encodedSearchText}`)
+      .subscribe({
+        next: (res) => {
+          this.taskList = Array.isArray(res.results) ? res.results : [];
+          this.totaleRecords = res?.count || 0;
+          this.updateTable(); 
+
+          if (this.totaleRecords === 0) {
+              // this.messageService.add({severity:'warn', summary:'No Record Found', detail:'No matching records found for your search.'});
+              this.getTasking();
+          }
+        },
+        error: (error) => {
+          this.taskList = []; 
+          this.totaleRecords = 0;
+          if (error?.error?.detail === "Invalid page.") {
+              this.messageService.add({severity:'error', summary:'Invalid Page', detail:'Resetting to the first page.'});
+              this.onSearch(searchText); 
+              return;
+          }
+          this.messageService.add({severity:'error', summary:'Error', detail:'Something went wrong. Showing default records.'});
+          this.getTasking(); // Error case me bhi default API call
+          this.updateTable();
+        }
+      });
+}
+
+
+  updateTable() {
+    this.tableDataSource = new MatTableDataSource(this.taskList);
+
+    if (this.paginator) {
+      this.tableDataSource.paginator = this.paginator;
+    }
+    if (this.sort) {
+      this.tableDataSource.sort = this.sort;
+    }
+}
+
+  
+    
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
+
+ 
+
+  loadUsers() {
+    this.api.getAPI(environment.API_URL + 'api/auth/users?order_type=desc').subscribe(
+      (res: any) => {
+        this.allUsers = res;
+        // if(!this.rowData?.SD_initiater){
+        //   this.enterfristTimeRoute();
+        // }
+      }
+    );
+  }
+
+  removeUser(user: any, index: number) {
+    console.log(user,index)
+    this.selectedRoutes.splice(index, 1);
+    if(user.routeId){
+    this.api.deleteAPI(environment.API_URL+"transaction/process-flows/"+user.routeId+"/").subscribe(
+      res=> {
+        this.getStatusTimeline()
+        this.messageService.add({
+       severity: 'success',
+       summary: 'Success',
+       detail: 'Route configuration Delete successfully'
+      })
+        
+      })
+    }
+      
+    
+  }
+routeedit:boolean=false;
+editindex:number;
+  onUsersSelected() {
+    const newUser = {
+      ...this.selectedUsers,
+      isRecommender: false,
+      isCommenter: true,
+      uniqueId: Date.now()
+    };
+    if(this.selectedUsers.process?.id === 2){
+      newUser.isRecommender=true;
+      newUser.isCommenter=false;
+    }
+    
+    if(this.routeedit){
+      this.editindex++;
+      this.selectedRoutes.splice(this.editindex, 0, newUser);
+      // this.routeedit=false;
+    }else{
+      this.selectedRoutes.push(newUser);
+    }
+    this.selectedUsers = null;
+    this.filteredUsers = [];
+  }
+  index:number;
+  checkRecommender(route: any) {
+    const index = this.selectedRoutes.findIndex(r => r.uniqueId  === route.uniqueId);
+    if (index !== -1) {
+      this.selectedRoutes[index].isRecommender=!this.selectedRoutes[index].isRecommender ;      
+      this.selectedRoutes[index].isCommenter=!this.selectedRoutes[index].isRecommender;
+    }
+  }
+  clear(key: string) {
+    this.messageService.clear(key);
+    this.selectedRoutes[this.index].isRecommender=!this.selectedRoutes[this.index].isRecommender ;      
+    this.selectedRoutes[this.index].isCommenter=!this.selectedRoutes[this.index].isRecommender;
+  }
+  editRoute(index: number) {
+    this.routeedit = true;
+    this.editindex = index;
+  }
+
+  filterUsers(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.allUsers as any[]).length; i++) {
+        let user = (this.allUsers as any[])[i];
+        if (
+            user?.loginname?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.rankCode?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.first_name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.last_name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.department?.name?.toLowerCase().includes(query.toLowerCase()) ||
+            user?.hrcdf_designation?.toLowerCase().includes(query.toLowerCase())
+        ) {
+            filtered.push(user);
+        }
+    }
+    this.filteredUsers = filtered;
+}
+
+onSubmitRoute() {
+  const routes=[]
+    this.selectedRoutes.forEach((route,index) => {
+      if(index < this.selectedRoutes.length-1 ){
+        const user={
+        id:route.routeId || '',
+        sequence:index+1,
+        process:route?.process?.id,
+        tasking_id:this.rowData.id,
+        current_user:route.id,
+        next_user:this.selectedRoutes[index+1]?.id || '',
+        is_recommender:this.selectedRoutes[index+1]?.isRecommender,
+        is_commenter:this.selectedRoutes[index+1]?.isCommenter
+        }
+        routes.push(user)
+      }
+    })
+    this.api.postAPI(environment.API_URL + 'transaction/process-flows/details/', routes).subscribe(res=>{
+      console.log(res)
+      if(res.status===1){
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Route configuration saved successfully'
+        });
+        this.getStatusTimeline();
+        this.onEditRole(this.rowData);
+      }else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to save route configuration'
+        });
+      }
+    })
+    console.log(routes)
+  
+}
 
 }
 

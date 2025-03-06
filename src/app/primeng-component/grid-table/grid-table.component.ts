@@ -28,6 +28,9 @@ interface PageEvent {
   styleUrl: './grid-table.component.scss'
 })
 export class GridTableComponent implements OnInit, OnChanges {
+    @Input() url: string;
+    @Input() method: string;
+
     @Input() first: number = 0;
     @Input() rows: number = 10;
     @Input() totalRecords: number = 0;
@@ -66,6 +69,11 @@ export class GridTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
   @Output() archivetaskEvent = new EventEmitter<any>();
+  @Output() searchEvent? = new EventEmitter<any>();
+  @Output() clearEvent? = new EventEmitter<any>();
+  @Input() isShearchDisable: boolean = false;
+//   @Input() currentPage!: number; 
+
   token_detail:any
   newRowData: any = {}; 
  
@@ -187,6 +195,13 @@ export class GridTableComponent implements OnInit, OnChanges {
   this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
       this.filteredData = this.gridData;
       this.first = this.currentPage * this.rows;
+      if(this.url){
+        setTimeout(() => {
+            this.helperGriddata()
+            
+          }, 500);
+      }
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -383,5 +398,40 @@ onPageChange(event: PaginatorState) {
         });
     }
 }
+
+emitSearchEvent(searchText: string) {
+    if (searchText.trim()) {
+      this.searchEvent.emit(searchText); 
+    }
+  }
+
+
+
+helperGriddata() {
+    
+  if(this.method==='post'){
+    const payload= {
+        'tasking_id': this.token_detail.tasking_id,
+        'process_id': this.token_detail.process_id
+      }
+    this.api.postAPI(this.url,payload).subscribe(res => {
+      
+          this.filteredData = res.data|| res;
+          this.gridData = res.data||res;
+
+        
+
+      });
+  }
+  
+  else{
+    this.api.getAPI(this.url).subscribe(res => {
+          this.filteredData = res?.data||res;
+          this.gridData = res?.data||res;
+       
+      });
+  }
+  }
+  
 }
 

@@ -166,16 +166,14 @@ userList=[]
         
       });
   }
-
+  url:string;
   getInititator() {
     this.sponSoringData=[]
     this.api
-      .getAPI(environment.API_URL + "master/sponsoring_directorate")
+      .getAPI(environment.API_URL + "master/sponsoring_directorate?limit_start=0&limit_end=10")
       .subscribe((res) => {
         this.dataSource = new MatTableDataSource(res.data);
-        this.sponSoringData= res.results;
-        this.totalCounts=res.count;
-
+        this.sponSoringData= res.data;
         this. initiatorList= res.data;
         this.dataSource.paginator = this.pagination;
       });
@@ -292,7 +290,6 @@ userList=[]
     // // console.log'Filter triggered with value:', filterValue);
   }
   handlePagination(pageEvent: any) {
-    this.getInititator();
   }
   openCurrentStatus(country){
    

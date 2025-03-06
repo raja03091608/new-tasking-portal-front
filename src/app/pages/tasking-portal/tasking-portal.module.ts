@@ -28,7 +28,13 @@ import { FileUploadModule } from 'primeng/fileupload';
 import {NgxPrintModule} from 'ngx-print';
 import { TaskFormComponent } from './task-form/task-form.component';
 import { PaginatorModule } from 'primeng/paginator';
-schemas: [CUSTOM_ELEMENTS_SCHEMA] 
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CheckboxModule } from 'primeng/checkbox';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChipModule } from 'primeng/chip';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TagModule } from 'primeng/tag';
+
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -38,18 +44,21 @@ schemas: [CUSTOM_ELEMENTS_SCHEMA]
     TaskListComponent,
     ArchiveTaskComponent,
     TaskFormComponent,
-
   ],
   imports: [
-  PaginatorModule,
+    TagModule,
+    PaginatorModule,
+    AutoCompleteModule,
+    MultiSelectModule,
     TimelineModule,
     NgxPrintModule,
-    ConfirmDialogModule ,
+    ConfirmDialogModule,
     ToastModule,
     TableModule,
-    InputTextModule, 
-    PringeComponentModule, 
-    DropdownModule,  ButtonModule,
+    InputTextModule,
+    PringeComponentModule,
+    DropdownModule,
+    ButtonModule,
     MatFormFieldModule,
     CommonModule,
     DialogModule,
@@ -61,7 +70,10 @@ schemas: [CUSTOM_ELEMENTS_SCHEMA]
     NgApexchartsModule,
     AngularEditorModule,
     TableModule,
-    FileUploadModule, 
+    FileUploadModule,
+    CheckboxModule,
+    ChipModule,
+    DragDropModule,
     RouterModule.forChild([
       {
         path: 'new-task',
@@ -75,7 +87,7 @@ schemas: [CUSTOM_ELEMENTS_SCHEMA]
         path: 'allocate-tasking',
         component: AllocateTasksComponent,
       },
-	  {
+      {
         path: 'task-list',
         component: TaskFormComponent,
       },
@@ -85,10 +97,11 @@ schemas: [CUSTOM_ELEMENTS_SCHEMA]
       },
       {
         path: 'taskForm',
-        component: TaskFormComponent,
+        component: TaskListComponent,
       },
     ])
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class TaskingPortalModule { }

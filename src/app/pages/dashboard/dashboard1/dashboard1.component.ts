@@ -30,17 +30,6 @@ declare let $: any;
 declare function closeModal(selector): any;
 declare function openModal(selector): any;
 
-
-
-
-
-
-
-
-
-
-
-
 @Component({
   selector: 'app-dashboard1',
   templateUrl: './dashboard1.component.html',
@@ -103,7 +92,9 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     { field: 'tasking.comments_of_apso', header: 'APSO Comments' },
     { field: 'tasking.task_description', header: 'Task Description' }
   ];
-  currentPage: number;
+  gridData: any[];
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<unknown, MatPaginator>;
 
   downloadexcel() {
     let data = document.getElementById('xlseExport');
@@ -211,18 +202,17 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   editorConfig: AngularEditorConfig = {
     editable: false,
     spellcheck: true,
-    height: '10rem',
-    minHeight: '5rem',
+    minHeight: '15rem',
     maxHeight: 'auto',
     width: 'auto',
     minWidth: '0',
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter description here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    defaultFontSize: '3',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
@@ -231,27 +221,27 @@ export class Dashboard1Component implements OnInit, OnDestroy {
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
     ],
     uploadWithCredentials: false,
-    sanitize: false,
+    sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
+      ['subscript', 'superscript'],
       ['fontSize', 'toggleEditorMode', 'customClasses']
-    ]
-
+    ],
+    outline: true
   };
   isReadonly = false;
   moduleAccess: any;
@@ -492,12 +482,13 @@ export class Dashboard1Component implements OnInit, OnDestroy {
 
   }
   ngOnInit(): void {
+    this.getTicketCounts()
     this.getJSON()
     this.getStatus();
     this.getNewTaskingStatus();
     this.token_detail = this.api.decryptData(localStorage.getItem('token-detail'));
     this.getTasking();
-    this.getDashboardCount();
+    // this.getDashboardCount();
     this.getAccess();
     this.getTaskingGroups();
     this.tasklist();
@@ -918,70 +909,70 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   countlist: any;
   totalCounts:number=0;
 
-  getDashboardCount() {
-    this.api.getAPI(`${environment.API_URL}transaction/archive_list?page=${this.page}`)
-      .subscribe((res) => {
-        if (res?.status === environment.SUCCESS_CODE && res?.data) {
-          this.archive_count = res.results|| 0;  // Ensure it's always a number
-        }
-      });
-      if (this.token_detail.role_id == 3) {
+  // getDashboardCount() {
+  //   this.api.getAPI(`${environment.API_URL}transaction/archive_list`)
+  //     .subscribe((res) => {
+  //       if (res?.status === environment.SUCCESS_CODE && res?.data) {
+  //         this.archive_count = res.results.data|| 0;  // Ensure it's always a number
+  //       }
+  //     });
+  //     if (this.token_detail.role_id == 3) {
 
-        this.api.getAPI(
-          `${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&created_by_id=${this.token_detail.user_id}`
-        ).subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.countlist = res.results.data;
-            this.count = res.results.data;
-            this.totalCounts=res.count;
-          }
-        });
+  //       this.api.getAPI(
+  //         `${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&created_by_id=${this.token_detail.user_id}`
+  //       ).subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           this.countlist = res.results.data;
+  //           this.count = res.results.data;
+  //           this.totalCounts=res.count;
+  //         }
+  //       });
         
-        this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1" + "&created_by_id=" + this.token_detail.user_id).subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.count2 = res.data.length;
-          }
+  //       this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1" + "&created_by_id=" + this.token_detail.user_id).subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           this.count2 = res.data.length;
+  //         }
   
-        });
+  //       });
   
-      }
+  //     }
   
-      else if (this.token_detail.process_id == 3) {
+  //     else if (this.token_detail.process_id == 3) {
   
   
-        this.api.getAPI(`${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&assignedtaskinggroup__tasking_group__id=${this.token_detail.tasking_id}`
-        ).subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            // this.dataSourcelist = new MatTableDataSource(res.results.data);
-            this.countlist = res.results.data;
-            this.count = res.results.data;
-            this.totalCounts=res.count;
-          }
-        });
+  //       this.api.getAPI(`${environment.API_URL}transaction/tasking/count?comment_status=3&page=${this.page}&assignedtaskinggroup__tasking_group__id=${this.token_detail.tasking_id}`
+  //       ).subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           // this.dataSourcelist = new MatTableDataSource(res.results.data);
+  //           this.countlist = res.results.data;
+  //           this.count = res.results.data;
+  //           this.totalCounts=res.count;
+  //         }
+  //       });
         
-        this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.count2 = res.data.length;
-          }
-        });
-      }
-      else {
-        this.api.getAPI(`$environment.API_URL + "transaction/tasking/count?comment_status=3&page=${this.page}`).subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.countlist = res.data;
-            this.count = res.results.data;
-            this.totalCounts=res.count;
+  //       this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           this.count2 = res.data.length;
+  //         }
+  //       });
+  //     }
+  //     else {
+  //       this.api.getAPI(`$environment.API_URL + "transaction/tasking/count?comment_status=3&page=${this.page}`).subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           this.countlist = res.data;
+  //           this.count = res.results.data;
+  //           this.totalCounts=res.count;
   
-          }
-        });
-        this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
-          if (res.status == environment.SUCCESS_CODE) {
-            this.count2 = res.data.length;
-          }
-        });
+  //         }
+  //       });
+  //       this.api.getAPI(environment.API_URL + "transaction/tasking/count?comment_status=1").subscribe((res) => {
+  //         if (res.status == environment.SUCCESS_CODE) {
+  //           this.count2 = res.data.length;
+  //         }
+  //       });
   
-      }
-  }
+  //     }
+  // }
   openView() {
     this.TaskBlockRef = this.modalService.open(TaskBlockComponent, { size: 'lg' });
     this.TaskBlockRef.componentInstance.modelData = { 'data': 'view' };
@@ -1104,25 +1095,19 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   }
 
 
-  
-  
-
-  tabledata(data: any) {
-
-  }
-  page=1;
+  url:string;
   approveTask = [] as any
   getNewTaskingStatus() { 
     this.approveTask = [];
-    this.api.getAPI(`${environment.API_URL}/transaction/tasking-status?flag=dashboard&page=${this.page}`)
+    this.url=`${environment.API_URL}/transaction/tasking-status?flag=dashboard`
+    this.api.getAPI(`${environment.API_URL}/transaction/tasking-status?flag=dashboard&limit_start=0&limit_end=10`)
     .subscribe(
       (res: any) => {
-        if (res?.results?.data) {
-          this.approveTask = res.results.data;
-          this.totalCounts = res.count;
-        } 
+        this.approveTask =res.data;
       },
+      
     );
+    
 }
 
 
@@ -1130,20 +1115,23 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   handleFilter(filterValue: any) {
     this.filterData = filterValue;
   }
-  handlePagination(pageEvent: any) {
-    console.log('Pagination Event:', pageEvent);
-    this.page=pageEvent.page+1;
-    this.getNewTaskingStatus();
-    this. getDashboardCount();
+  handlePagination(event: any) {
+    // this.getNewTaskingStatus();
+    // this. getDashboardCount();
+  
     
 }
 
   gridColum = [
     { field: 'tasking.task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
     { field: 'tasking.task_number_dee', header: 'Task Number', filterMatchMode: 'contains', filter: false, },
-    { field: 'tasking.sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
-    { field: 'assigned_tasking_group.name', header: 'Assigned Tasking Group Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'secondary_title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    { field: 'tasking.sponsoring_directorate', header: 'Sponsor', filter: true, filterMatchMode: 'contains' },
+    { field: 'assigned_tasking_group.name', header: 'Assigned Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'modified_on', header: 'Approval Date', filter: true, filterMatchMode: 'contains' },
+    { field: 'title', header: 'Status', filter: true, filterMatchMode: 'contains' },
+    { field: 'secondary_title', header: 'Stage', filter: true, filterMatchMode: 'contains' },
+
+
 
   ]
 
@@ -1214,12 +1202,52 @@ export class Dashboard1Component implements OnInit, OnDestroy {
   getFileNameFromUrl(url: string): string {
     return url ? url.substring(url.lastIndexOf('/') + 1) : '';
 }
+onSearch(searchText: string) {
+  if (!searchText.trim()) {
+    this.approveTask = []; 
+    return;
+  }
+  this.approveTask = []; 
+  this.api.getAPI(`${environment.API_URL}transaction/tasking-status?flag=dashboard&search=${searchText}`).subscribe(
+    (res) => {
+      if (res && res.results && res.results.data && res.results.data.length > 0) {
+        this.approveTask = res.results.data;
+        this.totaleRecords = res.count; 
+      } else {
+        this.approveTask = []; 
+        console.warn('No matching data found.');
+        this.getNewTaskingStatus();
+      }
+    },
+   
+  );
+}
 
 
+updateTable() {
+  this.tableDataSource = new MatTableDataSource(this.approveTask);
+}
+  clearFields() {
+    this.searchValue = '';
+    this.getNewTaskingStatus();
+   
+  }
+  getTicketCounts(): void {
+    this.api.getAPI(environment.API_URL + 'transaction/dashboard-cards')  // Replace with your actual API URL
+      .subscribe(
+        (response) => {
+          this.count = response.approved_count || 0;
+          this.count2 = response.waiting_for_approval || 0;
+          this.archive_count = response.archive_count || 0;
+        },
+        (error) => {
+          console.error('Error fetching ticket counts', error);
+        }
+      );
+}
 
 
 
 }
-
 
 

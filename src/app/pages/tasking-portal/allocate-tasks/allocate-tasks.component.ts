@@ -59,6 +59,9 @@ export class AllocateTasksComponent implements OnInit {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
   totolCounts: any;
   totalCounts: any;
+  searchValue: string;
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<any, MatPaginator>;
 
   constructor(public api: ApiService, private notification: NotificationService,
     private dialog: MatDialog, private router: Router, private elementref: ElementRef, private logger: ConsoleService) {
@@ -117,46 +120,46 @@ gridColumns=[
   usersList=[]
   getTaskingUser(event){
     this.api.getAPI(environment.API_URL+`api/auth/users?tasking_id=${event?.value}`).subscribe(res => {
-        this.usersList=res.data
+        this.usersList=res
     })
   }
-  handlePagination(pageEvent: any) {
-    console.log('Pagination Event:', pageEvent);
-    this.page=pageEvent.page+1;
+  handlePagination(event: any) {
    this.getTasking();
-    
-}
-  page=1;
+ }
+ url:string;
+
   getTasking() {
+    this.url=`${environment.API_URL}transaction/allocate/status`
+
     this.countryList = [];
     if (this.token_detail.role_id == 3) {
       this.api
-      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}&page=${this.page}`)
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?created_by=${this.token_detail.user_id}`)
         .subscribe((res) => {
-          this.countryList = res.results.data || []; // Handle undefined results safely
-          this.totalCounts = res.count; // Ensure count is defined
+          this.countryList = res.data || []; // Handle undefined results safely
           if (res.status == environment.SUCCESS_CODE) {
             if (this.dataSourcelist) {
-              // this.dataSourcelist.data = this.countryList;
-              // this.dataSourcelist.paginator = this.pagination;
+            //   this.dataSourcelist.data = this.countryList;
+            //   this.dataSourcelist.paginator = this.pagination;
+            // //  this.countryList = res.data || []; // Handle undefined results safely
+
             }
           }
         });
     } else {
-      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?page=${this.page}`)
+      this.api.getAPI(`${environment.API_URL}transaction/allocate/status?limit_start=0&limit_end=10`)
   .subscribe((res) => {
+    this.countryList = res.data || []; // Handle undefined results safely
     if (res.results?.status === environment.SUCCESS_CODE) {
-      this.countryList = res.results?.data || []; // Ensure data is defined
 
       if (this.dataSourcelist) {
-        this.dataSourcelist.data = this.countryList;
-        this.dataSourcelist.paginator = this.pagination;
+        // this.dataSourcelist.data = this.countryList;
+        // this.dataSourcelist.paginator = this.pagination;
       }
     }
   });
     }
   }
-  
   getTrials() {
     this.api
       .getAPI(environment.API_URL + "transaction/trials/approval")
@@ -179,13 +182,13 @@ gridColumns=[
     this.task_name = country.task_number_dee;
     this.task_Desc = country.task_description;
     setTimeout(()=>{
-      this.allocateForm.patchValue({tasking_group:country.assigned_tasking_group?country.assigned_tasking_group.tasking_group?.id:'',
+      this.allocateForm.patchValue({tasking_group:country.assigned_tasking_group?country.assigned_tasking_group.tasking_group:'',
         tasking_user:country.assigned_tasking_group?country.assigned_tasking_group.tasking_user:''
       });
     },500);
     this.id = country.id;
     if(country.assigned_tasking_group)
-        this.getTaskingUser({value:country.assigned_tasking_group.tasking_group?.id})
+        this.getTaskingUser({value:country.assigned_tasking_group.tasking_group})
 
 	openModal('#crud-allocate');
   }
@@ -273,6 +276,37 @@ gridColumns=[
   cancelmodal(){
 	closeModal('#crud-allocate');
   }
+  onSearch(searchText: string) {
+    if (!searchText.trim()) {
+      this.countryList = []; // Agar empty ho to data clear kar do
+      return;
+    }
+    this.countryList = []; // Pehle ka data clear karo
 
+    this.api.getAPI(`${environment.API_URL}transaction/allocate/status?search=${searchText}`).subscribe(
+      (res) => {
+        if (res && res.results && res.results.data && res.results.data.length > 0) {
+          this.countryList = res.results.data;
+          this.totaleRecords = res.count;
+        } else {
+          this.countryList = []; // No data found
+          this.getTasking();
 
+        }
+        this.updateTable(); // Update the table data after API call
+      },
+    );
+  }
+  
+  updateTable() {
+    this.tableDataSource = new MatTableDataSource(this.countryList);
+  }
+  
+ 
+  
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
 }

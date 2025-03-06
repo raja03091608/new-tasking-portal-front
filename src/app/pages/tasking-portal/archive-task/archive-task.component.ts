@@ -41,8 +41,10 @@ export class ArchiveTaskComponent implements OnInit {
   archiveList:any;
   token_detail:any;
   archivetask=[] as any;
-  currentPage: number;
   totalCounts: any;
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<unknown, MatPaginator>;
+  searchValue: string;
   constructor(public api: ApiService, private notification : NotificationService,
     private dialog:MatDialog, private router : Router, private elementref : ElementRef,private logger:ConsoleService) {
 
@@ -68,6 +70,10 @@ export class ArchiveTaskComponent implements OnInit {
   //     });
   //   }
   // }
+
+  
+pageSize=10;
+currentPage=0;
   page=1;
   getTasking() {
     this.archivetask=[];
@@ -80,7 +86,11 @@ export class ArchiveTaskComponent implements OnInit {
             this.archivetask = res.results;
             this.archiveList = res.data;
             this.dataSource.paginator = this.pagination;
-            this.totalCounts=res.count;
+            this.totaleRecords = res.count; // Ensure count is defined
+            this.currentPage=this.page-1;
+
+
+            
           }
         });
     }
@@ -156,9 +166,11 @@ export class ArchiveTaskComponent implements OnInit {
   handleFilter(filterValue: any) {
     this.filterData = filterValue;
   }
-  handlePagination(pageEvent: any) {
-    this. getTasking();
-    this.page=pageEvent.page+1;
+  handlePagination(event: any) {
+    this.getTasking();
+    this.page=event.page+1;
+    this.currentPage=event.page;
+    this.pageSize = event.rows;
 
   }
   openCurrentStatus(country){
@@ -174,4 +186,36 @@ export class ArchiveTaskComponent implements OnInit {
       openModal('#export');
       this.taskid = country.id;
     }
+
+    onSearch(searchText: string) {
+      if (!searchText.trim()) {
+        this.archivetask = []; // Agar empty ho to data clear kar do
+        return;
+      }
+    
+      this.archivetask = []; // Pehle ka data clear karo
+    
+      this.api.getAPI(`${environment.API_URL}transaction/archive_list?&search=${searchText}`).subscribe(
+        (res) => {
+          if (res && res.results && res.results.data && res.results.data.length > 0) {
+            this.archivetask = res.results;
+            this.totaleRecords = res.count; // Ensure count is defined
+    
+          } else {
+            this.archivetask = []; // No results found
+            this. getTasking();
+          }
+        },
+      );
+    }
+    updateTable() {
+      this.tableDataSource = new MatTableDataSource(this.archivetask);
+    }
+    
+      clearFields() {
+        this.searchValue = '';
+        this.getTasking();
+       
+      }
+
 }

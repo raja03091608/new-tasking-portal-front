@@ -32,8 +32,9 @@
 								(statusEventAdd)="add($event)"
 								 [isStatusAdd]="isStatusAdd"
 								 (archivetaskEvent)="archivetask($event)" 
-								 [totalRecords]="totalCounts"
-								 [isArchiveTask]="permission.archive"
+								[isArchiveTask]="permission.archive"
+								[url]="url"
+								[method]="'post'"
 								(exportEvent)="opentask($event)" 
 								(downloadEvent)="UploadReceipt($event)"
 								(completedEvent)="completedtask($event)"
@@ -45,6 +46,11 @@
 								[isCompleted]="true">
 							</app-grid-table>
 						</ng-container>
+						<ng-container *ngIf="countryList.length === 0">
+                            <div class="alert text-center alert-warning" role="alert">
+                              No Records Found!
+                            </div>
+                          </ng-container>
 					</div>
 				</div>
 			</div>
@@ -362,6 +368,7 @@
 			<ng-template #nodata>
 			  <div class="body-card">No records found</div>
 			</ng-template>
+			
 		  </div>
 		</div>
   

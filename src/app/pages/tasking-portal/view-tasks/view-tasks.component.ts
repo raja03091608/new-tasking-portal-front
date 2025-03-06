@@ -83,6 +83,11 @@ export class ViewTasksComponent implements OnInit {
   xlxsForm: FormGroup;
   isStatusAdd:boolean = false;
   totalCounts: any;
+  searchValue: string;
+  totaleRecords: any;
+  tableDataSource: MatTableDataSource<any, MatPaginator>;
+  paginator: any;
+  sort: any;
   patchValue(data: any) {
     throw new Error('Method not implemented.');
   }
@@ -774,28 +779,31 @@ margin:0px !important;
   setActiveTab(tab: Tabs) {
     this.activeTab = tab;
   }
-  page=1;
+  url:string;
   getTasking() {
     this.countryList=[]
       if(this.token_detail.process_id==3 ){
-      this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
+      this.url=`${environment.API_URL}transaction/trial/status?`
+
+      this.api.postAPI(`${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`, {
         'tasking_id': this.token_detail.tasking_id,
         'process_id': this.token_detail.process_id,
         'created_by': this.token_detail.user_id
       })
       .subscribe((res) => {
+        this.countryList = res.data;
+
         if(res.status==environment.SUCCESS_CODE){
-          this.countryList = res.results;
-          this.totalCounts=res.count
         this.dataSourcelist = new MatTableDataSource(this.countryList);
         this.dataSourcelist.paginator = this.pagination;
         }
       });
     }
     else{
+      this.url=`${environment.API_URL}transaction/trial/status`
       this.api
       .postAPI(
-        `${environment.API_URL}transaction/trial/status?page=${this.page}`,
+        `${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`,
         {
           'tasking_id': this.token_detail.tasking_id,
           'process_id': this.token_detail.process_id
@@ -803,13 +811,14 @@ margin:0px !important;
       )
       .subscribe((res) => {
         this.dataSourcelist = new MatTableDataSource(res.data);
-        this.countryList = res.results;
-        this.totalCounts=res.count;
-        this.dataSourcelist.paginator = this.pagination;
+        this.countryList = res.data;
         if(res.results.status==environment.SUCCESS_CODE){
         }
       });
     }
+
+  
+    
   }
   approvalID:any;
   viewlist:any;
@@ -1219,14 +1228,14 @@ margin:0px !important;
   }
 
   gridColumns=[
-    { field: 'task_number_dee', header: 'Task Number (DEE)', filter: true, filterMatchMode: 'contains' },
+    { field: 'task_number_dee', header: 'Tasking Number', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'assigned_tasking_group.tasking_group.name', header: 'Assigned Tasking Group', filter: true, filterMatchMode: 'contains' },
-    { field: 'sponsoring_directorate',     header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains', },
-    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains',},
+    { field: 'assigned_tasking_group.tasking_group_name', header: 'Assigned Group', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate',     header: 'Sponsor', filter: true, filterMatchMode: 'contains', },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame', filter: true, filterMatchMode: 'contains',},
     {
       field: 'modified_on',
-      header: 'Approved on',
+      header: 'Approval Date',
       filter: true,
       filterMatchMode: 'contains',
       valueFormatter: (data: any) => {
@@ -1243,9 +1252,12 @@ handleFilter(filterValue: any) {
   
   this.filterData = filterValue;
 }
-handlePagination(pageEvent: any) {
+handlePagination(event: any) {
   this.getTasking();
-  this.page=pageEvent.page+1;
+  // this.page=event.page+1;
+  // this.currentPage=event.page;
+  // this.pageSize = event.rows;
+  
 }
 expDataHeader=[
   { field: 'task_number_dee', header: 'Task Number (DEE)' },
@@ -1344,5 +1356,58 @@ onFileUpload(event) {
     window.open(url, '_blank');
   
 }
+onSearch(searchText: string) {
+  searchText = searchText.trim();
+  this.countryList = [];
+  this.totaleRecords = 0;
+  this.updateTable();
+
+  if (!searchText) {
+    return;
+  }
+  
+  const requestBody = { search: searchText };
+
+  this.api.postAPI(`${environment.API_URL}transaction/trial/status`, requestBody)
+    .subscribe({
+      next: (res) => {
+        this.countryList = res.results || [];
+        this.totaleRecords = res?.count || 0;
+        if (this.countryList.length === 0) {
+          console.warn('No data found, calling getTasking() API...');
+          this.getTasking();
+        }
+        this.updateTable();
+      },
+      error: (error) => {
+        console.error('API Error:', error);
+        this.countryList = [];
+        this.totaleRecords = 0;
+
+        this.getTasking();
+        this.updateTable();
+      }
+    });
+}
+
+updateTable() {
+  this.tableDataSource = new MatTableDataSource(this.countryList);
+  if (this.paginator) {
+    this.tableDataSource.paginator = this.paginator;
+  }
+  if (this.sort) {
+    this.tableDataSource.sort = this.sort;
+  }
+}
+
+
+
+
+
+  clearFields() {
+    this.searchValue = '';
+    this.getTasking();
+   
+  }
 
 }
