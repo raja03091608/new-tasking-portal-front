@@ -135,6 +135,8 @@ export class TaskFormComponent implements OnInit {
   token_detail: any;
   totaleRecords:any;
   private signatureCache: { [key: string]: string } = {};
+  private signatureCacheText: { [key: string]: string } = {};
+
   searchValue: string;
   globalsearch: any;
   tableDataSource: any;
@@ -1075,7 +1077,7 @@ onEditRole(rowData) {
   onSearch(searchText: string) {
     searchText = searchText.trim();
     this.taskList = [];
-    this.updateTable();
+    // this.updateTable();
     if (!searchText) {
         this.totaleRecords = 0; 
         this.getTasking();  // Empty search par default API call karein
@@ -1087,7 +1089,7 @@ onEditRole(rowData) {
         next: (res) => {
           this.taskList = Array.isArray(res.results) ? res.results : [];
           this.totaleRecords = res?.count || 0;
-          this.updateTable(); 
+          // this.updateTable(); 
 
           if (this.totaleRecords === 0) {
               // this.messageService.add({severity:'warn', summary:'No Record Found', detail:'No matching records found for your search.'});
@@ -1104,22 +1106,13 @@ onEditRole(rowData) {
           }
           this.messageService.add({severity:'error', summary:'Error', detail:'Something went wrong. Showing default records.'});
           this.getTasking(); // Error case me bhi default API call
-          this.updateTable();
+          // this.updateTable();
         }
       });
 }
 
 
-  updateTable() {
-    this.tableDataSource = new MatTableDataSource(this.taskList);
 
-    if (this.paginator) {
-      this.tableDataSource.paginator = this.paginator;
-    }
-    if (this.sort) {
-      this.tableDataSource.sort = this.sort;
-    }
-}
 
   
     
@@ -1259,6 +1252,32 @@ onSubmitRoute() {
     })
     console.log(routes)
   
+}
+
+
+getSignatureText(key: string): string {
+
+  if(this.signatureCacheText[key]){
+    return this.signatureCacheText[key];
+  }
+
+  if(!this.rowDataStatus || !key){
+    return '';
+  }
+
+  // Find the signature entry for the given key
+  const signature = this.rowDataStatus.find(item => item[key] === 1);
+  if(!signature){
+    this.signatureCacheText[key] = '';
+    return '';
+  }
+  
+  const dateString =   signature.created_on ? this.api.formatDate(signature.created_on) : 'N/A';
+  const text=`Electronically Signed by:
+              ${signature.created_by?.rankCode || ''} ${signature.created_by?.first_name || ''} ${signature.created_by?.last_name || ''}
+              ${signature.created_by?.department?.name || ''}, ${dateString}`
+ this.signatureCacheText[key] = text;
+  return this.signatureCacheText[key];
 }
 
 }

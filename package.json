@@ -32,6 +32,7 @@
     "angular-datatables": "^18.0.0",
     "angular-in-memory-web-api": "^0.18.0",
     "angularx-flatpickr": "^7.0.0",
+    "angularx-qrcode": "^18.0.2",
     "animate.css": "4.1.1",
     "apexcharts": "3.35.3",
     "bootstrap": "5.2.0-beta1",

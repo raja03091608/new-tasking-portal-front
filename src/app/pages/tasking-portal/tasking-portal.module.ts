@@ -34,7 +34,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChipModule } from 'primeng/chip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TagModule } from 'primeng/tag';
-
+import {  QRCodeModule } from 'angularx-qrcode';
 @NgModule({
   declarations: [
     NewTaskComponent,
@@ -46,7 +46,8 @@ import { TagModule } from 'primeng/tag';
     TaskFormComponent,
   ],
   imports: [
-    TagModule,
+    QRCodeModule,
+    TagModule, 
     PaginatorModule,
     AutoCompleteModule,
     MultiSelectModule,

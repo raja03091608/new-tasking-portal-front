@@ -88,21 +88,30 @@
                                 <div *ngIf="data?.comments" class="alert alert-dismissible alert-bg mb-4">
                                     <div class="p-3 mb-2 bg-white" [innerHTML]="data.comments"></div>
                                     <!-- <div *ngIf="!hasHTML(data.comments)" class="p-3 mb-2 bg-white" [innerText]="data.comments"></div> -->
-                                    <div>
-                                        <span class="float-end">
-                                            <i class="font-normal"> Electronically Signed by:</i>
-                                        </span>
-                                        <br>
-                                        <span class="float-end">
-                                            {{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
-                                            data?.created_by?.last_name }}
-                                        </span>
-                                        <br>
-                                        <span class="float-end">
-                                            {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
-                                            (data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
-                                        </span>
-                                    </div>
+                                   
+                                    <ng-container *ngIf="getSignatureHtml('SD_initiater')">
+                                        <div class="d-flex flex-end gap-3 align-items-center">
+                                            <div>
+                                                <span class="float-end">
+                                                    <i class="font-normal"> Electronically Signed by:</i>
+                                                </span>
+                                                <br>
+                                                <span class="float-end">
+                                                    {{ data?.created_by?.rankCode }} {{ data?.created_by?.first_name }} {{
+                                                    data?.created_by?.last_name }}
+                                                </span>
+                                                <br>
+                                                <span class="float-end">
+                                                    {{data?.created_by?.department?.name}} ,&nbsp;{{ data?.created_on ?
+                                                    (data.created_on | date: 'dd MMM yy HH:mm:ss') : 'N/A' }}
+                                                </span>
+                                            </div>
+                                          <div class="m-3">
+                                            <qrcode [qrdata]="'Electronically Signed by:'+data?.created_by?.rankCode + ' ' + data?.created_by?.first_name + ' ' + data?.created_by?.last_name + ' ' + data?.created_by?.department?.name + ' ' + data?.created_on" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                          </div>
+
+                                        </div>
+                                     </ng-container>
         
                                 </div>
                             </ng-container>
@@ -162,7 +171,13 @@
                                   <input (change)="onFileSelected($event,5)" *ngIf="!rowData.file4 && SubmitAccess.formPermission1" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                   <button *ngIf="SubmitAccess.formPermission1" type="submit" class="btn btn-primary mt-3">Submit</button>
                                        <ng-container *ngIf="getSignatureHtml('SD_initiater')">
-                                           <div [innerHTML]="getSignatureHtml('SD_initiater')"></div>
+                                          <div class="d-flex flex-end gap-3 align-items-center">
+                                            <div [innerHTML]="getSignatureHtml('SD_initiater')"></div>
+                                            <div class="m-3">
+                                              <qrcode [qrdata]="getSignatureText('SD_initiater')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                            </div>
+ 
+                                          </div>
                                        </ng-container>
                               </div>
                           </form>
@@ -177,9 +192,16 @@
                                   <angular-editor id="comments_of_apso" class="mb-4" formControlName="comments_of_apso"	[config]="getEditorConfig(SubmitAccess.formPermission2)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_apso"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission2" type="submit" class="btn btn-success mt-4">Submit</button>
+                                  
                                   <ng-container *ngIf="getSignatureHtml('APSO_recommender')">
+                                    <div class="d-flex flex-end gap-3 align-items-center">
                                       <div [innerHTML]="getSignatureHtml('APSO_recommender')"></div>
-                                  </ng-container>
+                                      <div class="m-3">
+                                        <qrcode [qrdata]="getSignatureText('APSO_recommender')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                      </div>
+
+                                    </div>
+                                 </ng-container>
                           
                               </div>
                           </form>
@@ -230,9 +252,16 @@
                                   <input (change)="onFileSelected($event,7)" *ngIf="!rowData.file6 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
                                 
                                   <button *ngIf="SubmitAccess.formPermission3" type="submit" class="btn btn-success mt-3">Submit </button>
+                                 
                                   <ng-container *ngIf="getSignatureHtml('TS_recommender')">
+                                    <div class="d-flex flex-end gap-3 align-items-center">
                                       <div [innerHTML]="getSignatureHtml('TS_recommender')"></div>
-                                  </ng-container>
+                                      <div class="m-3">
+                                        <qrcode [qrdata]="getSignatureText('TS_recommender')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                      </div>
+
+                                    </div>
+                                 </ng-container>
                               </form>
                               <!-- <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div> -->
                           
@@ -246,7 +275,15 @@
                                   <angular-editor class="mb-4" formControlName="comments_of_wesee"	[config]="getEditorConfig(SubmitAccess.formPermission4)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="comments_of_wesee"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission4" type="submit" class="btn btn-success mt-3">Submit</button>
-                              <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div>
+                              <ng-container *ngIf="getSignatureHtml('WESEE_recommender')">
+                                <div class="d-flex flex-end gap-3 align-items-center">
+                                  <div [innerHTML]="getSignatureHtml('WESEE_recommender')"></div>
+                                  <div class="m-3">
+                                    <qrcode [qrdata]="getSignatureText('WESEE_recommender')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                  </div>
+
+                                </div>
+                             </ng-container>
                           
                           
                               </div>
@@ -294,9 +331,16 @@
                                    <angular-editor class="mb-4" id="comments_of_pd_dee" formControlName="comments_of_pd_dee"	[config]="getEditorConfig(SubmitAccess.formPermission6)"></angular-editor>
                                   
                                   <button *ngIf="SubmitAccess.formPermission6" type="submit" class="btn btn-success mt-3">Submit</button>
-                                  <ng-container *ngIf="getSignatureHtml('PDDEE_recommender')">
-                                      <div [innerHTML]="getSignatureHtml('PDDEE_recommender')"></div>
-                                  </ng-container>
+                                 
+                                  <ng-container *ngIf="getSignatureHtml('PDEE_recommender')">
+                                    <div class="d-flex flex-end gap-3 align-items-center">
+                                      <div [innerHTML]="getSignatureHtml('PDEE_recommender')"></div>
+                                      <div class="m-3">
+                                        <qrcode [qrdata]="getSignatureText('PDEE_recommender')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                      </div>
+    
+                                    </div>
+                                 </ng-container>
                           
                               </div>
                           </form>
@@ -310,9 +354,16 @@
                                   <angular-editor class="mb-4" id="recommendation_of_acom_its" formControlName="recommendation_of_acom_its"	[config]="getEditorConfig(SubmitAccess.formPermission7)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="recommendation_of_acom_its"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission7" type="submit" class="btn btn-success mt-3">Submit</button>
+                                  
                                   <ng-container *ngIf="getSignatureHtml('ACOM_recommender')">
+                                    <div class="d-flex flex-end gap-3 align-items-center">
                                       <div [innerHTML]="getSignatureHtml('ACOM_recommender')"></div>
-                                  </ng-container>
+                                      <div class="m-3">
+                                        <qrcode [qrdata]="getSignatureText('ACOM_recommender')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                      </div>
+    
+                                    </div>
+                                 </ng-container>
                           
                               </div>
                           </form>
@@ -325,9 +376,16 @@
                                     <angular-editor class="mb-4" id="approval_of_com" formControlName="approval_of_com"	[config]="getEditorConfig(SubmitAccess.formPermission8)"></angular-editor>
                                   <!-- <textarea rows="4" class="form-control" formControlName="approval_of_com"></textarea> -->
                                   <button *ngIf="SubmitAccess.formPermission8" type="submit" class="btn btn-success mt-3">Approve</button>
+                                  
                                   <ng-container *ngIf="getSignatureHtml('COM_approver')">
+                                    <div class="d-flex flex-end gap-3 align-items-center">
                                       <div [innerHTML]="getSignatureHtml('COM_approver')"></div>
-                                  </ng-container>
+                                      <div class="m-3">
+                                        <qrcode [qrdata]="getSignatureText('COM_approver')" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
+                                      </div>
+    
+                                    </div>
+                                 </ng-container>
                           
                               </div>
                           </form>
