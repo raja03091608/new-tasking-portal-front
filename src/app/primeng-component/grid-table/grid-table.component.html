@@ -108,7 +108,7 @@
                     </button>
                     <mat-menu #actionsMenu="matMenu">
                         <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item [ngClass]="getButtonClass(7)">
-                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View</small>
+                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View </small>
                         </button>
                 
                         <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item [ngClass]="getButtonClass(8)">
@@ -120,7 +120,7 @@
                         </button>
                 
                         <button (click)="statusEvent.emit(rowData)" *ngIf="isStatus && !downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(14)">
-                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>View Tasking</small>
+                            <i class="fa-solid fa-info-circle"></i>&nbsp;<small>View </small>
                         </button>
                 
                         <button (click)="statusEventAdd.emit(rowData)" *ngIf="isStatusAdd" mat-menu-item [ngClass]="getButtonClass(15)">
@@ -136,7 +136,7 @@
                         </button>
                 
                         <button (click)="downloadEvent.emit(rowData)" *ngIf="isDownload && downloadData(rowData)" mat-menu-item [ngClass]="getButtonClass(12)">
-                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>View Tasking</small>
+                            <i class="fa-solid fa-file-arrow-down"></i>&nbsp;<small>View </small>
                         </button>
                 
                         <button (click)="completedEvent.emit(rowData)" *ngIf="isCompleted" mat-menu-item [ngClass]="getButtonClass(16)">

@@ -790,15 +790,15 @@ margin:0px !important;
       })
 
       .subscribe((res) => {
+        this.countryList = res.data;
+
         if(res.status==environment.SUCCESS_CODE){
-          this.countryList = res.data;
         this.dataSourcelist = new MatTableDataSource(this.countryList);
         this.dataSourcelist.paginator = this.pagination;
         }
       });
     }
     else{
-      this.url=`${environment.API_URL}transaction/trial/status`
       this.url=`${environment.API_URL}transaction/trial/status`
       this.api
       .postAPI(
