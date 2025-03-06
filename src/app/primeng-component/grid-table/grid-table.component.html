@@ -88,6 +88,10 @@
                             <!-- {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
                             }} -->
                         </span>
+                        <span *ngIf="col.header == 'Date'">
+                            {{ resolveNestedField(rowData, col.field) | date:'dd-MM-yyyy HH:mm:ss' }} hrs
+                        </span>
+                        
                     </ng-container>
 
                     <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage' || col.field === 'tasking_next_status'">
@@ -104,7 +108,7 @@
                     </button>
                     <mat-menu #actionsMenu="matMenu">
                         <button (click)="viewEvent.emit(rowData)" *ngIf="isView" mat-menu-item [ngClass]="getButtonClass(7)">
-                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View Tasking</small>
+                            <i class="fa-solid fa-eye" [ngClass]="getButtonClass(7)"></i>&nbsp;<small>View</small>
                         </button>
                 
                         <button (click)="editEvent.emit(rowData)" *ngIf="isEditable" mat-menu-item [ngClass]="getButtonClass(8)">
