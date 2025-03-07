@@ -104,14 +104,14 @@
 					</tr>
 					<tr>
 						<td class="table-label">Task Description</td>
-						<td class="table-data">{{ statusData?.task_description }} </td>
+						<td class="table-data"[innerHTML]="statusData?.task_description" ></td>
 					</tr>
 					
 					
 
 					<!-- Dynamic Remarks Sections -->
 					<tr
-						*ngFor="let key of ['SD_initiater', 'APSO_recommender', 'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver']">
+						*ngFor="let key of ['SD_initiater', 'APSO_recommender','TS_recommender', 'WESEE_recommender', 'DEE_recommender','PDEE_recommender', 'ACOM_recommender', 'COM_approver']">
 						<td class="table-label">
 							{{ getRemarkTitle(key) }} -
 							<span class="remark-comment" *ngIf="hasHTML(signatureData?.[key]?.comments)"
@@ -120,8 +120,13 @@
 								[innerText]="signatureData?.[key]?.comments"></span>
 
 						</td>
-						<td class="table-data">
+						<td class="table-data  ">
+							
+							<qrcode [qrdata]="'Electronically Signed by:'+signatureData?.[key]?.created_by?.rankCode+' '+signatureData?.[key]?.created_by?.first_name+' '+signatureData?.[key]?.created_by?.last_name+' '+signatureData?.[key]?.created_by?.department?.name+' '+signatureData?.[key]?.created_on" [width]="70" [errorCorrectionLevel]="'L'"></qrcode>
 							<div>
+							
+	
+								
 								<span><i>Electronically Signed by:</i></span><br>
 
 								{{ signatureData?.[key]?.created_by?.rankCode }}
@@ -137,6 +142,7 @@
 									}}
 								</span>
 							</div>
+							
 						</td>
 					</tr>
 				</tbody>

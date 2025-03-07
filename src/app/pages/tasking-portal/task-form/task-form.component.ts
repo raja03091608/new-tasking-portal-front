@@ -59,7 +59,7 @@ export class TaskFormComponent implements OnInit {
     recommend: true,
   };
   gridColum = [
-    { field: 'sponsoring_directorate', header: 'Sponsor Critical', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate', header: 'Sponsor', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
     { field: 'tasking_status', header: 'Forwarded by', filterMatchMode: 'contains', filter: false, },
     { field: 'tasking_next_status', header: '  Received by', filterMatchMode: 'contains', filter: false, },
@@ -256,7 +256,6 @@ export class TaskFormComponent implements OnInit {
 
       if(this.api.userid.role_center[0].user_role.code=='Initiator' && !this.rowData.SD_initiater ){
         this.SubmitAccess.formPermission1=true
-      this.SubmitAccess.commentPermission=false
 
         this.sdForm.enable();
   
@@ -265,30 +264,24 @@ export class TaskFormComponent implements OnInit {
         this.apsoForm.enable();
       }else if((resdata.role === 21 || (resdata.role === 4 && !this.rowData.TS_recommender)) && this.rowData.APSO_recommender){
         this.SubmitAccess.formPermissionTasking=true
-        this.SubmitAccess.commentPermission=false;
         this.allocateForm.enable();
       }else if(this.api.userid.process_id === 3 && !this.rowData.TS_recommender){
         this.SubmitAccess.formPermission3=true
         this.weseeForm.enable();
       }else if(resdata.role === 4 && this.rowData.TS_recommender && !this.rowData.WESEE_recommender){
         this.SubmitAccess.formPermission4=true
-        this.SubmitAccess.commentPermission=true
         this.dgweseeForm.enable();
       }else if(resdata.role === 6 && this.rowData.WESEE_recommender && !this.rowData.DEE_recommender){
         this.SubmitAccess.formPermission5=true
-        this.SubmitAccess.commentPermission=true
         // this.deeForm.enable();
       }else if(resdata.role === 26 && this.rowData.DEE_recommender && !this.rowData.PDEE_recommender){
         this.SubmitAccess.formPermission6=true
-        this.SubmitAccess.commentPermission=true
         this.pdDeeForm.enable();
       }else if(resdata.role === 8 && this.rowData.PDEE_recommender && !this.rowData.ACOM_recommender){
         this.SubmitAccess.formPermission7=true
-        this.SubmitAccess.commentPermission=true
         this.acomForm.enable();
       }else if(resdata.role === 5 && this.rowData.ACOM_recommender && !this.rowData.COM_approver){
         this.SubmitAccess.formPermission8=true
-        this.SubmitAccess.commentPermission=true
         this.comForm.enable();
       }
       
@@ -639,7 +632,7 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
-  onSubmitDEE(): void {
+  onSubmitDEE(value:string): void {
     if(this.lastStatusData <= this.rowData.level ){
       this.showConfirm();
       return;
@@ -647,7 +640,7 @@ export class TaskFormComponent implements OnInit {
     if (this.deeForm.valid) {
       const formData = new FormData();
       formData.append('task_number_dee', `WESEE/${this.deeForm.value.task_number_dee0}/${this.deeForm.value.task_number_dee1}/${this.deeForm.value.task_number_dee2}`);
-      formData.append('comments_of_dee', this.deeForm.value.comments_of_dee);
+      formData.append('comments_of_dee', value);
       formData.append('id', this.rowData.id+"");
       formData.append('status', "1");
       formData.append('comment_status', "1");
@@ -666,7 +659,7 @@ export class TaskFormComponent implements OnInit {
         response => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message || 'DEE Form submitted successfully:' });
           console.log('DEE Form submitted successfully:', response);
-          // this.hideModal();
+          this.hideModal();
           this.deeForm.enable()
         },
         error => {
@@ -935,7 +928,8 @@ export class TaskFormComponent implements OnInit {
     }
     if(this.SubmitAccess.formPermission5){
       this.deeForm.enable()
-      this.onSubmitDEE()
+      this.onSubmitDEE(this.minitingForm.value.comment)
+      return;
 
     }
       const formData = this.minitingForm.value;

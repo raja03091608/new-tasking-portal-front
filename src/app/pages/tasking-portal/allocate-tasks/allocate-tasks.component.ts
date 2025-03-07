@@ -111,10 +111,10 @@ gridColumns=[
   { field: 'task_name', header: ' Task Name', filter: true, filterMatchMode: 'contains' },
 
     { field: 'task_number_dee', header: ' Task Number', filter: true, filterMatchMode: 'contains' },
-    { field: 'task_description', header: ' Task Description', filter: true, filterMatchMode: 'contains' },
+    { field: 'task_description', header: 'Task Description', filter: true, filterMatchMode: 'contains' },
     { field: 'cost_implication', header: ' Cost Implication', filter: true, filterMatchMode: 'contains' },
-    { field: 'sponsoring_directorate', header: ' Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
-    { field: 'time_frame_for_completion_month', header: 'Time Frame for Completion', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate', header: ' Sponsoring', filter: true, filterMatchMode: 'contains' },
+    { field: 'time_frame_for_completion_month', header: 'Time Frame', filter: true, filterMatchMode: 'contains' },
 
   ]
   usersList=[]

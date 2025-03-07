@@ -236,15 +236,15 @@
                               <form [formGroup]="weseeForm" (ngSubmit)="onSubmitWESEE()">
                                   <div class="row gap-3 mt-4">
                                       <div class="col-5">
-                                          <mat-label style="font-size:large;"><b>Cost Implication (Approx)</b></mat-label>
+                                          <mat-label style="font-size:large;"><b>Cost Implication (Approx)</b> <b class="star">*</b></mat-label>
                                           <input type="number" class="form-control" formControlName="cost_implication" maxlength="100" />
                                       </div>
                                       <div class="col-5">
-                                          <mat-label style="font-size:large;"><b>Time Frame For Completion in Month's</b> <b class="star">*</b></mat-label>
+                                          <mat-label style="font-size:large;"><b>Time Frame For Completion in Months</b> <b class="star">*</b></mat-label>
                                           <input type="number" class="form-control" formControlName="time_frame_for_completion_month" />
                                       </div>
                                   </div>
-                                  <mat-label style="font-size:large;"><b>Comments For Tasking User</b><b class="star">*</b></mat-label>
+                                  <mat-label style="font-size:large;"><b>Comments For Tasking User</b><b class="star mt-3">*</b></mat-label>
                                   <angular-editor id="comments_of_tasking_group" formControlName="comments_of_tasking_group"	[config]="getEditorConfig(SubmitAccess.formPermission3)"></angular-editor>
                                   <div *ngIf="rowData.file5" class="remove mt-3 d-flex align-items-center gap-2"><a href="{{rowData.file5}}" target="_blank"><i class="fa-regular fa-newspaper text-success p-1 rounded fa-2x"></i></a><span class="text-dark fa-sm">{{ getFileNameFromUrl(rowData.file5)   }}</span><i *ngIf="SubmitAccess.formPermission3" (click)="removeFile('file5')" class="fa-regular fa-trash-can text-orange  rounded fa-2x"></i></div>
                                   <input (change)="onFileSelected($event,6)" *ngIf="!rowData.file5 && SubmitAccess.formPermission3" class=" mt-3 w-50 form-control" type="file" id="formFile">
@@ -290,7 +290,7 @@
                           </form>
                           
                           <!-- DEE  Form -->
-                          <form [formGroup]="deeForm" (ngSubmit)="onSubmitDEE()">
+                          <form [formGroup]="deeForm" (ngSubmit)="onSubmitDEE(deeForm.value.comments_of_dee)">
                               <div class="alert alert-dismissible alert-bg">
                                   <div class="sub-heading" style="text-align:center;"> <mat-label class="subheading3"><b style="font-size:large;">CDR&nbsp;(EE)-NS</b></mat-label> </div>
                                  
@@ -613,9 +613,9 @@
     </div>
             <div class=" mt-5 row">
                 <div class="col-md-2">
-                    <button type="button" (click)="routeedit=false" class="btn btn-primary" [disabled]="!routeedit">
+                    <button type="button" (click)="routeedit=false" [ngClass]="routeedit ? 'btn-success' : 'btn-primary'" class="btn " [disabled]="!routeedit">
                         <span *ngIf="!routeedit"> <i class="fa-solid fa-save"></i> Add Route Mode</span>
-                        <span *ngIf="routeedit">  <i class="fa-solid fa-pen"></i> Edit Route Mode</span>
+                        <span *ngIf="routeedit">  <i class="fa-solid fa-pen"></i> Off Edit Route Mode</span>
                     </button>
                 </div>
                 <div class="col-md-10">

@@ -537,8 +537,7 @@ onCustomClear(item){
     this.api.getAPI(environment.API_URL + "transaction/trials_status?tasking="+eventRow.id)
     .subscribe((res) => {
       const keys = [
-        'SD_initiater', 'APSO_recommender', , 
-        'WESEE_recommender', 'DEE_recommender', 'ACOM_recommender', 'COM_approver'
+        'SD_initiater', 'APSO_recommender','TS_recommender', 'WESEE_recommender', 'DEE_recommender','PDEE_recommender', 'ACOM_recommender', 'COM_approver'
     ];
 
     keys.forEach(key => {
@@ -558,7 +557,9 @@ onCustomClear(item){
         'WESEE_recommender': 'DG WESEE Remarks',
         'DEE_recommender': 'DEE Remarks',
         'ACOM_recommender': 'ACOM IT&S Remarks',
-        'COM_approver': 'COM Remarks'
+        'COM_approver': 'COM Remarks',
+        'PDEE_recommender': 'Cmde EE  Remarks',
+        'TS_recommender': 'Tasking User Remarks'
     };
     return titles[key] || 'Remarks';
 }
