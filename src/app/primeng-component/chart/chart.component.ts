@@ -63,6 +63,8 @@ export class ChartComponent implements OnInit {
     constructor(private api: ApiService) {}
 
     ngOnInit(): void {
+      this.loadTaskStatusCountGroup();
+      this.loadTaskStatusCountoverall();
       this.loadTaskStatusCountCSI();
       this.loadTaskStatusCountETG()
       this.loadTaskStatusCountTaNCS();
@@ -1024,6 +1026,77 @@ loadTaskStatusCountCSI() {
           this.statusCSIGroupChartData = statusData;
       });
 }
+
+
+loadTaskStatusCountoverall() {
+  this.api.getAPI(environment.API_URL + 'transaction/overall_count')
+      .subscribe((response: any) => {
+          const res = response.data;
+
+          const statusData = {
+              labels: ['Work in Progress', 'Completed', 'Approval in Progress', 'Closure in Progress', 'Extension in Progress', 'Task Closed'],
+              datasets: [{
+                  label: 'Status',
+                  backgroundColor: [
+                      this.standardColors.inProgress,
+                      this.standardColors.completed,
+                      this.standardColors.approvalInProgress,
+                      this.standardColors.closureInProgress,
+                      this.standardColors.extensionInProgress,
+                      this.standardColors.closed
+                  ],
+                  data: [
+                      res['Work in Progress'],
+                      res['Completed'],
+                      res['Approval in Progress'],
+                      res['Closure in Progress'],
+                      res['Extension in Progress'],
+                      res['Task Closed']
+                  ]
+              }]
+          };
+
+          this.taskStatusChartData = statusData;
+      });
+}
+
+
+loadTaskStatusCountGroup() {
+  this.api.getAPI(environment.API_URL + 'transaction/title-count')
+      .subscribe((response: any) => {
+          const res = response.data;
+
+          const statusData = {
+              labels: [],
+              datasets: [{
+                  label: 'Work In Progress',
+                  backgroundColor: [],
+                  data: []
+              }, {
+                  label: 'Completed',
+                  backgroundColor: [],
+                  data: []
+              }]
+          };
+
+          const statusColors = {
+              'Work In Progress': this.standardColors.inProgress,
+              'Completed': this.standardColors.completed,
+          };
+
+          Object.keys(res['Work In Progress']).forEach(group => {
+              statusData.labels.push(group);
+              statusData.datasets[0].data.push(res['Work In Progress'][group]);
+              statusData.datasets[0].backgroundColor.push(statusColors['Work In Progress'] || '#D9D9D9');
+              statusData.datasets[1].data.push(res['Completed'][group]);
+              statusData.datasets[1].backgroundColor.push(statusColors['Completed'] || '#D9D9D9');
+          });
+
+          this.statusByGroupChartData = statusData;
+      });
+}
+
+
   }
 
 

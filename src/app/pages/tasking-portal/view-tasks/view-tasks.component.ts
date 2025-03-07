@@ -782,14 +782,13 @@ margin:0px !important;
   url:string;
   getTasking() {
     this.countryList=[]
-      if(this.token_detail.process_id==3 ){
-      this.url=`${environment.API_URL}transaction/trial/status?`
-
-      this.api.postAPI(`${environment.API_URL}transaction/trial/status?limit_start=0&limit_end=10`, {
+      if(this.token_detail.process_id==='3' ){
+      this.api.postAPI(`${environment.API_URL}transaction/trial/status?`, {
         'tasking_id': this.token_detail.tasking_id,
         'process_id': this.token_detail.process_id,
         'created_by': this.token_detail.user_id
       })
+
       .subscribe((res) => {
         this.countryList = res.data;
 
@@ -820,6 +819,8 @@ margin:0px !important;
   
     
   }
+
+
   approvalID:any;
   viewlist:any;
   viewStatusDialog(data){

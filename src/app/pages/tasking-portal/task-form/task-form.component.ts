@@ -14,6 +14,7 @@ import { ReplaySubject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MultiSelect } from 'primeng/multiselect';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -58,10 +59,22 @@ export class TaskFormComponent implements OnInit {
     recommend: true,
   };
   gridColum = [
-    { field: 'sponsoring_directorate', header: 'Sponsoring Directorate', filter: true, filterMatchMode: 'contains' },
+    { field: 'sponsoring_directorate', header: 'Sponsor Critical', filter: true, filterMatchMode: 'contains' },
     { field: 'task_name', header: 'Task Name', filter: true, filterMatchMode: 'contains' },
-    { field: 'tasking_status', header: 'Status', filterMatchMode: 'contains', filter: false, },
-    { field: 'tasking_next_status', header: ' Next', filterMatchMode: 'contains', filter: false, }
+    { field: 'tasking_status', header: 'Forwarded by', filterMatchMode: 'contains', filter: false, },
+    { field: 'tasking_next_status', header: '  Received by', filterMatchMode: 'contains', filter: false, },
+
+ {
+      field: 'modified_on',
+      header: 'Date',
+      filter: true,
+      filterMatchMode: 'contains',
+      valueFormatter: (data: any) => {
+        const datePipe = new DatePipe('en-US');
+        return datePipe.transform(data.modified_on, 'dd-MM-yyyy');
+      },
+    },
+
 
   ]
   SubmitAccess={

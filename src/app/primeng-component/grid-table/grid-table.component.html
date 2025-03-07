@@ -88,6 +88,10 @@
                             <!-- {{ col.valueFormatter ? col.valueFormatter(rowData) : resolveNestedField(rowData, col.field)
                             }} -->
                         </span>
+                        <span *ngIf="col.header == 'Date'">
+                            {{ resolveNestedField(rowData, col.field) | date:'dd-MM-yyyy HH:mm:ss' }} hrs
+                        </span>
+                        
                     </ng-container>
 
                     <ng-container *ngIf="col.header === 'Status' || col.header === 'Stage' || col.field === 'tasking_next_status'">

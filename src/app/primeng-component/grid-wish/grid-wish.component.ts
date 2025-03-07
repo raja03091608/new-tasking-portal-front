@@ -357,7 +357,7 @@ onAssignedToChange(rowData: any) {
 getUser(rowData){
     this.api.getAPI(environment.API_URL+ 'api/auth/users?process_id=3').subscribe(
         (response: any) => {
-          this.userOptions =response.data
+          this.userOptions =response;
           this.usersFetched.emit(this.userOptions);
           const userOptions = response.data.map(user => ({
                           label: user.loginname,
